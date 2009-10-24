@@ -38,9 +38,19 @@ define('PHP_ZOTERO_OLD_BASE_URL', 'http://www.zotero.org/api/');
 
 class phpZotero {    
     
-    var $username;
-    var $password;
+    protected $username;
+    protected $apiKey;
+    protected $sharedSecret;
     
+    /************************ Constructor ************************/
+    
+    public function __construct($username) {
+       // assign parameters
+       $this->username = urlencode($username);
+    }
+    
+    /********************** Protected Methods ************************/
+
     protected function httpRequest($url) {
         if (function_exists('curl_init')) {
             $ch = curl_init();
@@ -53,7 +63,7 @@ class phpZotero {
     }
     
     protected function zoteroRequest($request, $parameters = array()) {
-        $request = PHP_ZOTERO_BASE_URL.$request.'/?content=full';
+        $request = PHP_ZOTERO_BASE_URL.$request;
         
         if (count($parameters) > 0) {
            $request .= '?';
@@ -79,85 +89,77 @@ class phpZotero {
         return false;
     }
     
-    /*
-     * Gets the user ID for a given username.
-     *
-     * Uses the old Zotero API base url, until its mapped to the new URL.
-     **/
-    public function getUserId() {
-        $user = $this->username;
-        if($user) {
-            $url = PHP_ZOTERO_OLD_BASE_URL.'users/'.$user;
+    protected function getUserId($username = null) {
+        if(!$username) {
+            $username = $this->username;
+        }
+        $url = PHP_ZOTERO_OLD_BASE_URL.'users/'.$username;
+        
+        $xml = $this->httpRequest($url);
+    
+        if($xml) {
+            $response = new DOMDocument();
+            $response->loadXML($xml);
             
-            $xml = $this->httpRequest($url);
+            $id = $response->getElementsByTagName('id')->item(0)->nodeValue;
+            if($id) {
+                $id = str_replace('http://zotero.org/users/', '', $id);
+                return $id;
+            } else {
+                return 'No ID found for '.$user;
+            }
+        } 
+    }
+    
+    /************************ Public Methods ************************/
+    
+    public function getResults($request, $parameters = array()) {
         
-            if($xml) {
-                $response = new DOMDocument();
-                $response->loadXML($xml);
-                
-                $id = $response->getElementsByTagName('id')->item(0)->nodeValue;
-                if($id) {
-                    $id = str_replace('http://zotero.org/users/', '', $id);
-                    return $id;
-                } else {
-                    return 'No ID found for '.$user;
-                }
-            } 
-        } else {
-            return 'No username give.';
+        return $this->zoteroRequest($request, $parameters);
+    }    
+    
+    public function getUserItems($parameters = array(), $userId = null) {
+        if(!$userId) {
+            $userId = $this->getUserId();
+        }
+        return $this->zoteroRequest('users/'.$userId.'/items/top', $parameters);
+    }
+    
+    public function getUserItem($itemId = null, $parameters = array(), $userId = null) {
+        if(!$userId) {
+            $userId = $this->getUserId();
+        }
+        
+        if($itemId) {
+            return $this->getResults('users/'.$userId.'/items/'.$itemId, $parameters);
         }
     }
     
-    /**
-     * Returns the results for a particular URL request
-     *
-     *
-     * @param string $request The URL request
-     * @param string $format The format of the results. Options are atom and json
-     * @param string $version The version of the Zotero API to use
-     * @param string $content The format of the content. Options are none, html, and full
-     * @param string $privateurl
-     * @param string $sort
-     * @param string $limit
-     * @param string $start
-     * @param string $q
-     * @param string $fq
-     * @param string $facets
-     * @param string $pprint
-     * @return void
-     **/
-    public function getResults($request, $format = '', $version='', $content = '', $privateurl  = '', $sort  = '', $limit  = '', $start  = '', $order  = '', $q  = '', $fq  = '', $facets  = '', $pprint = '') {
-        return $this->zoteroRequest($request);
-    }
-    
-    public function getFollowers() {
+    public function getUserItemChildren($itemId = null, $parameters = array(), $userId = null) { 
+        if(!$userId) {
+            $userId = $this->getUserId();
+        }
         
-    }
-    
-    public function getFollowing() {
-        
-    }
-    
-    public function getGroups() {
-        
-    }
-    
-    public function getUserItems() {
-        
-    }
-    
-    public function getItem($id) {
-        if($id) {
-            return $this->getResults('items/'.$id);
+        if($itemId) {
+            return $this->getResults('users/'.$userId.'item/'.$itemId.'/children', $parameters);
         }
     }
     
-    public function getItemAttachments() {
-        
+    public function getUserCollections($parameters = array(), $userId = null) {
+        if(!$userId) {
+            $userId = $this->getUserId();
+        }
+        return $this->zoteroRequest('users/'.$userId.'/collections/top', $parameters);
     }
     
-    public function getUserCollections() {
+    public function getUserCollection($collectionId = null, $parameters = array(), $userId = null) {
+        if(!$userId) {
+            $userId = $this->getUserId();
+        }
         
+        if($collectionId) {
+            return $this->getResults('users/'.$userId.'/collections/'.$collectionId, $parameters);
+        }
     }
 
 }
