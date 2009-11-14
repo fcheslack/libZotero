@@ -32,7 +32,7 @@
                                                                  */
 /***************************************************************/
 
-// del.icio.us API base URL
+// Zotero API base URL
 define('PHP_ZOTERO_BASE_URL', 'https://api.zotero.org/');
 define('PHP_ZOTERO_OLD_BASE_URL', 'http://www.zotero.org/api/');
 
@@ -40,13 +40,14 @@ class phpZotero {
     
     protected $username;
     protected $apiKey;
-    protected $sharedSecret;
     
     /************************ Constructor ************************/
     
-    public function __construct($username) {
+    public function __construct($username, $apiKey) {
        // assign parameters
        $this->username = urlencode($username);
+       $this->apiKey = urlencode($apiKey);
+       
     }
     
     /********************** Protected Methods ************************/
@@ -61,7 +62,7 @@ class phpZotero {
             return $xml;
         }
     }
-    
+        
     protected function zoteroRequest($request, $parameters = array()) {
         $request = PHP_ZOTERO_BASE_URL.$request;
         
@@ -77,7 +78,7 @@ class phpZotero {
                  $request .= '&';
               }
               $request .= "$key=".urlencode($value);
-              $iCount++;
+              $pCount++;
            }
         }
         
@@ -106,7 +107,7 @@ class phpZotero {
                 $id = str_replace('http://zotero.org/users/', '', $id);
                 return $id;
             } else {
-                return 'No ID found for '.$user;
+                return 'No ID found for '.$username;
             }
         } 
     }
