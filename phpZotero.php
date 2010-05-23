@@ -190,10 +190,8 @@ class phpZotero {
     
     public function getTotalResults($dom) {
         $xpath = new DOMXPath($dom);
-		$xpath->registerNamespace('zapi', 'http://zotero.org/ns/api');
-		$totalResults = $xpath->getElementsByTagName('totalResults')->item(0)->nodeValue;
-        
-        return $totalResults;
+		$totalResults = $dom->getElementsByTagNameNS('http://zotero.org/ns/api', 'totalResults');
+		return $totalResults->item(0)->nodeValue;
     }
 }
 
