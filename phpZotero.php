@@ -38,14 +38,14 @@ define('PHP_ZOTERO_OLD_BASE_URL', 'http://www.zotero.org/api/');
 
 class phpZotero {    
     
-    protected $username;
+    protected $userId;
     protected $apiKey;
     
     /************************ Constructor ************************/
     
-    public function __construct($username, $apiKey) {
+    public function __construct($userId, $apiKey) {
        // assign parameters
-       $this->username = urlencode($username);
+       $this->userId = urlencode($userId);
        $this->apiKey = urlencode($apiKey);
        
     }
@@ -90,28 +90,6 @@ class phpZotero {
         return false;
     }
     
-    protected function getUserId($username = null) {
-        if(!$username) {
-            $username = $this->username;
-        }
-        $url = PHP_ZOTERO_OLD_BASE_URL.'users/'.$username;
-        
-        $xml = $this->httpRequest($url);
-    
-        if($xml) {
-            $response = new DOMDocument();
-            $response->loadXML($xml);
-            
-            $id = $response->getElementsByTagName('id')->item(0)->nodeValue;
-            if($id) {
-                $id = str_replace('http://zotero.org/users/', '', $id);
-                return $id;
-            } else {
-                return 'No ID found for '.$username;
-            }
-        } 
-    }
-    
     /************************ Public Methods ************************/
     
     public function getResults($request, $parameters = array()) {
@@ -121,14 +99,14 @@ class phpZotero {
     
     public function getUserItems($parameters = array(), $userId = null) {
         if(!$userId) {
-            $userId = $this->getUserId();
+            $userId = $this->userId;
         }
         return $this->getResults('users/'.$userId.'/items/top', $parameters);
     }
     
     public function getUserItem($itemId = null, $parameters = array(), $userId = null) {
         if(!$userId) {
-            $userId = $this->getUserId();
+            $userId = $this->userId;
         }
         
         if($itemId) {
@@ -138,7 +116,7 @@ class phpZotero {
     
     public function getUserItemChildren($itemId = null, $parameters = array(), $userId = null) { 
         if(!$userId) {
-            $userId = $this->getUserId();
+            $userId = $this->userId;
         }
         
         if($itemId) {
@@ -148,14 +126,14 @@ class phpZotero {
     
     public function getUserCollections($parameters = array(), $userId = null) {
         if(!$userId) {
-            $userId = $this->getUserId();
+            $userId = $this->userId;
         }
         return $this->zoteroRequest('users/'.$userId.'/collections/top', $parameters);
     }
     
     public function getUserCollection($collectionId = null, $parameters = array(), $userId = null) {
         if(!$userId) {
-            $userId = $this->getUserId();
+            $userId = $this->userId;
         }
         
         if($collectionId) {
@@ -189,7 +167,6 @@ class phpZotero {
     }
     
     public function getTotalResults($dom) {
-        $xpath = new DOMXPath($dom);
 		$totalResults = $dom->getElementsByTagNameNS('http://zotero.org/ns/api', 'totalResults');
 		return $totalResults->item(0)->nodeValue;
     }
