@@ -123,7 +123,7 @@ class phpZotero {
         if(!$userId) {
             $userId = $this->getUserId();
         }
-        return $this->zoteroRequest('users/'.$userId.'/items/top', $parameters);
+        return $this->getResults('users/'.$userId.'/items/top', $parameters);
     }
     
     public function getUserItem($itemId = null, $parameters = array(), $userId = null) {
@@ -162,7 +162,39 @@ class phpZotero {
             return $this->getResults('users/'.$userId.'/collections/'.$collectionId, $parameters);
         }
     }
-
+    
+    public function getPageStart($dom, $rel) {
+        $xpath = new DOMXPath($dom);
+		$xpath->registerNamespace('atom', 'http://www.w3.org/2005/Atom');
+		
+		$nextLink = $xpath->evaluate("//atom:link[@rel = '$rel']/@href");
+		$nextLinkUrl = $nextLink->item(0)->nodeValue;
+		if ($nextLinkUrl) {
+		    $start = substr(strrchr($nextLinkUrl, '='), 1);
+		    return $start;
+		}
+		return false;
+    }
+    
+    public function getNextPageStart($dom) {
+        return $this->getPageStart($dom, 'next');
+    }
+    
+    public function getLastPageStart($dom) {
+        return $this->getPageStart($dom, 'last');
+    }
+    
+    public function getFirstPageStart($dom) {
+        return $this->getPageStart($dom, 'first');
+    }
+    
+    public function getTotalResults($dom) {
+        $xpath = new DOMXPath($dom);
+		$xpath->registerNamespace('zapi', 'http://zotero.org/ns/api');
+		$totalResults = $xpath->getElementsByTagName('totalResults')->item(0)->nodeValue;
+        
+        return $totalResults;
+    }
 }
 
 ?>
