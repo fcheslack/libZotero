@@ -114,6 +114,17 @@ class phpZotero {
         }
     }
     
+    public function getUserItemTags($itemId, array $parameters = array(), $userId = null)
+    {
+        if(!$userId) {
+            $userId = $this->userId;
+        }
+        
+        if($itemId) {            
+            return $this->getResults('users/'.$userId.'/items/'.$itemId.'/tags');
+        }
+    }
+    
     public function getUserItemChildren($itemId = null, $parameters = array(), $userId = null) { 
         if(!$userId) {
             $userId = $this->userId;
@@ -124,11 +135,17 @@ class phpZotero {
         }
     }
     
+    public function getUserItemFile($itemId, array $params = array())
+    {
+        $path = "/users/$userId/items/$itemId/file";
+        return $this->restGet($path, $this->_filterParams($params))->getHeader('Location');
+    }
+    
     public function getUserCollections($parameters = array(), $userId = null) {
         if(!$userId) {
             $userId = $this->userId;
         }
-        return $this->zoteroRequest('users/'.$userId.'/collections/top', $parameters);
+        return $this->getResults('users/'.$userId.'/collections/top', $parameters);
     }
     
     public function getUserCollection($collectionId = null, $parameters = array(), $userId = null) {
@@ -138,6 +155,43 @@ class phpZotero {
         
         if($collectionId) {
             return $this->getResults('users/'.$userId.'/collections/'.$collectionId, $parameters);
+        }
+    }
+    
+    public function getUserCollectionItems($collectionId = null, $parameters = array(), $userId = null) {
+        if(!$userId) {
+            $userId = $this->userId;
+        }
+        
+        if($collectionId) {
+            return $this->getResults('users/'.$userId.'/collections/'.$collectionId.'/items', $parameters);
+        }
+    }
+    
+    public function getUserTags($parameters = array(), $userId = null) {
+        if(!$userId) {
+            $userId = $this->userId;
+        }
+        return $this->getResults('users/'.$userId.'/tags', $parameters);
+    }
+    
+    public function getUserTag($tag, $parameters = array(), $userId = null) {
+        if(!$userId) {
+            $userId = $this->userId;
+        }
+        
+        if($tag = urlencode($tag)) {
+            return $this->getResults('users/'.$userId.'/tags/'.$tag, $parameters);
+        }
+    }
+    
+    public function getUserTagItems($tag, $parameters = array(), $userId = null) {
+        if(!$userId) {
+            $userId = $this->userId;
+        }
+        
+        if($tag = urlencode($tag)) {
+            return $this->getResults('users/'.$userId.'/tags/'.$tag.'/items', $parameters);
         }
     }
     
@@ -171,5 +225,3 @@ class phpZotero {
 		return $totalResults->item(0)->nodeValue;
     }
 }
-
-?>
