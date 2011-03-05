@@ -65,8 +65,10 @@ class phpZotero {
         $request = self::ZOTERO_URI.$request;
         
         if (count($parameters) > 0) {
-           $request .= '?';
+            $parameters = $this->filterParams($parameters);
+            $request .= '?';
         }
+        
         // add parameters to command
         $pCount = 0;
         
@@ -86,6 +88,20 @@ class phpZotero {
             return $response;
         }  
         return false;
+    }
+    
+    /**
+     * Adds the API key to the parameters if one is not already set.
+     * 
+     * @param array An array of parameters.
+     * @return array
+     */
+    protected function filterParams($parameters = array())
+    {
+        if (!isset($parameters['key']) && $this->apiKey) {
+            $parameters['key'] = $this->apiKey;
+        }
+        return $parameters;
     }
     
     /************************ Public Methods ************************/
