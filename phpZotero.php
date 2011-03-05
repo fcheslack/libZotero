@@ -100,11 +100,7 @@ class phpZotero {
         return $parameters;
     }
     
-    /************************ Public Methods ************************/
-    
-    public function getResults($request, $parameters = array()) {
-        return $this->_zoteroRequest($request, $parameters);
-    }    
+    /************************ Public Methods ************************/  
     
     /**
      * Gets the top-level Zotero items for a given user.
@@ -113,7 +109,7 @@ class phpZotero {
      * @param array An optional array of parameters.
      */
     public function getUserItems($userId, $parameters = array()) {
-        return $this->getResults('users/'.$userId.'/items/top', $parameters);
+        return $this->_zoteroRequest('users/'.$userId.'/items/top', $parameters);
     }
     
     /**
@@ -124,7 +120,7 @@ class phpZotero {
      * @param array An optional array of parameters.
      */
     public function getUserItem($userId, $itemId, $parameters = array()) {
-        return $this->getResults('users/'.$userId.'/items/'.$itemId, $parameters);
+        return $this->_zoteroRequest('users/'.$userId.'/items/'.$itemId, $parameters);
     }
     
     /**
@@ -136,7 +132,7 @@ class phpZotero {
      */
     public function getUserItemTags($userId, $itemId, array $parameters = array())
     {
-        return $this->getResults('users/'.$userId.'/items/'.$itemId.'/tags');
+        return $this->_zoteroRequest('users/'.$userId.'/items/'.$itemId.'/tags');
     }
     
     /**
@@ -147,7 +143,7 @@ class phpZotero {
      * @param array An optional array of parameters.
      */
     public function getUserItemChildren($userId, $itemId, $parameters = array()) { 
-        return $this->getResults('users/'.$userId.'item/'.$itemId.'/children', $parameters);
+        return $this->_zoteroRequest('users/'.$userId.'item/'.$itemId.'/children', $parameters);
     }
     
     /**
@@ -157,7 +153,7 @@ class phpZotero {
      * @param int The user ID.
      */
     public function getUserCollections($userId, $parameters = array()) {
-        return $this->getResults('users/'.$userId.'/collections/top', $parameters);
+        return $this->_zoteroRequest('users/'.$userId.'/collections/top', $parameters);
     }
     
     /**
@@ -168,7 +164,7 @@ class phpZotero {
      * @param array An optional array of parameters
      */
     public function getUserCollection($userId, $collectionId, $parameters = array()) {
-        return $this->getResults('users/'.$userId.'/collections/'.$collectionId, $parameters);
+        return $this->_zoteroRequest('users/'.$userId.'/collections/'.$collectionId, $parameters);
     }
     
     /**
@@ -179,7 +175,7 @@ class phpZotero {
      * @param array An optional array of parameters
      */
     public function getUserCollectionItems($userId, $collectionId, $parameters = array()) {
-        return $this->getResults('users/'.$userId.'/collections/'.$collectionId.'/items', $parameters);
+        return $this->_zoteroRequest('users/'.$userId.'/collections/'.$collectionId.'/items', $parameters);
     }
     
     /**
@@ -189,7 +185,7 @@ class phpZotero {
      * @param array An optional array of parameters.
      */
     public function getUserTags($userId, $parameters = array()) {
-        return $this->getResults('users/'.$userId.'/tags', $parameters);
+        return $this->_zoteroRequest('users/'.$userId.'/tags', $parameters);
     }
     
     /**
@@ -201,7 +197,7 @@ class phpZotero {
      */
     public function getUserTag($userId, $tag, $parameters = array()) {
         if($tag = urlencode($tag)) {
-            return $this->getResults('users/'.$userId.'/tags/'.$tag, $parameters);
+            return $this->_zoteroRequest('users/'.$userId.'/tags/'.$tag, $parameters);
         }
     }
     
@@ -214,7 +210,7 @@ class phpZotero {
      */
     public function getUserTagItems($userId, $tag, $parameters = array()) {
         if($tag = urlencode($tag)) {
-            return $this->getResults('users/'.$userId.'/tags/'.$tag.'/items', $parameters);
+            return $this->_zoteroRequest('users/'.$userId.'/tags/'.$tag.'/items', $parameters);
         }
     }
     
