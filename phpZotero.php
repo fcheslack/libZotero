@@ -36,17 +36,17 @@ class phpZotero {
     
     const ZOTERO_URI = 'https://api.zotero.org/';
     
-    protected $apiKey;
+    protected $_apiKey;
     
     /************************ Constructor ************************/
     
     public function __construct($apiKey) {
-       $this->apiKey = urlencode($apiKey);
+       $this->_apiKey = urlencode($apiKey);
     }
     
     /********************** Protected Methods ************************/
 
-    protected function httpRequest($url) {
+    protected function _httpRequest($url) {
         if (function_exists('curl_init')) {
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
@@ -57,11 +57,11 @@ class phpZotero {
         }
     }
         
-    protected function zoteroRequest($request, $parameters = array()) {
+    protected function _zoteroRequest($request, $parameters = array()) {
         $request = self::ZOTERO_URI.$request;
         
         if (count($parameters) > 0) {
-            $parameters = $this->filterParams($parameters);
+            $parameters = $this->_filterParams($parameters);
             $request .= '?';
         }
         
@@ -78,7 +78,7 @@ class phpZotero {
            }
         }
         
-        if ($xml = $this->httpRequest($request)) {
+        if ($xml = $this->_httpRequest($request)) {
             $response = new DOMDocument();
             $response->loadXML($xml);
             return $response;
@@ -92,10 +92,10 @@ class phpZotero {
      * @param array An array of parameters.
      * @return array
      */
-    protected function filterParams($parameters = array())
+    protected function _filterParams($parameters = array())
     {
-        if (!isset($parameters['key']) && $this->apiKey) {
-            $parameters['key'] = $this->apiKey;
+        if (!isset($parameters['key']) && $this->_apiKey) {
+            $parameters['key'] = $this->_apiKey;
         }
         return $parameters;
     }
@@ -103,7 +103,7 @@ class phpZotero {
     /************************ Public Methods ************************/
     
     public function getResults($request, $parameters = array()) {
-        return $this->zoteroRequest($request, $parameters);
+        return $this->_zoteroRequest($request, $parameters);
     }    
     
     /**
