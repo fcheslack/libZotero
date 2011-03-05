@@ -36,16 +36,12 @@ class phpZotero {
     
     const ZOTERO_URI = 'https://api.zotero.org/';
     
-    protected $userId;
     protected $apiKey;
     
     /************************ Constructor ************************/
     
-    public function __construct($userId, $apiKey) {
-       // assign parameters
-       $this->userId = urlencode($userId);
+    public function __construct($apiKey) {
        $this->apiKey = urlencode($apiKey);
-       
     }
     
     /********************** Protected Methods ************************/
@@ -113,66 +109,45 @@ class phpZotero {
     /**
      * Gets the top-level Zotero items for a given user.
      *
-     * @param array An optional array of parameters.
      * @param int The user ID.
+     * @param array An optional array of parameters.
      */
-    public function getUserItems($parameters = array(), $userId = null) {
-        if(!$userId) {
-            $userId = $this->userId;
-        }
+    public function getUserItems($userId, $parameters = array()) {
         return $this->getResults('users/'.$userId.'/items/top', $parameters);
     }
     
     /**
      * Gets a particular Zotero item by ID.
      *
+     * @param int The user ID.
      * @param int The item ID.
      * @param array An optional array of parameters.
-     * @param int The user ID.
      */
-    public function getUserItem($itemId = null, $parameters = array(), $userId = null) {
-        if(!$userId) {
-            $userId = $this->userId;
-        }
-        
-        if($itemId) {
-            return $this->getResults('users/'.$userId.'/items/'.$itemId, $parameters);
-        }
+    public function getUserItem($userId, $itemId, $parameters = array()) {
+        return $this->getResults('users/'.$userId.'/items/'.$itemId, $parameters);
     }
     
     /**
      * Gets the tags associated with a given Zotero item.
      *
+     * @param int The user ID.
      * @param int The item ID.
      * @param array An optional array of parameters.
-     * @param int The user ID.
      */
-    public function getUserItemTags($itemId, array $parameters = array(), $userId = null)
+    public function getUserItemTags($userId, $itemId, array $parameters = array())
     {
-        if(!$userId) {
-            $userId = $this->userId;
-        }
-        
-        if($itemId) {            
-            return $this->getResults('users/'.$userId.'/items/'.$itemId.'/tags');
-        }
+        return $this->getResults('users/'.$userId.'/items/'.$itemId.'/tags');
     }
     
     /**
      * Gets the children associated with a given Zotero item.
      *
+     * @param int The user ID.
      * @param int The item ID.
      * @param array An optional array of parameters.
-     * @param int The user ID.
      */
-    public function getUserItemChildren($itemId = null, $parameters = array(), $userId = null) { 
-        if(!$userId) {
-            $userId = $this->userId;
-        }
-        
-        if($itemId) {
-            return $this->getResults('users/'.$userId.'item/'.$itemId.'/children', $parameters);
-        }
+    public function getUserItemChildren($userId, $itemId, $parameters = array()) { 
+        return $this->getResults('users/'.$userId.'item/'.$itemId.'/children', $parameters);
     }
     
     /**
@@ -181,72 +156,50 @@ class phpZotero {
      * @param array An optional array of parameters
      * @param int The user ID.
      */
-    public function getUserCollections($parameters = array(), $userId = null) {
-        if(!$userId) {
-            $userId = $this->userId;
-        }
+    public function getUserCollections($userId, $parameters = array()) {
         return $this->getResults('users/'.$userId.'/collections/top', $parameters);
     }
     
     /**
      * Gets a specific collection for a given user.
      *
+     * @param int The user ID.
      * @param int The collection ID
      * @param array An optional array of parameters
-     * @param int The user ID.
      */
-    public function getUserCollection($collectionId = null, $parameters = array(), $userId = null) {
-        if(!$userId) {
-            $userId = $this->userId;
-        }
-        
-        if($collectionId) {
-            return $this->getResults('users/'.$userId.'/collections/'.$collectionId, $parameters);
-        }
+    public function getUserCollection($userId, $collectionId, $parameters = array()) {
+        return $this->getResults('users/'.$userId.'/collections/'.$collectionId, $parameters);
     }
     
     /**
      * Get the items in a specific collection for a given user.
      *
+     * @param int The user ID.
      * @param int The collection ID
      * @param array An optional array of parameters
-     * @param int The user ID.
      */
-    public function getUserCollectionItems($collectionId = null, $parameters = array(), $userId = null) {
-        if(!$userId) {
-            $userId = $this->userId;
-        }
-        
-        if($collectionId) {
-            return $this->getResults('users/'.$userId.'/collections/'.$collectionId.'/items', $parameters);
-        }
+    public function getUserCollectionItems($userId, $collectionId, $parameters = array()) {
+        return $this->getResults('users/'.$userId.'/collections/'.$collectionId.'/items', $parameters);
     }
     
     /**
      * Gets the tags for a user.
      *
-     * @param array An optional array of parameters.
      * @param int The user ID.
+     * @param array An optional array of parameters.
      */
-    public function getUserTags($parameters = array(), $userId = null) {
-        if(!$userId) {
-            $userId = $this->userId;
-        }
+    public function getUserTags($userId, $parameters = array()) {
         return $this->getResults('users/'.$userId.'/tags', $parameters);
     }
     
     /**
      * Gets a specific tag for a user.
      *
+     * @param int The user ID.
      * @param string The tag.
      * @param array An optional array of parameters.
-     * @param int The user ID.
      */
-    public function getUserTag($tag, $parameters = array(), $userId = null) {
-        if(!$userId) {
-            $userId = $this->userId;
-        }
-        
+    public function getUserTag($userId, $tag, $parameters = array()) {
         if($tag = urlencode($tag)) {
             return $this->getResults('users/'.$userId.'/tags/'.$tag, $parameters);
         }
@@ -254,16 +207,12 @@ class phpZotero {
     
     /**
      * Gets the items tagged with a given tag.
-     * 
+     *
+     * @param int The user ID.
      * @param string The tag.
      * @param array An optional array of parameters.
-     * @param int The user ID.
      */
-    public function getUserTagItems($tag, $parameters = array(), $userId = null) {
-        if(!$userId) {
-            $userId = $this->userId;
-        }
-        
+    public function getUserTagItems($userId, $tag, $parameters = array()) {
         if($tag = urlencode($tag)) {
             return $this->getResults('users/'.$userId.'/tags/'.$tag.'/items', $parameters);
         }
