@@ -32,11 +32,9 @@
                                                                  */
 /***************************************************************/
 
-// Zotero API base URL
-define('PHP_ZOTERO_BASE_URL', 'https://api.zotero.org/');
-define('PHP_ZOTERO_OLD_BASE_URL', 'http://www.zotero.org/api/');
-
 class phpZotero {    
+    
+    const ZOTERO_URI = 'https://api.zotero.org/';
     
     protected $userId;
     protected $apiKey;
@@ -64,7 +62,7 @@ class phpZotero {
     }
         
     protected function zoteroRequest($request, $parameters = array()) {
-        $request = PHP_ZOTERO_BASE_URL.$request;
+        $request = self::ZOTERO_URI.$request;
         
         if (count($parameters) > 0) {
            $request .= '?';
