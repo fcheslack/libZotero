@@ -4,7 +4,7 @@
 
   Software License Agreement (BSD License)
 
-  Copyright (C) 2009, Jeremy Boggs.
+  Copyright (C) 2009-2011, Jeremy Boggs.
   All rights reserved.
   
   Redistribution and use in source and binary forms, with or without
@@ -93,10 +93,15 @@ class phpZotero {
     /************************ Public Methods ************************/
     
     public function getResults($request, $parameters = array()) {
-        
         return $this->zoteroRequest($request, $parameters);
     }    
     
+    /**
+     * Gets the top-level Zotero items for a given user.
+     *
+     * @param array An optional array of parameters.
+     * @param int The user ID.
+     */
     public function getUserItems($parameters = array(), $userId = null) {
         if(!$userId) {
             $userId = $this->userId;
@@ -104,6 +109,13 @@ class phpZotero {
         return $this->getResults('users/'.$userId.'/items/top', $parameters);
     }
     
+    /**
+     * Gets a particular Zotero item by ID.
+     *
+     * @param int The item ID.
+     * @param array An optional array of parameters.
+     * @param int The user ID.
+     */
     public function getUserItem($itemId = null, $parameters = array(), $userId = null) {
         if(!$userId) {
             $userId = $this->userId;
@@ -114,6 +126,13 @@ class phpZotero {
         }
     }
     
+    /**
+     * Gets the tags associated with a given Zotero item.
+     *
+     * @param int The item ID.
+     * @param array An optional array of parameters.
+     * @param int The user ID.
+     */
     public function getUserItemTags($itemId, array $parameters = array(), $userId = null)
     {
         if(!$userId) {
@@ -125,6 +144,13 @@ class phpZotero {
         }
     }
     
+    /**
+     * Gets the children associated with a given Zotero item.
+     *
+     * @param int The item ID.
+     * @param array An optional array of parameters.
+     * @param int The user ID.
+     */
     public function getUserItemChildren($itemId = null, $parameters = array(), $userId = null) { 
         if(!$userId) {
             $userId = $this->userId;
@@ -135,12 +161,12 @@ class phpZotero {
         }
     }
     
-    public function getUserItemFile($itemId, array $params = array())
-    {
-        $path = "/users/$userId/items/$itemId/file";
-        return $this->restGet($path, $this->_filterParams($params))->getHeader('Location');
-    }
-    
+    /**
+     * Gets all the collections for a user.
+     *
+     * @param array An optional array of parameters
+     * @param int The user ID.
+     */
     public function getUserCollections($parameters = array(), $userId = null) {
         if(!$userId) {
             $userId = $this->userId;
@@ -148,6 +174,13 @@ class phpZotero {
         return $this->getResults('users/'.$userId.'/collections/top', $parameters);
     }
     
+    /**
+     * Gets a specific collection for a given user.
+     *
+     * @param int The collection ID
+     * @param array An optional array of parameters
+     * @param int The user ID.
+     */
     public function getUserCollection($collectionId = null, $parameters = array(), $userId = null) {
         if(!$userId) {
             $userId = $this->userId;
@@ -158,6 +191,13 @@ class phpZotero {
         }
     }
     
+    /**
+     * Get the items in a specific collection for a given user.
+     *
+     * @param int The collection ID
+     * @param array An optional array of parameters
+     * @param int The user ID.
+     */
     public function getUserCollectionItems($collectionId = null, $parameters = array(), $userId = null) {
         if(!$userId) {
             $userId = $this->userId;
@@ -168,6 +208,12 @@ class phpZotero {
         }
     }
     
+    /**
+     * Gets the tags for a user.
+     *
+     * @param array An optional array of parameters.
+     * @param int The user ID.
+     */
     public function getUserTags($parameters = array(), $userId = null) {
         if(!$userId) {
             $userId = $this->userId;
@@ -175,6 +221,13 @@ class phpZotero {
         return $this->getResults('users/'.$userId.'/tags', $parameters);
     }
     
+    /**
+     * Gets a specific tag for a user.
+     *
+     * @param string The tag.
+     * @param array An optional array of parameters.
+     * @param int The user ID.
+     */
     public function getUserTag($tag, $parameters = array(), $userId = null) {
         if(!$userId) {
             $userId = $this->userId;
@@ -185,6 +238,13 @@ class phpZotero {
         }
     }
     
+    /**
+     * Gets the items tagged with a given tag.
+     * 
+     * @param string The tag.
+     * @param array An optional array of parameters.
+     * @param int The user ID.
+     */
     public function getUserTagItems($tag, $parameters = array(), $userId = null) {
         if(!$userId) {
             $userId = $this->userId;
@@ -195,6 +255,12 @@ class phpZotero {
         }
     }
     
+    /**
+     * Gets the start page from the Zotero feed.
+     *
+     * @param string The DOM output.
+     * @param string The rel attribute to find.
+     */
     public function getPageStart($dom, $rel) {
         $xpath = new DOMXPath($dom);
 		$xpath->registerNamespace('atom', 'http://www.w3.org/2005/Atom');
@@ -208,18 +274,38 @@ class phpZotero {
 		return false;
     }
     
+    /**
+     * Gets the URL for the next page.
+     *
+     * @param string The DOM output.
+     */
     public function getNextPageStart($dom) {
         return $this->getPageStart($dom, 'next');
     }
     
+    /**
+     * Gets the URL for the last page.
+     *
+     * @param string The DOM output.
+     */
     public function getLastPageStart($dom) {
         return $this->getPageStart($dom, 'last');
     }
     
+    /**
+     * Gets the URL for the first page.
+     *
+     * @param string The DOM output.
+     */
     public function getFirstPageStart($dom) {
         return $this->getPageStart($dom, 'first');
     }
     
+    /**
+     * Gets the total results for a specific query.
+     *
+     * @param string The DOM output.
+     */
     public function getTotalResults($dom) {
 		$totalResults = $dom->getElementsByTagNameNS('http://zotero.org/ns/api', 'totalResults');
 		return $totalResults->item(0)->nodeValue;
