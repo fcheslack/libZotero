@@ -149,6 +149,20 @@ class phpZotero {
     }
     
     /**
+     * Gets the URI of a user item file.
+     *
+     * @param int The user ID.
+     * @param int The item key.
+     * @param array Additional parameters for the request.
+     * @return string the file URI.
+     */
+    public function getUserItemFile($userId, $itemId, $parameters = array())
+    {
+        $path = "/users/$userId/items/$itemId/file";
+        return $this->_zoteroUri($path, $parameters);
+    }
+
+    /**
      * Gets all the collections for a user.
      *
      * @param array An optional array of parameters
