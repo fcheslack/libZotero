@@ -58,32 +58,34 @@ class phpZotero {
     }
         
     protected function _zoteroRequest($request, $parameters = array()) {
-        $request = self::ZOTERO_URI.$request;
-        
-        if (count($parameters) > 0) {
-            $parameters = $this->_filterParams($parameters);
-            $request .= '?';
-        }
-        
-        // add parameters to command
-        $pCount = 0;
-        
-        foreach ($parameters as $key => $value) {
-           if ($value != '') {
-              if ($pCount > 0) {
-                 $request .= '&';
-              }
-              $request .= "$key=".urlencode($value);
-              $pCount++;
-           }
-        }
-        
-        if ($xml = $this->_httpRequest($request)) {
+        $requestUri = $this->_zoteroUri($request, $parameters);
+        if ($xml = $this->_httpRequest($requestUri)) {
             $response = new DOMDocument();
             $response->loadXML($xml);
             return $response;
         }  
         return false;
+    }
+    
+    /**
+     * Constructs a valid Zotero URI with query string.
+     *
+     * @param string The request path.
+     * @param array An array of parameters
+     * @return string A Zotero URI.
+     */
+    protected function _zoteroUri($request, $parameters = array())
+    {
+        $uri = self::ZOTERO_URI . $request;
+        
+        $parameters = $this->_filterParams($parameters);
+        
+        // If there are parameters, build a query.
+        if (count($parameters) > 0) {
+            $uri = $uri . '?' . http_build_query($parameters);      
+        }
+        
+        return $uri;
     }
     
     /**
