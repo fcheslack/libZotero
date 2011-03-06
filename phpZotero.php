@@ -1,6 +1,6 @@
 <?php
 /**
- * @version $Id$
+ * @version 0.1
  * @copyright Jeremy Boggs, 2009-2011
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  * @package phpZotero
