@@ -17,14 +17,20 @@ class phpZotero {
     
     protected $_apiKey;
     
-    /************************ Constructor ************************/
-    
+    /**
+     * Constructor for the phpZotero object.
+     *
+     * @param string The private Zotero API key.
+     */
     public function __construct($apiKey) {
        $this->_apiKey = urlencode($apiKey);
     }
     
-    /********************** Protected Methods ************************/
-
+    /**
+     * Returns a URL with cURL.
+     *
+     * @param string The URL.
+     */
     protected function _httpRequest($url) {
         if (function_exists('curl_init')) {
             $ch = curl_init();
@@ -35,7 +41,13 @@ class phpZotero {
             return $xml;
         }
     }
-        
+
+    /**
+     * Returns a Zotero API feed response.
+     *
+     * @param string The request.
+     * @param array An array of parameters.
+     */
     protected function _zoteroRequest($request, $parameters = array()) {
         $requestUri = $this->_zoteroUri($request, $parameters);
         if ($xml = $this->_httpRequest($requestUri)) {
@@ -80,9 +92,7 @@ class phpZotero {
         }
         return $parameters;
     }
-    
-    /************************ Public Methods ************************/  
-    
+        
     /**
      * Gets the top-level Zotero items for a given user.
      *
