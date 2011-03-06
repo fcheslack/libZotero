@@ -250,6 +250,113 @@ class phpZotero {
     }
     
     /**
+     * Gets a group.
+     *
+     * @param int The group ID.
+     * @param array An optional array of parameters.
+     */
+    public function getGroup($groupId, array $parameters = array())
+    {
+        return $this->_zoteroRequest('groups/'.$groupId, $parameters);
+    }
+
+    /**
+     * Gets all the items for a group.
+     *
+     * @param int The group ID.
+     * @param array Additional parameters for the request.
+     */
+    public function getGroupItems($groupId, array $parameters = array())
+    {
+        return $this->_zoteroRequest('groups/'.$groupId .'/items', $parameters);
+    }
+
+    /**
+     * Gets top-level items for a group.
+     *
+     * @param int The group ID.
+     * @param array An optional array of parameters.
+     */
+    public function getGroupItemsTop($groupId, array $parameters = array())
+    {
+        return $this->_zoteroRequest('groups/'.$groupId.'/items/top', $parameters);
+    }
+
+    /**
+     * Gets a group collection items feed.
+     *
+     * @param int The group ID.
+     * @param int The collection key.
+     * @param array An optional array of parameters.
+     */
+    public function getGroupCollectionItems($groupId, $collectionKey, array $parameters = array())
+    {
+        return $this->_zoteroRequest('groups/'.$groupId.'/collections/'.$collectionKey.'/items', $parameters);
+    }
+
+    /**
+     * Gets a group collection top items feed.
+     *
+     * @param int The group ID.
+     * @param int The collection key.
+     * @param array An optional array of parameters.
+     */
+    public function getGroupCollectionItemsTop($groupId, $collectionKey, array $parameters = array())
+    {
+        return $this->_zoteroRequest('groups/'.$groupId.'/collections/'.$collectionKey.'/items/top', $parameters);
+    }
+
+    /**
+     * Gets a group item feed.
+     *
+     * @param int The group ID.
+     * @param int The item key.
+     * @param array An optional array of parameters.
+     */
+    public function getGroupItem($groupId, $itemKey, array $parameters = array())
+    {
+        return $this->_zoteroRequest('groups/'.$groupId.'/items/'.$itemKey, $parameters);
+    }
+
+    /**
+     * Gets the Zotero API URL of a group item file.
+     *
+     * @param int The group ID.
+     * @param int The item key.
+     * @param array An optional array of parameters.
+     * @return array array('zotero' => string, 's3' => string|null)
+     */
+    public function getGroupItemFile($groupId, $itemKey, array $parameters = array())
+    {
+        $path = "/groups/$groupId/items/$itemKey/file";
+        return $this->_zoteroUri($path, $parameters);
+    }
+
+    /**
+     * Gets a group item children feed.
+     *
+     * @param int The group ID.
+     * @param int The item key.
+     * @param array An optional array of parameters.
+     */
+    public function getGroupItemChildren($groupId, $itemKey, $parameters = array())
+    {
+        return $this->_zoteroRequest('groups/'.$groupId.'/items/'.$itemKey.'/children', $parameters);
+    }
+
+    /**
+     * Gets a group item tags feed.
+     *
+     * @param int The group ID.
+     * @param int The item key.
+     * @param array An optional array of parameters.
+     */
+    public function getGroupItemTags($groupId, $itemKey, $parameters = array())
+    {
+        return $this->_zoteroRequest('groups/'.$groupId.'/items/'.$itemKey.'/tags', $parameters);
+    }
+
+    /**
      * Gets the start page from the Zotero feed.
      *
      * @param string The DOM output.
