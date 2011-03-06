@@ -23,7 +23,7 @@ class phpZotero {
      * @param string The private Zotero API key.
      */
     public function __construct($apiKey) {
-       $this->_apiKey = urlencode($apiKey);
+       $this->_apiKey = $apiKey;
     }
     
     /**
@@ -94,15 +94,25 @@ class phpZotero {
     }
         
     /**
-     * Gets the top-level Zotero items for a given user.
+     * Gets all Zotero items for a user.
      *
      * @param int The user ID.
      * @param array An optional array of parameters.
      */
     public function getUserItems($userId, $parameters = array()) {
+        return $this->_zoteroRequest('users/'.$userId.'/items', $parameters);
+    }
+
+    /**
+     * Gets all top-level Zotero items for a user.
+     *
+     * @param int The user ID.
+     * @param array An optional array of parameters.
+     */
+    public function getUserItemsTop($userId, $parameters = array()) {
         return $this->_zoteroRequest('users/'.$userId.'/items/top', $parameters);
     }
-    
+
     /**
      * Gets a particular Zotero item by ID.
      *
@@ -158,9 +168,19 @@ class phpZotero {
      * @param int The user ID.
      */
     public function getUserCollections($userId, $parameters = array()) {
+        return $this->_zoteroRequest('users/'.$userId.'/collections', $parameters);
+    }
+
+    /**
+     * Gets all top-level collections for a user.
+     *
+     * @param array An optional array of parameters
+     * @param int The user ID.
+     */
+    public function getUserCollectionsTop($userId, $parameters = array()) {
         return $this->_zoteroRequest('users/'.$userId.'/collections/top', $parameters);
     }
-    
+
     /**
      * Gets a specific collection for a given user.
      *
