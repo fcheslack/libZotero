@@ -16,6 +16,7 @@ class phpZotero {
     const ZOTERO_URI = 'https://api.zotero.org/';
     
     protected $_apiKey;
+    protected $_ch;
     
     /**
      * Constructor for the phpZotero object.
@@ -24,6 +25,18 @@ class phpZotero {
      */
     public function __construct($apiKey) {
        $this->_apiKey = $apiKey;
+       if (function_exists('curl_init')) {
+           $this->_ch = curl_init();
+       } else {
+           throw new Exception("You need cURL");
+       }
+    }
+
+    /**
+     * Destructor, closes cURL.
+     */
+    public function __destruct() {
+        curl_close($this->_ch);
     }
     
     /**
@@ -32,14 +45,11 @@ class phpZotero {
      * @param string The URL.
      */
     protected function _httpRequest($url) {
-        if (function_exists('curl_init')) {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            $xml = curl_exec($ch);
-            curl_close($ch);
-            return $xml;
-        }
+        $ch = $this->_ch;
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $xml = curl_exec($ch);
+        return $xml;
     }
 
     /**
