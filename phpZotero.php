@@ -363,15 +363,15 @@ class phpZotero {
      */
     public function getPageStart($dom, $rel) {
         $xpath = new DOMXPath($dom);
-		$xpath->registerNamespace('atom', 'http://www.w3.org/2005/Atom');
-		
-		$nextLink = $xpath->evaluate("//atom:link[@rel = '$rel']/@href");
-		$nextLinkUrl = $nextLink->item(0)->nodeValue;
-		if ($nextLinkUrl) {
-		    $start = substr(strrchr($nextLinkUrl, '='), 1);
-		    return $start;
-		}
-		return false;
+        $xpath->registerNamespace('atom', 'http://www.w3.org/2005/Atom');
+        
+        $nextLink = $xpath->evaluate("//atom:link[@rel = '$rel']/@href");
+        $nextLinkUrl = $nextLink->item(0)->nodeValue;
+        if ($nextLinkUrl) {
+            $start = substr(strrchr($nextLinkUrl, '='), 1);
+            return $start;
+        }
+        return false;
     }
     
     /**
@@ -407,7 +407,7 @@ class phpZotero {
      * @param string The DOM output.
      */
     public function getTotalResults($dom) {
-		$totalResults = $dom->getElementsByTagNameNS('http://zotero.org/ns/api', 'totalResults');
-		return $totalResults->item(0)->nodeValue;
+        $totalResults = $dom->getElementsByTagNameNS('http://zotero.org/ns/api', 'totalResults');
+        return $totalResults->item(0)->nodeValue;
     }
 }
