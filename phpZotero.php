@@ -43,11 +43,19 @@ class phpZotero {
      * Returns a URL with cURL.
      *
      * @param string The URL.
+     * @param string The POST body. If no POST body, then performs a GET.
      */
-    protected function _httpRequest($url) {
+    protected function _httpRequest($url, $postBody=NULL) {
         $ch = $this->_ch;
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0); //added for running locally on MAMP
+        curl_setopt($ch, CURLOPT_POST, 0);
+        if (!is_null($postBody)) {
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postBody);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); 
+        }
         $xml = curl_exec($ch);
         return $xml;
     }
@@ -58,9 +66,9 @@ class phpZotero {
      * @param string The request.
      * @param array An array of parameters.
      */
-    protected function _zoteroRequest($request, $parameters = array()) {
+    protected function _zoteroRequest($request, $parameters = array(), $postBody=NULL) {
         $requestUri = $this->_zoteroUri($request, $parameters);
-        if ($xml = $this->_httpRequest($requestUri)) {
+        if ($xml = $this->_httpRequest($requestUri, $postBody)) {
             $response = new DOMDocument();
             $response->loadXML($xml);
             return $response;
@@ -410,4 +418,57 @@ class phpZotero {
         $totalResults = $dom->getElementsByTagNameNS('http://zotero.org/ns/api', 'totalResults');
         return $totalResults->item(0)->nodeValue;
     }
+ 
+     /**
+     * Gets the key for a specific query.
+     *
+     * @param string The DOM output.
+     */
+    public function getKey($dom) {
+        $key = $dom->getElementsByTagNameNS('http://zotero.org/ns/api', 'key');
+        return $key->item(0)->nodeValue;
+    }
+    
+     /**
+     * Adds an item to a user's library.
+     *
+     * @param int The user ID.
+     * @param string The item fields, in JSON.
+     */ 
+    public function createNewItem($userId, $itemFields) {
+        return $this->_zoteroRequest('users/'.$userId.'/items', null, $itemFields);
+    }
+
+     /**
+     * Adds items to a user's collection.
+     *
+     * @param int The user ID.
+     * @param string The collection key.
+     * @param string A space-delimited list of item keys.
+     */
+    public function addItemsToCollection($userId, $collectionKey, $itemKeys) {
+        return $this->_zoteroRequest('users/'.$userId.'/collections/'.$collectionKey.'/items', null, $itemKeys);
+    }
+    
+    public function getAllItemTypes() {
+    // /itemTypes
+    }
+    
+    public function getAllItemFields() {
+    // /itemFields
+    }
+    
+    public function getValidCreatorTypes($itemType) {
+    // /itemTypeCreatorTypes?itemType=book
+    }
+    
+    public function getLocalizedCreatorFields() {
+    // /creatorFields
+    }
+    
+    public function getItemTemplate($itemType) {
+    // /items/new?itemType=book
+    }
+
+
 }
