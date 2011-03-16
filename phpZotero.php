@@ -1,7 +1,7 @@
 <?php
 /**
- * @version 0.1
- * @copyright Jeremy Boggs, 2009-2011
+ * @version 0.2
+ * @copyright Jeremy Boggs, Sean Takats, 2009-2011
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  * @package phpZotero
  */
@@ -13,7 +13,7 @@
  */
 class phpZotero {    
     
-    const ZOTERO_URI = 'https://apidev.zotero.org/';
+    const ZOTERO_URI = 'https://api.zotero.org/';
     
     protected $_apiKey;
     protected $_ch;
@@ -68,9 +68,7 @@ class phpZotero {
      */
     protected function _zoteroRequest($request, $parameters = array(), $postBody=NULL) {
         $requestUri = $this->_zoteroUri($request, $parameters);
-        if ($xml = $this->_httpRequest($requestUri, $postBody)) {
-            $response = new DOMDocument();
-            $response->loadXML($xml);
+        if ($response = $this->_httpRequest($requestUri, $postBody)) {
             return $response;
         }  
         return false;
@@ -112,148 +110,159 @@ class phpZotero {
     }
         
     /**
-     * Gets all Zotero items for a user.
+     * Gets all Zotero items for a user or group library.
      *
-     * @param int The user ID.
+     * @param int The Zotero user or group ID.
      * @param array An optional array of parameters.
+     * @param string The library type, users or groups
      */
-    public function getUserItems($userId, $parameters = array()) {
-        return $this->_zoteroRequest('users/'.$userId.'/items', $parameters);
+    public function getItems($zoteroId, $parameters = array(), $libraryType="users") {
+        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/items', $parameters);
     }
 
     /**
-     * Gets all top-level Zotero items for a user.
+     * Gets all top-level Zotero items for a user or group.
      *
-     * @param int The user ID.
+     * @param int The user or group ID.
      * @param array An optional array of parameters.
+     * @param string The library type, users or groups
      */
-    public function getUserItemsTop($userId, $parameters = array()) {
-        return $this->_zoteroRequest('users/'.$userId.'/items/top', $parameters);
+    public function getItemsTop($zoteroId, $parameters = array(), $libraryType="users") {
+        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/items/top', $parameters);
     }
 
     /**
      * Gets a particular Zotero item by ID.
      *
-     * @param int The user ID.
+     * @param int The user or group ID.
      * @param string The item key.
      * @param array An optional array of parameters.
+	 * @param string The library type, users or groups
      */
-    public function getUserItem($userId, $itemKey, $parameters = array()) {
-        return $this->_zoteroRequest('users/'.$userId.'/items/'.$itemKey, $parameters);
+    public function getItem($zoteroId, $itemKey, $parameters = array(), $libraryType="users") {
+        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/items/'.$itemKey, $parameters);
     }
     
     /**
      * Gets the tags associated with a given Zotero item.
      *
-     * @param int The user ID.
+     * @param int The user or group ID.
      * @param string The item key.
      * @param array An optional array of parameters.
+	 * @param string The library type, users or groups     
      */
-    public function getUserItemTags($userId, $itemKey, $parameters = array())
-    {
-        return $this->_zoteroRequest('users/'.$userId.'/items/'.$itemKey.'/tags');
+    public function getItemTags($zoteroId, $itemKey, $parameters = array(), $libraryType="users") {
+        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/items/'.$itemKey.'/tags');
     }
     
     /**
      * Gets the children associated with a given Zotero item.
      *
-     * @param int The user ID.
+     * @param int The user or group ID.
      * @param string The item key.
      * @param array An optional array of parameters.
+	 * @param string The library type, users or groups
      */
-    public function getUserItemChildren($userId, $itemKey, $parameters = array()) { 
-        return $this->_zoteroRequest('users/'.$userId.'item/'.$itemKey.'/children', $parameters);
+    public function getItemChildren($zoteroId, $itemKey, $parameters = array(), $libraryType="users") {
+        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'item/'.$itemKey.'/children', $parameters);
     }
     
     /**
      * Gets the URI of a user item file.
      *
-     * @param int The user ID.
+     * @param int The user or group ID.
      * @param string The item key.
      * @param array Additional parameters for the request.
      * @return string the file URI.
+	 * @param string The library type, users or groups
      */
-    public function getUserItemFile($userId, $itemKey, $parameters = array())
-    {
-        $path = "/users/$userId/items/$itemKey/file";
+    public function getItemFile($zoteroId, $itemKey, $parameters = array(), $libraryType="users") {
+        $path = "/users/$zoteroId/items/$itemKey/file";
         return $this->_zoteroUri($path, $parameters);
     }
 
     /**
-     * Gets all the collections for a user.
+     * Gets all the collections for a user or group.
      *
+     * @param int The user or group ID.
      * @param array An optional array of parameters
-     * @param int The user ID.
+	 * @param string The library type, users or groups
      */
-    public function getUserCollections($userId, $parameters = array()) {
-        return $this->_zoteroRequest('users/'.$userId.'/collections', $parameters);
+    public function getCollections($zoteroId, $parameters = array(), $libraryType="users") {
+        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/collections', $parameters);
     }
 
     /**
-     * Gets all top-level collections for a user.
+     * Gets all top-level collections for a user or group.
      *
+     * @param int The user or group ID.
      * @param array An optional array of parameters
-     * @param int The user ID.
+	 * @param string The library type, users or groups
      */
-    public function getUserCollectionsTop($userId, $parameters = array()) {
-        return $this->_zoteroRequest('users/'.$userId.'/collections/top', $parameters);
+    public function getCollectionsTop($zoteroId, $parameters = array(), $libraryType="users") {
+        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/collections/top', $parameters);
     }
 
     /**
-     * Gets a specific collection for a given user.
+     * Gets a specific collection for a given user or group.
      *
-     * @param int The user ID.
+     * @param int The user or group ID.
      * @param string The collection key.
      * @param array An optional array of parameters.
+	 * @param string The library type, users or groups
      */
-    public function getUserCollection($userId, $collectionKey, $parameters = array()) {
-        return $this->_zoteroRequest('users/'.$userId.'/collections/'.$collectionKey, $parameters);
+    public function getCollection($zoteroId, $collectionKey, $parameters = array(), $libraryType="users") {
+        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/collections/'.$collectionKey, $parameters);
     }
     
     /**
-     * Get the items in a specific collection for a given user.
+     * Get the items in a specific collection for a given user or group.
      *
-     * @param int The user ID.
+     * @param int The user or group ID.
      * @param string The collection key.
      * @param array An optional array of parameters.
+	 * @param string The library type, users or groups
      */
-    public function getUserCollectionItems($userId, $collectionKey, $parameters = array()) {
-        return $this->_zoteroRequest('users/'.$userId.'/collections/'.$collectionKey.'/items', $parameters);
+    public function getCollectionItems($zoteroId, $collectionKey, $parameters = array(), $libraryType="users") {
+        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/collections/'.$collectionKey.'/items', $parameters);
     }
     
     /**
-     * Gets the tags for a user.
+     * Gets the tags for a user or group.
      *
-     * @param int The user ID.
+     * @param int The user or group ID.
      * @param array An optional array of parameters.
+	 * @param string The library type, users or groups
      */
-    public function getUserTags($userId, $parameters = array()) {
-        return $this->_zoteroRequest('users/'.$userId.'/tags', $parameters);
+    public function getTags($zoteroId, $parameters = array(), $libraryType="users") {
+        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/tags', $parameters);
     }
     
     /**
-     * Gets a specific tag for a user.
+     * Gets a specific tag for a user or group.
      *
-     * @param int The user ID.
+     * @param int The user or group ID.
      * @param string The tag.
      * @param array An optional array of parameters.
+	 * @param string The library type, users or groups
      */
-    public function getUserTag($userId, $tag, $parameters = array()) {
+    public function getUserTag($zoteroId, $tag, $parameters = array(), $libraryType="users") {
         if($tag = urlencode($tag)) {
-            return $this->_zoteroRequest('users/'.$userId.'/tags/'.$tag, $parameters);
+            return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/tags/'.$tag, $parameters);
         }
     }
     
     /**
      * Gets the items tagged with a given tag.
      *
-     * @param int The user ID.
+     * @param int The user or group ID.
      * @param string The tag.
      * @param array An optional array of parameters.
+	 * @param string The library type, users or groups
      */
-    public function getUserTagItems($userId, $tag, $parameters = array()) {
+    public function getTagItems($zoteroId, $tag, $parameters = array(), $libraryType="users") {
         if($tag = urlencode($tag)) {
-            return $this->_zoteroRequest('users/'.$userId.'/tags/'.$tag.'/items', $parameters);
+            return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/tags/'.$tag.'/items', $parameters);
         }
     }
     
@@ -268,100 +277,17 @@ class phpZotero {
         return $this->_zoteroRequest('groups/'.$groupId, $parameters);
     }
 
-    /**
-     * Gets all the items for a group.
-     *
-     * @param int The group ID.
-     * @param array Additional parameters for the request.
-     */
-    public function getGroupItems($groupId, $parameters = array())
-    {
-        return $this->_zoteroRequest('groups/'.$groupId .'/items', $parameters);
-    }
-
-    /**
-     * Gets top-level items for a group.
-     *
-     * @param int The group ID.
-     * @param array An optional array of parameters.
-     */
-    public function getGroupItemsTop($groupId, $parameters = array())
-    {
-        return $this->_zoteroRequest('groups/'.$groupId.'/items/top', $parameters);
-    }
-
-    /**
-     * Gets a group collection items feed.
-     *
-     * @param int The group ID.
-     * @param string The collection key.
-     * @param array An optional array of parameters.
-     */
-    public function getGroupCollectionItems($groupId, $collectionKey, $parameters = array())
-    {
-        return $this->_zoteroRequest('groups/'.$groupId.'/collections/'.$collectionKey.'/items', $parameters);
-    }
-
-    /**
-     * Gets a group collection top items feed.
-     *
-     * @param int The group ID.
-     * @param string The collection key.
-     * @param array An optional array of parameters.
-     */
-    public function getGroupCollectionItemsTop($groupId, $collectionKey, $parameters = array())
-    {
-        return $this->_zoteroRequest('groups/'.$groupId.'/collections/'.$collectionKey.'/items/top', $parameters);
-    }
-
-    /**
-     * Gets a group item feed.
-     *
-     * @param int The group ID.
-     * @param string The item key.
-     * @param array An optional array of parameters.
-     */
-    public function getGroupItem($groupId, $itemKey, $parameters = array())
-    {
-        return $this->_zoteroRequest('groups/'.$groupId.'/items/'.$itemKey, $parameters);
-    }
-
-    /**
-     * Gets the Zotero API URL of a group item file.
-     *
-     * @param int The group ID.
-     * @param string The item key.
-     * @param array An optional array of parameters.
-     */
-    public function getGroupItemFile($groupId, $itemKey, $parameters = array())
-    {
-        $path = "/groups/$groupId/items/$itemKey/file";
-        return $this->_zoteroUri($path, $parameters);
-    }
-
-    /**
-     * Gets a group item children feed.
-     *
-     * @param int The group ID.
-     * @param string The item key.
-     * @param array An optional array of parameters.
-     */
-    public function getGroupItemChildren($groupId, $itemKey, $parameters = array())
-    {
-        return $this->_zoteroRequest('groups/'.$groupId.'/items/'.$itemKey.'/children', $parameters);
-    }
-
-    /**
-     * Gets a group item tags feed.
-     *
-     * @param int The group ID.
-     * @param string The item key.
-     * @param array An optional array of parameters.
-     */
-    public function getGroupItemTags($groupId, $itemKey, $parameters = array())
-    {
-        return $this->_zoteroRequest('groups/'.$groupId.'/items/'.$itemKey.'/tags', $parameters);
-    }
+	/**
+	 * Loads XML response into DOM document.
+	 *
+	 * @param string The XML response.
+	 *
+	 */
+	 public function getDom($xml) {
+		$dom = new DOMDocument();
+        $dom->loadXML($xml);
+        return $dom;
+     }
 
     /**
      * Gets the start page from the Zotero feed.
@@ -419,7 +345,7 @@ class phpZotero {
         return $totalResults->item(0)->nodeValue;
     }
  
-     /**
+    /**
      * Gets the key for a specific query.
      *
      * @param string The DOM output.
@@ -428,47 +354,59 @@ class phpZotero {
         $key = $dom->getElementsByTagNameNS('http://zotero.org/ns/api', 'key');
         return $key->item(0)->nodeValue;
     }
-    
-     /**
-     * Adds an item to a user's library.
-     *
-     * @param int The user ID.
-     * @param string The item fields, in JSON.
-     */ 
-    public function createNewItem($userId, $itemFields) {
-        return $this->_zoteroRequest('users/'.$userId.'/items', null, $itemFields);
-    }
-
-     /**
-     * Adds items to a user's collection.
-     *
-     * @param int The user ID.
-     * @param string The collection key.
-     * @param string A space-delimited list of item keys.
-     */
-    public function addItemsToCollection($userId, $collectionKey, $itemKeys) {
-        return $this->_zoteroRequest('users/'.$userId.'/collections/'.$collectionKey.'/items', null, $itemKeys);
-    }
-    
+        
     public function getAllItemTypes() {
-    // /itemTypes
+	    return $this->_zoteroRequest('/itemTypes', null, null);
     }
     
     public function getAllItemFields() {
-    // /itemFields
+	    return $this->_zoteroRequest('/itemFields', null, null);
     }
     
-    public function getValidCreatorTypes($itemType) {
-    // /itemTypeCreatorTypes?itemType=book
+    public function getValidCreatorTypes($parameters = array()) {
+	    return $this->_zoteroRequest('/itemTypeCreatorTypes', $parameters, null);
     }
     
     public function getLocalizedCreatorFields() {
-    // /creatorFields
+	    return $this->_zoteroRequest('/creatorFields', null, null);
     }
     
-    public function getItemTemplate($itemType) {
-    // /items/new?itemType=book
+    public function getItemTemplate($params) {
+	    return $this->_zoteroRequest('/items/new', $params, null);
+    }
+    
+    /**
+     * Adds an item to a user or group library.
+     *
+     * @param int The Zotero user or group ID.
+     * @param string The item fields, in JSON.
+     * @param string The library type, users or groups
+     */ 
+    public function createItem($zoteroId, $itemFields, $libraryType="users") {
+        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/items', null, $itemFields);
     }
 
+    /**
+     * Adds items to a library collection.
+     *
+     * @param int The Zotero user or group ID.
+     * @param string The collection key.
+     * @param string A space-delimited list of item keys.
+     * @param string The library type, users or groups
+     */
+    public function addItemsToCollection($zoteroId, $collectionKey, $itemKeys, $libraryType="users") {
+        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/collections/'.$collectionKey.'/items', null, $itemKeys);
+    }
+
+    /**
+     * Adds a collection to a user or group library.
+     *
+     * @param int The Zotero user or group ID.
+     * @param string The collection fields, in JSON.
+     * @param string The library type, users or groups
+     */ 
+    public function createCollection($zoteroId, $collectionFields, $libraryType="users") {
+        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/collections', null, $collectionFields);
+    }
 
 }
