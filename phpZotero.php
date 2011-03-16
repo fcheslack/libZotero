@@ -137,7 +137,7 @@ class phpZotero {
      * @param int The user or group ID.
      * @param string The item key.
      * @param array An optional array of parameters.
-	 * @param string The library type, users or groups
+     * @param string The library type, users or groups
      */
     public function getItem($zoteroId, $itemKey, $parameters = array(), $libraryType="users") {
         return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/items/'.$itemKey, $parameters);
@@ -149,7 +149,7 @@ class phpZotero {
      * @param int The user or group ID.
      * @param string The item key.
      * @param array An optional array of parameters.
-	 * @param string The library type, users or groups     
+     * @param string The library type, users or groups     
      */
     public function getItemTags($zoteroId, $itemKey, $parameters = array(), $libraryType="users") {
         return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/items/'.$itemKey.'/tags');
@@ -161,7 +161,7 @@ class phpZotero {
      * @param int The user or group ID.
      * @param string The item key.
      * @param array An optional array of parameters.
-	 * @param string The library type, users or groups
+     * @param string The library type, users or groups
      */
     public function getItemChildren($zoteroId, $itemKey, $parameters = array(), $libraryType="users") {
         return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'item/'.$itemKey.'/children', $parameters);
@@ -174,7 +174,7 @@ class phpZotero {
      * @param string The item key.
      * @param array Additional parameters for the request.
      * @return string the file URI.
-	 * @param string The library type, users or groups
+     * @param string The library type, users or groups
      */
     public function getItemFile($zoteroId, $itemKey, $parameters = array(), $libraryType="users") {
         $path = "/users/$zoteroId/items/$itemKey/file";
@@ -186,7 +186,7 @@ class phpZotero {
      *
      * @param int The user or group ID.
      * @param array An optional array of parameters
-	 * @param string The library type, users or groups
+     * @param string The library type, users or groups
      */
     public function getCollections($zoteroId, $parameters = array(), $libraryType="users") {
         return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/collections', $parameters);
@@ -197,7 +197,7 @@ class phpZotero {
      *
      * @param int The user or group ID.
      * @param array An optional array of parameters
-	 * @param string The library type, users or groups
+     * @param string The library type, users or groups
      */
     public function getCollectionsTop($zoteroId, $parameters = array(), $libraryType="users") {
         return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/collections/top', $parameters);
@@ -209,7 +209,7 @@ class phpZotero {
      * @param int The user or group ID.
      * @param string The collection key.
      * @param array An optional array of parameters.
-	 * @param string The library type, users or groups
+     * @param string The library type, users or groups
      */
     public function getCollection($zoteroId, $collectionKey, $parameters = array(), $libraryType="users") {
         return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/collections/'.$collectionKey, $parameters);
@@ -221,7 +221,7 @@ class phpZotero {
      * @param int The user or group ID.
      * @param string The collection key.
      * @param array An optional array of parameters.
-	 * @param string The library type, users or groups
+     * @param string The library type, users or groups
      */
     public function getCollectionItems($zoteroId, $collectionKey, $parameters = array(), $libraryType="users") {
         return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/collections/'.$collectionKey.'/items', $parameters);
@@ -232,7 +232,7 @@ class phpZotero {
      *
      * @param int The user or group ID.
      * @param array An optional array of parameters.
-	 * @param string The library type, users or groups
+     * @param string The library type, users or groups
      */
     public function getTags($zoteroId, $parameters = array(), $libraryType="users") {
         return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/tags', $parameters);
@@ -244,7 +244,7 @@ class phpZotero {
      * @param int The user or group ID.
      * @param string The tag.
      * @param array An optional array of parameters.
-	 * @param string The library type, users or groups
+     * @param string The library type, users or groups
      */
     public function getUserTag($zoteroId, $tag, $parameters = array(), $libraryType="users") {
         if($tag = urlencode($tag)) {
@@ -258,7 +258,7 @@ class phpZotero {
      * @param int The user or group ID.
      * @param string The tag.
      * @param array An optional array of parameters.
-	 * @param string The library type, users or groups
+     * @param string The library type, users or groups
      */
     public function getTagItems($zoteroId, $tag, $parameters = array(), $libraryType="users") {
         if($tag = urlencode($tag)) {
@@ -277,14 +277,14 @@ class phpZotero {
         return $this->_zoteroRequest('groups/'.$groupId, $parameters);
     }
 
-	/**
-	 * Loads XML response into DOM document.
-	 *
-	 * @param string The XML response.
-	 *
-	 */
-	 public function getDom($xml) {
-		$dom = new DOMDocument();
+    /**
+     * Loads XML response into DOM document.
+     *
+     * @param string The XML response.
+     *
+     */
+     public function getDom($xml) {
+        $dom = new DOMDocument();
         $dom->loadXML($xml);
         return $dom;
      }
@@ -355,24 +355,43 @@ class phpZotero {
         return $key->item(0)->nodeValue;
     }
         
+    /**
+     * Gets all available item types.
+     */
     public function getAllItemTypes() {
-	    return $this->_zoteroRequest('/itemTypes', null, null);
+        return $this->_zoteroRequest('/itemTypes', null, null);
     }
     
+    /**
+     * Gets all available item fields.
+     */
     public function getAllItemFields() {
-	    return $this->_zoteroRequest('/itemFields', null, null);
+        return $this->_zoteroRequest('/itemFields', null, null);
     }
     
+    /**
+     * Gets valid creator types for a given item type.
+     *
+     * @param string The item type.
+     */
     public function getValidCreatorTypes($parameters = array()) {
-	    return $this->_zoteroRequest('/itemTypeCreatorTypes', $parameters, null);
+        return $this->_zoteroRequest('/itemTypeCreatorTypes', $parameters, null);
     }
     
+    /**
+     * Gets localized creator fields.
+     */
     public function getLocalizedCreatorFields() {
-	    return $this->_zoteroRequest('/creatorFields', null, null);
+        return $this->_zoteroRequest('/creatorFields', null, null);
     }
     
+    /**
+     * Gets a template for a given item type
+     *
+     * @param string The item type.
+     */
     public function getItemTemplate($params) {
-	    return $this->_zoteroRequest('/items/new', $params, null);
+        return $this->_zoteroRequest('/items/new', $params, null);
     }
     
     /**
