@@ -152,7 +152,7 @@ class phpZotero {
      * @param string The library type, users or groups
      */
     public function getItemTags($zoteroId, $itemKey, $parameters = array(), $libraryType="users") {
-        return $this->_zoteroRequest("$libraryType/$zoteroId/items/$itemKey/tags");
+        return $this->_zoteroRequest("$libraryType/$zoteroId/items/$itemKey/tags", $parameters);
     }
 
     /**
