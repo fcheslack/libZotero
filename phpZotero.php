@@ -177,7 +177,7 @@ class phpZotero {
      * @param string The library type, users or groups
      */
     public function getItemFile($zoteroId, $itemKey, $parameters = array(), $libraryType="users") {
-        $path = "/users/$zoteroId/items/$itemKey/file";
+        $path = "users/$zoteroId/items/$itemKey/file";
         return $this->_zoteroUri($path, $parameters);
     }
 
@@ -359,14 +359,14 @@ class phpZotero {
      * Gets all available item types.
      */
     public function getAllItemTypes() {
-        return $this->_zoteroRequest('/itemTypes', null, null);
+        return $this->_zoteroRequest('itemTypes', null, null);
     }
 
     /**
      * Gets all available item fields.
      */
     public function getAllItemFields() {
-        return $this->_zoteroRequest('/itemFields', null, null);
+        return $this->_zoteroRequest('itemFields', null, null);
     }
 
     /**
@@ -375,14 +375,14 @@ class phpZotero {
      * @param string The item type.
      */
     public function getValidCreatorTypes($parameters = array()) {
-        return $this->_zoteroRequest('/itemTypeCreatorTypes', $parameters, null);
+        return $this->_zoteroRequest('itemTypeCreatorTypes', $parameters, null);
     }
 
     /**
      * Gets localized creator fields.
      */
     public function getLocalizedCreatorFields() {
-        return $this->_zoteroRequest('/creatorFields', null, null);
+        return $this->_zoteroRequest('creatorFields', null, null);
     }
 
     /**
@@ -391,7 +391,7 @@ class phpZotero {
      * @param string The item type.
      */
     public function getItemTemplate($params) {
-        return $this->_zoteroRequest('/items/new', $params, null);
+        return $this->_zoteroRequest('items/new', $params, null);
     }
 
     /**
