@@ -164,7 +164,7 @@ class phpZotero {
      * @param string The library type, users or groups
      */
     public function getItemChildren($zoteroId, $itemKey, $parameters = array(), $libraryType="users") {
-        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'item/'.$itemKey.'/children', $parameters);
+        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/items/'.$itemKey.'/children', $parameters);
     }
 
     /**
