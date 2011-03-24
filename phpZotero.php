@@ -117,7 +117,7 @@ class phpZotero {
      * @param string The library type, users or groups
      */
     public function getItems($zoteroId, $parameters = array(), $libraryType="users") {
-        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/items', $parameters);
+        return $this->_zoteroRequest("$libraryType/$zoteroId/items", $parameters);
     }
 
     /**
@@ -128,7 +128,7 @@ class phpZotero {
      * @param string The library type, users or groups
      */
     public function getItemsTop($zoteroId, $parameters = array(), $libraryType="users") {
-        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/items/top', $parameters);
+        return $this->_zoteroRequest("$libraryType/$zoteroId/items/top", $parameters);
     }
 
     /**
@@ -140,7 +140,7 @@ class phpZotero {
      * @param string The library type, users or groups
      */
     public function getItem($zoteroId, $itemKey, $parameters = array(), $libraryType="users") {
-        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/items/'.$itemKey, $parameters);
+        return $this->_zoteroRequest("$libraryType/$zoteroId/items/$itemKey", $parameters);
     }
 
     /**
@@ -152,7 +152,7 @@ class phpZotero {
      * @param string The library type, users or groups
      */
     public function getItemTags($zoteroId, $itemKey, $parameters = array(), $libraryType="users") {
-        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/items/'.$itemKey.'/tags');
+        return $this->_zoteroRequest("$libraryType/$zoteroId/items/$itemKey/tags");
     }
 
     /**
@@ -164,7 +164,7 @@ class phpZotero {
      * @param string The library type, users or groups
      */
     public function getItemChildren($zoteroId, $itemKey, $parameters = array(), $libraryType="users") {
-        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/items/'.$itemKey.'/children', $parameters);
+        return $this->_zoteroRequest("$libraryType/$zoteroId/items/$itemKey/children", $parameters);
     }
 
     /**
@@ -189,7 +189,7 @@ class phpZotero {
      * @param string The library type, users or groups
      */
     public function getCollections($zoteroId, $parameters = array(), $libraryType="users") {
-        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/collections', $parameters);
+        return $this->_zoteroRequest("$libraryType/$zoteroId/collections", $parameters);
     }
 
     /**
@@ -200,7 +200,7 @@ class phpZotero {
      * @param string The library type, users or groups
      */
     public function getCollectionsTop($zoteroId, $parameters = array(), $libraryType="users") {
-        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/collections/top', $parameters);
+        return $this->_zoteroRequest("$libraryType/$zoteroId/collections/top", $parameters);
     }
 
     /**
@@ -212,7 +212,7 @@ class phpZotero {
      * @param string The library type, users or groups
      */
     public function getCollection($zoteroId, $collectionKey, $parameters = array(), $libraryType="users") {
-        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/collections/'.$collectionKey, $parameters);
+        return $this->_zoteroRequest("$libraryType/$zoteroId/collections/$collectionKey", $parameters);
     }
 
     /**
@@ -224,7 +224,7 @@ class phpZotero {
      * @param string The library type, users or groups
      */
     public function getCollectionItems($zoteroId, $collectionKey, $parameters = array(), $libraryType="users") {
-        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/collections/'.$collectionKey.'/items', $parameters);
+        return $this->_zoteroRequest("$libraryType/$zoteroId/collections/$collectionKey/items", $parameters);
     }
 
     /**
@@ -235,7 +235,7 @@ class phpZotero {
      * @param string The library type, users or groups
      */
     public function getTags($zoteroId, $parameters = array(), $libraryType="users") {
-        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/tags', $parameters);
+        return $this->_zoteroRequest("$libraryType/$zoteroId/tags", $parameters);
     }
 
     /**
@@ -248,7 +248,7 @@ class phpZotero {
      */
     public function getUserTag($zoteroId, $tag, $parameters = array(), $libraryType="users") {
         if($tag = urlencode($tag)) {
-            return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/tags/'.$tag, $parameters);
+            return $this->_zoteroRequest("$libraryType/$zoteroId/tags/$tag", $parameters);
         }
     }
 
@@ -262,7 +262,7 @@ class phpZotero {
      */
     public function getTagItems($zoteroId, $tag, $parameters = array(), $libraryType="users") {
         if($tag = urlencode($tag)) {
-            return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/tags/'.$tag.'/items', $parameters);
+            return $this->_zoteroRequest("$libraryType/$zoteroId/tags/$tag/items", $parameters);
         }
     }
 
@@ -274,7 +274,7 @@ class phpZotero {
      */
     public function getGroup($groupId, $parameters = array())
     {
-        return $this->_zoteroRequest('groups/'.$groupId, $parameters);
+        return $this->_zoteroRequest("groups/$groupId", $parameters);
     }
 
     /**
@@ -402,7 +402,7 @@ class phpZotero {
      * @param string The library type, users or groups
      */
     public function createItem($zoteroId, $itemFields, $libraryType="users") {
-        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/items', null, $itemFields);
+        return $this->_zoteroRequest("$libraryType/$zoteroId/items", null, $itemFields);
     }
 
     /**
@@ -414,7 +414,7 @@ class phpZotero {
      * @param string The library type, users or groups
      */
     public function addItemsToCollection($zoteroId, $collectionKey, $itemKeys, $libraryType="users") {
-        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/collections/'.$collectionKey.'/items', null, $itemKeys);
+        return $this->_zoteroRequest("$libraryType/$zoteroId/collections/$collectionKey/items", null, $itemKeys);
     }
 
     /**
@@ -425,7 +425,7 @@ class phpZotero {
      * @param string The library type, users or groups
      */
     public function createCollection($zoteroId, $collectionFields, $libraryType="users") {
-        return $this->_zoteroRequest($libraryType.'/'.$zoteroId.'/collections', null, $collectionFields);
+        return $this->_zoteroRequest("$libraryType/$zoteroId/collections", null, $collectionFields);
     }
 
 }
