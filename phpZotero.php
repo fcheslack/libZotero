@@ -374,7 +374,8 @@ class phpZotero {
      *
      * @param string The item type.
      */
-    public function getValidCreatorTypes($parameters = array()) {
+    public function getValidCreatorTypes($itemType) {
+        $parameters['itemType'] = $itemType;
         return $this->_zoteroRequest('itemTypeCreatorTypes', $parameters, null);
     }
 
@@ -390,8 +391,9 @@ class phpZotero {
      *
      * @param string The item type.
      */
-    public function getItemTemplate($params) {
-        return $this->_zoteroRequest('items/new', $params, null);
+    public function getItemTemplate($itemType) {
+        $parameters['itemType'] = $itemType;
+        return $this->_zoteroRequest('items/new', $parameters, null);
     }
 
     /**
