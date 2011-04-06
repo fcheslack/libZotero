@@ -23,7 +23,7 @@ class phpZotero {
      *
      * @param string The private Zotero API key.
      */
-    public function __construct($apiKey) {
+    public function __construct($apiKey = null) {
        $this->_apiKey = $apiKey;
        if (function_exists('curl_init')) {
            $this->_ch = curl_init();
