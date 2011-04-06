@@ -267,6 +267,17 @@ class phpZotero {
     }
 
     /**
+     * Gets the groups the API key has access to
+     * 
+     * @param int $zoteroId the user id
+     * @param array $parameters An optional array of parameters
+     */
+    
+    public function getUserGroups($zoteroId, $parameters = array()) {
+        return $this->_zoteroRequest("users/$zoteroId/groups", $parameters);
+    }
+    
+    /**
      * Gets a group.
      *
      * @param int The group ID.
