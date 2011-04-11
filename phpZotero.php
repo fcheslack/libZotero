@@ -309,7 +309,7 @@ class phpZotero {
     public function getPageStart($dom, $rel) {
         $xpath = new DOMXPath($dom);
         $xpath->registerNamespace('atom', 'http://www.w3.org/2005/Atom');
-
+        
         $nextLink = $xpath->evaluate("//atom:link[@rel = '$rel']/@href");
         $nextLinkUrl = $nextLink->item(0)->nodeValue;
         if ($nextLinkUrl) {
@@ -442,3 +442,12 @@ class phpZotero {
     }
 
 }
+
+include "classes/Feed.php";
+include "classes/Entry.php";
+include "classes/Collection.php";
+include "classes/Group.php";
+include "classes/Item.php";
+include "classes/Tag.php";
+include "classes/User.php";
+
