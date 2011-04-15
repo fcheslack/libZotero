@@ -7,12 +7,15 @@
   * @since      Class available since Release 0.0
   * @see        Zotero_Entry
   */
+
+require_once "Entry.php";
+
 class Zotero_Item extends Zotero_Entry
 {
     /**
      * @var int
      */
-    public $itemID;
+    public $itemKey;
 
     /**
      * @var string
@@ -76,6 +79,8 @@ class Zotero_Item extends Zotero_Entry
      * @var string content node of response useful if formatted bib request and we need to use the raw content
      */
     public $content;
+    
+    public $apiObject;
     
     /**
      * @var array
@@ -286,7 +291,7 @@ class Zotero_Item extends Zotero_Entry
         */
         
         // Extract the itemId and itemType
-        $this->itemID = $entryNode->getElementsByTagNameNS('*', 'key')->item(0)->nodeValue;
+        $this->itemKey = $entryNode->getElementsByTagNameNS('*', 'key')->item(0)->nodeValue;
         $this->itemType = $entryNode->getElementsByTagNameNS('*', 'itemType')->item(0)->nodeValue;
         
         // Look for numChildren node
@@ -302,21 +307,21 @@ class Zotero_Item extends Zotero_Entry
         $contentNode = $entryNode->getElementsByTagName('content')->item(0);
         $contentType = parent::getContentType($entryNode);
         if($contentType == 'application/json'){
-            $this->contentArray = json_decode($contentNode->nodeValue, true);
+            $this->apiObject = json_decode($contentNode->nodeValue, true);
             $this->etag = $contentNode->getAttribute('etag');
         }
         elseif($contentType == 'xhtml'){
-            $this->parseXhtmlContent($contentNode);
+            //$this->parseXhtmlContent($contentNode);
         }
         
         
     }
     
     public function parseXhtmlContent($contentNode){
-        $xpath = new DOMXPath($contentNode);
+        //$xpath = new DOMXPath($contentNode);
         
         // Pull any fields in the item
-        $fieldNodes = $xpath->evaluate('//field');
+        //$fieldNodes = $xpath->evaluate('//field');
         foreach($fieldNodes as $field){
             $fieldName = $field->getAttribute("name");
             $this->fields[$fieldName] = $field->nodeValue;
