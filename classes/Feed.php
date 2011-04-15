@@ -86,20 +86,19 @@ class Zotero_Feed
     }
     
     public function detectZoteroEntryType($entryNode){
-        $xpath = new DOMXPath($entryNode);
-        $xpath->registerNamespace('zapi', 'http://zotero.org/ns/api');
-        $xpath->registerNamespace('zxfer', 'http://zotero.org/ns/transfer');
-        $xpath->registerNamespace('atom', 'http://www.w3.org/2005/Atom');
-        
+        $itemTypeNodes = $entryNode->getElementsByTagName("itemType");
+        $numCollectionsNodes = $entryNode->getElementsByTagName("numCollections");
+        $numItemsNodes = $entryNode->getElementsByTagName("numItems");
+        /*
         $itemType = $xpath->evaluate("//zapi:itemType")->item(0)->nodeValue;
         $collectionKey = $xpath->evaluate("//zapi:collectionKey")->item(0)->nodeValue;
         $numItems = $xpath->evaluate("//zapi:numItems")->item(0)->nodeValue;
-        
-        if($itemType) return 'item';
-        if($collectionKey) return 'collection';
-        if($numItems && !($collectionKey)) return 'tag';
-        if($userID) return 'user';
-        if($groupID) return 'group';
+        */
+        if($itemTypeNodes->length) return 'item';
+        if($numCollectionsNodes->length) return 'collection';
+        if($numItemsNodes->length && !($collectionKeyNodes->length)) return 'tag';
+        //if($userID) return 'user';
+        //if($groupID) return 'group';
     }
     
     public function nestEntries(){

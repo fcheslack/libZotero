@@ -66,11 +66,9 @@ class Zotero_Entry
     }
     
     public function getContentType($entryNode){
-      $xpath = new DOMXPath($entryNode);
-      $xpath->registerNamespace('atom', 'http://www.w3.org/2005/Atom');
-      
-      $contentType = $xpath->evaluate('//content/@type')->item(0)->nodeValue;
-      return $contentType;
+      $contentNode = $entryNode->getElementsByTagName('content')->item(0);
+      if($contentNode) return $contentNode->getAttribute('type');
+      else return false;
     }
     
 }

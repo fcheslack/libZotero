@@ -80,7 +80,7 @@ class Zotero_Item extends Zotero_Entry
     /**
      * @var array
      */
-    public $fieldMap = array(
+    public static $fieldMap = array(
         "itemType"            => "Type",
         "title"               => "Title",
         "dateAdded"           => "Date Added",
@@ -191,7 +191,7 @@ class Zotero_Item extends Zotero_Entry
     /**
      * @var array
      */
-    public $typeMap = array(
+    public static $typeMap = array(
         "note"                => "Note",
         "attachment"          => "Attachment",
         "book"                => "Book",
@@ -233,7 +233,7 @@ class Zotero_Item extends Zotero_Entry
     /**
      * @var array
      */
-    public $creatorMap = array(
+    public static $creatorMap = array(
         "author"         => "Author",
         "contributor"    => "Contributor",
         "editor"         => "Editor",
@@ -272,6 +272,8 @@ class Zotero_Item extends Zotero_Entry
         if($entryNode->getElementsByTagName("content")->length > 0){
             $this->content = $entryNode->getElementsByTagName("content")->item(0)->nodeValue;
         }
+        
+        /*
         $xpath = new DOMXPath($entryNode);
         $xpath->registerNamespace('zapi', 'http://zotero.org/ns/api');
         $xpath->registerNamespace('zxfer', 'http://zotero.org/ns/transfer');
@@ -281,8 +283,8 @@ class Zotero_Item extends Zotero_Entry
         $this->itemType = $xpath->evaluate("//zapi:itemType")->item(0)->nodeValue;
         $this->numChildren = $xpath->evaluate("//zapi:numChildren")->item(0)->nodeValue;
         $this->numTags = $xpath->evaluate("//zapi:numTags")->item(0)->nodeValue;
+        */
         
-        /*
         // Extract the itemId and itemType
         $this->itemID = $entryNode->getElementsByTagNameNS('*', 'key')->item(0)->nodeValue;
         $this->itemType = $entryNode->getElementsByTagNameNS('*', 'itemType')->item(0)->nodeValue;
@@ -296,23 +298,16 @@ class Zotero_Item extends Zotero_Entry
         if($entryNode->getElementsByTagName("numTags")->length > 0){
             $this->numTags = $entryNode->getElementsByTagName("numTags")->item(0)->nodeValue;
         }
-        */
         
+        $contentNode = $entryNode->getElementsByTagName('content')->item(0);
         $contentType = parent::getContentType($entryNode);
         if($contentType == 'application/json'){
-            $this->contentArray = json_decode($xpath->evaluate("//content")->item(0)->nodeValue);
+            $this->contentArray = json_decode($contentNode->nodeValue, true);
+            $this->etag = $contentNode->getAttribute('etag');
         }
         elseif($contentType == 'xhtml'){
             $this->parseXhtmlContent($contentNode);
         }
-        if($entryNode->getElementsByTagName("content")->length > 0){
-            $contentEl = $entryNode->getElementsByTagName("content")->item(0);
-            if($contentEl->getAttribute('type') == 'application/json'){
-                $this->parsedJson = json_decode($contentEl->nodeValue, true);
-            }
-            $this->etag = $contentEl->getAttribute('etag');
-        }
-        
         
         
     }

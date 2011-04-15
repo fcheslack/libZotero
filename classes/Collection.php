@@ -34,6 +34,19 @@ class Zotero_Collection extends Zotero_Entry
         parent::__construct($entryNode);
         // Extract the collectionKey
         $this->collectionKey = $entryNode->getElementsByTagNameNS('*', 'key')->item(0)->nodeValue;
+        $this->numCollections = $entryNode->getElementsByTagName('numCollections')->item(0)->nodeValue;
+        $this->numItems = $entryNode->getElementsByTagName('numItems')->item(0)->nodeValue;
+        
+        $contentNode = $entryNode->getElementsByTagName('content')->item(0);
+        $contentType = parent::getContentType($entryNode);
+        if($contentType == 'application/json'){
+            $this->contentArray = json_decode($contentNode->nodeValue, true);
+            $this->etag = $contentNode->getAttribute('etag');
+        }
+        elseif($contentType == 'xhtml'){
+            $this->parseXhtmlContent($contentNode);
+        }
+        
     }
     
     public function dataObject() {
