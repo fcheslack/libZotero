@@ -1,4 +1,5 @@
 <?php
+require_once "Feed.php";
 require_once "Collections.php";
 require_once "Items.php";
 require_once "Response.php";
@@ -212,8 +213,44 @@ class Zotero_Library
         return $queryString;
     }
     
-    public function loadCollections(){
-        $reqUrl = $this->apiRequestUrl(array('target'=>'collections') );
+    public function loadCollections($params){
+        $aparams = array_merge($params, array('target'=>'collections', 'content'=>'json', 'limit'=>100), array('key'=>$this->_apiKey));
+        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
+        echo "\n\n";
+        do{
+            echo "\n\n" . $reqUrl . "\n";
+            $reqUrl .= '&key=' . $this->_apiKey;
+            $response = $this->_request($reqUrl);
+            if($response->isError()){
+                throw new Exception("Error fetching collections");
+            }
+            $body = $response->getRawBody();
+            $doc = new DOMDocument();
+            $doc->loadXml($body);
+            $feed = new Zotero_Feed($doc);
+            $entries = $doc->getElementsByTagName("entry");
+            foreach($entries as $entry){
+                $collection = new Zotero_Collection($entry);
+                $this->collections->addCollection($collection);
+            }
+            if(isset($feed->links['next'])){
+                $nextUrl = $feed->links['next']['href'];
+                $parsedNextUrl = parse_url($nextUrl);
+                if(!empty($parsedNextUrl['query'])){
+                    $parsedNextUrl['query'] .= '&apikey=' . $this->_apiKey;
+                }
+                else{
+                    $parsedNextUrl['query'] = 'apiKey=' . $this->_apiKey;
+                }
+                $reqUrl = $parsedNextUrl['scheme'] . '://' . $parsedNextUrl['host'] . $parsedNextUrl['path'] . '?' . $parsedNextUrl['query'];
+                //$aparams = array_merge($parsedNextUrl['query']);
+                //$reqUrl = http_build_url($parsedNextUrl, array('query'=>'key='.$this->_apiKey));
+            }
+            else{
+                $reqUrl = false;
+            }
+        } while($reqUrl);
+//        var_dump($this->collections);
     }
     
     public function loadItems($params){

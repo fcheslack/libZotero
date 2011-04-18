@@ -7,6 +7,8 @@
   * @since      Class available since Release 0.0
   * @see        Zotero_Entry
   */
+require_once "Entry.php";
+
 class Zotero_Collection extends Zotero_Entry
 {
     /**

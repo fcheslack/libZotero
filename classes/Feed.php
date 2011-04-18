@@ -62,10 +62,10 @@ class Zotero_Feed
             foreach($feed->childNodes as $childNode){
                 if($childNode->nodeName == "link"){
                     $linkNode = $childNode;
-                    $this->links[$linkNode->getAttribute('rel')][$linkNode->getAttribute('type')] = $linkNode->getAttribute('href');
+                    $this->links[$linkNode->getAttribute('rel')] = array('type'=>$linkNode->getAttribute('type'), 'href'=>$linkNode->getAttribute('href'));
                 }
             }
-            
+            /*
             $entryNodes = $doc->getElementsByTagName("entry");
             
             //detect zotero entry type with sample entry node and parse entries appropriately
@@ -82,6 +82,7 @@ class Zotero_Feed
                 }
                 $this->entries[] = $entry;
             }
+            */
         }
     }
     
