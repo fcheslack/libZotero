@@ -1,22 +1,20 @@
 <?php
 
 require_once './classes/Library.php';
-$library = new Zotero_Library('user', 10150, 'fcheslack', 'fa1qlarxjerb41vumzh1r2d6');
+//$library = new Zotero_Library('user', 10150, 'fcheslack', 'fa1qlarxjerb41vumzh1r2d6');
+$library = new Zotero_Library('user', 10150, 'fcheslack', '2GLoGDRtIiXlzOd2Gi6rS6n9');
 //$library->loadItems(array());
-$library->loadCollections(array());
+//$library->loadAllCollections(array());
+$item = $library->loadItem('E3QBAZDC');
+//$item->set('title', 'newtitle');
+//$updateResponse = $library->updateItem($item->itemKey);
+$deleteResponse = $library->deleteItem($item);
+var_dump($updateResponse);
+/*
+$item = $library->getTemplateItem('book');
+var_dump($item);
+*/
 
-var_dump($library->collections);
-echo count($library->collections->collectionObjects);
-
-//$response = $library->_request('https://api.zotero.org/users/10150/items?limit=5&content=json&key=fa1qlarxjerb41vumzh1r2d6');
-
-//var_dump($response);
-//$response = $zotero->getItemsTop(10150, array('limit'=>5, 'content'=>'json'), 'users');
-//$response = $zotero->getCollections(10150, array('limit'=>5, 'content'=>'json'), 'users');
-//$response = $zotero->getItemsTop(10150, array('limit'=>5, 'content'=>'json'), 'users');
-
-//$dom = new DOMDocument();
-//$dom->loadXml($response);
 
 
 

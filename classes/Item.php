@@ -15,27 +15,27 @@ class Zotero_Item extends Zotero_Entry
     /**
      * @var int
      */
-    public $itemKey;
+    public $itemKey = '';
 
     /**
      * @var string
      */
-    public $itemType;
+    public $itemType = null;
     
     /**
      * @var string
      */
-    public $creatorSummary;
+    public $creatorSummary = '';
     
     /**
      * @var string
      */
-    public $numChildren;
+    public $numChildren = 0;
 
     /**
      * @var string
      */
-    public $numTags;
+    public $numTags = 0;
     
     /**
      * @var array
@@ -50,37 +50,37 @@ class Zotero_Item extends Zotero_Entry
     /**
      * @var string
      */
-    public $createdByUserID;
+    public $createdByUserID = null;
     
     /**
      * @var string
      */
-    public $lastModifiedByUserID;
+    public $lastModifiedByUserID = null;
     
     /**
      * @var string
      */
-    public $note;
+    public $note = null;
     
     /**
      * @var int Represents the relationship of the child to the parent. 0:file, 1:file, 2:snapshot, 3:web-link
      */
-    public $linkMode;
+    public $linkMode = null;
     
     /**
      * @var string
      */
-    public $mimeType;
+    public $mimeType = null;
     
-    public $parsedJson;
-    public $etag;
+    public $parsedJson = null;
+    public $etag = '';
     
     /**
      * @var string content node of response useful if formatted bib request and we need to use the raw content
      */
     public $content;
     
-    public $apiObject;
+    public $apiObject = array();
     
     /**
      * @var array
@@ -269,26 +269,17 @@ class Zotero_Item extends Zotero_Entry
     );
     
     
-    public function __construct($entryNode)
+    public function __construct($entryNode=null)
     {
+        if(!$entryNode){
+            return;
+        }
         parent::__construct($entryNode);
         
         //save raw Content node in case we need it
         if($entryNode->getElementsByTagName("content")->length > 0){
             $this->content = $entryNode->getElementsByTagName("content")->item(0)->nodeValue;
         }
-        
-        /*
-        $xpath = new DOMXPath($entryNode);
-        $xpath->registerNamespace('zapi', 'http://zotero.org/ns/api');
-        $xpath->registerNamespace('zxfer', 'http://zotero.org/ns/transfer');
-        $xpath->registerNamespace('atom', 'http://www.w3.org/2005/Atom');
-        
-        $this->itemKey = $xpath->evaluate("//zapi:key")->item(0)->nodeValue;
-        $this->itemType = $xpath->evaluate("//zapi:itemType")->item(0)->nodeValue;
-        $this->numChildren = $xpath->evaluate("//zapi:numChildren")->item(0)->nodeValue;
-        $this->numTags = $xpath->evaluate("//zapi:numTags")->item(0)->nodeValue;
-        */
         
         // Extract the itemId and itemType
         $this->itemKey = $entryNode->getElementsByTagNameNS('*', 'key')->item(0)->nodeValue;
@@ -315,6 +306,69 @@ class Zotero_Item extends Zotero_Entry
         }
         
         
+    }
+    
+    public function get($key){
+        if($key == 'creators' || $key == 'tags'){
+            //special case
+        }
+        else{
+            if(in_array($key, array_keys($this->fieldMap))){
+                if(isset($this->apiObject[$key])){
+                    return $this->apiObject[$key];
+                }
+                else{
+                    return null;
+                }
+            }
+        }
+    }
+    
+    public function set($key, $val){
+        if($key == 'creators' || $key == 'tags'){
+            //special case
+        }
+        else{
+            //if(in_array($key, array_keys($this->fieldMap))) {
+                $this->apiObject[$key] = $val;
+            //}
+        }
+    }
+    
+    public function updateItemJson(){
+        $updateItem = $this->apiObject;
+        //remove notes as they can't be in update json
+        unset($updateItem['notes']);
+        $newCreatorsArray = array();
+        foreach($updateItem['creators'] as $creator){
+            if($creator['creatorType']){
+                if(empty($creator['name']) && empty($creator['firstName']) && empty($creator['lastName'])){
+                    continue;
+                }
+                else{
+                    $newCreatorsArray[] = $creator;
+                }
+            }
+        }
+        $updateItem['creators'] = $newCreatorsArray;
+        return json_encode($updateItem);
+    }
+    
+    public function newItemJson(){
+        $newItem = $this->apiObject;
+        $newCreatorsArray = array();
+        foreach($newItem['creators'] as $creator){
+            if($creator['creatorType']){
+                if(empty($creator['name']) && empty($creator['firstName']) && empty($creator['lastName'])){
+                    continue;
+                }
+                else{
+                    $newCreatorsArray[] = $creator;
+                }
+            }
+        }
+        $newItem['creators'] = $newCreatorsArray;
+        return json_encode($newItem);
     }
     
     public function parseXhtmlContent($contentNode){
@@ -383,7 +437,7 @@ class Zotero_Item extends Zotero_Entry
     }
     
     public function json(){
-        return json_encode($this->dataObject());
+        return json_encode($this->apiObject());
     }
     
     public function dataObject(){
