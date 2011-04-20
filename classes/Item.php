@@ -40,11 +40,6 @@ class Zotero_Item extends Zotero_Entry
     /**
      * @var array
      */
-    public $fields = array();
-
-    /**
-     * @var array
-     */
     public $creators = array(); 
 
     /**

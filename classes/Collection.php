@@ -14,25 +14,29 @@ class Zotero_Collection extends Zotero_Entry
     /**
      * @var int
      */
-    public $collectionKey;
+    public $collectionKey = null;
+    
+    public $name = '';
+    /**
+     * @var int
+     */
+    public $numCollections = 0;
     
     /**
      * @var int
      */
-    public $numCollections;
-    
-    /**
-     * @var int
-     */
-    public $numItems;
+    public $numItems = 0;
     
     /**
      * @var string
      */
-    public $parentCollectionKey;
+    public $parentCollectionKey = false;
     
     public function __construct($entryNode)
     {
+        if(!$entryNode){
+            return;
+        }
         parent::__construct($entryNode);
         // Extract the collectionKey
         $this->collectionKey = $entryNode->getElementsByTagNameNS('*', 'key')->item(0)->nodeValue;
@@ -49,6 +53,10 @@ class Zotero_Collection extends Zotero_Entry
             $this->parseXhtmlContent($contentNode);
         }
         
+    }
+    
+    public function collectionJson(){
+        return json_encode(array('name'=>$collection->name, 'parent'=>$collection->parentCollectionKey));
     }
     
     public function dataObject() {
