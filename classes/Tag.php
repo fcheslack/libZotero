@@ -26,10 +26,13 @@ class Zotero_Tag extends Zotero_Entry
     
     public $type;
 */    
-    public $properties = array();
-
+    public $numItems = 0;
+    
     public function __construct($entryNode)
     {
+        if(!$entryNode){
+            return;
+        }
         parent::__construct($entryNode);
         
         if($entryNode === null){
@@ -41,16 +44,8 @@ class Zotero_Tag extends Zotero_Entry
         $tagElement = $tagElements->item(0);
         if(!$tagElement) return;
         
-        $tagAttributes = $tagElement->attributes;
-        
-        foreach($tagAttributes as $attrName => $attrNode){
-            $this->properties[$attrName] = urldecode($attrNode->value);
-            $this->$attrName = urldecode($attrNode->value);
-        }
-        
         $numItems = $entryNode->getElementsByTagName("numItems")->item(0);
         if($numItems) {
-            $this->properties['numItems'] = (int)$numItems->nodeValue;
             $this->numItems = (int)$numItems->nodeValue;
         }
         

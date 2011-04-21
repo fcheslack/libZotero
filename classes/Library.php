@@ -1,5 +1,6 @@
 <?php
 require_once "Zotero_Exception.php";
+require_once "Mappings.php";
 require_once "Feed.php";
 require_once "Collections.php";
 require_once "Items.php";
@@ -8,7 +9,7 @@ require_once "Item.php";
 
 class Zotero_Library
 {
-    const ZOTERO_URI = 'https://apidev.zotero.org/';
+    const ZOTERO_URI = 'https://apidev.zotero.org';
     protected $_apiKey = '';
     protected $_ch = null;
     public $libraryType = null;
@@ -57,6 +58,7 @@ class Zotero_Library
     }
     
     public function _request($url, $method="GET", $body=NULL, $headers=array()) {
+        echo "url being requested: " . $url . "\n\n";
         $httpHeaders = array();
         foreach($headers as $key=>$val){
             $httpHeaders[] = "$key: $val";
@@ -67,6 +69,8 @@ class Zotero_Library
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $httpHeaders);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
         $umethod = strtoupper($method);
         switch($umethod){
             case "GET":
@@ -87,7 +91,18 @@ class Zotero_Library
         
         $responseBody = curl_exec($ch);
         $responseInfo = curl_getinfo($ch);
+        //echo "{$method} url:" . $url . "\n";
+        //echo "%%%%%" . $responseBody . "%%%%%\n\n";
         $zresponse = Zend_Http_Response::fromString($responseBody);
+        
+        //Zend Response does not parse out the multiple sets of headers returned when curl automatically follows
+        //a redirect and the new headers are left in the body. Zend_Http_Client gets around this by manually
+        //handling redirects. That may end up being a better solution, but for now we'll just re-read responses
+        //until a non-redirect is read
+        while($zresponse->isRedirect()){
+            $redirectedBody = $zresponse->getBody();
+            $zresponse = Zend_Http_Response::fromString($redirectedBody);
+        }
         $this->lastResponse = $zresponse;
         return $zresponse;
     }
@@ -108,7 +123,7 @@ class Zotero_Library
      * Requires {target:items|collections|tags, libraryType:user|group, libraryID:<>}
      */
     public function apiRequestUrl($params, $base = Zotero_Library::ZOTERO_URI) {
-        var_dump($params);
+        //var_dump($params);
         if(!isset($params['target'])){
             throw new Exception("No target defined for api request");
         }
@@ -154,7 +169,7 @@ class Zotero_Library
                     break;
             }
         }
-        print "apiRequestUrl: " . $url . "\n";
+        //print "apiRequestUrl: " . $url . "\n";
         return $url;
     }
 
@@ -196,7 +211,7 @@ class Zotero_Library
             $queryParamsArray[] = urlencode($index) . '=' . urlencode($value);
         }
         $queryString .= implode('&', $queryParamsArray);
-        print "apiQueryString: " . $queryString . "\n";
+        //print "apiQueryString: " . $queryString . "\n";
         return $queryString;
     }
     
@@ -271,9 +286,14 @@ class Zotero_Library
         }
     }
     
+    public function loadItemsTop($params=array()){
+        $params['targetModifier'] = 'top';
+        return $this->loadItems($params);
+    }
+    
     public function loadItems($params){
         $fetchedItems = array();
-        $aparams = array_merge($params, array('target'=>'items', 'content'=>'json', 'limit'=>5), array('key'=>$this->_apiKey));
+        $aparams = array_merge($params, array('target'=>'items', 'content'=>'json'), array('key'=>$this->_apiKey));
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         echo "\n";
         echo $reqUrl . "\n";
@@ -297,8 +317,6 @@ class Zotero_Library
     public function loadItem($itemKey){
         $aparams = array('target'=>'item', 'content'=>'json', 'itemKey'=>$itemKey);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
-        echo "\n";
-        echo $reqUrl . "\n";
         
         $response = $this->_request($reqUrl);
         if($response->isError()){
@@ -325,18 +343,18 @@ class Zotero_Library
             $itemKey = $item;
             $item = $this->items->getItem($itemKey);
         }
-        $updateItemJson = $item->updateItemJson();
+        $updateItemJson = json_encode($item->updateItemObject());
         $etag = $item->etag;
         
-        $aparams = array('target'=>'item', 'itemKey'=>$itemKey);
+        $aparams = array('target'=>'item', 'itemKey'=>$item->itemKey);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $response = $this->_request($reqUrl, 'PUT', $updateItemJson, array('If-Match'=>$etag));
         return $response;
     }
     
     public function createItem($item){
-        $createItemJson = $item->newItemJson();
-        
+        $createItemJson = json_encode(array('items'=>array($item->newItemObject())));;
+        //echo $createItemJson;die;
         $aparams = array('target'=>'items');
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $response = $this->_request($reqUrl, 'POST', $createItemJson);

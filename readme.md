@@ -1,31 +1,72 @@
-# phpZotero
+# phpZotero fork
 
-A simple PHP class for working with the [Zotero API](http://www.zotero.org/support/dev/server_api). phpZotero works with version 1 of the Zotero API.
+Fork of phpZotero adding classes to instantiate Zotero objects, fetching and modifying a Zotero synced library.
 
-## Usage
+## api
 
-You must first require the phpZotero class.
+Many functions return http response objects.
+The response object used is copied from Zend_Http_Response.
 
-    require_once '/path/to/phpZotero/phpZotero.php';
+### Response
 
-Replace '/path/to' to the path where you have placed phpZotero.
+* public function __construct($code, array $headers, $body = null, $version = '1.1', $message = null)
+* public function isError()
+* public function isSuccessful()
+* public function isRedirect()
+* public function getBody()
+* public function getVersion();
+* public function getStatus();
+* public function getMessage();
+* public function getHeaders();
+* public function getHeader($header);
+* public function getHeadersAsString($status_line = true, $br = "\n")
+* public function asString($br = "\n") //get entire response as string
 
-### Create a new phpZotero object
+### Zotero_Library
 
-    $zotero = new phpZotero('YourAPIKey');
+* const ZOTERO_URI = 'https://apidev.zotero.org/';
+* protected $_apiKey;
+* protected $_ch;
+* public $libraryType;
+* public $libraryID;
+* public $libraryString;
+* public $libraryUrlIdentifier;
+* public $libraryBaseWebsiteUrl;
+* public $items;
+* public $collections;
+* public $dirty;
+* public $useLibraryAsContainer
+* __construct($libraryType, $libraryID, $libraryUrlIdentifier, $apiKey = null, $baseWebsiteUrl="http://www.zotero.org")
+* public function _request($url, $method="GET", $body=NULL, $headers=array()) {
+* public function getLastResponse()
+* public static function libraryString($type, $libraryID)
+* public function apiRequestUrl($params, $base = Zotero_Library::ZOTERO_URI)
+* public function apiQueryString($passedParams)
+* public function parseQueryString($query)
+* public function loadAllCollections($params)
+* public function loadCollections($params)
+* public function loadItemsTop($params=array())
+* public function loadItems($params)
+* public function loadItem($itemKey)
+* public function writeUpdatedItem($item)
+* public function createItem($item)
+* public function deleteItem($item)
+* public function getTemplateItem($itemType)
+* public function createCollection($name, $parent = false)
+* public function removeCollection($collection)
+* public function addItemsToCollection($collection, $items)
+* public function removeItemsFromCollection($collection, $items)
+* public function removeItemFromCollection($collection, $item)
+* public function writeUpdatedCollection($collection)
+* public function trashItem($item)
+* public function fetchItemChildren($item)
+* public function getItemTypes()
+* public function getItemFields()
+* public function getCreatorTypes($itemType)
+* public function getCreatorFields()
+* public function fetchTags($params)
 
-Using this object, you can access the Zotero API. You will need to pass your Zotero API key to the constructor. Zotero API keys can be managed on your Zotero.org user settings page.
 
-## Changelog
 
-### 0.1
 
-First tagged release.
 
-## Credits
-
-Many thanks to the following folks for contributing to phpZotero.
-
-* Faolan Cheslack-Postava
-* Wayne Graham
-* Jim Safley

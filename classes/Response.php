@@ -252,6 +252,10 @@ class Zend_Http_Response
      */
     public function getBody()
     {
+        //added by fcheslack - curl adapter handles these things already so they are transparent to Zend_Response
+        return $this->getRawBody();
+        
+        
         $body = '';
 
         // Decode the body if it was transfer-encoded

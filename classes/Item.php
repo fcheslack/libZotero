@@ -269,6 +269,14 @@ class Zotero_Item extends Zotero_Entry
         if(!$entryNode){
             return;
         }
+        elseif(is_string($entryNode)){
+            $xml = $entryNode;
+            $doc = new DOMDocument();
+            echo $xml;
+            $doc->loadXml($xml);
+            $entryNode = $doc->getElementsByTagName('entry')->item(0);
+        }
+        
         parent::__construct($entryNode);
         
         //save raw Content node in case we need it
@@ -297,7 +305,6 @@ class Zotero_Item extends Zotero_Entry
             $this->etag = $contentNode->getAttribute('etag');
         }
         elseif($contentType == 'xhtml'){
-            //$this->parseXhtmlContent($contentNode);
         }
         
         
@@ -308,7 +315,7 @@ class Zotero_Item extends Zotero_Entry
             //special case
         }
         else{
-            if(in_array($key, array_keys($this->fieldMap))){
+            if(in_array($key, array_keys(Zotero_Item::$fieldMap))){
                 if(isset($this->apiObject[$key])){
                     return $this->apiObject[$key];
                 }
@@ -330,7 +337,7 @@ class Zotero_Item extends Zotero_Entry
         }
     }
     
-    public function updateItemJson(){
+    public function updateItemObject(){
         $updateItem = $this->apiObject;
         //remove notes as they can't be in update json
         unset($updateItem['notes']);
@@ -346,10 +353,10 @@ class Zotero_Item extends Zotero_Entry
             }
         }
         $updateItem['creators'] = $newCreatorsArray;
-        return json_encode($updateItem);
+        return $updateItem;
     }
     
-    public function newItemJson(){
+    public function newItemObject(){
         $newItem = $this->apiObject;
         $newCreatorsArray = array();
         foreach($newItem['creators'] as $creator){
@@ -363,7 +370,7 @@ class Zotero_Item extends Zotero_Entry
             }
         }
         $newItem['creators'] = $newCreatorsArray;
-        return json_encode($newItem);
+        return $newItem;
     }
     
     public function parseXhtmlContent($contentNode){
