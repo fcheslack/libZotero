@@ -4,11 +4,17 @@ require_once './classes/Library.php';
 //$library = new Zotero_Library('user', 10150, 'fcheslack', 'fa1qlarxjerb41vumzh1r2d6');
 $library = new Zotero_Library('user', 10150, 'fcheslack', '2GLoGDRtIiXlzOd2Gi6rS6n9');
 
+//get permissions for the key
+$r = $library->getKeyPermissions();
+var_dump($r);
+
 //load some existing items
+/*
 $items = $library->loadItemsTop(array('limit'=>10));
 foreach($items as $item){
     echo "Top level item with title: " . $item->get('title') . "\n";
 }
+*/
 /*
 //create a new item of type book
 $newItem = $library->getTemplateItem('book');

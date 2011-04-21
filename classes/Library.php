@@ -159,6 +159,9 @@ class Zotero_Library
             case 'itemTemplate':
                 $url = $base . '/items/new';
                 break;
+            case 'key':
+                $url = $base . '/users/' . $params['userID'] . '/keys/' . $params['apiKey'];
+                break;
             default:
                 return false;
         }
@@ -496,6 +499,54 @@ class Zotero_Library
     
     public function fetchTags($params){
         
+    }
+    
+    public function getKeyPermissions($userID=null, $key=false) {
+        if($userID === null){
+            $userID = $this->libraryID;
+        }
+        if($key == false){
+            if($this->_apiKey == '') {
+                false;
+            }
+            $key = $this->_apiKey;
+        }
+        
+        $reqUrl = $this->apiRequestUrl(array('target'=>'key', 'apiKey'=>$key, 'userID'=>$userID));
+        $response = $this->_request($reqUrl, 'GET');
+        if($response->isError()){
+            return false;
+        }
+        $body = $response->getBody();
+        $doc = new DOMDocument();
+        $doc->loadXml($body);
+        $keyNode = $doc->getElementsByTagName('key')->item(0);
+        $keyPerms = $this->parseKey($keyNode);
+        return $keyPerms;
+    }
+    
+    public function parseKey($keyNode){
+        $key = array();
+        $keyPerms = array("library"=>"0", "notes"=>"0", "write"=>"0", 'groups'=>array());
+        
+        $accessEls = $keyNode->getElementsByTagName('access');
+        foreach($accessEls as $access){
+            if($libraryAccess = $access->getAttribute("library")){
+                $keyPerms['library'] = $libraryAccess;
+            }
+            if($notesAccess = $access->getAttribute("notes")){
+                $keyPerms['notes'] = $notesAccess;
+            }
+            if($groupAccess = $access->getAttribute("group")){
+                $groupPermission = $access->getAttribute("write") == '1' ? 'write' : 'read';
+                $keyPerms['groups'][$groupAccess] = $groupPermission;
+            }
+            elseif($writeAccess = $access->getAttribute("write")) {
+                $keyPerms['write'] = $writeAccess;
+            }
+            
+        }
+        return $keyPerms;
     }
     
     
