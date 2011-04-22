@@ -31,24 +31,33 @@ class Zotero_Tag extends Zotero_Entry
     public function __construct($entryNode)
     {
         if(!$entryNode){
+            echo "no entryNode in tag constructor\n";
             return;
+        }
+        elseif(is_string($entryNode)){
+            echo "entryNode is string in tag constructor\n";
+            $xml = $entryNode;
+            $doc = new DOMDocument();
+            echo $xml;
+            $doc->loadXml($xml);
+            $entryNode = $doc->getElementsByTagName('entry')->item(0);
         }
         parent::__construct($entryNode);
         
-        if($entryNode === null){
+        $this->name = $this->title;
+        
+        if(!$entryNode){
+            echo "second no entryNode in tag constructor\n";
             return;
         }
         
-        // Extract the groupID and groupType
-        $tagElements = $entryNode->getElementsByTagName("tag");
-        $tagElement = $tagElements->item(0);
-        if(!$tagElement) return;
-        
-        $numItems = $entryNode->getElementsByTagName("numItems")->item(0);
+        $numItems = $entryNode->getElementsByTagNameNS('*', "numItems")->item(0);
         if($numItems) {
             $this->numItems = (int)$numItems->nodeValue;
         }
         
+        $tagElements = $entryNode->getElementsByTagName("tag");
+        $tagElement = $tagElements->item(0);
     }
     
     public function dataObject() {

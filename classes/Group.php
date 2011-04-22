@@ -97,9 +97,19 @@ class Zotero_Group extends Zotero_Entry
     
     public function __construct($entryNode = null)
     {
+        if(!$entryNode){
+            return;
+        }
+        elseif(is_string($entryNode)){
+            $xml = $entryNode;
+            $doc = new DOMDocument();
+            echo $xml;
+            $doc->loadXml($xml);
+            $entryNode = $doc->getElementsByTagName('entry')->item(0);
+        }
         parent::__construct($entryNode);
         
-        if($entryNode === null){
+        if(!$entryNode){
             return;
         }
         

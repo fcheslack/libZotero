@@ -6,6 +6,9 @@ require_once "Collections.php";
 require_once "Items.php";
 require_once "Response.php";
 require_once "Item.php";
+require_once "Group.php";
+require_once "Tag.php";
+require_once "User.php";
 
 class Zotero_Library
 {
@@ -162,6 +165,12 @@ class Zotero_Library
             case 'key':
                 $url = $base . '/users/' . $params['userID'] . '/keys/' . $params['apiKey'];
                 break;
+            case 'userGroups':
+                $url = $base . '/users/' . $params['userID'] . '/groups';
+                break;
+            case 'trash':
+                $url .= '/items/trash';
+                break;
             default:
                 return false;
         }
@@ -175,7 +184,16 @@ class Zotero_Library
         //print "apiRequestUrl: " . $url . "\n";
         return $url;
     }
-
+    
+    // Tags query formats
+    //
+    // ?tag=foo
+    // ?tag=foo bar // phrase
+    // ?tag=-foo // negation
+    // ?tag=\-foo // literal hyphen (only for first character)
+    // ?tag=foo&tag=bar // AND
+    // ?tag=foo&tagType=0
+    // ?tag=foo bar || bar&tagType=0
     public function apiQueryString($passedParams){
         $queryParamOptions = array('start',
                                  'limit',
@@ -185,7 +203,11 @@ class Zotero_Library
                                  'q',
                                  'itemType',
                                  'locale',
-                                 'key'
+                                 'key',
+                                 'itemKey',
+                                 'tag',
+                                 'tagType',
+                                 
                                  );
         //build simple api query parameters object
         if((!isset($passedParams['key'])) && $this->_apiKey){
@@ -198,20 +220,19 @@ class Zotero_Library
             }
         }
         
-        //deal with tags specially
-        if(isset($passedParams['tag'])){
-            if(is_string($passedParams['tag'])){
-                $queryParams['tag'] = $passedParams['tag'];
-            }
-            else{
-                //TODO: implement complex tag queries
-            }
-        }
-        
         $queryString = '?';
         $queryParamsArray = array();
         foreach($queryParams as $index=>$value){
-            $queryParamsArray[] = urlencode($index) . '=' . urlencode($value);
+            if(is_array($value)){
+                foreach($value as $key=>$val){
+                    if(is_string($val) || is_int($val)){
+                        $queryParamsArray[] = urlEncode($index) . '=' . urlencode($val);
+                    }
+                }
+            }
+            elseif(is_string($value) || is_int($value)){
+                $queryParamsArray[] = urlencode($index) . '=' . urlencode($value);
+            }
         }
         $queryString .= implode('&', $queryParamsArray);
         //print "apiQueryString: " . $queryString . "\n";
@@ -231,10 +252,7 @@ class Zotero_Library
     public function loadAllCollections($params){
         $aparams = array_merge($params, array('target'=>'collections', 'content'=>'json', 'limit'=>100), array('key'=>$this->_apiKey));
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
-        echo "\n\n";
         do{
-            echo "\n\n" . $reqUrl . "\n";
-            $reqUrl .= '&key=' . $this->_apiKey;
             $response = $this->_request($reqUrl);
             if($response->isError()){
                 throw new Exception("Error fetching collections");
@@ -292,6 +310,29 @@ class Zotero_Library
     public function loadItemsTop($params=array()){
         $params['targetModifier'] = 'top';
         return $this->loadItems($params);
+    }
+    
+    public function loadTrashedItems($params=array()){
+        $fetchedItems = array();
+        $aparams = array_merge($params, array('target'=>'trash', 'content'=>'json'), array('key'=>$this->_apiKey));
+        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
+        echo "\n";
+        echo $reqUrl . "\n";
+        //die;
+        $response = $this->_request($reqUrl);
+        if($response->isError()){
+            throw new Exception("Error fetching items");
+        }
+        $body = $response->getRawBody();
+        $doc = new DOMDocument();
+        $doc->loadXml($body);
+        $entries = $doc->getElementsByTagName("entry");
+        foreach($entries as $entry){
+            $item = new Zotero_Item($entry);
+            $this->items->addItem($item);
+            $fetchedItems[] = $item;
+        }
+        return $fetchedItems;
     }
     
     public function loadItems($params){
@@ -443,11 +484,22 @@ class Zotero_Library
         return $response;
     }
     
-    public function trashItem($item){
+    /*public function deleteItem($item){
         $aparams = array('target'=>'item', 'itemKey'=>$item->itemKey);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $response = $this->_request($reqUrl, 'DELETE', null, array('If-Match'=>$item->etag));
         return $response;
+    }*/
+    
+    public function trashItem($item){
+        $item->set('deleted', 1);
+        $this->writeUpdatedItem($item);
+        /*
+        $aparams = array('target'=>'item', 'itemKey'=>$item->itemKey);
+        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
+        $response = $this->_request($reqUrl, 'DELETE', null, array('If-Match'=>$item->etag));
+        return $response;
+        */
     }
     
     public function fetchItemChildren($item){
@@ -497,8 +549,58 @@ class Zotero_Library
         return $creatorFields;
     }
     
-    public function fetchTags($params){
+    public function fetchAllTags($params){
+        $aparams = array_merge(array('target'=>'tags', 'content'=>'json', 'limit'=>50), $params);
+        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
+        do{
+            $response = $this->_request($reqUrl, 'GET');
+            if($response->isError()){
+                return false;
+            }
+            $doc = new DOMDocument();
+            $doc->loadXml($response->getBody());
+            $feed = new Zotero_Feed($doc);
+            $entries = $doc->getElementsByTagName('entry');
+            $tags = array();
+            foreach($entries as $entry){
+                $tag = new Zotero_Tag($entry);
+                $tags[] = $tag;
+            }
+            if(isset($feed->links['next'])){
+                $nextUrl = $feed->links['next']['href'];
+                $parsedNextUrl = parse_url($nextUrl);
+                $parsedNextUrl['query'] = $this->apiQueryString(array_merge($this->parseQueryString($parsedNextUrl['query']), array('key'=>$this->_apiKey) ) );
+                $reqUrl = $parsedNextUrl['scheme'] . '://' . $parsedNextUrl['host'] . $parsedNextUrl['path'] . $parsedNextUrl['query'];
+            }
+            else{
+                $reqUrl = false;
+            }
+        } while($reqUrl);
         
+        return $tags;
+    }
+    
+    public function fetchTags($params){
+        $aparams = array_merge(array('target'=>'tags', 'content'=>'json', 'limit'=>50), $params);
+        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
+        
+        $response = $this->_request($reqUrl, 'GET');
+        if($response->isError()){
+            echo $response->getMessage() . "\n";
+            echo $response->getBody();
+            return false;
+        }
+        $doc = new DOMDocument();
+        $doc->loadXml($response->getBody());
+        $feed = new Zotero_Feed($doc);
+        $entries = $doc->getElementsByTagName('entry');
+        $tags = array();
+        foreach($entries as $entry){
+            $tag = new Zotero_Tag($entry);
+            $tags[] = $tag;
+        }
+        
+        return $tags;
     }
     
     public function getKeyPermissions($userID=null, $key=false) {
@@ -549,6 +651,28 @@ class Zotero_Library
         return $keyPerms;
     }
     
+    public function getAccessibleGroups($userID=''){
+        if($userID == ''){
+            $userID = $this->libraryID;
+        }
+        $aparams = array('target'=>'userGroups', 'userID'=>$userID, 'content'=>'json');
+        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
+        $response = $this->_request($reqUrl, 'GET');
+        if($response->isError()){
+            return false;
+        }
+        /*$doc = new DOMDocument();
+        $doc->loadXml($response->getBody());
+        $entries = $doc->getElementsByTagName('entry');
+        $groups = array();
+        foreach($entries as $entry){
+            $group = new Zotero_Group($entry);
+            $groups[] = $group;
+        }
+        return $groups;
+        */
+        return $response;
+    }
     
 }
 
