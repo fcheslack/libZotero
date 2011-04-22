@@ -359,6 +359,9 @@ class Zotero_Item extends Zotero_Entry
     public function newItemObject(){
         $newItem = $this->apiObject;
         $newCreatorsArray = array();
+        if(!isset($newItem['creators'])) {
+            return $newItem;
+        }
         foreach($newItem['creators'] as $creator){
             if($creator['creatorType']){
                 if(empty($creator['name']) && empty($creator['firstName']) && empty($creator['lastName'])){

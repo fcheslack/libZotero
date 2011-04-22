@@ -42,6 +42,7 @@ foreach($items as $item){
 }
 */
 
+/*
 //load the items currently in the trash
 $items = $library->loadTrashedItems(array('limit'=>10));
 foreach($items as $item){
@@ -49,8 +50,8 @@ foreach($items as $item){
     //echo "now deleting item \n";
     //$library->deleteItem($item);
 }
+*/
 
-/*
 //create a new item of type book
 $newItem = $library->getTemplateItem('book');
 $newItem->set('title', 'This is a book');
@@ -62,8 +63,17 @@ if($createItemResponse->isError()){
     die("Error creating Zotero item\n\n");
 }
 echo "Item created\n\n";
-
 $existingItem = new Zotero_Item($createItemResponse->getBody());
+//add child note
+$newNoteItem = $library->getTemplateItem('note');
+$addNoteResponse = $library->addNotes($existingItem, $newNoteItem);
+if($addNoteResponse->isError()){
+    echo $addNoteResponse->getStatus() . "\n";
+    echo $addNoteResponse->getBody() . "\n";
+    die("error adding child note to item");
+}
+echo "added child note\n";
+/*
 $existingItem->set('date', '2011');
 //$existingItem->set('deleted', 1);
 $updateItemResponse = $library->writeUpdatedItem($existingItem);

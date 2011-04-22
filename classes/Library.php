@@ -179,6 +179,9 @@ class Zotero_Library
                 case 'top':
                     $url .= '/top';
                     break;
+                case 'children':
+                    $url .= '/children';
+                    break;
             }
         }
         //print "apiRequestUrl: " . $url . "\n";
@@ -207,7 +210,6 @@ class Zotero_Library
                                  'itemKey',
                                  'tag',
                                  'tagType',
-                                 
                                  );
         //build simple api query parameters object
         if((!isset($passedParams['key'])) && $this->_apiKey){
@@ -216,6 +218,7 @@ class Zotero_Library
         $queryParams = array();
         foreach($queryParamOptions as $i=>$val){
             if(isset($passedParams[$val]) && ($passedParams[$val] != '')) {
+                if($val == 'itemKey' && isset($passedParams['target']) && ($passedParams['target'] != 'items') ) continue;
                 $queryParams[$val] = $passedParams[$val];
             }
         }
@@ -423,6 +426,24 @@ class Zotero_Library
         $itemTemplate = json_decode($response->getRawBody(), true);
         $newItem->apiObject = $itemTemplate;
         return $newItem;
+    }
+    
+    public function addNotes($parentItem, $noteItem){
+        $aparams = array('target'=>'children', 'itemKey'=>$parentItem->itemKey);
+        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
+        if(!is_array($noteItem)){
+            $noteJson = json_encode(array('items'=>array($noteItem->newItemObject())));
+        }
+        else{
+            $notesArray = array();
+            foreach($noteItem as $nitem){
+                $notesArray[] = $nitem->newItemObject();
+            }
+            $noteJson = json_encode(array('items'=>$notesArray));
+        }
+        
+        $response = $this->_request($reqUrl, 'POST', $noteJson);
+        return $response;
     }
     
     public function createCollection($name, $parent = false){
