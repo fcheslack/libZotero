@@ -1,7 +1,3 @@
-# phpZotero fork
-
-Fork of phpZotero adding classes to instantiate Zotero objects, fetching and modifying a Zotero synced library.
-
 ## api
 
 Many functions return http response objects.
