@@ -328,13 +328,18 @@ class Zotero_Item extends Zotero_Entry
     
     public function set($key, $val){
         if($key == 'creators' || $key == 'tags'){
-            //special case
+            //TODO: special case emtpy value and correctly in arrays
+            $this->apiObject[$key] = $val;
         }
         else{
             //if(in_array($key, array_keys($this->fieldMap))) {
                 $this->apiObject[$key] = $val;
             //}
         }
+    }
+    
+    public function addCreator($creatorArray){
+        $this->apiObject['creators'][] = $creatorArray;
     }
     
     public function updateItemObject(){

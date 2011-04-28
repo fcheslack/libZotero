@@ -1,14 +1,10 @@
 <?php
+require_once './config.php'; //library credentials
 
-require_once './classes/Library.php';
-$libraryType = 'user'; //user or group
-$userID = 10150;
-$userSlug = 'fcheslack';
-$apiKey = '2GLoGDRtIiXlzOd2Gi6rS6n9'; //dev
-//$apiKey = 'fa1qlarxjerb41vumzh1r2d6'; //live
+require_once './lib/Library.php';
 $library = new Zotero_Library($libraryType, $userID, $userSlug, $apiKey);
 
-/*
+
 //get some tags
 $tags = $library->fetchTags(array('limit'=>5, 'order'=>'title', 'sort'=>'desc'));
 foreach($tags as $tag){
@@ -19,17 +15,13 @@ foreach($tags as $tag){
         echo $tag->name . " - has no items\n"; 
     }
 }
-//var_dump($tags);
 $items = $library->loadItems(array('tag'=>'zotero'));
-var_dump($items);
-die;
-*/
+
 
 //get groups the key has access to
-/*
+//need more complete groups information in normal responses before this is useful
+//but for now it can get IDs at least
 $r = $library->getAccessibleGroups($userID);
-var_dump($r);die;
-*/
 
 //get permissions for the key
 //$permissions = $library->getKeyPermissions();

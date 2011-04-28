@@ -9,6 +9,7 @@ require_once "Item.php";
 require_once "Group.php";
 require_once "Tag.php";
 require_once "User.php";
+require_once "Creator.php";
 
 class Zotero_Library
 {
@@ -26,7 +27,7 @@ class Zotero_Library
     public $useLibraryAsContainer = true;
     protected $_lastResponse = null;
     
-    public function __construct($libraryType, $libraryID, $libraryUrlIdentifier, $apiKey = null, $baseWebsiteUrl="http://www.zotero.org")
+    public function __construct($libraryType = null, $libraryID = null, $libraryUrlIdentifier = null, $apiKey = null, $baseWebsiteUrl="http://www.zotero.org")
     {
         $this->_apiKey = $apiKey;
         if (extension_loaded('curl')) {
