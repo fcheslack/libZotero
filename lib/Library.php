@@ -97,7 +97,7 @@ class Zotero_Library
         $responseInfo = curl_getinfo($ch);
         //echo "{$method} url:" . $url . "\n";
         //echo "%%%%%" . $responseBody . "%%%%%\n\n";
-        $zresponse = Zend_Http_Response::fromString($responseBody);
+        $zresponse = libZotero_Http_Response::fromString($responseBody);
         
         //Zend Response does not parse out the multiple sets of headers returned when curl automatically follows
         //a redirect and the new headers are left in the body. Zend_Http_Client gets around this by manually
@@ -105,7 +105,7 @@ class Zotero_Library
         //until a non-redirect is read
         while($zresponse->isRedirect()){
             $redirectedBody = $zresponse->getBody();
-            $zresponse = Zend_Http_Response::fromString($redirectedBody);
+            $zresponse = libZotero_Http_Response::fromString($redirectedBody);
         }
         $this->lastResponse = $zresponse;
         return $zresponse;
@@ -254,7 +254,7 @@ class Zotero_Library
     }
     
     public function loadAllCollections($params){
-        $aparams = array_merge($params, array('target'=>'collections', 'content'=>'json', 'limit'=>100), array('key'=>$this->_apiKey));
+        $aparams = array_merge(array('target'=>'collections', 'content'=>'json', 'limit'=>100), array('key'=>$this->_apiKey), $params);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         do{
             $response = $this->_request($reqUrl);
@@ -273,7 +273,7 @@ class Zotero_Library
             if(isset($feed->links['next'])){
                 $nextUrl = $feed->links['next']['href'];
                 $parsedNextUrl = parse_url($nextUrl);
-                $parsedNextUrl['query'] = $this->apiQueryString(array_merge($this->parseQueryString($parsedNextUrl['query']), array('key'=>$this->_apiKey) ) );
+                $parsedNextUrl['query'] = $this->apiQueryString(array_merge(array('key'=>$this->_apiKey), $this->parseQueryString($parsedNextUrl['query']) ) );
                 $reqUrl = $parsedNextUrl['scheme'] . '://' . $parsedNextUrl['host'] . $parsedNextUrl['path'] . $parsedNextUrl['query'];
             }
             else{
@@ -285,7 +285,7 @@ class Zotero_Library
     }
     
     public function loadCollections($params){
-        $aparams = array_merge($params, array('target'=>'collections', 'content'=>'json', 'limit'=>100), array('key'=>$this->_apiKey));
+        $aparams = array_merge(array('target'=>'collections', 'content'=>'json', 'limit'=>100), array('key'=>$this->_apiKey), $params);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $response = $this->_request($reqUrl);
         if($response->isError()){
@@ -303,7 +303,7 @@ class Zotero_Library
         if(isset($feed->links['next'])){
             $nextUrl = $feed->links['next']['href'];
             $parsedNextUrl = parse_url($nextUrl);
-            $parsedNextUrl['query'] = $this->apiQueryString(array_merge($this->parseQueryString($parsedNextUrl['query']), array('key'=>$this->_apiKey) ) );
+            $parsedNextUrl['query'] = $this->apiQueryString(array_merge(array('key'=>$this->_apiKey), $this->parseQueryString($parsedNextUrl['query']) ) );
             $reqUrl = $parsedNextUrl['scheme'] . '://' . $parsedNextUrl['host'] . $parsedNextUrl['path'] . $parsedNextUrl['query'];
         }
         else{
@@ -318,7 +318,7 @@ class Zotero_Library
     
     public function loadTrashedItems($params=array()){
         $fetchedItems = array();
-        $aparams = array_merge($params, array('target'=>'trash', 'content'=>'json'), array('key'=>$this->_apiKey));
+        $aparams = array_merge(array('target'=>'trash', 'content'=>'json'), array('key'=>$this->_apiKey), $params);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         echo "\n";
         echo $reqUrl . "\n";
@@ -341,7 +341,7 @@ class Zotero_Library
     
     public function loadItems($params){
         $fetchedItems = array();
-        $aparams = array_merge($params, array('target'=>'items', 'content'=>'json'), array('key'=>$this->_apiKey));
+        $aparams = array_merge(array('target'=>'items', 'content'=>'json'), array('key'=>$this->_apiKey), $params);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         echo "\n";
         echo $reqUrl . "\n";
@@ -591,7 +591,7 @@ class Zotero_Library
             if(isset($feed->links['next'])){
                 $nextUrl = $feed->links['next']['href'];
                 $parsedNextUrl = parse_url($nextUrl);
-                $parsedNextUrl['query'] = $this->apiQueryString(array_merge($this->parseQueryString($parsedNextUrl['query']), array('key'=>$this->_apiKey) ) );
+                $parsedNextUrl['query'] = $this->apiQueryString(array_merge(array('key'=>$this->_apiKey), $this->parseQueryString($parsedNextUrl['query']) ) );
                 $reqUrl = $parsedNextUrl['scheme'] . '://' . $parsedNextUrl['host'] . $parsedNextUrl['path'] . $parsedNextUrl['query'];
             }
             else{
