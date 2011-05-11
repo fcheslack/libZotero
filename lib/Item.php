@@ -8,8 +8,6 @@
   * @see        Zotero_Entry
   */
 
-require_once "Entry.php";
-
 class Zotero_Item extends Zotero_Entry
 {
     /**
@@ -81,6 +79,7 @@ class Zotero_Item extends Zotero_Entry
      * @var array
      */
     public static $fieldMap = array(
+        "creator"             => "Creator",
         "itemType"            => "Type",
         "title"               => "Title",
         "dateAdded"           => "Date Added",
@@ -272,7 +271,6 @@ class Zotero_Item extends Zotero_Entry
         elseif(is_string($entryNode)){
             $xml = $entryNode;
             $doc = new DOMDocument();
-            echo $xml;
             $doc->loadXml($xml);
             $entryNode = $doc->getElementsByTagName('entry')->item(0);
         }
@@ -289,14 +287,12 @@ class Zotero_Item extends Zotero_Entry
         $this->itemType = $entryNode->getElementsByTagNameNS('*', 'itemType')->item(0)->nodeValue;
         
         // Look for numChildren node
-        if($entryNode->getElementsByTagName("numChildren")->length > 0){
-            $this->numChildren = $entryNode->getElementsByTagName("numChildren")->item(0)->nodeValue;
-        }
+        $this->numChildren = $entryNode->getElementsByTagNameNS('*', "numChildren")->item(0)->nodeValue;
         
         // Look for numTags node
-        if($entryNode->getElementsByTagName("numTags")->length > 0){
-            $this->numTags = $entryNode->getElementsByTagName("numTags")->item(0)->nodeValue;
-        }
+        $this->numTags = $entryNode->getElementsByTagNameNS('*', "numTags")->item(0)->nodeValue;
+        
+        $this->creatorSummary = $entryNode->getElementsByTagNameNS('*', "creatorSummary")->item(0)->nodeValue;
         
         $contentNode = $entryNode->getElementsByTagName('content')->item(0);
         $contentType = parent::getContentType($entryNode);
@@ -450,42 +446,62 @@ class Zotero_Item extends Zotero_Entry
         return json_encode($this->apiObject());
     }
     
-    public function dataObject(){
-        $jsonItem = new stdClass;
+    public function fullItemJSON(){
+        $jsonItem = array();
         
         //inherited from Entry
-        $jsonItem->title = htmlspecialchars($this->title);
-        $jsonItem->dateAdded = $this->dateAdded;
-        $jsonItem->dateUpdated = $this->dateUpdated;
-        $jsonItem->id = $this->id;
+        $jsonItem['title'] = $this->title;
+        $jsonItem['dateAdded'] = $this->dateAdded;
+        $jsonItem['dateUpdated'] = $this->dateUpdated;
+        $jsonItem['id'] = $this->id;
         
-        $jsonItem->links = $this->links;
-        
-        foreach($this->entries as $entry){
-            $jsonItem->entries[] = $entry->dataObject();
-        }
+        $jsonItem['links'] = $this->links;
         
         //Item specific vars
-        $jsonItem->itemID = $this->itemID;
-        $jsonItem->itemType = $this->itemType;
-        $jsonItem->creatorSummary = htmlspecialchars($this->creatorSummary);
-        $jsonItem->numChildren = $this->numChildren;
-        $jsonItem->numTags = $this->numTags;
-        //$jsonItem->fields = $this->fields;
-        $jsonItem->creators = $this->creators;
-        $jsonItem->createdByUserID = $this->createdByUserID;
-        $jsonItem->lastModifiedByUserID = $this->lastModifiedByUserID;
-        $jsonItem->note = $this->note;
-        $jsonItem->linkMode = $this->linkMode;
-        $jsonItem->mimeType = $this->mimeType;
+        $jsonItem['itemKey'] = $this->itemKey;
+        $jsonItem['itemType'] = $this->itemType;
+        $jsonItem['creatorSummary'] = $this->creatorSummary;
+        $jsonItem['numChildren'] = $this->numChildren;
+        $jsonItem['numTags'] = $this->numTags;
         
-        foreach($this->fields as $key=>$val){
-            $jsonItem->fields[$key] = htmlspecialchars($val);
+        $jsonItem['creators'] = $this->creators;
+        $jsonItem['createdByUserID'] = $this->createdByUserID;
+        $jsonItem['lastModifiedByUserID'] = $this->lastModifiedByUserID;
+        $jsonItem['note'] = $this->note;
+        $jsonItem['linkMode'] = $this->linkMode;
+        $jsonItem['mimeType'] = $this->mimeType;
+        
+        $jsonItem['apiObject'] = $this->apiObject;
+        
+        return json_encode($jsonItem);
+    }
+    
+    public function formatItemField($field){
+        switch($field){
+            case "title":
+                return $this->apiObject['title'];
+                break;
+            case "creator":
+                if(isset($this->creatorSummary)){
+                    return $this->creatorSummary;
+                }
+                else{
+                    return '';
+                }
+                break;
+            case "dateModified":
+                return $this->dateModified;
+                break;
+            case "dateAdded":
+                return $this->dateAdded;
+                break;
+            default:
+                if(isset($this->apiObject[$field])){
+                    return $this->apiObject[$field];
+                }
+                else{
+                    return '';
+                }
         }
-        /*
-        foreach($jsonItem->creators as $key=>$val){
-            $jsonItem->creators[$key] = htmlspecialchars($val);
-        }*/
-        return $jsonItem;
     }
 }

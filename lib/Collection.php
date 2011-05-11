@@ -7,7 +7,6 @@
   * @since      Class available since Release 0.0
   * @see        Zotero_Entry
   */
-require_once "Entry.php";
 
 class Zotero_Collection extends Zotero_Entry
 {
@@ -27,10 +26,13 @@ class Zotero_Collection extends Zotero_Entry
      */
     public $numItems = 0;
     
+    public $topLevel;
     /**
      * @var string
      */
     public $parentCollectionKey = false;
+    
+    public $childKeys = array();
     
     public function __construct($entryNode)
     {
@@ -48,9 +50,11 @@ class Zotero_Collection extends Zotero_Entry
         if($contentType == 'application/json'){
             $this->contentArray = json_decode($contentNode->nodeValue, true);
             $this->etag = $contentNode->getAttribute('etag');
+            $this->parentCollectionKey = $this->contentArray['parent'];
+            $this->name = $this->contentArray['name'];
         }
         elseif($contentType == 'xhtml'){
-            $this->parseXhtmlContent($contentNode);
+            //$this->parseXhtmlContent($contentNode);
         }
         
     }

@@ -1,7 +1,5 @@
 <?php
 
-require_once "Collection.php";
-
 class Zotero_Collections
 {
     public $orderedArray;
@@ -34,6 +32,36 @@ class Zotero_Collections
             return $this->collectionObjects[$collectionKey];
         }
         return false;
+    }
+    
+    //add keys of child collections to array
+    public function nestCollections(){
+        foreach($this->collectionObjects as $key=>$collection){
+            if($collection->parentCollectionKey){
+                $parentCollection = $this->getCollection($collection->parentCollectionKey);
+                $parentCollection->childKeys[] = $collection->collectionKey;
+            }
+        }
+    }
+    
+    public function orderCollections(){
+        $orderedArray = array();
+        foreach($this->collectionObjects as $key=>$collection){
+            $orderedArray[] = $collection;
+        }
+        usort($orderedArray, array('Zotero_Collections', 'sortByTitleCompare'));
+        $this->orderedArray = $orderedArray;
+        return $this->orderedArray;
+    }
+    
+    public function topCollectionKeys($collections){
+        $topCollections = array();
+        foreach($collections as $collection){
+            if($collection->parentCollectionKey == false){
+                $topCollections[] = $collection->collectionKey;
+            }
+        }
+        return $topCollections;
     }
 }
 

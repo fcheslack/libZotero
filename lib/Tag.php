@@ -31,14 +31,14 @@ class Zotero_Tag extends Zotero_Entry
     public function __construct($entryNode)
     {
         if(!$entryNode){
-            echo "no entryNode in tag constructor\n";
+            libZoteroDebug( "no entryNode in tag constructor\n" );
             return;
         }
         elseif(is_string($entryNode)){
-            echo "entryNode is string in tag constructor\n";
+            libZoteroDebug( "entryNode is string in tag constructor\n" );
             $xml = $entryNode;
             $doc = new DOMDocument();
-            echo $xml;
+            libZoteroDebug( $xml );
             $doc->loadXml($xml);
             $entryNode = $doc->getElementsByTagName('entry')->item(0);
         }
@@ -47,7 +47,7 @@ class Zotero_Tag extends Zotero_Entry
         $this->name = $this->title;
         
         if(!$entryNode){
-            echo "second no entryNode in tag constructor\n";
+            libZoteroDebug( "second no entryNode in tag constructor\n" );
             return;
         }
         

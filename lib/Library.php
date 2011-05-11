@@ -1,15 +1,11 @@
 <?php
-require_once "Zotero_Exception.php";
-require_once "Mappings.php";
-require_once "Feed.php";
-require_once "Collections.php";
-require_once "Items.php";
-require_once "Response.php";
-require_once "Item.php";
-require_once "Group.php";
-require_once "Tag.php";
-require_once "User.php";
-require_once "Creator.php";
+const LIBZOTERO_DEBUG = 0;
+function libZoteroDebug($m){
+    if(LIBZOTERO_DEBUG){
+        echo $m;
+    }
+    return;
+}
 
 class Zotero_Library
 {
@@ -26,6 +22,7 @@ class Zotero_Library
     public $dirty = null;
     public $useLibraryAsContainer = true;
     protected $_lastResponse = null;
+    protected $_lastFeed = null;
     
     public function __construct($libraryType = null, $libraryID = null, $libraryUrlIdentifier = null, $apiKey = null, $baseWebsiteUrl="http://www.zotero.org")
     {
@@ -62,7 +59,7 @@ class Zotero_Library
     }
     
     public function _request($url, $method="GET", $body=NULL, $headers=array()) {
-        echo "url being requested: " . $url . "\n\n";
+        libZoteroDebug( "url being requested: " . $url . "\n\n");
         $httpHeaders = array();
         foreach($headers as $key=>$val){
             $httpHeaders[] = "$key: $val";
@@ -95,8 +92,8 @@ class Zotero_Library
         
         $responseBody = curl_exec($ch);
         $responseInfo = curl_getinfo($ch);
-        //echo "{$method} url:" . $url . "\n";
-        //echo "%%%%%" . $responseBody . "%%%%%\n\n";
+        //libZoteroDebug( "{$method} url:" . $url . "\n");
+        //libZoteroDebug( "%%%%%" . $responseBody . "%%%%%\n\n");
         $zresponse = libZotero_Http_Response::fromString($responseBody);
         
         //Zend Response does not parse out the multiple sets of headers returned when curl automatically follows
@@ -115,6 +112,10 @@ class Zotero_Library
         return $this->_lastResponse;
     }
     
+    public function getLastFeed(){
+        return $this->_lastFeed;
+    }
+    
     public static function libraryString($type, $libraryID){
         $lstring = '';
         if($type == 'user') $lstring = 'u';
@@ -126,14 +127,14 @@ class Zotero_Library
     /*
      * Requires {target:items|collections|tags, libraryType:user|group, libraryID:<>}
      */
-    public function apiRequestUrl($params, $base = Zotero_Library::ZOTERO_URI) {
+    public function apiRequestUrl($params = array(), $base = Zotero_Library::ZOTERO_URI) {
         //var_dump($params);
         if(!isset($params['target'])){
             throw new Exception("No target defined for api request");
         }
         
         $url = $base . '/' . $this->libraryType . 's/' . $this->libraryID;
-        if(isset($params['collectionKey'])){
+        if(!empty($params['collectionKey'])){
             $url .= '/collections/' . $params['collectionKey'];
         }
         
@@ -198,7 +199,7 @@ class Zotero_Library
     // ?tag=foo&tag=bar // AND
     // ?tag=foo&tagType=0
     // ?tag=foo bar || bar&tagType=0
-    public function apiQueryString($passedParams){
+    public function apiQueryString($passedParams=array()){
         $queryParamOptions = array('start',
                                  'limit',
                                  'order',
@@ -253,7 +254,7 @@ class Zotero_Library
         return $aparams;
     }
     
-    public function loadAllCollections($params){
+    public function loadAllCollections($params = array()){
         $aparams = array_merge(array('target'=>'collections', 'content'=>'json', 'limit'=>100), array('key'=>$this->_apiKey), $params);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         do{
@@ -284,7 +285,7 @@ class Zotero_Library
         $this->collections->loaded = true;
     }
     
-    public function loadCollections($params){
+    public function loadCollections($params = array()){
         $aparams = array_merge(array('target'=>'collections', 'content'=>'json', 'limit'=>100), array('key'=>$this->_apiKey), $params);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $response = $this->_request($reqUrl);
@@ -320,8 +321,8 @@ class Zotero_Library
         $fetchedItems = array();
         $aparams = array_merge(array('target'=>'trash', 'content'=>'json'), array('key'=>$this->_apiKey), $params);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
-        echo "\n";
-        echo $reqUrl . "\n";
+        libZoteroDebug( "\n");
+        libZoteroDebug( $reqUrl . "\n" );
         //die;
         $response = $this->_request($reqUrl);
         if($response->isError()){
@@ -339,12 +340,12 @@ class Zotero_Library
         return $fetchedItems;
     }
     
-    public function loadItems($params){
+    public function loadItems($params = array()){
         $fetchedItems = array();
         $aparams = array_merge(array('target'=>'items', 'content'=>'json'), array('key'=>$this->_apiKey), $params);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
-        echo "\n";
-        echo $reqUrl . "\n";
+        libZoteroDebug( "\n" );
+        libZoteroDebug( $reqUrl . "\n" );
         //die;
         $response = $this->_request($reqUrl);
         if($response->isError()){
@@ -353,12 +354,14 @@ class Zotero_Library
         $body = $response->getRawBody();
         $doc = new DOMDocument();
         $doc->loadXml($body);
+        $feed = new Zotero_Feed($doc);
         $entries = $doc->getElementsByTagName("entry");
         foreach($entries as $entry){
             $item = new Zotero_Item($entry);
             $this->items->addItem($item);
             $fetchedItems[] = $item;
         }
+        $this->_lastFeed = $feed;
         return $fetchedItems;
     }
     
@@ -402,7 +405,7 @@ class Zotero_Library
     
     public function createItem($item){
         $createItemJson = json_encode(array('items'=>array($item->newItemObject())));;
-        //echo $createItemJson;die;
+        //libZoteroDebug( $createItemJson );die;
         $aparams = array('target'=>'items');
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $response = $this->_request($reqUrl, 'POST', $createItemJson);
@@ -608,8 +611,8 @@ class Zotero_Library
         
         $response = $this->_request($reqUrl, 'GET');
         if($response->isError()){
-            echo $response->getMessage() . "\n";
-            echo $response->getBody();
+            libZoteroDebug( $response->getMessage() . "\n" );
+            libZoteroDebug( $response->getBody() );
             return false;
         }
         $doc = new DOMDocument();

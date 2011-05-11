@@ -1,11 +1,12 @@
 <?php
 require_once './config.php'; //library credentials
 
-require_once './lib/Library.php';
+require_once './build/libZoteroSingle.php';
 $library = new Zotero_Library($libraryType, $userID, $userSlug, $apiKey);
 
 
 //get some tags
+/*
 $tags = $library->fetchTags(array('limit'=>5, 'order'=>'title', 'sort'=>'desc'));
 foreach($tags as $tag){
     if($tag->numItems > 0){
@@ -16,23 +17,25 @@ foreach($tags as $tag){
     }
 }
 $items = $library->loadItems(array('tag'=>'zotero'));
-
+*/
 
 //get groups the key has access to
 //need more complete groups information in normal responses before this is useful
 //but for now it can get IDs at least
+/*
 $r = $library->getAccessibleGroups($userID);
+*/
 
 //get permissions for the key
 //$permissions = $library->getKeyPermissions();
 
 //load some existing items
-/*
+
 $items = $library->loadItemsTop(array('limit'=>10));
 foreach($items as $item){
     echo "Top level item with title: " . $item->get('title') . "\n";
 }
-*/
+var_dump($items);die;
 
 /*
 //load the items currently in the trash
