@@ -287,20 +287,28 @@ class Zotero_Item extends Zotero_Entry
         $this->itemType = $entryNode->getElementsByTagNameNS('*', 'itemType')->item(0)->nodeValue;
         
         // Look for numChildren node
-        $this->numChildren = $entryNode->getElementsByTagNameNS('*', "numChildren")->item(0)->nodeValue;
+        $numChildrenNode = $entryNode->getElementsByTagNameNS('*', "numChildren")->item(0);
+        if($numChildrenNode){
+            $this->numChildren = $numChildrenNode->nodeValue;
+        }
         
         // Look for numTags node
-        $this->numTags = $entryNode->getElementsByTagNameNS('*', "numTags")->item(0)->nodeValue;
+        $numTagsNode = $entryNode->getElementsByTagNameNS('*', "numTags")->item(0);
+        if($numTagsNode){
+            $this->numTags = $numTagsNode->nodeValue;
+        }
         
-        $this->creatorSummary = $entryNode->getElementsByTagNameNS('*', "creatorSummary")->item(0)->nodeValue;
+        $creatorSummaryNode = $entryNode->getElementsByTagNameNS('*', "creatorSummary")->item(0);
+        if($creatorSummaryNode){
+            $this->creatorSummary = $creatorSummaryNode->nodeValue;
+        }
         
         $contentNode = $entryNode->getElementsByTagName('content')->item(0);
         $contentType = parent::getContentType($entryNode);
         if($contentType == 'application/json'){
             $this->apiObject = json_decode($contentNode->nodeValue, true);
             $this->etag = $contentNode->getAttribute('etag');
-        }
-        elseif($contentType == 'xhtml'){
+            $this->creators = $this->apiObject['creators'];
         }
         
         
@@ -335,6 +343,7 @@ class Zotero_Item extends Zotero_Entry
     }
     
     public function addCreator($creatorArray){
+        $this->creators[] = $creatorArray;
         $this->apiObject['creators'][] = $creatorArray;
     }
     
@@ -377,69 +386,28 @@ class Zotero_Item extends Zotero_Entry
         return $newItem;
     }
     
-    public function parseXhtmlContent($contentNode){
-        //$xpath = new DOMXPath($contentNode);
-        
-        // Pull any fields in the item
-        //$fieldNodes = $xpath->evaluate('//field');
-        foreach($fieldNodes as $field){
-            $fieldName = $field->getAttribute("name");
-            $this->fields[$fieldName] = $field->nodeValue;
+    public function isAttachment(){
+        if($this->itemType == 'attachment'){
+            return true;
+        }
+    }
+    
+    public function hasFile(){
+        if(!$this->isAttachment()){
+            return false;
+        }
+        $hasEnclosure = isset($this->links['enclosure']);
+        $linkMode = $this->apiObject['linkMode'];
+        if($hasEnclosure && ($linkMode == 0 || $linkMode == 1)){
+            return true;
+        }
+    }
+    
+    public function downloadLink(){
+        if(!$this->hasFile()){
+            return false;
         }
         
-        //TODO: is this information still available anywhere without content=full?
-        // Get the attributes of the item element (present if content=full)
-        /*
-        foreach($entryNode->getElementsByTagName("item") as $item){
-            $this->mimeType             = $item->getAttribute("mimeType");
-            $this->linkMode             = $item->getAttribute("linkMode");
-            $this->createdByUserID      = $item->getAttribute("createdByUserID");
-            $this->lastModifiedByUserID = $item->getAttribute("lastModifiedByUserID");
-        }
-        */
-        
-        // If there is a note element, get the contents
-        foreach($contentNode->getElementsByTagName("note") as $note){
-            $this->note = $note->nodeValue;
-        }
-        
-        // If there is a creatorSummary element, get the contents
-        // The creatorSummary contains a string that shows primary author, shows just author if there's an editor too,
-        // if there are multiple authors it shows one, two, and/or et al, if there's just an editor it shows that, etc.
-        foreach($contentNode->getElementsByTagName("creatorSummary") as $creatorSummary){
-            $this->creatorSummary = $creatorSummary->nodeValue;
-        }
-        
-        // Extract creators
-        foreach($contentNode->getElementsByTagName("creator") as $creatorNode){
-            
-            // If this is an inner creator node, don't process it
-            if($creatorNode->getElementsByTagName("creator")->length == 0){
-                continue;
-            }
-            
-            // Get some info from the outer creator element's attributes
-            $id           = $creatorNode->getAttribute("id");
-            $index        = $creatorNode->getAttribute("index");
-            $creatorType  = $creatorNode->getAttribute("creatorType");
-            
-            // Pull out the nested creator node and extract it's attributes
-            $creatorNode  = $creatorNode->getElementsByTagName("creator")->item(0);
-            $key          = $creatorNode->getAttribute("key");
-            $dateAdded    = $creatorNode->getAttribute("dataAdded");
-            $dateModified = $creatorNode->getAttribute("dateModified");
-            
-            // Pull out the name
-            if($creatorNode->getElementsByTagName("fieldMode")->length){
-                $name = $creatorNode->getElementsByTagName("name")->item(0)->nodeValue;
-            } else {
-                $name = array("firstName" => $creatorNode->getElementsByTagName("firstName")->item(0)->nodeValue,
-                              "lastName"  => $creatorNode->getElementsByTagName("lastName")->item(0)->nodeValue);
-            }
-            
-            // Add the creator to the creator list
-            $this->creators[$index] = compact("id", "index", "creatorType", "key", "dateAdded", "dateModified", "name");
-        }
     }
     
     public function json(){
@@ -447,6 +415,10 @@ class Zotero_Item extends Zotero_Entry
     }
     
     public function fullItemJSON(){
+        return json_encode($this->fullItemArray());
+    }
+    
+    public function fullItemArray(){
         $jsonItem = array();
         
         //inherited from Entry
@@ -472,14 +444,13 @@ class Zotero_Item extends Zotero_Entry
         $jsonItem['mimeType'] = $this->mimeType;
         
         $jsonItem['apiObject'] = $this->apiObject;
-        
-        return json_encode($jsonItem);
+        return $jsonItem;
     }
     
     public function formatItemField($field){
         switch($field){
             case "title":
-                return $this->apiObject['title'];
+                return $this->title;
                 break;
             case "creator":
                 if(isset($this->creatorSummary)){
