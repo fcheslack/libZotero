@@ -119,17 +119,29 @@ class Zotero_Group extends Zotero_Entry
             //$this->etag = $contentNode->getAttribute('etag');
         }
         
-        $this->name = $this->apiObj['name'];
-        $this->ownerID = $this->apiObj['owner'];
-        $this->groupType = $this->apiObj['groupType'];
-        $this->description = $this->apiObj['description'];
-        $this->url = $this->apiObj['url'];
-        $this->libraryEnabled = $this->apiObj['libraryEnabled'];
-        $this->libraryEditing = $this->apiObj['libraryEditing'];
-        $this->libraryReading = $this->apiObj['libraryReading'];
-        $this->fileEditing = $this->apiObj['fileEditing'];
-        $this->adminIDs = $this->apiObj['admins'];
-        $this->memberIDs = $this->apiObj['members'];
+        $this->name = $this->apiObject['name'];
+        $this->ownerID = $this->apiObject['owner'];
+        $this->groupType = $this->apiObject['type'];
+        $this->description = $this->apiObject['description'];
+        $this->url = $this->apiObject['url'];
+        $this->libraryEnabled = $this->apiObject['libraryEnabled'];
+        $this->libraryEditing = $this->apiObject['libraryEditing'];
+        $this->libraryReading = $this->apiObject['libraryReading'];
+        $this->fileEditing = $this->apiObject['fileEditing'];
+        
+        if(!empty($this->apiObject['admins'])){
+            $this->adminIDs = $this->apiObject['admins'];
+        }
+        else {
+            $this->adminIDs = array();
+        }
+        
+        if(!empty($this->apiObject['members'])){
+            $this->memberIDs = $this->apiObject['members'];
+        }
+        else{
+            $this->memberIDs = array();
+        }
         
         $this->numItems = $entryNode->getElementsByTagNameNS('*', 'numItems')->item(0)->nodeValue;
         

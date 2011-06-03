@@ -1,5 +1,5 @@
 <?php
-const LIBZOTERO_DEBUG = 0;
+define('LIBZOTERO_DEBUG', 0);
 function libZoteroDebug($m){
     if(LIBZOTERO_DEBUG){
         echo $m;
@@ -24,7 +24,7 @@ class Zotero_Library
     protected $_lastResponse = null;
     protected $_lastFeed = null;
     
-    public function __construct($libraryType = null, $libraryID = null, $libraryUrlIdentifier = null, $apiKey = null, $baseWebsiteUrl="http://www.zotero.org")
+    public function __construct($libraryType = null, $libraryID = 'me', $libraryUrlIdentifier = null, $apiKey = null, $baseWebsiteUrl="http://www.zotero.org")
     {
         $this->_apiKey = $apiKey;
         if (extension_loaded('curl')) {

@@ -1369,7 +1369,9 @@ class Zotero_Item extends Zotero_Entry
         
         //save raw Content node in case we need it
         if($entryNode->getElementsByTagName("content")->length > 0){
-            $this->content = $entryNode->getElementsByTagName("content")->item(0)->nodeValue;
+            $d = $entryNode->ownerDocument;
+            $this->contentNode = $entryNode->getElementsByTagName("content")->item(0);
+            $this->content = $d->saveXml($this->contentNode);
         }
         
         // Extract the itemId and itemType
@@ -1495,14 +1497,6 @@ class Zotero_Item extends Zotero_Entry
             return true;
         }
     }
-    
-    /*
-    public function downloadLink(){
-        if(!$this->hasFile()){
-            return false;
-        }
-    }
-    */
     
     public function json(){
         return json_encode($this->apiObject());
@@ -1691,17 +1685,29 @@ class Zotero_Group extends Zotero_Entry
             //$this->etag = $contentNode->getAttribute('etag');
         }
         
-        $this->name = $this->apiObj['name'];
-        $this->ownerID = $this->apiObj['owner'];
-        $this->groupType = $this->apiObj['groupType'];
-        $this->description = $this->apiObj['description'];
-        $this->url = $this->apiObj['url'];
-        $this->libraryEnabled = $this->apiObj['libraryEnabled'];
-        $this->libraryEditing = $this->apiObj['libraryEditing'];
-        $this->libraryReading = $this->apiObj['libraryReading'];
-        $this->fileEditing = $this->apiObj['fileEditing'];
-        $this->adminIDs = $this->apiObj['admins'];
-        $this->memberIDs = $this->apiObj['members'];
+        $this->name = $this->apiObject['name'];
+        $this->ownerID = $this->apiObject['owner'];
+        $this->groupType = $this->apiObject['type'];
+        $this->description = $this->apiObject['description'];
+        $this->url = $this->apiObject['url'];
+        $this->libraryEnabled = $this->apiObject['libraryEnabled'];
+        $this->libraryEditing = $this->apiObject['libraryEditing'];
+        $this->libraryReading = $this->apiObject['libraryReading'];
+        $this->fileEditing = $this->apiObject['fileEditing'];
+        
+        if(!empty($this->apiObject['admins'])){
+            $this->adminIDs = $this->apiObject['admins'];
+        }
+        else {
+            $this->adminIDs = array();
+        }
+        
+        if(!empty($this->apiObject['members'])){
+            $this->memberIDs = $this->apiObject['members'];
+        }
+        else{
+            $this->memberIDs = array();
+        }
         
         $this->numItems = $entryNode->getElementsByTagNameNS('*', 'numItems')->item(0)->nodeValue;
         
@@ -1921,7 +1927,7 @@ class Zotero_Creator
     }
 }
 
-const LIBZOTERO_DEBUG = 0;
+define('LIBZOTERO_DEBUG', 0);
 function libZoteroDebug($m){
     if(LIBZOTERO_DEBUG){
         echo $m;
@@ -1931,7 +1937,7 @@ function libZoteroDebug($m){
 
 class Zotero_Library
 {
-    const ZOTERO_URI = 'https://apidev.zotero.org';
+    const ZOTERO_URI = 'https://api.zotero.org';
     protected $_apiKey = '';
     protected $_ch = null;
     public $libraryType = null;
@@ -1946,7 +1952,7 @@ class Zotero_Library
     protected $_lastResponse = null;
     protected $_lastFeed = null;
     
-    public function __construct($libraryType = null, $libraryID = null, $libraryUrlIdentifier = null, $apiKey = null, $baseWebsiteUrl="http://www.zotero.org")
+    public function __construct($libraryType = null, $libraryID = 'me', $libraryUrlIdentifier = null, $apiKey = null, $baseWebsiteUrl="http://www.zotero.org")
     {
         $this->_apiKey = $apiKey;
         if (extension_loaded('curl')) {
@@ -2140,6 +2146,7 @@ class Zotero_Library
                                  'itemKey',
                                  'tag',
                                  'tagType',
+                                 'style',
                                  );
         //build simple api query parameters object
         if((!isset($passedParams['key'])) && $this->_apiKey){

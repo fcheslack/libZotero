@@ -280,7 +280,8 @@ class Zotero_Item extends Zotero_Entry
         //save raw Content node in case we need it
         if($entryNode->getElementsByTagName("content")->length > 0){
             $d = $entryNode->ownerDocument;
-            $this->content = $d->saveXml($entryNode->getElementsByTagName("content")->item(0));
+            $this->contentNode = $entryNode->getElementsByTagName("content")->item(0);
+            $this->content = $d->saveXml($this->contentNode);
         }
         
         // Extract the itemId and itemType

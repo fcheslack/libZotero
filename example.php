@@ -16,7 +16,6 @@ foreach($tags as $tag){
         echo $tag->name . " - has no items\n"; 
     }
 }
-$items = $library->loadItems(array('tag'=>'zotero'));
 */
 
 //get groups the key has access to
