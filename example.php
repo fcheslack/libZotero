@@ -30,13 +30,13 @@ $r = $library->getAccessibleGroups($userID);
 //$permissions = $library->getKeyPermissions();
 
 //load some existing items
-
+/*
 $items = $library->loadItemsTop(array('limit'=>10));
 foreach($items as $item){
     echo "Top level item with title: " . $item->get('title') . "\n";
 }
 var_dump($items);die;
-
+*/
 /*
 //load the items currently in the trash
 $items = $library->loadTrashedItems(array('limit'=>10));
@@ -48,6 +48,7 @@ foreach($items as $item){
 */
 
 //create a new item of type book
+/*
 $newItem = $library->getTemplateItem('book');
 $newItem->set('title', 'This is a book');
 $newItem->set('abstractNote', 'Created using a zotero php library and the write api');
@@ -68,6 +69,7 @@ if($addNoteResponse->isError()){
     die("error adding child note to item");
 }
 echo "added child note\n";
+*/
 /*
 $existingItem->set('date', '2011');
 //$existingItem->set('deleted', 1);

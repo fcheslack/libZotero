@@ -63,48 +63,14 @@ class Zotero_Collections
         }
         return $topCollections;
     }
+    
+    public function collectionsJson(){
+        $collections = array();
+        foreach($this->collectionObjects as $collection){
+            $collections[] = $collection->dataObject();
+        }
+        
+        return json_encode($collections);
+    }
 }
 
-/*
-public function assignDepths($depth, $cArray){
-    var insertchildren = function(depth, children){
-        J.each(children, function(index, col){
-            col.nestingDepth = depth;
-            if(col.hasChildren){
-                insertchildren((depth + 1), col.entries);
-            }
-        });
-    };
-    foreach($this->collectionsArray as $index=>$collection){
-        if($collection->topLevel){
-            $collection->nestingDepth = depth;
-            if($collection->hasChildren){
-                $this->assignDepths(2, collection.entries);
-            }
-        }
-    });
-}
-*/
-/*
-Zotero.Collections.prototype.nestedOrderingArray = function(){
-    Z.debug("Zotero.Collections.nestedOrderingArray", 3);
-    var nested = [];
-    var insertchildren = function(a, children){
-        J.each(children, function(index, col){
-            a.push(col);
-            if(col.hasChildren){
-                insertchildren(a, col.entries);
-            }
-        });
-    };
-    J.each(this.collectionsArray, function(index, collection){
-        if(collection.topLevel){
-            nested.push(collection);
-            if(collection.hasChildren){
-                insertchildren(nested, collection.entries);
-            }
-        }
-    });
-    return nested;
-};
-*/

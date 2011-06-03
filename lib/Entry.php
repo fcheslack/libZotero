@@ -53,13 +53,15 @@ class Zotero_Entry
       // Get all of the link elements
       foreach($entryNode->getElementsByTagName("link") as $linkNode){
           if($linkNode->getAttribute('rel') == "enclosure"){
-              $this->links[$linkNode->getAttribute('rel')][$linkNode->getAttribute('type')] = array(
+              $this->links['enclosure'][$linkNode->getAttribute('type')] = array(
                                           'href'=>$linkNode->getAttribute('href'), 
                                           'title'=>$linkNode->getAttribute('title'), 
                                           'length'=>$linkNode->getAttribute('length'));
           }
           else{
-              $this->links[$linkNode->getAttribute('rel')][$linkNode->getAttribute('type')] = $linkNode->getAttribute('href');
+              $this->links[$linkNode->getAttribute('rel')][$linkNode->getAttribute('type')] = array(
+                                          'href'=>$linkNode->getAttribute('href')
+                                          );
           }
       }
       

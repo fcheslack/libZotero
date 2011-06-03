@@ -215,13 +215,15 @@ class Zotero_Entry
       // Get all of the link elements
       foreach($entryNode->getElementsByTagName("link") as $linkNode){
           if($linkNode->getAttribute('rel') == "enclosure"){
-              $this->links[$linkNode->getAttribute('rel')][$linkNode->getAttribute('type')] = array(
+              $this->links['enclosure'][$linkNode->getAttribute('type')] = array(
                                           'href'=>$linkNode->getAttribute('href'), 
                                           'title'=>$linkNode->getAttribute('title'), 
                                           'length'=>$linkNode->getAttribute('length'));
           }
           else{
-              $this->links[$linkNode->getAttribute('rel')][$linkNode->getAttribute('type')] = $linkNode->getAttribute('href');
+              $this->links[$linkNode->getAttribute('rel')][$linkNode->getAttribute('type')] = array(
+                                          'href'=>$linkNode->getAttribute('href')
+                                          );
           }
       }
       
@@ -306,12 +308,11 @@ class Zotero_Collection extends Zotero_Entry
         $jsonItem->dateAdded = $this->dateAdded;
         $jsonItem->dateUpdated = $this->dateUpdated;
         $jsonItem->id = $this->id;
+        $jsonItem->links = $this->links;
         
         $jsonItem->collectionKey = $this->collectionKey;
-        foreach($this->entries as $entry){
-            $jsonItem->entries[] = $entry->dataObject();
-        }
-        
+        $jsonItem->childKeys = $this->childKeys;
+        $jsonItem->parentCollectionKey = $this->parentCollectionKey;
         return $jsonItem;
     }
 }
@@ -380,51 +381,18 @@ class Zotero_Collections
         }
         return $topCollections;
     }
+    
+    public function collectionsJson(){
+        $collections = array();
+        foreach($this->collectionObjects as $collection){
+            $collections[] = $collection->dataObject();
+        }
+        
+        return json_encode($collections);
+    }
 }
 
-/*
-public function assignDepths($depth, $cArray){
-    var insertchildren = function(depth, children){
-        J.each(children, function(index, col){
-            col.nestingDepth = depth;
-            if(col.hasChildren){
-                insertchildren((depth + 1), col.entries);
-            }
-        });
-    };
-    foreach($this->collectionsArray as $index=>$collection){
-        if($collection->topLevel){
-            $collection->nestingDepth = depth;
-            if($collection->hasChildren){
-                $this->assignDepths(2, collection.entries);
-            }
-        }
-    });
-}
-*/
-/*
-Zotero.Collections.prototype.nestedOrderingArray = function(){
-    Z.debug("Zotero.Collections.nestedOrderingArray", 3);
-    var nested = [];
-    var insertchildren = function(a, children){
-        J.each(children, function(index, col){
-            a.push(col);
-            if(col.hasChildren){
-                insertchildren(a, col.entries);
-            }
-        });
-    };
-    J.each(this.collectionsArray, function(index, collection){
-        if(collection.topLevel){
-            nested.push(collection);
-            if(collection.hasChildren){
-                insertchildren(nested, collection.entries);
-            }
-        }
-    });
-    return nested;
-};
-*/
+
 
 class Zotero_Items
 {
@@ -1409,23 +1377,34 @@ class Zotero_Item extends Zotero_Entry
         $this->itemType = $entryNode->getElementsByTagNameNS('*', 'itemType')->item(0)->nodeValue;
         
         // Look for numChildren node
-        $this->numChildren = $entryNode->getElementsByTagNameNS('*', "numChildren")->item(0)->nodeValue;
+        $numChildrenNode = $entryNode->getElementsByTagNameNS('*', "numChildren")->item(0);
+        if($numChildrenNode){
+            $this->numChildren = $numChildrenNode->nodeValue;
+        }
         
         // Look for numTags node
-        $this->numTags = $entryNode->getElementsByTagNameNS('*', "numTags")->item(0)->nodeValue;
+        $numTagsNode = $entryNode->getElementsByTagNameNS('*', "numTags")->item(0);
+        if($numTagsNode){
+            $this->numTags = $numTagsNode->nodeValue;
+        }
         
-        $this->creatorSummary = $entryNode->getElementsByTagNameNS('*', "creatorSummary")->item(0)->nodeValue;
+        $creatorSummaryNode = $entryNode->getElementsByTagNameNS('*', "creatorSummary")->item(0);
+        if($creatorSummaryNode){
+            $this->creatorSummary = $creatorSummaryNode->nodeValue;
+        }
         
         $contentNode = $entryNode->getElementsByTagName('content')->item(0);
         $contentType = parent::getContentType($entryNode);
         if($contentType == 'application/json'){
             $this->apiObject = json_decode($contentNode->nodeValue, true);
             $this->etag = $contentNode->getAttribute('etag');
+            if(isset($this->apiObject['creators'])){
+                $this->creators = $this->apiObject['creators'];
+            }
+            else{
+                $this->creators = array();
+            }
         }
-        elseif($contentType == 'xhtml'){
-        }
-        
-        
     }
     
     public function get($key){
@@ -1457,6 +1436,7 @@ class Zotero_Item extends Zotero_Entry
     }
     
     public function addCreator($creatorArray){
+        $this->creators[] = $creatorArray;
         $this->apiObject['creators'][] = $creatorArray;
     }
     
@@ -1499,76 +1479,40 @@ class Zotero_Item extends Zotero_Entry
         return $newItem;
     }
     
-    public function parseXhtmlContent($contentNode){
-        //$xpath = new DOMXPath($contentNode);
-        
-        // Pull any fields in the item
-        //$fieldNodes = $xpath->evaluate('//field');
-        foreach($fieldNodes as $field){
-            $fieldName = $field->getAttribute("name");
-            $this->fields[$fieldName] = $field->nodeValue;
-        }
-        
-        //TODO: is this information still available anywhere without content=full?
-        // Get the attributes of the item element (present if content=full)
-        /*
-        foreach($entryNode->getElementsByTagName("item") as $item){
-            $this->mimeType             = $item->getAttribute("mimeType");
-            $this->linkMode             = $item->getAttribute("linkMode");
-            $this->createdByUserID      = $item->getAttribute("createdByUserID");
-            $this->lastModifiedByUserID = $item->getAttribute("lastModifiedByUserID");
-        }
-        */
-        
-        // If there is a note element, get the contents
-        foreach($contentNode->getElementsByTagName("note") as $note){
-            $this->note = $note->nodeValue;
-        }
-        
-        // If there is a creatorSummary element, get the contents
-        // The creatorSummary contains a string that shows primary author, shows just author if there's an editor too,
-        // if there are multiple authors it shows one, two, and/or et al, if there's just an editor it shows that, etc.
-        foreach($contentNode->getElementsByTagName("creatorSummary") as $creatorSummary){
-            $this->creatorSummary = $creatorSummary->nodeValue;
-        }
-        
-        // Extract creators
-        foreach($contentNode->getElementsByTagName("creator") as $creatorNode){
-            
-            // If this is an inner creator node, don't process it
-            if($creatorNode->getElementsByTagName("creator")->length == 0){
-                continue;
-            }
-            
-            // Get some info from the outer creator element's attributes
-            $id           = $creatorNode->getAttribute("id");
-            $index        = $creatorNode->getAttribute("index");
-            $creatorType  = $creatorNode->getAttribute("creatorType");
-            
-            // Pull out the nested creator node and extract it's attributes
-            $creatorNode  = $creatorNode->getElementsByTagName("creator")->item(0);
-            $key          = $creatorNode->getAttribute("key");
-            $dateAdded    = $creatorNode->getAttribute("dataAdded");
-            $dateModified = $creatorNode->getAttribute("dateModified");
-            
-            // Pull out the name
-            if($creatorNode->getElementsByTagName("fieldMode")->length){
-                $name = $creatorNode->getElementsByTagName("name")->item(0)->nodeValue;
-            } else {
-                $name = array("firstName" => $creatorNode->getElementsByTagName("firstName")->item(0)->nodeValue,
-                              "lastName"  => $creatorNode->getElementsByTagName("lastName")->item(0)->nodeValue);
-            }
-            
-            // Add the creator to the creator list
-            $this->creators[$index] = compact("id", "index", "creatorType", "key", "dateAdded", "dateModified", "name");
+    public function isAttachment(){
+        if($this->itemType == 'attachment'){
+            return true;
         }
     }
+    
+    public function hasFile(){
+        if(!$this->isAttachment()){
+            return false;
+        }
+        $hasEnclosure = isset($this->links['enclosure']);
+        $linkMode = $this->apiObject['linkMode'];
+        if($hasEnclosure && ($linkMode == 0 || $linkMode == 1)){
+            return true;
+        }
+    }
+    
+    /*
+    public function downloadLink(){
+        if(!$this->hasFile()){
+            return false;
+        }
+    }
+    */
     
     public function json(){
         return json_encode($this->apiObject());
     }
     
     public function fullItemJSON(){
+        return json_encode($this->fullItemArray());
+    }
+    
+    public function fullItemArray(){
         $jsonItem = array();
         
         //inherited from Entry
@@ -1594,14 +1538,13 @@ class Zotero_Item extends Zotero_Entry
         $jsonItem['mimeType'] = $this->mimeType;
         
         $jsonItem['apiObject'] = $this->apiObject;
-        
-        return json_encode($jsonItem);
+        return $jsonItem;
     }
     
     public function formatItemField($field){
         switch($field){
             case "title":
-                return $this->apiObject['title'];
+                return $this->title;
                 break;
             case "creator":
                 if(isset($this->creatorSummary)){
@@ -1741,6 +1684,28 @@ class Zotero_Group extends Zotero_Entry
             return;
         }
         
+        $contentNode = $entryNode->getElementsByTagName('content')->item(0);
+        $contentType = parent::getContentType($entryNode);
+        if($contentType == 'application/json'){
+            $this->apiObject = json_decode($contentNode->nodeValue, true);
+            //$this->etag = $contentNode->getAttribute('etag');
+        }
+        
+        $this->name = $this->apiObj['name'];
+        $this->ownerID = $this->apiObj['owner'];
+        $this->groupType = $this->apiObj['groupType'];
+        $this->description = $this->apiObj['description'];
+        $this->url = $this->apiObj['url'];
+        $this->libraryEnabled = $this->apiObj['libraryEnabled'];
+        $this->libraryEditing = $this->apiObj['libraryEditing'];
+        $this->libraryReading = $this->apiObj['libraryReading'];
+        $this->fileEditing = $this->apiObj['fileEditing'];
+        $this->adminIDs = $this->apiObj['admins'];
+        $this->memberIDs = $this->apiObj['members'];
+        
+        $this->numItems = $entryNode->getElementsByTagNameNS('*', 'numItems')->item(0)->nodeValue;
+        
+        /*
         // Extract the groupID and groupType
         $groupElements = $entryNode->getElementsByTagName("group");
         $groupElement = $groupElements->item(0);
@@ -1783,6 +1748,8 @@ class Zotero_Group extends Zotero_Entry
         if($members){
             $this->memberIDs = $members === null ? array() : explode(" ", $members->nodeValue);
         }
+        */
+        
         
         //initially disallow library access
         $this->userReadable = false;
@@ -2139,6 +2106,12 @@ class Zotero_Library
                 case 'children':
                     $url .= '/children';
                     break;
+                case 'file':
+                    if($params['target'] != 'item'){
+                        throw new Exception('Trying to get file on non-item target');
+                    }
+                    $url .= '/file';
+                    break;
             }
         }
         //print "apiRequestUrl: " . $url . "\n";
@@ -2342,6 +2315,11 @@ class Zotero_Library
             $this->items->addItem($item);
             return $item;
         }
+    }
+    
+    public function itemDownloadLink($itemKey){
+        $aparams = array('target'=>'item', 'itemKey'=>$itemKey, 'targetModifier'=>'file');
+        return $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
     }
     
     public function writeUpdatedItem($item){
@@ -2641,7 +2619,8 @@ class Zotero_Library
         if($response->isError()){
             return false;
         }
-        /*$doc = new DOMDocument();
+        
+        $doc = new DOMDocument();
         $doc->loadXml($response->getBody());
         $entries = $doc->getElementsByTagName('entry');
         $groups = array();
@@ -2650,8 +2629,6 @@ class Zotero_Library
             $groups[] = $group;
         }
         return $groups;
-        */
-        return $response;
     }
     
 }

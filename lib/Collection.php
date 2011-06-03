@@ -71,12 +71,11 @@ class Zotero_Collection extends Zotero_Entry
         $jsonItem->dateAdded = $this->dateAdded;
         $jsonItem->dateUpdated = $this->dateUpdated;
         $jsonItem->id = $this->id;
+        $jsonItem->links = $this->links;
         
         $jsonItem->collectionKey = $this->collectionKey;
-        foreach($this->entries as $entry){
-            $jsonItem->entries[] = $entry->dataObject();
-        }
-        
+        $jsonItem->childKeys = $this->childKeys;
+        $jsonItem->parentCollectionKey = $this->parentCollectionKey;
         return $jsonItem;
     }
 }
