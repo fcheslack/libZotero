@@ -9,7 +9,7 @@ function libZoteroDebug($m){
 
 class Zotero_Library
 {
-    const ZOTERO_URI = 'https://apidev.zotero.org';
+    const ZOTERO_URI = 'https://api.zotero.org';
     protected $_apiKey = '';
     protected $_ch = null;
     public $libraryType = null;
@@ -184,6 +184,12 @@ class Zotero_Library
                 case 'children':
                     $url .= '/children';
                     break;
+                case 'file':
+                    if($params['target'] != 'item'){
+                        throw new Exception('Trying to get file on non-item target');
+                    }
+                    $url .= '/file';
+                    break;
             }
         }
         //print "apiRequestUrl: " . $url . "\n";
@@ -212,6 +218,7 @@ class Zotero_Library
                                  'itemKey',
                                  'tag',
                                  'tagType',
+                                 'style',
                                  );
         //build simple api query parameters object
         if((!isset($passedParams['key'])) && $this->_apiKey){
@@ -387,6 +394,11 @@ class Zotero_Library
             $this->items->addItem($item);
             return $item;
         }
+    }
+    
+    public function itemDownloadLink($itemKey){
+        $aparams = array('target'=>'item', 'itemKey'=>$itemKey, 'targetModifier'=>'file');
+        return $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
     }
     
     public function writeUpdatedItem($item){
@@ -686,7 +698,8 @@ class Zotero_Library
         if($response->isError()){
             return false;
         }
-        /*$doc = new DOMDocument();
+        
+        $doc = new DOMDocument();
         $doc->loadXml($response->getBody());
         $entries = $doc->getElementsByTagName('entry');
         $groups = array();
@@ -695,8 +708,6 @@ class Zotero_Library
             $groups[] = $group;
         }
         return $groups;
-        */
-        return $response;
     }
     
 }
