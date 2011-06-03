@@ -279,7 +279,8 @@ class Zotero_Item extends Zotero_Entry
         
         //save raw Content node in case we need it
         if($entryNode->getElementsByTagName("content")->length > 0){
-            $this->content = $entryNode->getElementsByTagName("content")->item(0)->nodeValue;
+            $d = $entryNode->ownerDocument;
+            $this->content = $d->saveXml($entryNode->getElementsByTagName("content")->item(0));
         }
         
         // Extract the itemId and itemType
@@ -308,10 +309,13 @@ class Zotero_Item extends Zotero_Entry
         if($contentType == 'application/json'){
             $this->apiObject = json_decode($contentNode->nodeValue, true);
             $this->etag = $contentNode->getAttribute('etag');
-            $this->creators = $this->apiObject['creators'];
+            if(isset($this->apiObject['creators'])){
+                $this->creators = $this->apiObject['creators'];
+            }
+            else{
+                $this->creators = array();
+            }
         }
-        
-        
     }
     
     public function get($key){
@@ -401,13 +405,6 @@ class Zotero_Item extends Zotero_Entry
         if($hasEnclosure && ($linkMode == 0 || $linkMode == 1)){
             return true;
         }
-    }
-    
-    public function downloadLink(){
-        if(!$this->hasFile()){
-            return false;
-        }
-        
     }
     
     public function json(){
