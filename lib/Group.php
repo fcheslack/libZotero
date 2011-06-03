@@ -112,6 +112,28 @@ class Zotero_Group extends Zotero_Entry
             return;
         }
         
+        $contentNode = $entryNode->getElementsByTagName('content')->item(0);
+        $contentType = parent::getContentType($entryNode);
+        if($contentType == 'application/json'){
+            $this->apiObject = json_decode($contentNode->nodeValue, true);
+            //$this->etag = $contentNode->getAttribute('etag');
+        }
+        
+        $this->name = $this->apiObj['name'];
+        $this->ownerID = $this->apiObj['owner'];
+        $this->groupType = $this->apiObj['groupType'];
+        $this->description = $this->apiObj['description'];
+        $this->url = $this->apiObj['url'];
+        $this->libraryEnabled = $this->apiObj['libraryEnabled'];
+        $this->libraryEditing = $this->apiObj['libraryEditing'];
+        $this->libraryReading = $this->apiObj['libraryReading'];
+        $this->fileEditing = $this->apiObj['fileEditing'];
+        $this->adminIDs = $this->apiObj['admins'];
+        $this->memberIDs = $this->apiObj['members'];
+        
+        $this->numItems = $entryNode->getElementsByTagNameNS('*', 'numItems')->item(0)->nodeValue;
+        
+        /*
         // Extract the groupID and groupType
         $groupElements = $entryNode->getElementsByTagName("group");
         $groupElement = $groupElements->item(0);
@@ -154,6 +176,8 @@ class Zotero_Group extends Zotero_Entry
         if($members){
             $this->memberIDs = $members === null ? array() : explode(" ", $members->nodeValue);
         }
+        */
+        
         
         //initially disallow library access
         $this->userReadable = false;
