@@ -6,7 +6,7 @@ $library = new Zotero_Library($libraryType, $userID, $userSlug, $apiKey);
 
 
 //get some tags
-/*
+
 $tags = $library->fetchTags(array('limit'=>5, 'order'=>'title', 'sort'=>'desc'));
 foreach($tags as $tag){
     if($tag->numItems > 0){
@@ -16,7 +16,7 @@ foreach($tags as $tag){
         echo $tag->name . " - has no items\n"; 
     }
 }
-*/
+
 
 //get groups the key has access to
 //need more complete groups information in normal responses before this is useful

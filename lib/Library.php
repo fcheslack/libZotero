@@ -23,8 +23,10 @@ class Zotero_Library
     public $useLibraryAsContainer = true;
     protected $_lastResponse = null;
     protected $_lastFeed = null;
+    protected $_cacheResponses = false;
+    protected $_cachettl = 0;
     
-    public function __construct($libraryType = null, $libraryID = 'me', $libraryUrlIdentifier = null, $apiKey = null, $baseWebsiteUrl="http://www.zotero.org")
+    public function __construct($libraryType = null, $libraryID = 'me', $libraryUrlIdentifier = null, $apiKey = null, $baseWebsiteUrl="http://www.zotero.org", $cachettl=0)
     {
         $this->_apiKey = $apiKey;
         if (extension_loaded('curl')) {
@@ -49,6 +51,10 @@ class Zotero_Library
         $this->collections->libraryUrlIdentifier = $this->libraryUrlIdentifier;
         
         $this->dirty = false;
+        if($cachettl > 0){
+            $this->_cachettl = $cachettl;
+            $this->_cacheResponses = true;
+        }
     }
     
     /**
@@ -90,23 +96,51 @@ class Zotero_Library
                 break;
         }
         
-        $responseBody = curl_exec($ch);
-        $responseInfo = curl_getinfo($ch);
-        //libZoteroDebug( "{$method} url:" . $url . "\n");
-        //libZoteroDebug( "%%%%%" . $responseBody . "%%%%%\n\n");
-        $zresponse = libZotero_Http_Response::fromString($responseBody);
+        $gotCached = false;
+        if($this->_cacheResponses && $umethod == 'GET'){
+            $cachedResponse = apc_fetch($url, $success);
+            if($success){
+                $responseBody = $cachedResponse['responseBody'];
+                $responseInfo = $cachedResponse['responseInfo'];
+                $zresponse = libZotero_Http_Response::fromString($responseBody);
+                $gotCached = true;
+            }
+        }
         
-        //Zend Response does not parse out the multiple sets of headers returned when curl automatically follows
-        //a redirect and the new headers are left in the body. Zend_Http_Client gets around this by manually
-        //handling redirects. That may end up being a better solution, but for now we'll just re-read responses
-        //until a non-redirect is read
-        while($zresponse->isRedirect()){
-            $redirectedBody = $zresponse->getBody();
-            $zresponse = libZotero_Http_Response::fromString($redirectedBody);
+        if(!$gotCached){
+            $responseBody = curl_exec($ch);
+            $responseInfo = curl_getinfo($ch);
+            //libZoteroDebug( "{$method} url:" . $url . "\n");
+            //libZoteroDebug( "%%%%%" . $responseBody . "%%%%%\n\n");
+            $zresponse = libZotero_Http_Response::fromString($responseBody);
+            
+            //Zend Response does not parse out the multiple sets of headers returned when curl automatically follows
+            //a redirect and the new headers are left in the body. Zend_Http_Client gets around this by manually
+            //handling redirects. That may end up being a better solution, but for now we'll just re-read responses
+            //until a non-redirect is read
+            while($zresponse->isRedirect()){
+                $redirectedBody = $zresponse->getBody();
+                $zresponse = libZotero_Http_Response::fromString($redirectedBody);
+            }
+            
+            $saveCached = array(
+                'responseBody'=>$responseBody,
+                'responseInfo'=>$responseInfo,
+            );
+            apc_store($url, $saveCached, $this->_cachettl);
         }
         $this->lastResponse = $zresponse;
         return $zresponse;
     }
+    
+    public function _cacheSave(){
+        
+    }
+    
+    public function _cacheLoad(){
+        
+    }
+    
     
     public function getLastResponse(){
         return $this->_lastResponse;
