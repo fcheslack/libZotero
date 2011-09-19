@@ -64,6 +64,17 @@ class Zotero_Library
         curl_close($this->_ch);
     }
     
+    public function setCacheTtl($cachettl){
+        if($cachettl == 0){
+            $this->_cacheResponses = false;
+            $this->_cachettl = 0;
+        }
+        else{
+            $this->_cacheResponses = true;
+            $this->_cachettl = $cachettl;
+        }
+    }
+    
     public function _request($url, $method="GET", $body=NULL, $headers=array()) {
         libZoteroDebug( "url being requested: " . $url . "\n\n");
         $httpHeaders = array();
