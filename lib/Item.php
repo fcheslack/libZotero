@@ -320,11 +320,27 @@ class Zotero_Item extends Zotero_Entry
     }
     
     public function get($key){
-        if($key == 'creators' || $key == 'tags'){
+        if($key == 'tags'){
+            if(isset($this->apiObject['tags'])){
+                return $this->apiObject['tags'];
+            }
+        }
+        elseif($key == 'creators'){
             //special case
+            if(isset($this->apiObject['creators'])){
+                return $this->apiObject['creators'];
+            }
         }
         else{
             if(in_array($key, array_keys(Zotero_Item::$fieldMap))){
+                if(isset($this->apiObject[$key])){
+                    return $this->apiObject[$key];
+                }
+                else{
+                    return null;
+                }
+            }
+            else{
                 if(isset($this->apiObject[$key])){
                     return $this->apiObject[$key];
                 }
@@ -337,7 +353,7 @@ class Zotero_Item extends Zotero_Entry
     
     public function set($key, $val){
         if($key == 'creators' || $key == 'tags'){
-            //TODO: special case emtpy value and correctly in arrays
+            //TODO: special case empty value and correctly in arrays
             $this->apiObject[$key] = $val;
         }
         else{

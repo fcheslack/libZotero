@@ -15,4 +15,15 @@ class Zotero_Items
         $itemKey = $item->itemKey;
         $this->itemObjects[$itemKey] = $item;
     }
+    
+    public function addItemsFromFeed($feed) {
+        $entries = $feed->entryNodes;
+        $addedItems = array();
+        foreach($entries as $entry){
+            $item = new Zotero_Item($entry);
+            $this->items->addItem($item);
+            $addedItems[] = $item;
+        }
+        return $addedItems;
+    }
 }

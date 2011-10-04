@@ -1410,11 +1410,25 @@ class Zotero_Item extends Zotero_Entry
     }
     
     public function get($key){
-        if($key == 'creators' || $key == 'tags'){
+        if($key == 'tags'){
+            if(isset($this->apiObject['tags'])){
+                return $this->apiObject['tags'];
+            }
+        }
+        elseif($key == 'creators'){
             //special case
+            
         }
         else{
             if(in_array($key, array_keys(Zotero_Item::$fieldMap))){
+                if(isset($this->apiObject[$key])){
+                    return $this->apiObject[$key];
+                }
+                else{
+                    return null;
+                }
+            }
+            else{
                 if(isset($this->apiObject[$key])){
                     return $this->apiObject[$key];
                 }
@@ -1951,8 +1965,10 @@ class Zotero_Library
     public $useLibraryAsContainer = true;
     protected $_lastResponse = null;
     protected $_lastFeed = null;
+    protected $_cacheResponses = false;
+    protected $_cachettl = 0;
     
-    public function __construct($libraryType = null, $libraryID = 'me', $libraryUrlIdentifier = null, $apiKey = null, $baseWebsiteUrl="http://www.zotero.org")
+    public function __construct($libraryType = null, $libraryID = 'me', $libraryUrlIdentifier = null, $apiKey = null, $baseWebsiteUrl="http://www.zotero.org", $cachettl=0)
     {
         $this->_apiKey = $apiKey;
         if (extension_loaded('curl')) {
@@ -1977,6 +1993,10 @@ class Zotero_Library
         $this->collections->libraryUrlIdentifier = $this->libraryUrlIdentifier;
         
         $this->dirty = false;
+        if($cachettl > 0){
+            $this->_cachettl = $cachettl;
+            $this->_cacheResponses = true;
+        }
     }
     
     /**
@@ -1984,6 +2004,17 @@ class Zotero_Library
      */
     public function __destruct() {
         curl_close($this->_ch);
+    }
+    
+    public function setCacheTtl($cachettl){
+        if($cachettl == 0){
+            $this->_cacheResponses = false;
+            $this->_cachettl = 0;
+        }
+        else{
+            $this->_cacheResponses = true;
+            $this->_cachettl = $cachettl;
+        }
     }
     
     public function _request($url, $method="GET", $body=NULL, $headers=array()) {
@@ -2018,23 +2049,51 @@ class Zotero_Library
                 break;
         }
         
-        $responseBody = curl_exec($ch);
-        $responseInfo = curl_getinfo($ch);
-        //libZoteroDebug( "{$method} url:" . $url . "\n");
-        //libZoteroDebug( "%%%%%" . $responseBody . "%%%%%\n\n");
-        $zresponse = libZotero_Http_Response::fromString($responseBody);
+        $gotCached = false;
+        if($this->_cacheResponses && $umethod == 'GET'){
+            $cachedResponse = apc_fetch($url, $success);
+            if($success){
+                $responseBody = $cachedResponse['responseBody'];
+                $responseInfo = $cachedResponse['responseInfo'];
+                $zresponse = libZotero_Http_Response::fromString($responseBody);
+                $gotCached = true;
+            }
+        }
         
-        //Zend Response does not parse out the multiple sets of headers returned when curl automatically follows
-        //a redirect and the new headers are left in the body. Zend_Http_Client gets around this by manually
-        //handling redirects. That may end up being a better solution, but for now we'll just re-read responses
-        //until a non-redirect is read
-        while($zresponse->isRedirect()){
-            $redirectedBody = $zresponse->getBody();
-            $zresponse = libZotero_Http_Response::fromString($redirectedBody);
+        if(!$gotCached){
+            $responseBody = curl_exec($ch);
+            $responseInfo = curl_getinfo($ch);
+            //libZoteroDebug( "{$method} url:" . $url . "\n");
+            //libZoteroDebug( "%%%%%" . $responseBody . "%%%%%\n\n");
+            $zresponse = libZotero_Http_Response::fromString($responseBody);
+            
+            //Zend Response does not parse out the multiple sets of headers returned when curl automatically follows
+            //a redirect and the new headers are left in the body. Zend_Http_Client gets around this by manually
+            //handling redirects. That may end up being a better solution, but for now we'll just re-read responses
+            //until a non-redirect is read
+            while($zresponse->isRedirect()){
+                $redirectedBody = $zresponse->getBody();
+                $zresponse = libZotero_Http_Response::fromString($redirectedBody);
+            }
+            
+            $saveCached = array(
+                'responseBody'=>$responseBody,
+                'responseInfo'=>$responseInfo,
+            );
+            apc_store($url, $saveCached, $this->_cachettl);
         }
         $this->lastResponse = $zresponse;
         return $zresponse;
     }
+    
+    public function _cacheSave(){
+        
+    }
+    
+    public function _cacheLoad(){
+        
+    }
+    
     
     public function getLastResponse(){
         return $this->_lastResponse;
@@ -2468,10 +2527,27 @@ class Zotero_Library
     }
     
     public function fetchItemChildren($item){
-        $aparams = array('target'=>'children', 'itemKey'=>$item->itemKey);
+        $aparams = array('target'=>'children', 'itemKey'=>$item->itemKey, 'content'=>'json');
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $response = $this->_request($reqUrl, 'GET');
-        return $response;
+        
+        //load response into item objects
+        $fetchedItems = array();
+        if($response->isError()){
+            throw new Exception("Error fetching items");
+        }
+        $body = $response->getRawBody();
+        $doc = new DOMDocument();
+        $doc->loadXml($body);
+        $feed = new Zotero_Feed($doc);
+        $entries = $doc->getElementsByTagName("entry");
+        foreach($entries as $entry){
+            $item = new Zotero_Item($entry);
+            $this->items->addItem($item);
+            $fetchedItems[] = $item;
+        }
+        $this->_lastFeed = $feed;
+        return $fetchedItems;
     }
     
     public function getItemTypes(){

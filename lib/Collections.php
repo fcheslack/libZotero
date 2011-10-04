@@ -34,6 +34,17 @@ class Zotero_Collections
         return false;
     }
     
+    public function addCollectionsFromFeed($feed) {
+        $entries = $feed->entryNodes;
+        $addedCollections = array();
+        foreach($entries as $entry){
+            $collection = new Zotero_Collection($entry);
+            $this->collections->addCollection($collection);
+            $addedCollections[] = $collection;
+        }
+        return $addedCollections;
+    }
+    
     //add keys of child collections to array
     public function nestCollections(){
         foreach($this->collectionObjects as $key=>$collection){

@@ -48,7 +48,9 @@ class Zotero_Feed
      * @var array
      */
     public $entries = array();
-
+    
+    public $entryNodes;
+    
     public function __construct($doc)
     {
         foreach($doc->getElementsByTagName("feed") as $feed){
@@ -65,8 +67,9 @@ class Zotero_Feed
                     $this->links[$linkNode->getAttribute('rel')] = array('type'=>$linkNode->getAttribute('type'), 'href'=>$linkNode->getAttribute('href'));
                 }
             }
-            /*
+            
             $entryNodes = $doc->getElementsByTagName("entry");
+            $this->entryNodes = $entryNodes;
             
             //detect zotero entry type with sample entry node and parse entries appropriately
             $firstEntry = $entryNodes->item(0);
