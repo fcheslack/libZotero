@@ -277,12 +277,16 @@ class Zotero_Item extends Zotero_Entry
         
         parent::__construct($entryNode);
         
+        //check if we have multiple subcontent nodes
+        $subcontentNodes = $entryNode->getElementsByTagNameNS("*", "subcontent");
+        
         //save raw Content node in case we need it
         if($entryNode->getElementsByTagName("content")->length > 0){
             $d = $entryNode->ownerDocument;
             $this->contentNode = $entryNode->getElementsByTagName("content")->item(0);
             $this->content = $d->saveXml($this->contentNode);
         }
+        
         
         // Extract the itemId and itemType
         $this->itemKey = $entryNode->getElementsByTagNameNS('*', 'key')->item(0)->nodeValue;
@@ -305,16 +309,41 @@ class Zotero_Item extends Zotero_Entry
             $this->creatorSummary = $creatorSummaryNode->nodeValue;
         }
         
-        $contentNode = $entryNode->getElementsByTagName('content')->item(0);
-        $contentType = parent::getContentType($entryNode);
-        if($contentType == 'application/json'){
-            $this->apiObject = json_decode($contentNode->nodeValue, true);
-            $this->etag = $contentNode->getAttribute('etag');
-            if(isset($this->apiObject['creators'])){
-                $this->creators = $this->apiObject['creators'];
+        if($subcontentNodes->length > 0){
+            for($i = 0; $i < $subcontentNodes->length; $i++){
+                $scnode = $subcontentNodes->item($i);
+                $type = $scnode->getAttribute('zapi:type');
+                if($type == 'application/json' || $type == 'json'){
+                    $this->apiObject = json_decode($scnode->nodeValue, true);
+                    $this->etag = $scnode->getAttribute('zapi:etag');
+                    if(isset($this->apiObject['creators'])){
+                        $this->creators = $this->apiObject['creators'];
+                    }
+                    else{
+                        $this->creators = array();
+                    }
+                }
+                elseif($type == 'bib'){
+                    $bibNode = $scnode->getElementsByTagName('div')->item(0);
+                    $this->bibContent = $bibNode->ownerDocument->saveXML($bibNode);
+                }
+                else{
+                    throw new Exception("Unknown zapi:subcontent type " . $type);
+                }
             }
-            else{
-                $this->creators = array();
+        }
+        else{
+            $contentNode = $entryNode->getElementsByTagName('content')->item(0);
+            $contentType = parent::getContentType($entryNode);
+            if($contentType == 'application/json' || $contentType == 'json'){
+                $this->apiObject = json_decode($contentNode->nodeValue, true);
+                $this->etag = $contentNode->getAttribute('etag');
+                if(isset($this->apiObject['creators'])){
+                    $this->creators = $this->apiObject['creators'];
+                }
+                else{
+                    $this->creators = array();
+                }
             }
         }
     }

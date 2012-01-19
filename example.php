@@ -4,9 +4,16 @@ require_once './config.php'; //library credentials
 require_once './build/libZoteroSingle.php';
 $library = new Zotero_Library($libraryType, $userID, $userSlug, $apiKey);
 
-
+/*
+$cv = $library->getCV('10150');
+foreach($cv as $section){
+    echo $section;
+    echo "<br /><br />";
+}
+die;
+*/
 //get some tags
-
+/*
 $tags = $library->fetchTags(array('limit'=>5, 'order'=>'title', 'sort'=>'desc'));
 foreach($tags as $tag){
     if($tag->numItems > 0){
@@ -16,7 +23,7 @@ foreach($tags as $tag){
         echo $tag->name . " - has no items\n"; 
     }
 }
-
+*/
 
 //get groups the key has access to
 //need more complete groups information in normal responses before this is useful
@@ -36,6 +43,21 @@ foreach($items as $item){
 }
 var_dump($items);die;
 */
+
+/*
+//load a couple items with multiple content types
+$items = $library->loadItemsTop(array('limit'=>2, 'content'=>'json,bib'));
+foreach($items as $item){
+    echo "Top level item with title: " . $item->get('title') . "\n";
+}
+var_dump($items);die;
+*/
+
+//load all itemkeys in the library
+$itemKeys = $library->loadItemKeys();
+echo "ItemKeys in the library \n\n";
+var_dump($itemKeys);die;
+
 /*
 //load the items currently in the trash
 $items = $library->loadTrashedItems(array('limit'=>10));

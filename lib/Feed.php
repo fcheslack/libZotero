@@ -70,7 +70,7 @@ class Zotero_Feed
             
             $entryNodes = $doc->getElementsByTagName("entry");
             $this->entryNodes = $entryNodes;
-            
+            /*
             //detect zotero entry type with sample entry node and parse entries appropriately
             $firstEntry = $entryNodes->item(0);
             $this->entryType = $this->detectZoteroEntryType($firstEntry);

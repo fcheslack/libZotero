@@ -21,7 +21,7 @@ class Zotero_Items
         $addedItems = array();
         foreach($entries as $entry){
             $item = new Zotero_Item($entry);
-            $this->items->addItem($item);
+            $this->addItem($item);
             $addedItems[] = $item;
         }
         return $addedItems;

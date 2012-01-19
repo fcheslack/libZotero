@@ -69,7 +69,7 @@ class Zotero_Entry
     
     public function getContentType($entryNode){
       $contentNode = $entryNode->getElementsByTagName('content')->item(0);
-      if($contentNode) return $contentNode->getAttribute('type');
+      if($contentNode) return $contentNode->getAttribute('type') || $contentNode->getAttribute('zapi:type');
       else return false;
     }
     

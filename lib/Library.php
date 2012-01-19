@@ -224,7 +224,20 @@ class Zotero_Library
             throw new Exception("No target defined for api request");
         }
         
-        $url = $base . '/' . $this->libraryType . 's/' . $this->libraryID;
+        //special case for www based api requests until those methods are mapped for api.zotero
+        if($params['target'] == 'user' || $params['target'] == 'cv'){
+            $base = 'https://www.zotero.org/api';
+        }
+        
+        //allow overriding of libraryType and ID in params if they are passed
+        //otherwise use the settings for this instance of library
+        if(!empty($params['libraryType']) && !empty($params['libraryID'])){
+            $url = $base . '/' . $params['libraryType'] . 's/' . $params['libraryID'];
+        }
+        else{
+            $url = $base . '/' . $this->libraryType . 's/' . $this->libraryID;
+        }
+        
         if(!empty($params['collectionKey'])){
             $url .= '/collections/' . $params['collectionKey'];
         }
@@ -263,6 +276,9 @@ class Zotero_Library
                 break;
             case 'trash':
                 $url .= '/items/trash';
+                break;
+            case 'cv':
+                $url .= '/cv';
                 break;
             default:
                 return false;
@@ -317,6 +333,7 @@ class Zotero_Library
                                  'tag',
                                  'tagType',
                                  'style',
+                                 'format'
                                  );
         //build simple api query parameters object
         if((!isset($passedParams['key'])) && $this->_apiKey){
@@ -439,6 +456,29 @@ class Zotero_Library
     public function loadItemsTop($params=array()){
         $params['targetModifier'] = 'top';
         return $this->loadItems($params);
+    }
+    
+    /**
+     * Make a single request loading item keys
+     *
+     * @param array $params list of parameters that define the request
+     * @return array of fetched items
+     */
+    public function loadItemKeys($params=array()){
+        $fetchedKeys = array();
+        $aparams = array_merge(array('target'=>'items', 'format'=>'keys'), array('key'=>$this->_apiKey), $params);
+        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
+        libZoteroDebug( "\n" );
+        libZoteroDebug( $reqUrl . "\n" );
+        //die;
+        $response = $this->_request($reqUrl);
+        if($response->isError()){
+            throw new Exception("Error fetching items");
+        }
+        $body = $response->getRawBody();
+        $fetchedKeys = explode("\n", $body);
+        
+        return $fetchedKeys;
     }
     
     /**
@@ -568,19 +608,6 @@ class Zotero_Library
         $aparams = array('target'=>'items');
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $response = $this->_request($reqUrl, 'POST', $createItemJson);
-        return $response;
-    }
-    
-    /**
-     * Permanently delete an item from the API
-     *
-     * @param Zotero_Item $item
-     * @return Zotero_Response
-     */
-    public function deleteItem($item){
-        $aparams = array('target'=>'item', 'itemKey'=>$item->itemKey);
-        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
-        $response = $this->_request($reqUrl, 'DELETE', null, array('If-Match'=>$item->etag));
         return $response;
     }
     
@@ -992,6 +1019,36 @@ class Zotero_Library
             $groups[] = $group;
         }
         return $groups;
+    }
+    
+    /**
+     * Get CV for a user
+     *
+     * @param string $userID
+     * @return array $groups
+     */
+    public function getCV($userID=''){
+        if($userID == '' && $this->libraryType == 'user'){
+            $userID = $this->libraryID;
+        }
+        $aparams = array('target'=>'cv', 'libraryType'=>'user', 'libraryID'=>$userID);
+        $reqUrl = $this->apiRequestUrl($aparams);// . $this->apiQueryString($aparams);
+        
+        $response = $this->_request($reqUrl, 'GET');
+        if($response->isError()){
+            var_dump($response);
+            return false;
+        }
+        
+        $doc = new DOMDocument();
+        $doc->loadXml($response->getBody());
+        $sectionNodes = $doc->getElementsByTagNameNS('*', 'cvsection');
+        $sections = array();
+        foreach($sectionNodes as $sectionNode){
+            $c = $sectionNode->nodeValue;
+            $sections[] = $c;
+        }
+        return $sections;
     }
     
 }
