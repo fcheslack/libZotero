@@ -337,7 +337,7 @@ class Zotero_Item extends Zotero_Entry
             $contentType = parent::getContentType($entryNode);
             if($contentType == 'application/json' || $contentType == 'json'){
                 $this->apiObject = json_decode($contentNode->nodeValue, true);
-                $this->etag = $contentNode->getAttribute('etag');
+                $this->etag = $contentNode->getAttribute('zapi:etag');
                 if(isset($this->apiObject['creators'])){
                     $this->creators = $this->apiObject['creators'];
                 }
@@ -517,5 +517,10 @@ class Zotero_Item extends Zotero_Entry
                     return '';
                 }
         }
+    }
+    
+    public function compareItem($otherItem){
+        $diff = array_diff_assoc($this->apiObject, $otherItem->apiObject);
+        return $diff;
     }
 }

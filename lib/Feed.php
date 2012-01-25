@@ -53,6 +53,12 @@ class Zotero_Feed
     
     public function __construct($doc)
     {
+        if(!($doc instanceof DOMDocument)){
+            $domdoc = new DOMDocument();
+            $domdoc->loadXml($doc);
+            $doc = $domdoc;
+        }
+        
         foreach($doc->getElementsByTagName("feed") as $feed){
             $this->title        = $feed->getElementsByTagName("title")->item(0)->nodeValue;
             $this->id           = $feed->getElementsByTagName("id")->item(0)->nodeValue;

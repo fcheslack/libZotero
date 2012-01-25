@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 //concatenate php files into a single file to include
 $files = array(
@@ -28,5 +29,35 @@ foreach($files as $file){
 $fullText .= "?>";
 
 file_put_contents('../build/libZoteroSingle.php', $fullText);
+
+
+//concatenate js files into a single file to include
+$jsfiles = array(
+'Base.js',
+'Ajax.js',
+'Feed.js',
+'Library.js',
+'Entry.js',
+'Collections.js',
+'Items.js',
+'Tags.js',
+'Collection.js',
+'Item.js',
+'Tag.js',
+'Group.js',
+'User.js',
+'Utils.js',
+'Url.js'
+);
+
+$fulljs = "";
+
+foreach($jsfiles as $file){
+    $ftext = file_get_contents('../lib/js/' . $file);
+    $fulljs .= $ftext;
+}
+
+file_put_contents('../build/libZoteroSingle.js', $fulljs);
+
 
 ?>

@@ -103,6 +103,7 @@ class Zotero_Library
      */
     public function _request($url, $method="GET", $body=NULL, $headers=array()) {
         libZoteroDebug( "url being requested: " . $url . "\n\n");
+        $this->_ch = curl_init();
         $httpHeaders = array();
         foreach($headers as $key=>$val){
             $httpHeaders[] = "$key: $val";
@@ -169,6 +170,26 @@ class Zotero_Library
         $this->lastResponse = $zresponse;
         return $zresponse;
     }
+    
+    public function proxyHttpRequest($url, $method='GET', $body=null, $headers=array()) {
+        $endPoint = $url;
+        try{
+            $response = $this->_request($url, $method, $body, $headers);
+            if($response->getStatus() == 303){
+                //this might not account for GET parameters in the first url depending on the server
+                $newLocation = $response->getHeader("Location");
+                $reresponse = $this->_request($newLocation, $method, $body, $headers);
+                return $reresponse;
+            }
+        }
+        catch(Exception $e){
+            $r = new libZotero_Http_Response(500, array(), $e->getMessage());
+            return $r;
+        }
+        
+        return $response;
+    }
+    
     
     public function _cacheSave(){
         
@@ -545,8 +566,9 @@ class Zotero_Library
         $aparams = array('target'=>'item', 'content'=>'json', 'itemKey'=>$itemKey);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         
-        $response = $this->_request($reqUrl);
+        $response = $this->_request($reqUrl, 'GET');
         if($response->isError()){
+            var_dump($response);
             throw new Exception("Error fetching items");
         }
         

@@ -71,6 +71,12 @@ class Zotero_Feed
     
     public function __construct($doc)
     {
+        if(!($doc instanceof DOMDocument)){
+            $domdoc = new DOMDocument();
+            $domdoc->loadXml($doc);
+            $doc = $domdoc;
+        }
+        
         foreach($doc->getElementsByTagName("feed") as $feed){
             $this->title        = $feed->getElementsByTagName("title")->item(0)->nodeValue;
             $this->id           = $feed->getElementsByTagName("id")->item(0)->nodeValue;
@@ -412,6 +418,7 @@ class Zotero_Items
 {
     public $itemObjects = array();
     
+    //get an item from this container of items by itemKey
     public function getItem($itemKey) {
         if(isset($this->itemObjects[$itemKey])){
             return $this->itemObjects[$itemKey];
@@ -419,11 +426,13 @@ class Zotero_Items
         return false;
     }
     
+    //add a Zotero_Item to this container of items
     public function addItem($item) {
         $itemKey = $item->itemKey;
         $this->itemObjects[$itemKey] = $item;
     }
     
+    //add items to this container from a Zotero_Feed object
     public function addItemsFromFeed($feed) {
         $entries = $feed->entryNodes;
         $addedItems = array();
@@ -433,6 +442,13 @@ class Zotero_Items
             $addedItems[] = $item;
         }
         return $addedItems;
+    }
+    
+    //replace an item in this container with a new Zotero_Item object with the same itemKey
+    //useful for example after updating an item when the etag is out of date and to make sure
+    //the current item we have reflects the best knowledge of the api
+    public function replaceItem($item) {
+        $this->addItem($item);
     }
 }
 
@@ -1452,7 +1468,7 @@ class Zotero_Item extends Zotero_Entry
             $contentType = parent::getContentType($entryNode);
             if($contentType == 'application/json' || $contentType == 'json'){
                 $this->apiObject = json_decode($contentNode->nodeValue, true);
-                $this->etag = $contentNode->getAttribute('etag');
+                $this->etag = $contentNode->getAttribute('zapi:etag');
                 if(isset($this->apiObject['creators'])){
                     $this->creators = $this->apiObject['creators'];
                 }
@@ -1632,6 +1648,11 @@ class Zotero_Item extends Zotero_Entry
                     return '';
                 }
         }
+    }
+    
+    public function compareItem($otherItem){
+        $diff = array_diff_assoc($this->apiObject, $otherItem->apiObject);
+        return $diff;
     }
 }
 
@@ -2101,6 +2122,7 @@ class Zotero_Library
      */
     public function _request($url, $method="GET", $body=NULL, $headers=array()) {
         libZoteroDebug( "url being requested: " . $url . "\n\n");
+        $this->_ch = curl_init();
         $httpHeaders = array();
         foreach($headers as $key=>$val){
             $httpHeaders[] = "$key: $val";
@@ -2167,6 +2189,26 @@ class Zotero_Library
         $this->lastResponse = $zresponse;
         return $zresponse;
     }
+    
+    public function proxyHttpRequest($url, $method='GET', $body=null, $headers=array()) {
+        $endPoint = $url;
+        try{
+            $response = $this->_request($url, $method, $body, $headers);
+            if($response->getStatus() == 303){
+                //this might not account for GET parameters in the first url depending on the server
+                $newLocation = $response->getHeader("Location");
+                $reresponse = $this->_request($newLocation, $method, $body, $headers);
+                return $reresponse;
+            }
+        }
+        catch(Exception $e){
+            $r = new libZotero_Http_Response(500, array(), $e->getMessage());
+            return $r;
+        }
+        
+        return $response;
+    }
+    
     
     public function _cacheSave(){
         
@@ -2543,8 +2585,9 @@ class Zotero_Library
         $aparams = array('target'=>'item', 'content'=>'json', 'itemKey'=>$itemKey);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         
-        $response = $this->_request($reqUrl);
+        $response = $this->_request($reqUrl, 'GET');
         if($response->isError()){
+            var_dump($response);
             throw new Exception("Error fetching items");
         }
         

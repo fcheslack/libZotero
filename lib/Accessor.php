@@ -4,7 +4,7 @@
  */
 class Zotero_Accessor
 {
-    const ZOTERO_URI = 'https://apidev.zotero.org';
+    const ZOTERO_URI = 'https://api.zotero.org';
     protected $_apiKey = '';
     protected $_ch = null;
     
