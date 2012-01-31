@@ -455,7 +455,7 @@ class Zotero_Library
         $doc = new DOMDocument();
         $doc->loadXml($body);
         $feed = new Zotero_Feed($doc);
-        $this->collections->addCollectionsFromFeed($feed);
+        $addedCollections = $this->collections->addCollectionsFromFeed($feed);
         
         if(isset($feed->links['next'])){
             $nextUrl = $feed->links['next']['href'];
@@ -466,6 +466,7 @@ class Zotero_Library
         else{
             $reqUrl = false;
         }
+        return $addedCollections;
     }
     
     /**

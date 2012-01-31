@@ -39,7 +39,7 @@ class Zotero_Collections
         $addedCollections = array();
         foreach($entries as $entry){
             $collection = new Zotero_Collection($entry);
-            $this->collections->addCollection($collection);
+            $this->addCollection($collection);
             $addedCollections[] = $collection;
         }
         return $addedCollections;

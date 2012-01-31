@@ -7,10 +7,9 @@ var Zotero = {
     localizations: {},
     
     config: {librarySettings: {},
-             baseApiUrl: 'https://apidev.zotero.org',
-             //baseApiUrl: 'https://staging.zotero.net/api',
-             baseWebsiteUrl: 'http://zotero.test',
-             baseFeedUrl: 'https://apidev.zotero.org',
+             baseApiUrl: 'https://api.zotero.org',
+             baseWebsiteUrl: 'http://zotero.org',
+             baseFeedUrl: 'https://api.zotero.org',
              proxy: true,
              apiKey: '',
              ajax: 1,

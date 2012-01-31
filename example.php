@@ -2,8 +2,11 @@
 require_once './config.php'; //library credentials
 
 require_once './build/libZoteroSingle.php';
-$library = new Zotero_Library($libraryType, $userID, $userSlug, $apiKey);
+$library = new Zotero_Library($libraryType, $libraryID, $librarySlug, $apiKey);
 
+//fetch subcollections of a collection
+$subCollections = $library->loadCollections(array('collectionKey'=>'NZAD4Q7F'));
+var_dump($subCollections);
 /*
 $cv = $library->getCV('10150');
 foreach($cv as $section){

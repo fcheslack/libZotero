@@ -366,7 +366,7 @@ class Zotero_Collections
         $addedCollections = array();
         foreach($entries as $entry){
             $collection = new Zotero_Collection($entry);
-            $this->collections->addCollection($collection);
+            $this->addCollection($collection);
             $addedCollections[] = $collection;
         }
         return $addedCollections;
@@ -2474,7 +2474,7 @@ class Zotero_Library
         $doc = new DOMDocument();
         $doc->loadXml($body);
         $feed = new Zotero_Feed($doc);
-        $this->collections->addCollectionsFromFeed($feed);
+        $addedCollections = $this->collections->addCollectionsFromFeed($feed);
         
         if(isset($feed->links['next'])){
             $nextUrl = $feed->links['next']['href'];
@@ -2485,6 +2485,7 @@ class Zotero_Library
         else{
             $reqUrl = false;
         }
+        return $addedCollections;
     }
     
     /**
