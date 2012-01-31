@@ -165,7 +165,9 @@ class Zotero_Library
                 'responseBody'=>$responseBody,
                 'responseInfo'=>$responseInfo,
             );
-            apc_store($url, $saveCached, $this->_cachettl);
+            if($this->_cacheResponses){
+                apc_store($url, $saveCached, $this->_cachettl);
+            }
         }
         $this->lastResponse = $zresponse;
         return $zresponse;
