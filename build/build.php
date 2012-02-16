@@ -1,5 +1,8 @@
 #!/usr/bin/php
 <?php
+chdir(dirname(__FILE__));
+echo "building libZotero\n";
+echo getcwd() . "\n";
 //concatenate php files into a single file to include
 $files = array(
 "Zotero_Exception.php",

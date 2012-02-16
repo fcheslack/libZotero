@@ -450,6 +450,34 @@ class Zotero_Items
     public function replaceItem($item) {
         $this->addItem($item);
     }
+    
+    public function addChildKeys() {
+        //empty existing childkeys first
+        foreach($this->itemObjects as $key=>$item){
+            $item->childKeys = array();
+        }
+        
+        //run through and add item keys to their parent's item if we have the parent
+        foreach($this->itemObjects as $key=>$item){
+            if($item->parentKey){
+                $pitem = $this->getItem($item->parentKey);
+                if($pitem){
+                    $pitem->childKeys[] = $item->itemKey;
+                }
+            }
+        }
+    }
+    
+    public function getPreloadedChildren($item){
+        $children = array();
+        foreach($item->childKeys as $childKey){
+            $childItem = $this->getItem($childKey);
+            if($childItem){
+                $children[] = $childItem;
+            }
+        }
+        return $children;
+    }
 }
 
 
@@ -1169,6 +1197,16 @@ class Zotero_Item extends Zotero_Entry
     /**
      * @var array
      */
+    public $childKeys = array();
+    
+    /**
+     * @var string
+     */
+    public $parentKey = '';
+    
+    /**
+     * @var array
+     */
     public $creators = array(); 
 
     /**
@@ -1476,6 +1514,18 @@ class Zotero_Item extends Zotero_Entry
                     $this->creators = array();
                 }
             }
+        }
+        
+        if(isset($this->links['up'])){
+            $parentLink = $this->links['up']['application/atom+xml']['href'];
+            $matches = array();
+            preg_match("/items\/([A-Z0-9]{8})/", $parentLink, $matches);
+            if(count($matches) == 2){
+                $this->parentKey = $matches[1];
+            }
+        }
+        else{
+            $this->parentKey = false;
         }
     }
     
@@ -2060,7 +2110,7 @@ class Zotero_Library
     {
         $this->_apiKey = $apiKey;
         if (extension_loaded('curl')) {
-            $this->_ch = curl_init();
+            //$this->_ch = curl_init();
         } else {
             throw new Exception("You need cURL");
         }
@@ -2091,7 +2141,7 @@ class Zotero_Library
      * Destructor, closes cURL.
      */
     public function __destruct() {
-        curl_close($this->_ch);
+        //curl_close($this->_ch);
     }
     
     /**
@@ -2122,12 +2172,12 @@ class Zotero_Library
      */
     public function _request($url, $method="GET", $body=NULL, $headers=array()) {
         libZoteroDebug( "url being requested: " . $url . "\n\n");
-        $this->_ch = curl_init();
+        $ch = curl_init();
         $httpHeaders = array();
         foreach($headers as $key=>$val){
             $httpHeaders[] = "$key: $val";
         }
-        $ch = $this->_ch;
+        
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -2188,7 +2238,7 @@ class Zotero_Library
                 apc_store($url, $saveCached, $this->_cachettl);
             }
         }
-        $this->lastResponse = $zresponse;
+        $this->_lastResponse = $zresponse;
         return $zresponse;
     }
     
@@ -2516,7 +2566,7 @@ class Zotero_Library
         //die;
         $response = $this->_request($reqUrl);
         if($response->isError()){
-            throw new Exception("Error fetching items");
+            throw new Exception("Error fetching item keys");
         }
         $body = $response->getRawBody();
         $fetchedKeys = explode("\n", $body);
@@ -2577,6 +2627,42 @@ class Zotero_Library
         
         return $fetchedItems;
     }
+    
+    /**
+     * Make a single request loading a list of items
+     *
+     * @param string $itemKey key of item to stop retrieval at
+     * @param array $params list of parameters that define the request
+     * @return array of fetched items
+     */
+    public function loadItemsAfter($itemKey, $params = array()){
+        $fetchedItems = array();
+        $itemKeys = $this->loadItemKeys($params);
+        if($itemKey != ''){
+            $index = array_search($itemKey, $itemKeys);
+            if($index == false){
+                return array();
+            }
+        }
+        
+        $offset = 0;
+        while($offset < $index){
+            if($index - $offset > 50){
+                $uindex = $offset + 50;
+            }
+            else{
+                $uindex = $index;
+            }
+            $itemKeysToFetch = array_slice($itemKeys, 0, $uindex);
+            $offset == $uindex;
+            $params['itemKey'] = implode(',', $itemKeysToFetch);
+            $fetchedSet = $this->loadItems($params);
+            $fetchedItems = array_merge($fetchedItems, $fetchedSet);
+        }
+        
+        return $fetchedItems;
+    }
+    
     
     /**
      * Load a single item by itemKey
@@ -3095,6 +3181,17 @@ class Zotero_Library
         return $sections;
     }
     
+    //these functions aren't really necessary for php since serializing
+    //or apc caching works fine, with only the possible loss of a curl
+    //handle that will be re-initialized
+    public function saveLibrary(){
+        $serialized = serialize($this);
+        return $serialized;
+    }
+    
+    public static function loadLibrary($dump){
+        return unserialize($dump);
+    }
 }
 
 ?>

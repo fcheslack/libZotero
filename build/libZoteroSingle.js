@@ -14,6 +14,7 @@ var Zotero = {
              apiKey: '',
              ajax: 1,
              locale: 'en-US',
+             cacheStoreType: 'localStorage',
              },
     
     debug: function(debugstring, level){
@@ -96,12 +97,16 @@ var Zotero = {
     
     init: function(){
         var store;
-        if(typeof sessionStorage == 'undefined'){
-            store = {};//Zotero.storage.localStorage = {};
+        if(Zotero.config.cacheStoreType == 'localStorage' && typeof localStorage != 'undefined'){
+            store = localStorage;
         }
-        else{
+        else if(Zotero.config.cacheStoreType == 'sessionStorage' && typeof sessionStorage != 'undefined'){
             store = sessionStorage;
         }
+        else{
+            store = {};
+        }
+        
         Zotero.cache = new Zotero.Cache(store);
         
         //get localized item constants if not stored in localstorage
@@ -513,10 +518,11 @@ Zotero.Feed.prototype.parseXmlFeed = function(data){
     this.entries = fel.find('entry');
     return this;
 };
-Zotero.Library = function(type, libraryID, libraryUrlIdentifier){
+Zotero.Library = function(type, libraryID, libraryUrlIdentifier, apiKey){
     Z.debug("Zotero.Library constructor", 3);
     Z.debug(libraryUrlIdentifier, 4);
     this.instance = "Zotero.Library";
+    this._apiKey = apiKey || false;
     this.type = type;
     this.libraryType = type;
     this.libraryID = libraryID;

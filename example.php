@@ -3,6 +3,7 @@ require_once './config.php'; //library credentials
 
 require_once './build/libZoteroSingle.php';
 $library = new Zotero_Library($libraryType, $libraryID, $librarySlug, $apiKey);
+/*
 $library->setCacheTtl(0);
 //fetch subcollections of a collection
 $subCollections = $library->loadCollections(array('collectionKey'=>'NZAD4Q7F'));
@@ -16,14 +17,16 @@ foreach($items as $item){
     echo "Top level item with title: " . $item->get('title') . "\n<br />";
 }
 //var_dump($items);die;
-/*
+*/
+
+
 $cv = $library->getCV('10150');
 foreach($cv as $section){
     echo $section;
     echo "<br /><br />";
 }
 die;
-*/
+
 //get some tags
 /*
 $tags = $library->fetchTags(array('limit'=>5, 'order'=>'title', 'sort'=>'desc'));

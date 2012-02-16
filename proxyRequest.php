@@ -3,12 +3,16 @@
 require_once './config.php'; //library credentials
 
 require_once './build/libZoteroSingle.php';
-$library = new Zotero_Library($libraryType, $userID, $userSlug, $apiKey);
+$library = new Zotero_Library($libraryType, $libraryID, $librarySlug, $apiKey);
 
 
 $requestUrl         = isset($_GET["requestUrl"]) ? $_GET["requestUrl"] : false;
 $requestQueryParams = isset($_GET['requestQueryParams']) ? $_GET['requestQueryParams'] : false;
 
+//limit requestUrl to zotero.org
+if(strpos($requestUrl, 'zotero.org') === false){
+    die;
+}
 
 //act as transparent proxy until JS lib can make requests directly to api
 $requestMethod = $_SERVER['REQUEST_METHOD'];

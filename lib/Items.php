@@ -36,4 +36,32 @@ class Zotero_Items
     public function replaceItem($item) {
         $this->addItem($item);
     }
+    
+    public function addChildKeys() {
+        //empty existing childkeys first
+        foreach($this->itemObjects as $key=>$item){
+            $item->childKeys = array();
+        }
+        
+        //run through and add item keys to their parent's item if we have the parent
+        foreach($this->itemObjects as $key=>$item){
+            if($item->parentKey){
+                $pitem = $this->getItem($item->parentKey);
+                if($pitem){
+                    $pitem->childKeys[] = $item->itemKey;
+                }
+            }
+        }
+    }
+    
+    public function getPreloadedChildren($item){
+        $children = array();
+        foreach($item->childKeys as $childKey){
+            $childItem = $this->getItem($childKey);
+            if($childItem){
+                $children[] = $childItem;
+            }
+        }
+        return $children;
+    }
 }

@@ -72,7 +72,8 @@
   <script>
     //initialize Zotero library
     Zotero.init();
-    var library = new Zotero.Library(zConfig.libraryType, zConfig.userID, zConfig.userSlug);
+    Zotero.config.apiKey = zConfig.apiKey;
+    var library = new Zotero.Library(zConfig.libraryType, zConfig.libraryID, zConfig.librarySlug, zConfig.apiKey);
     //get some tags
     var collectionsPromise = library.loadCollections();
     var tagsDef = library.loadTags();

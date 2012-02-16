@@ -38,6 +38,16 @@ class Zotero_Item extends Zotero_Entry
     /**
      * @var array
      */
+    public $childKeys = array();
+    
+    /**
+     * @var string
+     */
+    public $parentKey = '';
+    
+    /**
+     * @var array
+     */
     public $creators = array(); 
 
     /**
@@ -345,6 +355,18 @@ class Zotero_Item extends Zotero_Entry
                     $this->creators = array();
                 }
             }
+        }
+        
+        if(isset($this->links['up'])){
+            $parentLink = $this->links['up']['application/atom+xml']['href'];
+            $matches = array();
+            preg_match("/items\/([A-Z0-9]{8})/", $parentLink, $matches);
+            if(count($matches) == 2){
+                $this->parentKey = $matches[1];
+            }
+        }
+        else{
+            $this->parentKey = false;
         }
     }
     
