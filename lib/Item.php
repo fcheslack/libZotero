@@ -383,21 +383,11 @@ class Zotero_Item extends Zotero_Entry
             }
         }
         else{
-            if(in_array($key, array_keys(Zotero_Item::$fieldMap))){
-                if(isset($this->apiObject[$key])){
-                    return $this->apiObject[$key];
-                }
-                else{
-                    return null;
-                }
+            if(isset($this->apiObject[$key])){
+                return $this->apiObject[$key];
             }
             else{
-                if(isset($this->apiObject[$key])){
-                    return $this->apiObject[$key];
-                }
-                else{
-                    return null;
-                }
+                return null;
             }
         }
     }

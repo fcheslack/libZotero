@@ -1542,21 +1542,11 @@ class Zotero_Item extends Zotero_Entry
             }
         }
         else{
-            if(in_array($key, array_keys(Zotero_Item::$fieldMap))){
-                if(isset($this->apiObject[$key])){
-                    return $this->apiObject[$key];
-                }
-                else{
-                    return null;
-                }
+            if(isset($this->apiObject[$key])){
+                return $this->apiObject[$key];
             }
             else{
-                if(isset($this->apiObject[$key])){
-                    return $this->apiObject[$key];
-                }
-                else{
-                    return null;
-                }
+                return null;
             }
         }
     }
@@ -2481,7 +2471,7 @@ class Zotero_Library
      * @param array $params list of parameters limiting the request
      * @return null
      */
-    public function loadAllCollections($params = array()){
+    public function fetchAllCollection($params = array()){
         $aparams = array_merge(array('target'=>'collections', 'content'=>'json', 'limit'=>100), array('key'=>$this->_apiKey), $params);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         do{
@@ -2515,7 +2505,7 @@ class Zotero_Library
      * @param array $params list of parameters limiting the request
      * @return null
      */
-    public function loadCollections($params = array()){
+    public function fetchCollections($params = array()){
         $aparams = array_merge(array('target'=>'collections', 'content'=>'json', 'limit'=>100), array('key'=>$this->_apiKey), $params);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $response = $this->_request($reqUrl);
@@ -2546,9 +2536,9 @@ class Zotero_Library
      * @param array $params list of parameters that define the request
      * @return array of fetched items
      */
-    public function loadItemsTop($params=array()){
+    public function fetchItemsTop($params=array()){
         $params['targetModifier'] = 'top';
-        return $this->loadItems($params);
+        return $this->fetchItems($params);
     }
     
     /**
@@ -2557,19 +2547,17 @@ class Zotero_Library
      * @param array $params list of parameters that define the request
      * @return array of fetched items
      */
-    public function loadItemKeys($params=array()){
+    public function fetchItemKeys($params=array()){
         $fetchedKeys = array();
         $aparams = array_merge(array('target'=>'items', 'format'=>'keys'), array('key'=>$this->_apiKey), $params);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
-        libZoteroDebug( "\n" );
-        libZoteroDebug( $reqUrl . "\n" );
-        //die;
+        
         $response = $this->_request($reqUrl);
         if($response->isError()){
             throw new Exception("Error fetching item keys");
         }
         $body = $response->getRawBody();
-        $fetchedKeys = explode("\n", $body);
+        $fetchedKeys = explode("\n", trim($body) );
         
         return $fetchedKeys;
     }
@@ -2580,7 +2568,7 @@ class Zotero_Library
      * @param array $params list of parameters additionally filtering the request
      * @return array of fetched items
      */
-    public function loadTrashedItems($params=array()){
+    public function fetchTrashedItems($params=array()){
         $fetchedItems = array();
         $aparams = array_merge(array('target'=>'trash', 'content'=>'json'), array('key'=>$this->_apiKey), $params);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
@@ -2607,7 +2595,7 @@ class Zotero_Library
      * @param array $params list of parameters that define the request
      * @return array of fetched items
      */
-    public function loadItems($params = array()){
+    public function fetchItems($params = array()){
         $fetchedItems = array();
         $aparams = array_merge(array('target'=>'items', 'content'=>'json'), array('key'=>$this->_apiKey), $params);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
@@ -2635,9 +2623,9 @@ class Zotero_Library
      * @param array $params list of parameters that define the request
      * @return array of fetched items
      */
-    public function loadItemsAfter($itemKey, $params = array()){
+    public function fetchItemsAfter($itemKey, $params = array()){
         $fetchedItems = array();
-        $itemKeys = $this->loadItemKeys($params);
+        $itemKeys = $this->fetchItemKeys($params);
         if($itemKey != ''){
             $index = array_search($itemKey, $itemKeys);
             if($index == false){
@@ -2656,7 +2644,7 @@ class Zotero_Library
             $itemKeysToFetch = array_slice($itemKeys, 0, $uindex);
             $offset == $uindex;
             $params['itemKey'] = implode(',', $itemKeysToFetch);
-            $fetchedSet = $this->loadItems($params);
+            $fetchedSet = $this->fetchItems($params);
             $fetchedItems = array_merge($fetchedItems, $fetchedSet);
         }
         
@@ -2670,7 +2658,7 @@ class Zotero_Library
      * @param string $itemKey
      * @return Zotero_Item
      */
-    public function loadItem($itemKey){
+    public function fetchItem($itemKey){
         $aparams = array('target'=>'item', 'content'=>'json', 'itemKey'=>$itemKey);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         
@@ -3129,7 +3117,7 @@ class Zotero_Library
      * @param string $userID
      * @return array $groups
      */
-    public function getGroups($userID=''){
+    public function fetchGroups($userID=''){
         if($userID == ''){
             $userID = $this->libraryID;
         }
