@@ -1,0 +1,23 @@
+<div class="zreport-post">
+    <?if(!empty($post['url'])):?>
+    <h2><a href="<?=$post['url'];?>"><?=$post['title'];?></a></h2>
+    <?else:?>
+    <h2><?=$post['title'];?></h2>
+    <?endif;?>
+    <p>Date: <?=$post['item']->get('date');?></p>
+    <?if(isset($post['abstract']) && $post['abstract'] != ''):?>
+        <h3>Abstract</h3>
+        <p>
+        <?=$post['abstract'];?>
+        </p>
+    <?endif;?>
+    <?if(isset($post['summary']) && $post['summary'] != ''):?>
+        <h3>Summary</h3>
+        <?=$post['summary'];?>
+    <?endif;?>
+    <ul class="zreport-see-also">
+    <?foreach($post['also'] as $also):?>
+        <li><a href="<?=$also['url'];?>"><?=$also['title'];?></a></li>
+    <?endforeach;?>
+    </ul>
+</div>

@@ -1,0 +1,73 @@
+<?$item = $post['item'];?>
+<li class="item <?=$item->itemType;?>">
+    <?if(!empty($post['url'])):?>
+    <h2><a href="<?=$post['url'];?>"><?=$post['title'];?></a></h2>
+    <?else:?>
+    <h2><?=$post['title'];?></h2>
+    <?endif;?>
+    <table>
+    <!-- Output creators -->
+    <?foreach($item->creators as $index=>$creator):?>
+        <?if( isset($creator['name']) || isset($creator['firstName']) || isset($creator['lastName']) ):?>
+        <tr>
+            <th><?=Zotero_Item::$creatorMap[$creator['creatorType']]?></th>
+            <td class="<?=$creator['creatorType']?>">
+            <?if(isset($creator['name'])):?>
+                <?=$creator['name'];?>
+            <?else:?>
+                <?=$creator['lastName']?>, <?=$creator['firstName'];?>
+            <?endif;?>
+            </td>
+        </tr>
+        <?endif;?>
+    <?endforeach;?>
+
+    <?foreach($item->apiObject as $field=>$val):?>
+        <?if(empty($val) || $field=='title' || $field=='tags' || $field=='creators') continue;?>
+        <?if($field == 'itemType'):?>
+        <tr>
+            <th><?=Zotero_Item::$fieldMap[$field]?></th>
+            <td><?=Zotero_Item::$typeMap[$val]?></td>
+        </tr>
+        <?else:?>
+        <tr>
+            <th><?=Zotero_Item::$fieldMap[$field]?></th>
+            <td><?=$val?></td>
+        </tr>
+        <?endif;?>
+    <?endforeach;?>
+    <tr>
+        <th><?=Zotero_Item::$fieldMap['dateAdded']?></th>
+        <td><?=$item->dateAdded;?></td>
+    </tr>
+    <tr>
+        <th><?=Zotero_Item::$fieldMap['dateModified']?></th>
+        <td><?=$item->dateUpdated;?></td>
+    </tr>
+    </table>
+    
+    <h3 class="tags">Tags:</h3>
+    <ul class="tags">
+        <?foreach($item->apiObject['tags'] as $tag):?>
+            <li><?=$tag['tag'];?></li>
+        <?endforeach;?>
+    </ul>
+    
+    <?if(!empty($item->notes)):?>
+    <h3>Notes</h3>
+    <ul class="notes">
+        <?foreach($item->notes as $note):?>
+            <li><?=$note->get('note');?></li>
+        <?endforeach;?>
+    </ul>
+    <?endif;?>
+    
+    <?if(!empty($item->attachments)):?>
+    <h3>Children</h3>
+    <ul class="children">
+        <?foreach($item->attachments as $attachment):?>
+            <li><?=$attachment->title;?></li>
+        <?endforeach;?>
+    </ul>
+    <?endif;?>
+</li>

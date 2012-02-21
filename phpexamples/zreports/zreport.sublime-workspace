@@ -1,0 +1,1302 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"get_include_",
+				"get_include_contents"
+			],
+			[
+				"del",
+				"deleteSelectedCollection"
+			],
+			[
+				"Models_Users",
+				"Models_UsersMetaTable"
+			],
+			[
+				"publ",
+				"publish"
+			],
+			[
+				"Zo",
+				"Zotero"
+			],
+			[
+				"ut",
+				"utils"
+			],
+			[
+				"cacheLoa",
+				"cacheLoad"
+			],
+			[
+				"tiny",
+				"tinyMceInit"
+			],
+			[
+				"pathVars",
+				"pathVars"
+			],
+			[
+				"ur",
+				"urlvars"
+			],
+			[
+				"tin",
+				"initTinyMce"
+			],
+			[
+				"nest",
+				"nestedOrderingArray"
+			],
+			[
+				"get",
+				"getAssociatedLibrary"
+			],
+			[
+				"base",
+				"baseWebsiteUrl"
+			],
+			[
+				"parseX",
+				"parseXmlItem"
+			],
+			[
+				"coll",
+				"collectionsArray"
+			],
+			[
+				"display",
+				"displayItemsUrl"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "config.php",
+			"settings":
+			{
+				"buffer_size": 180,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "libZoteroSingle.php",
+			"settings":
+			{
+				"buffer_size": 96677,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "pub.php",
+			"settings":
+			{
+				"buffer_size": 1697,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "writestatic.php",
+			"settings":
+			{
+				"buffer_size": 1739,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "style.css",
+			"settings":
+			{
+				"buffer_size": 536,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "header.phtml",
+			"settings":
+			{
+				"buffer_size": 293,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "footer.phtml",
+			"settings":
+			{
+				"buffer_size": 67,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "post.phtml",
+			"settings":
+			{
+				"buffer_size": 459,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "pages/page.html",
+			"settings":
+			{
+				"buffer_size": 3137,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": true,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/fcheslack/pub_web/zpublish/layout.phtml",
+		"/home/fcheslack/pub_web/libZotero/pub.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/config/dokuwiki/zotero-theme/main.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/Models/StorageInstitutions.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/admin/institutionalstorage.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/controllers/AdminController.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/config/theme/body_start.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/itemnotedetails.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/controllers/SettingsController.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/controllers/OauthController.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/library/Zotero/View/Helper/GroupUrl.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/controllers/GroupController.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/message/invitenotification.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/group/invite.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/group/index.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/partials/groupNugget.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/static/js/zotero.js",
+		"/home/fcheslack/pub_web/zotero/git-trunk/library/Zotero/Service/Zotero.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/config/build.py",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/partials/collectionList.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/library/Zotero/View/Helper/LibraryUrl.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/item/library.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/item/grouplibrary.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/partials/libPaginator.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/partials/libPaginatorb.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/partials/itemstable.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/itempagination.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/partials/itemrow.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/item/detail.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/partials/itemDetails.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/library/libZotero/libZoteroSingle.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/config/routes.ini",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/Models/UsersTable.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/static/css/style.css",
+		"/home/fcheslack/pub_web/zotero/git-trunk/config/vanilla/themes/zotero/comments.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/config/vanilla/themes/zotero/discussions.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/config/vanilla/themes/zotero/panel.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/controllers/UserController.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/config/theme/head_end.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/Models/StorageTable.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/controllers/IndexController.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/config/s3upload.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/config/zotero_config.ini",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/static/js/buildzlib.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/index/connectorauthcomplete.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/admin/sendrecurrences.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/layout.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/static/js/_zoteroLibraryCache.js",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/storage/googleRecurrence.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/static/css/zotero_icons_sprite.css",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/bootstrap.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/library/Zotero/Utils.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/itemdetails.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/partials/itemTable.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/item/mlibrary.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/mlayout.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/mjquerytemplates/collectionlist.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/mjquerytemplates/collectionrow.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/mjquerytemplates/itemstable.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/mjquerytemplates/itemrow.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/mjquerytemplates/itemdetails.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/choosecollectionform.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/static/library/jquery/jquery-1.6.1-ui-1.8-custom.min.js",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/static/css/jquery-ui-1.8.12.custom.css",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/static/css/jquery-ui-1.8.15.custom.css",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/collectionrow.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/mjquerytemplates/navbar.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/static/library/jquery/mobile/jquery.mobile-1.0b2.js",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/authorelementsdouble.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/authorelementssingle.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/itemform.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/.htaccess",
+		"/home/fcheslack/.Sublime Text 2/Packages/Default/Base File.sublime-settings",
+		"/home/fcheslack/.Sublime Text 2/Packages/User/Base File.sublime-settings",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/static/js/_zoteroLibraryUi.js",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/mjquerytemplates/authorelementsdouble.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/itemrow.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/itemstable.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/user/home.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/partials/homeWidget.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/updatecollectionform.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/tagrow.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/item/ajaxloaduseritems.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/library/Zotero/Widget/Library.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/tagslist.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/librarysettings.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/tagunorderedlist.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/deletecollectionform.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/library/Zotero/Widget.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/editcollectionbuttons.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/editnoteform.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/collectionlist.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/index/index.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/item/edititem.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/controllers/ItemController.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/support/lib/tpl/default/main.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/support/inc/parser/renderer.php",
+		"/home/fcheslack/pub_web/oauthtestentry.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/support/inc/template.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/support/lib/exe/css.php",
+		"/home/fcheslack/Desktop/localToS3UploadLog",
+		"/home/fcheslack/pub_web/zotero/git-trunk/config/daily.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/library/Zotero/View/Helper/ProfileImageSrc.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/partials/userNugget.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/library/Zend/Cloud/StorageService/Adapter/S3.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/Models/UsersMetaTable.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/controllers/MessageController.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/Models/MessagesTable.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/admin/dashboard.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/user/profile.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/group/view.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/Models/GroupsPendingTable.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/Models/FollowersTable.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/static/library/jquery/global/globinfo/Globalization.fr.js",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/childitems.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/itemnote.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/Forms/Settings/Profile.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/settings/cv.phtml",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/Models/GroupsTable.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/controllers/StorageController.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/Models/UsersEmailTable.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/views/scripts/jquerytemplates/datafield.jqt",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/static/library/jquery/global/globinfo/jquery.glob.all.min.js",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/static/library/jquery/global/globinfo/Globalization.fr-FR.js",
+		"/home/fcheslack/pub_web/zotero/git-trunk/public/static/library/jquery/history/history.js",
+		"/home/fcheslack/pub_web/zotero/git-trunk/library/Zend/Layout.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/Forms/Item/Item.php",
+		"/home/fcheslack/pub_web/zotero/git-trunk/application/Forms/Group/Settings.php"
+	],
+	"find":
+	{
+		"height": 33.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"apc",
+			"socket",
+			"pacInit",
+			"marker",
+			"broadcast",
+			"marker",
+			"mock",
+			"map",
+			"maps",
+			"initTiny",
+			"return $instit",
+			"tinyMceInit",
+			"Form",
+			"settings",
+			"gotoReferer",
+			"login",
+			"requireLogin()",
+			"modifier",
+			"firelog",
+			"search",
+			"discipline",
+			"check",
+			"title",
+			"full",
+			"inviteNotification",
+			"queryVars",
+			"invite",
+			"group",
+			"full",
+			"documentation",
+			"search",
+			"click",
+			"try",
+			"page_edit",
+			"sprite-folder_edit",
+			"-1254",
+			"paper",
+			"document",
+			"minus",
+			"textfield-dual",
+			"cog",
+			"trash",
+			"sprite-toolbar",
+			"start",
+			"8601",
+			"session",
+			"userpreferences",
+			"javascriptEnabled",
+			"setUserPref",
+			"javascript",
+			"js",
+			"preloaded",
+			"minor",
+			"major",
+			"loadItems",
+			"Entry",
+			"meta",
+			"library",
+			"$item->creatorMap",
+			"$item->fieldMap",
+			"$item->typeMap",
+			"itemDetail",
+			"displayItem",
+			"parent",
+			"pagination",
+			"result",
+			"itemsPathString",
+			"pagination",
+			"pagin",
+			"partials",
+			"libraryAction",
+			"url",
+			"itemstable",
+			"itemrow",
+			"url",
+			"partial",
+			"url",
+			"partial",
+			"url",
+			"tags",
+			"api",
+			"libraryAc",
+			"tag",
+			"proper",
+			"requireLogin",
+			"ajax",
+			"this->view->user",
+			"libraryAction",
+			"this->view->user",
+			"->user",
+			"user",
+			"prefs",
+			"javascript",
+			"jquery",
+			"selectmenu",
+			".refresh()",
+			"remove-from-collection",
+			"add-to-collection-select",
+			"<<<",
+			"Zotero.ui.dialog",
+			"updateDisabled",
+			"if(Zotero.config.mobile",
+			"<<<",
+			".move-to-trash-link",
+			"updateDisabledControl",
+			"<<<",
+			">>>",
+			"edit-collections-buttons",
+			"Zotero.config.mobile",
+			"edit-collections",
+			"Zotero.config.mobile",
+			"Close",
+			"!!",
+			"changePage ",
+			"Zotero.ui.mobile.changePage",
+			"background",
+			"pagecreate",
+			"mobile.page\"",
+			"mobile.page ",
+			"mobile.page",
+			"_create",
+			".page",
+			"page = fun",
+			"page plugin",
+			"page =",
+			"enhancePage",
+			"XXX",
+			"changePage "
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"",
+			"-1650",
+			"Zotero_Item::creatorMap",
+			"Zotero_Item::fieldMap",
+			"Zotero_Item::typeMap",
+			".button('refresh')",
+			"Zotero.ui.mobile.changePage",
+			"formattedString =",
+			"currentCollectionKey",
+			" * LICENSE: This source file is subject to the GNU Affero General Public License \n * as published by the Free Software Foundation, either version 3 of the License,\n * or (at your option) any later version.",
+			"Zotero.cache.load",
+			"Zotero.cache.save",
+			"{ background-position: -212px -660px; width: 16px; height: 16px; }",
+			"mode",
+			"filesize"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "config.php",
+					"settings":
+					{
+						"buffer_size": 180,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								180,
+								180
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "libZoteroSingle.php",
+					"settings":
+					{
+						"buffer_size": 96677,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								240,
+								240
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "pub.php",
+					"settings":
+					{
+						"buffer_size": 1697,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								334,
+								334
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "writestatic.php",
+					"settings":
+					{
+						"buffer_size": 1739,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1388,
+								1388
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/PHP/PHP.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 39.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "style.css",
+					"settings":
+					{
+						"buffer_size": 536,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								289,
+								289
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "header.phtml",
+					"settings":
+					{
+						"buffer_size": 293,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								149,
+								149
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "footer.phtml",
+					"settings":
+					{
+						"buffer_size": 67,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								47,
+								47
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "post.phtml",
+					"settings":
+					{
+						"buffer_size": 459,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								25,
+								12
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "pages/page.html",
+					"settings":
+					{
+						"buffer_size": 3137,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								131,
+								131
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 32.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 62.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"page.",
+				"pages/page.html"
+			],
+			[
+				"pub.",
+				"pub.php"
+			],
+			[
+				"libz",
+				"libZoteroSingle.php"
+			],
+			[
+				"conf",
+				"config.php"
+			],
+			[
+				"itemde",
+				"application/views/scripts/jquerytemplates/itemdetails.jqt"
+			],
+			[
+				"chil",
+				"application/views/scripts/jquerytemplates/childitems.jqt"
+			],
+			[
+				"itemdetails",
+				"application/views/scripts/jquerytemplates/itemdetails.jqt"
+			],
+			[
+				"itemnotede",
+				"application/views/scripts/jquerytemplates/itemnotedetails.jqt"
+			],
+			[
+				"institu",
+				"application/views/scripts/admin/institutionalstorage.phtml"
+			],
+			[
+				"accountover",
+				"application/views/scripts/admin/accountoverview.phtml"
+			],
+			[
+				"keysta",
+				"application/Models/KeysTable.php"
+			],
+			[
+				"storageinst",
+				"application/Models/StorageInstitutions.php"
+			],
+			[
+				"storagecon",
+				"application/controllers/StorageController.php"
+			],
+			[
+				"itemcon",
+				"application/controllers/ItemController.php"
+			],
+			[
+				"style",
+				"public/static/css/style.css"
+			],
+			[
+				".ht",
+				"public/.htaccess"
+			],
+			[
+				"zotero_conf",
+				"config/zotero_config.ini"
+			],
+			[
+				"head",
+				"config/theme/head_end.php"
+			],
+			[
+				"layout.",
+				"application/views/scripts/layout.phtml"
+			],
+			[
+				"storagelog",
+				"application/Models/StorageLogTable.php"
+			],
+			[
+				"storagetable",
+				"application/Models/StorageTable.php"
+			],
+			[
+				"groupcon",
+				"application/controllers/GroupController.php"
+			],
+			[
+				"zotero.js",
+				"public/static/js/zotero.js"
+			],
+			[
+				"zotero/form",
+				"library/Zotero/Form.php"
+			],
+			[
+				"zwrap",
+				"library/Zotero/Form/Decorator/ZLabelWrap.php"
+			],
+			[
+				"zotero_con",
+				"config/zotero_config.ini"
+			],
+			[
+				"admincon",
+				"application/controllers/AdminController.php"
+			],
+			[
+				"usercon",
+				"application/controllers/UserController.php"
+			],
+			[
+				"settingscon",
+				"application/controllers/SettingsController.php"
+			],
+			[
+				"storagein",
+				"application/Models/StorageInstitutions.php"
+			],
+			[
+				"institution",
+				"application/views/scripts/admin/institutionalstorage.phtml"
+			],
+			[
+				"admin",
+				"application/controllers/AdminController.php"
+			],
+			[
+				"callbacks",
+				"public/static/js/_zoteroLibraryCallbacks.js"
+			],
+			[
+				"indexcon",
+				"application/controllers/IndexController.php"
+			],
+			[
+				"config/buildz",
+				"config/buildzlib.php"
+			],
+			[
+				"build",
+				"public/static/js/buildzlib.php"
+			],
+			[
+				"routes",
+				"config/routes.ini"
+			],
+			[
+				"theme/body",
+				"config/theme/body_start.php"
+			],
+			[
+				"groupurl",
+				"library/Zotero/View/Helper/GroupUrl.php"
+			],
+			[
+				"service/zotero",
+				"library/Zotero/Service/Zotero.php"
+			],
+			[
+				"user/index",
+				"application/views/scripts/user/index.phtml"
+			],
+			[
+				"search/index",
+				"application/views/scripts/search/index.phtml"
+			],
+			[
+				"layout",
+				"application/views/scripts/layout.phtml"
+			],
+			[
+				"send",
+				"application/views/scripts/admin/sendrecurrences.phtml"
+			],
+			[
+				"invitenoti",
+				"application/views/scripts/message/invitenotification.phtml"
+			],
+			[
+				"settings",
+				"application/controllers/SettingsController.php"
+			],
+			[
+				"oauth",
+				"application/controllers/OauthController.php"
+			],
+			[
+				"build.py",
+				"config/build.py"
+			],
+			[
+				"groupindex",
+				"application/views/scripts/group/index.phtml"
+			],
+			[
+				"nugget",
+				"application/views/scripts/partials/groupNugget.phtml"
+			],
+			[
+				"zoterojs",
+				"public/static/js/zotero.js"
+			],
+			[
+				"library",
+				"application/views/scripts/item/library.phtml"
+			],
+			[
+				"servicezotero",
+				"library/Zotero/Service/Zotero.php"
+			],
+			[
+				"zoteroconf",
+				"config/zotero_config.ini"
+			],
+			[
+				"s3up",
+				"config/s3upload.php"
+			],
+			[
+				"index",
+				"application/controllers/IndexController.php"
+			],
+			[
+				"zoterolibraryurl",
+				"public/static/js/_zoteroLibraryUrl.js"
+			],
+			[
+				"_zoterolibrarycache",
+				"public/static/js/_zoteroLibraryCache.js"
+			],
+			[
+				"sprite",
+				"public/static/css/zotero_icons_sprite.css"
+			],
+			[
+				"googlerec",
+				"application/views/scripts/storage/googleRecurrence.phtml"
+			],
+			[
+				"oauthcon",
+				"application/controllers/OauthController.php"
+			],
+			[
+				"storagetabl",
+				"application/Models/StorageTable.php"
+			],
+			[
+				"head_",
+				"config/theme/head_end.php"
+			],
+			[
+				"boot",
+				"application/bootstrap.php"
+			],
+			[
+				"library.phtml",
+				"application/views/scripts/item/library.phtml"
+			],
+			[
+				"librar",
+				"application/views/scripts/item/library.phtml"
+			],
+			[
+				"usersta",
+				"application/Models/UsersTable.php"
+			],
+			[
+				"libzo",
+				"library/libZotero/libZoteroSingle.php"
+			],
+			[
+				"grouplib",
+				"application/views/scripts/item/grouplibrary.phtml"
+			],
+			[
+				"utils",
+				"library/Zotero/Utils.php"
+			],
+			[
+				"itemtable",
+				"application/views/scripts/partials/itemTable.phtml"
+			],
+			[
+				"itemdetail",
+				"application/views/scripts/item/detail.phtml"
+			],
+			[
+				"itemrow",
+				"application/views/scripts/partials/itemrow.phtml"
+			],
+			[
+				"itempagin",
+				"application/views/scripts/jquerytemplates/itempagination.jqt"
+			],
+			[
+				"libpagin",
+				"application/views/scripts/partials/libPaginator.phtml"
+			],
+			[
+				"itemstable",
+				"application/views/scripts/partials/itemstable.phtml"
+			],
+			[
+				"grouplibrar",
+				"application/views/scripts/item/grouplibrary.phtml"
+			],
+			[
+				"collectionlist",
+				"application/views/scripts/partials/collectionList.phtml"
+			],
+			[
+				"itemstab",
+				"application/views/scripts/partials/itemstable.phtml"
+			],
+			[
+				"libra",
+				"application/views/scripts/item/library.phtml"
+			],
+			[
+				"mla",
+				"application/views/scripts/mlayout.phtml"
+			],
+			[
+				"jquery-ui",
+				"public/static/css/jquery-ui-1.8.15.custom.css"
+			],
+			[
+				"mlay",
+				"application/views/scripts/mlayout.phtml"
+			],
+			[
+				"jquery-",
+				"public/static/library/jquery/jquery-1.6.1-ui-1.8-custom.min.js"
+			],
+			[
+				"choosecoll",
+				"application/views/scripts/jquerytemplates/choosecollectionform.jqt"
+			],
+			[
+				"styl",
+				"public/static/css/style.css"
+			],
+			[
+				"mlib",
+				"application/views/scripts/item/mlibrary.phtml"
+			],
+			[
+				"itemform",
+				"application/views/scripts/jquerytemplates/itemform.jqt"
+			],
+			[
+				"authorele",
+				"application/views/scripts/jquerytemplates/authorelementssingle.jqt"
+			],
+			[
+				"itemdeta",
+				"application/views/scripts/mjquerytemplates/itemdetails.jqt"
+			],
+			[
+				"jquerymo",
+				"public/static/library/jquery/mobile/jquery.mobile-1.0b2.js"
+			],
+			[
+				"navbar",
+				"application/views/scripts/mjquerytemplates/navbar.jqt"
+			],
+			[
+				"mlibra",
+				"application/views/scripts/item/mlibrary.phtml"
+			],
+			[
+				"collectionrow",
+				"application/views/scripts/jquerytemplates/collectionrow.jqt"
+			],
+			[
+				"jquerycss",
+				"public/static/css/jquery-ui-1.8.12.custom.css"
+			],
+			[
+				"collectionro",
+				"application/views/scripts/jquerytemplates/collectionrow.jqt"
+			],
+			[
+				"_zoter",
+				"public/static/js/_zoteroLibraryUi.js"
+			],
+			[
+				"zoterocon",
+				"config/zotero_config.ini"
+			],
+			[
+				"mlibrary",
+				"application/views/scripts/item/mlibrary.phtml"
+			],
+			[
+				"home",
+				"application/views/scripts/user/home.phtml"
+			],
+			[
+				"librarywidget",
+				"library/Zotero/Widget/Library.php"
+			],
+			[
+				"zoterowidget",
+				"library/Zotero/Widget/Library.php"
+			],
+			[
+				"widget",
+				"application/views/scripts/partials/homeWidget.phtml"
+			],
+			[
+				"tagrow",
+				"application/views/scripts/jquerytemplates/tagrow.jqt"
+			],
+			[
+				"librarysetting",
+				"application/views/scripts/jquerytemplates/librarysettings.jqt"
+			],
+			[
+				"deletecoll",
+				"application/views/scripts/jquerytemplates/deletecollectionform.jqt"
+			],
+			[
+				"updatecoll",
+				"application/views/scripts/jquerytemplates/updatecollectionform.jqt"
+			],
+			[
+				"jqueryui",
+				"public/static/css/jquery-ui-1.8.12.custom.css"
+			],
+			[
+				"collectionlist.p",
+				"application/views/scripts/partials/collectionList.phtml"
+			],
+			[
+				"tagslist",
+				"application/views/scripts/jquerytemplates/tagslist.jqt"
+			],
+			[
+				"itemsta",
+				"application/views/scripts/jquerytemplates/itemstable.jqt"
+			],
+			[
+				"authore",
+				"application/views/scripts/jquerytemplates/authorelementssingle.jqt"
+			],
+			[
+				"author",
+				"application/views/scripts/jquerytemplates/authorelementsdouble.jqt"
+			],
+			[
+				"itemfor",
+				"application/views/scripts/jquerytemplates/itemform.jqt"
+			],
+			[
+				"",
+				"application/bootstrap.php"
+			],
+			[
+				"build.",
+				"config/build.py"
+			],
+			[
+				"item",
+				"application/views/scripts/jquerytemplates/itemdetails.jqt"
+			],
+			[
+				"service/zoter",
+				"library/Zotero/Service/Zotero.php"
+			],
+			[
+				"edititem",
+				"application/views/scripts/item/edititem.phtml"
+			],
+			[
+				"index/index",
+				"application/views/scripts/index/index.phtml"
+			],
+			[
+				"editnote",
+				"application/views/scripts/jquerytemplates/editnoteform.jqt"
+			],
+			[
+				"editcoll",
+				"application/views/scripts/jquerytemplates/editcollectionbuttons.jqt"
+			],
+			[
+				"profileimg",
+				"library/Zotero/View/Helper/ProfileImageSrc.php"
+			],
+			[
+				"sett",
+				"application/controllers/SettingsController.php"
+			],
+			[
+				"zotero",
+				"config/zotero_config.ini"
+			],
+			[
+				"usersmeta",
+				"application/Models/UsersMetaTable.php"
+			],
+			[
+				"unorder",
+				"application/views/scripts/jquerytemplates/tagunorderedlist.jqt"
+			],
+			[
+				"library/jquery/jquery-1.",
+				"public/static/library/jquery/jquery-1.6.1-ui-1.8-custom.min.js"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 216.0,
+	"status_bar_visible": true
+}
