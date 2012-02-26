@@ -1,7 +1,10 @@
+'use strict'
 var J = jQuery.noConflict();
 
 var Zotero = {
     ajax: {},
+    callbacks: {},
+    ui: {callbacks:{}},
     url: {},
     utils: {},
     localizations: {},
@@ -66,7 +69,7 @@ var Zotero = {
             'tag': /^\S*$/,
             'tagType': /^(0|1)$/,
             'key': /^\S*/,
-            'format': /^(atom|bib|keys)$/,
+            'format': /^(atom|bib|keys|bibtex|bookmarks|mods|refer|rdf_bibliontology|rdf_dc|rdf_zotero|ris|wikipedia)$/,
             'style': /^\S*$/,
         },
         
@@ -312,7 +315,9 @@ Zotero.ajax.apiRequestUrl = function(params){
         
         //validate params based on patterns in Zotero.validate
         if(Zotero.validator.validate(val, key) === false){
-            throw "API argument failed validation: " + key + " cannot be " + val;
+            //warn on invalid parameter and drop from params that will be used
+            Zotero.warn("API argument failed validation: " + key + " cannot be " + val);
+            delete params[key];
         }
     });
     
@@ -685,7 +690,7 @@ Zotero.Library.prototype.loadCollections = function(config){
     if((this.collections.loaded) && (!this.collections.dirty)){
         Z.debug("already have correct collections loaded", 3);
         deferred.resolve();
-        return deferred.promise();
+        return deferred;
     }
     
     if(this.collections.loaded && this.collections.dirty){
@@ -700,12 +705,12 @@ Zotero.Library.prototype.loadCollections = function(config){
     Zotero.ajax.activeRequests.push(jqxhr);
     //Zotero.ajax.activeRequests.push({'deferred':deferred, 'publishes':'loadCollectionsDone'});
     
-    /*
+    
     deferred.done(function(collections){
         J.publish('loadCollectionsDone', [collections]);
     });
-    */
-    return deferred.promise();
+    
+    return deferred;
 };
 
 Zotero.Library.prototype.fetchNext = function(feed, config){
@@ -819,7 +824,7 @@ Zotero.Library.prototype.loadItems = function(config){
         itemfeed.requestConfig = newConfig;
         var items = library.items;
         //clear out display items
-        loadedItemsArray = items.addItemsFromFeed(itemfeed);
+        var loadedItemsArray = items.addItemsFromFeed(itemfeed);
         for (var i = 0; i < loadedItemsArray.length; i++) {
             loadedItemsArray[i].associateWithLibrary(library);
         };
@@ -835,7 +840,7 @@ Zotero.Library.prototype.loadItems = function(config){
     Z.debug('requestUrl:' + requestUrl, 4);
     if((this.items.displayItemsUrl == requestUrl) && !(this.dirty)){
         deferred.resolve({itemsArray:this.items.displayItemsArray, feed:this.items.displayItemsFeed, library:library});
-        return deferred.promise();
+        return deferred;
     }
     else{
         var jqxhr = J.ajax(Zotero.ajax.proxyWrapper(requestUrl, 'GET'), 
@@ -849,12 +854,13 @@ Zotero.Library.prototype.loadItems = function(config){
         jqxhr.fail(function(){deferred.reject.apply(null, arguments);}).fail(Zotero.error);
         Zotero.ajax.activeRequests.push(jqxhr);
     }
-    /*
+    
     deferred.done(function(itemsArray, feed, library){
+        Z.debug("loadItemsDone about to publish");
         J.publish('loadItemsDone', [itemsArray, feed, library]);
     });
-    */
-    return deferred.promise();
+    
+    return deferred;
 };
 
 Zotero.Library.prototype.loadItem = function(itemKey) {
@@ -893,12 +899,12 @@ Zotero.Library.prototype.loadItem = function(itemKey) {
     
     Zotero.ajax.activeRequests.push(jqxhr);
     
-    /*
+    
     deferred.done(function(item){
         J.publish('loadItemDone', [item]);
     });
-    */
-    return deferred.promise();
+    
+    return deferred;
 };
 
 Zotero.Library.prototype.fetchTags = function(config){
@@ -969,7 +975,7 @@ Zotero.Library.prototype.loadTags = function(config){
     jqxhr.fail(function(){deferred.reject.apply(null, arguments);});
     Zotero.ajax.activeRequests.push(jqxhr);
     
-    return deferred.promise();
+    return deferred;
 };
 
 Zotero.Library.prototype.getCachedTags = function(){
@@ -1013,7 +1019,7 @@ Zotero.Library.prototype.loadAllTags = function(config, checkCached){
         //tags already has the same information we're looking for
         Z.debug("tags already loaded - publishing and resolving deferred", 3);
         deferred.resolve(tags);
-        return deferred.promise();
+        return deferred;
     }
     else{
         Z.debug("tags not loaded", 3);
@@ -1030,9 +1036,9 @@ Zotero.Library.prototype.loadAllTags = function(config, checkCached){
         tags.plainList = plainList;
         
         Z.debug("done parsing one tags feed - checking for more.", 3);
-        /*
+        
         J.publish('tags_page_loaded', [tags]);
-        */
+        
         if(tags.hasNextLink){
             Z.debug("still has next link.", 3);
             tags.tagsArray.sort(library.sortByTitleCompare);
@@ -1097,7 +1103,7 @@ Zotero.Library.prototype.loadAllTags = function(config, checkCached){
         Zotero.cache.save(cacheConfig, tags.tagObjects);
     }, this));
     
-    return deferred.promise();
+    return deferred;
 };
 
 Zotero.Library.prototype.parseFeedObject = function (data) {
@@ -1378,7 +1384,7 @@ Zotero.Collections.prototype.assignDepths = function(depth, cArray){
         if(collection.topLevel){
             collection.nestingDepth = 1;
             if(collection.hasChildren){
-                Z.debug(collection.entries);
+                //Z.debug(collection.entries);
                 insertchildren(2, collection.entries);
             }
         }
@@ -2029,7 +2035,7 @@ Zotero.Item.prototype.initEmpty = function(itemType){
     
     d.done(callback);
     
-    return deferred.promise();
+    return deferred;
 };
 
 Zotero.Item.prototype.writeItem = function(){
@@ -2196,8 +2202,8 @@ Zotero.Item.prototype.getChildren = function(library){
     
     Zotero.ajax.activeRequests.push(jqxhr);
     
-    return deferred.promise();
-//    J.publish('getItemChildren', [this, jqxhr]);
+    return deferred;
+    J.publish('getItemChildren', [this, jqxhr]);
 };
 
 Zotero.Item.prototype.addToCollection = function(collectionKey){
@@ -2275,7 +2281,7 @@ Zotero.Item.prototype.getItemTemplate = function (itemType) {
         Z.debug("have itemTemplate in localStorage", 3);
         var template = itemTemplate;// JSON.parse(Zotero.storage.localStorage[url]);
         deferred.resolve(template);
-        return deferred.promise();
+        return deferred;
     }
     
     //callback always executed in this context
@@ -2292,7 +2298,7 @@ Zotero.Item.prototype.getItemTemplate = function (itemType) {
             callback
     );
     
-    return deferred.promise();
+    return deferred;
 };
 
 Zotero.Item.prototype.creatorTypes = {};
@@ -2335,7 +2341,7 @@ Zotero.Item.prototype.getCreatorTypes = function (itemType) {
                 callback
         );
     }
-    return deferred.promise();
+    return deferred;
 };
 
 Zotero.Item.prototype.getCreatorFields = function (locale) {
@@ -2668,13 +2674,13 @@ Zotero.Tag.prototype.loadObject = function(ob){
 };
 
 Zotero.Tag.prototype.parseXmlTag = function (tel) {
-    Z.debug("Zotero.Tag.parseXmlTag", 3);
-    Z.debug(tel);
+    //Z.debug("Zotero.Tag.parseXmlTag", 3);
+    //Z.debug(tel);
     this.parseXmlEntry(tel);
     
     this.numItems = tel.find('zapi\\:numItems, numItems').text();
     this.urlencodedtag = encodeURIComponent(this.title);
-    Z.debug("Done with Zotero.Tag.parseXmlTag");
+    //Z.debug("Done with Zotero.Tag.parseXmlTag");
 };
 
 Zotero.Tag.prototype.getLinkParams = function () {
@@ -3045,7 +3051,9 @@ Zotero.url.attachmentDownloadLink = function(item){
         var tail = item.links['enclosure']['href'].substr(-4, 4);
         if(tail == 'view'){
             //snapshot: redirect to view
-            retString += ' (<a href="' + item.links['enclosure']['href'] + '?key=' + Zotero.config.apiKey + '">View Snapshot</a>)';
+            retString += '<a href="' + Zotero.config.baseWebsiteUrl + Zotero.config.nonparsedBaseUrl + '/' + item.itemKey + '/file/view' + '">' + 'View Snapshot</a>';
+            
+            //retString += '<form style="margin:0;" method="POST" action="' + item.links['enclosure']['href'] + '?key=' + Zotero.config.apiKey + '">(<input type="hidden" name="h" value="1" /><a href="#" onclick="parentNode.submit()">' + item.title + '</a>)</form>';
         }
         else{
             //file: offer download
@@ -3063,12 +3071,67 @@ Zotero.url.attachmentDownloadLink = function(item){
                 filesizeString = "" + (filesize / 1024).toFixed(1) + " KB";
             }
             Z.debug(enctype);
-            retString += ' (<a href="' + item.links['enclosure']['href'] + '?key=' + Zotero.config.apiKey + '">';
-            retString += enctype + ', ' + filesizeString + '</a>)';
+            retString += '<a href="' + Zotero.config.baseWebsiteUrl + Zotero.config.nonparsedBaseUrl + '/' + item.itemKey + '/file' + '">';
+            retString += enctype + ', ' + filesizeString + '</a>';
             return retString;
         }
     }
     return retString;
+};
+
+Zotero.url.attachmentDownloadUrl = function(item){
+    var retString = '';
+    if(item.links['enclosure']){
+        retString = Zotero.config.baseWebsiteUrl + Zotero.config.nonparsedBaseUrl + '/' + item.itemKey + '/file';
+        var tail = item.links['enclosure']['href'].substr(-4, 4);
+        if(tail == 'view'){
+            //snapshot: redirect to view
+            retString += '/view';
+        }
+    }
+    else if(item.linkMode == 2 || item.linkMode == 3){
+        if(item.apiObj['url']){
+            retString = item.apiObj['url'];
+        }
+    }
+    return retString;
+};
+
+Zotero.url.attachmentFileDetails = function(item){
+    //file: offer download
+    if(!item.links['enclosure']) return '';
+    var enctype = Zotero.utils.translateMimeType(item.links['enclosure'].type);
+    var enc = item.links['enclosure'];
+    var filesizeString = '';
+    if(enc['length']){
+        var filesize = parseInt(enc['length']);
+        filesizeString = "" + filesize + " B";
+        if(filesize > 1073741824){
+            filesizeString = "" + (filesize / 1073741824).toFixed(1) + " GB";
+        }
+        else if(filesize > 1048576){
+            filesizeString = "" + (filesize / 1048576).toFixed(1) + " MB";
+        }
+        else if(filesize > 1024){
+            filesizeString = "" + (filesize / 1024).toFixed(1) + " KB";
+        }
+        return '(' + enctype + ', ' + filesizeString + ')';
+    }
+    else {
+        return '(' + enctype + ')';
+    }
+};
+
+Zotero.url.exportUrls = function(config){
+    Z.debug("Zotero.url.exportUrls")
+    var exportUrls = {};
+    var exportConfig = {};
+    J.each(Zotero.config.exportFormats, function(index, format){
+        exportConfig = J.extend(config, {'format':format});
+        exportUrls[format] = Zotero.ajax.apiRequestUrl(exportConfig) + Zotero.ajax.apiQueryString({format:format, limit:'25'});
+    });
+    Z.debug(exportUrls);
+    return exportUrls;
 };
 
 Zotero.url.snapshotViewLink = function(item){
