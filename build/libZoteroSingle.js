@@ -61,6 +61,24 @@ var Zotero = {
         }
     },
     
+    warn: function(warnstring){
+        if(typeof console == 'undefined' || typeof console.warn == 'undefined'){
+            this.debug(warnstring);
+        }
+        else{
+            console.warn(debugstring);
+        }
+    },
+    
+    error: function(errorstring){
+        if(typeof console == 'undefined' || typeof console.error == 'undefined'){
+            this.debug(warnstring);
+        }
+        else{
+            console.error(debugstring);
+        }
+    },
+    
     feeds: {},
     
     cacheFeeds: {},
