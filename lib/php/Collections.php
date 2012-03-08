@@ -36,6 +36,11 @@ class Zotero_Collections
     
     public function addCollectionsFromFeed($feed) {
         $entries = $feed->entryNodes;
+        if(empty($entries)){
+            var_dump($feed);
+            die;
+            return array();
+        }
         $addedCollections = array();
         foreach($entries as $entry){
             $collection = new Zotero_Collection($entry);

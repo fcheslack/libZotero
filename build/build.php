@@ -24,7 +24,7 @@ $files = array(
 $fullText = "<?php\n";
 
 foreach($files as $file){
-    $ftext = file_get_contents('../lib/' . $file);
+    $ftext = file_get_contents('../lib/php/' . $file);
     $ftext = str_replace(array('<?php', '<?', '?>'), '', $ftext);
     $fullText .= $ftext;
 }
@@ -63,5 +63,7 @@ foreach($jsfiles as $file){
 
 file_put_contents('../build/libZoteroSingle.js', $fulljs);
 
+copy('../build/libZoteroSingle.js', '../../zotero/git-trunk/public/static/library/libZotero/libZoteroSingle.js');
+copy('../build/libZoteroSingle.php', '../../zotero/git-trunk/library/libZotero/libZoteroSingle.php');
 
 ?>

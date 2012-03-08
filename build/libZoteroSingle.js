@@ -46,7 +46,47 @@ var Zotero = {
              apiKey: '',
              ajax: 1,
              locale: 'en-US',
-             cacheStoreType: 'localStorage'
+             cacheStoreType: 'localStorage',
+             mobile:0,
+             sortOrdering: {
+                 'dateAdded': 'desc',
+                 'dateModified': 'desc',
+                 'date': 'desc',
+                 'year': 'desc',
+                 'accessDate': 'desc',
+                 'title': 'asc',
+                 'creator': 'asc'
+             },
+             defaultSortColumn: 'title',
+             defaultSortOrder: 'asc',
+             largeFields: {
+                 'title': 1,
+                 'abstractNote': 1,
+                 'extra' : 1
+             },
+             richTextFields: {
+                 'note': 1
+             },
+             maxFieldSummaryLength: {title:60},
+             exportFormats: [
+                "bibtex",
+                "bookmarks",
+                "mods",
+                "refer",
+                "rdf_bibliontology",
+                "rdf_dc",
+                "rdf_zotero",
+                "ris",
+                "wikipedia"
+                ],
+            defaultApiArgs: {
+                'order': 'title',
+                'sort': 'asc',
+                'limit': 50,
+                'start': 0,
+                'content':'json',
+                'format': 'atom'
+            }
              },
     
     debug: function(debugstring, level){
@@ -84,7 +124,7 @@ var Zotero = {
     cacheFeeds: {},
     
     prefs: {
-        debug_level: 3, //lower level is higher priority
+        debug_level: 1, //lower level is higher priority
         debug_log: true,
         debug_mock: false
     },
@@ -137,12 +177,19 @@ var Zotero = {
         }
     },
     
+    _logEnabled: 0,
     enableLogging: function(){
-        Zotero.prefs.debug_log = true;
+        Zotero._logEnabled++;
+        if(Zotero._logEnabled > 0){
+            Zotero.prefs.debug_log = true;
+        }
     },
     
     disableLogging: function(){
-        Zotero.prefs.debug_log = false;
+        Zotero._logEnabled--;
+        if(Zotero._logEnabled <= 0){
+            Zotero.prefs.debug_log = false;
+        }
     },
     
     init: function(){
@@ -164,6 +211,7 @@ var Zotero = {
         if(Zotero.config.locale){
             locale = Zotero.config.locale;
         }
+        locale = 'en-US';
         
         J.ajaxSettings.traditional = true;
         
@@ -500,7 +548,7 @@ Zotero.ajax.proxyWrapper = function(requestUrl, method){
         if(!method){
             method = 'GET';
         }
-        return "proxyRequest.php?requestMethod=" + method + "&requestUrl=" + encodeURIComponent(requestUrl);
+        return "/proxyrequest?requestMethod=" + method + "&requestUrl=" + encodeURIComponent(requestUrl);
     }
     else{
         return requestUrl;
@@ -2231,7 +2279,7 @@ Zotero.Item.prototype.getChildren = function(library){
         Z.debug(library);
         var itemfeed = new Zotero.Feed(data);
         var items = library.items;
-        var childItems = items.addItemsFromFeed(feed);
+        var childItems = items.addItemsFromFeed(itemfeed);
         for (var i = childItems.length - 1; i >= 0; i--) {
             childItems[i].associateWithLibrary(library);
         }
@@ -2265,6 +2313,8 @@ Zotero.Item.prototype.getItemTypes = function (locale) {
     if(!locale){
         locale = 'en-US';
     }
+    locale = 'en-US';
+
     var itemTypes = Zotero.cache.load({locale:locale, target:'itemTypes'});
     if(itemTypes){
         Z.debug("have itemTypes in localStorage", 3);
@@ -2290,6 +2340,7 @@ Zotero.Item.prototype.getItemFields = function (locale) {
     if(!locale){
         locale = 'en-US';
     }
+    locale = 'en-US';
     
     var itemFields = Zotero.cache.load({locale:locale, target:'itemFields'});
     if(itemFields){

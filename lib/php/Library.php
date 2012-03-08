@@ -212,6 +212,15 @@ class Zotero_Library
     }
     
     /**
+     * get the last status code from last HTTP_Response returned
+     *
+     * @return HTTP_Response
+     */
+    public function getLastStatus(){
+        return $this->_lastResponse->getStatus();
+    }
+    
+    /**
      * Get the last Zotero_Feed parsed
      *
      * @return Zotero_Feed
@@ -262,7 +271,13 @@ class Zotero_Library
         }
         
         if(!empty($params['collectionKey'])){
-            $url .= '/collections/' . $params['collectionKey'];
+            if($params['collectionKey'] == 'trash'){
+                $url .= '/items/trash';
+                return $url;
+            }
+            else{
+                $url .= '/collections/' . $params['collectionKey'];
+            }
         }
         
         switch($params['target']){
@@ -412,7 +427,7 @@ class Zotero_Library
      * @param array $params list of parameters limiting the request
      * @return null
      */
-    public function fetchAllCollection($params = array()){
+    public function fetchAllCollections($params = array()){
         $aparams = array_merge(array('target'=>'collections', 'content'=>'json', 'limit'=>100), array('key'=>$this->_apiKey), $params);
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         do{
@@ -451,12 +466,15 @@ class Zotero_Library
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $response = $this->_request($reqUrl);
         if($response->isError()){
+            return false;
             throw new Exception("Error fetching collections");
         }
         $body = $response->getRawBody();
+        echo $body;die;
         $doc = new DOMDocument();
         $doc->loadXml($body);
         $feed = new Zotero_Feed($doc);
+        $this->_lastFeed = $feed;
         $addedCollections = $this->collections->addCollectionsFromFeed($feed);
         
         if(isset($feed->links['next'])){
@@ -469,6 +487,38 @@ class Zotero_Library
             $reqUrl = false;
         }
         return $addedCollections;
+    }
+    
+    /**
+     * Load a single collection by collectionKey
+     *
+     * @param string $collectionKey
+     * @return Zotero_Collection
+     */
+    public function fetchCollection($collectionKey){
+        $aparams = array('target'=>'collection', 'content'=>'json', 'collectionKey'=>$collectionKey);
+        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
+        
+        $response = $this->_request($reqUrl, 'GET');
+        if($response->isError()){
+            return false;
+            throw new Exception("Error fetching collection");
+        }
+        
+        $body = $response->getRawBody();
+        $doc = new DOMDocument();
+        $doc->loadXml($body);
+        $entries = $doc->getElementsByTagName("entry");
+        if(!$entries->length){
+            return false;
+            throw new Exception("no collection with specified key found");
+        }
+        else{
+            $entry = $entries->item(0);
+            $collection = new Zotero_Collection($entry);
+            $this->collections->addCollection($collection);
+            return $collection;
+        }
     }
     
     /**
@@ -605,7 +655,7 @@ class Zotero_Library
         
         $response = $this->_request($reqUrl, 'GET');
         if($response->isError()){
-            var_dump($response);
+            return false;
             throw new Exception("Error fetching items");
         }
         
@@ -614,6 +664,7 @@ class Zotero_Library
         $doc->loadXml($body);
         $entries = $doc->getElementsByTagName("entry");
         if(!$entries->length){
+            return false;
             throw new Exception("no item with specified key found");
         }
         else{
@@ -851,6 +902,7 @@ class Zotero_Library
         //load response into item objects
         $fetchedItems = array();
         if($response->isError()){
+            return false;
             throw new Exception("Error fetching items");
         }
         $body = $response->getRawBody();
@@ -1095,7 +1147,6 @@ class Zotero_Library
         
         $response = $this->_request($reqUrl, 'GET');
         if($response->isError()){
-            var_dump($response);
             return false;
         }
         
