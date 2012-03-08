@@ -2076,6 +2076,7 @@ class Zotero_Library
     const ZOTERO_URI = 'https://api.zotero.org';
     protected $_apiKey = '';
     protected $_ch = null;
+    protected $_followRedirects = true;
     public $libraryType = null;
     public $libraryID = null;
     public $libraryString = null;
@@ -2140,6 +2141,14 @@ class Zotero_Library
     }
     
     /**
+     * Set _followRedirect, controlling whether curl automatically follows location header redirects
+     * @param bool $follow automatically follow location header redirect
+     */
+    public function setFollow($follow){
+        $this->_followRedirects = $follow;
+    }
+
+    /**
      * set the cache time to live after initialization
      *
      * @param int $cachettl cache time to live in seconds, 0 disables
@@ -2178,8 +2187,11 @@ class Zotero_Library
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $httpHeaders);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
+        if($this->_followRedirects){
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        }
+        
         $umethod = strtoupper($method);
         switch($umethod){
             case "GET":
@@ -2220,9 +2232,11 @@ class Zotero_Library
             //a redirect and the new headers are left in the body. Zend_Http_Client gets around this by manually
             //handling redirects. That may end up being a better solution, but for now we'll just re-read responses
             //until a non-redirect is read
-            while($zresponse->isRedirect()){
-                $redirectedBody = $zresponse->getBody();
-                $zresponse = libZotero_Http_Response::fromString($redirectedBody);
+            if($this->_followRedirects){
+                while($zresponse->isRedirect()){
+                    $redirectedBody = $zresponse->getBody();
+                    $zresponse = libZotero_Http_Response::fromString($redirectedBody);
+                }
             }
             
             $saveCached = array(
@@ -2398,6 +2412,12 @@ class Zotero_Library
                         throw new Exception('Trying to get file on non-item target');
                     }
                     $url .= '/file';
+                    break;
+                case 'fileview':
+                    if($params['target'] != 'item'){
+                        throw new Exception('Trying to get file on non-item target');
+                    }
+                    $url .= '/file/view';
                     break;
             }
         }
