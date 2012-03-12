@@ -1002,6 +1002,51 @@ Zotero.Library.prototype.loadItem = function(itemKey) {
     return deferred;
 };
 
+Zotero.Library.prototype.loadItemBib = function(itemKey, style) {
+    Z.debug("Zotero.Library.loadItem", 3);
+
+    var deferred = new J.Deferred();
+    var urlconfig = {'target':'item', 'libraryType':this.type, 'libraryID':this.libraryID, 'itemKey':itemKey, 'content':'bib'};
+    if(style){
+        urlconfig['style'] = style;
+    }
+    
+    var requestUrl = Zotero.ajax.apiRequestUrl(urlconfig) + Zotero.ajax.apiQueryString(urlconfig);
+    var library = this;
+    
+    var callback = J.proxy(function(data, textStatus, XMLHttpRequest){
+        var resultOb = J(data);
+        var entry = J(data).find("entry").eq(0);
+        var item = new Zotero.Item();// Object.create(Zotero.item);
+        item.libraryType = this.type;
+        item.libraryID = this.libraryID;
+        item.parseXmlItem(entry);
+        item.owningLibrary = library;
+        this.items.itemObjects[item.itemKey] = item;
+        deferred.resolve(item);
+    }, this);
+    
+    var jqxhr = J.ajax(Zotero.ajax.proxyWrapper(requestUrl, 'GET'),
+        {type: "GET",
+         headers:{},
+         cache:false,
+         error: Zotero.ajax.errorCallback
+        }
+    );
+    
+    jqxhr.done(callback);
+    jqxhr.fail(function(){deferred.reject.apply(null, arguments);}).fail(Zotero.error);
+    
+    Zotero.ajax.activeRequests.push(jqxhr);
+    
+    
+    deferred.done(function(item){
+        J.publish('loadItemDone', [item]);
+    });
+    
+    return deferred;
+};
+
 Zotero.Library.prototype.fetchTags = function(config){
     Z.debug("Zotero.Library.fetchTags", 3);
     var library = this;
@@ -2034,6 +2079,9 @@ Zotero.Item.prototype.parseXmlItem = function (iel) {
     var contentEl = iel.children("content");
     if(contentEl.attr('type') == 'application/json' || contentEl.attr('zapi:type') == 'json'){
         this.parseJsonItemContent(contentEl);
+    }
+    else if(contentEl.attr('type') == 'xhtml' && contentEl.attr('zapi:type') == 'bib'){
+        this.bibContent = contentEl.html();
     }
     else if(contentEl.attr('type') == 'xhtml'){
         this.parseXmlItemContent(contentEl);

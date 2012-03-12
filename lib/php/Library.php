@@ -696,6 +696,42 @@ class Zotero_Library
     }
     
     /**
+     * Load a single item bib by itemKey
+     *
+     * @param string $itemKey
+     * @return Zotero_Item
+     */
+    public function fetchItemBib($itemKey, $style){
+        //TODO:parse correctly and return just bib
+        $aparams = array('target'=>'item', 'content'=>'bib', 'itemKey'=>$itemKey);
+        if($style){
+            $aparams['style'] = $style;
+        }
+        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
+        
+        $response = $this->_request($reqUrl, 'GET');
+        if($response->isError()){
+            return false;
+            throw new Exception("Error fetching items");
+        }
+        
+        $body = $response->getRawBody();
+        $doc = new DOMDocument();
+        $doc->loadXml($body);
+        $entries = $doc->getElementsByTagName("entry");
+        if(!$entries->length){
+            return false;
+            throw new Exception("no item with specified key found");
+        }
+        else{
+            $entry = $entries->item(0);
+            $item = new Zotero_Item($entry);
+            $this->items->addItem($item);
+            return $item;
+        }
+    }
+
+    /**
      * construct the url for file download of the item if it exists
      *
      * @param string $itemKey
