@@ -2554,7 +2554,6 @@ class Zotero_Library
             throw new Exception("Error fetching collections");
         }
         $body = $response->getRawBody();
-        echo $body;die;
         $doc = new DOMDocument();
         $doc->loadXml($body);
         $feed = new Zotero_Feed($doc);

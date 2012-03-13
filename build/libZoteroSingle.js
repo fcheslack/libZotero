@@ -1010,7 +1010,7 @@ Zotero.Library.prototype.loadItemBib = function(itemKey, style) {
     if(style){
         urlconfig['style'] = style;
     }
-    
+
     var requestUrl = Zotero.ajax.apiRequestUrl(urlconfig) + Zotero.ajax.apiQueryString(urlconfig);
     var library = this;
     
@@ -1018,12 +1018,13 @@ Zotero.Library.prototype.loadItemBib = function(itemKey, style) {
         var resultOb = J(data);
         var entry = J(data).find("entry").eq(0);
         var item = new Zotero.Item();// Object.create(Zotero.item);
-        item.libraryType = this.type;
-        item.libraryID = this.libraryID;
+        //item.libraryType = this.type;
+        //item.libraryID = this.libraryID;
         item.parseXmlItem(entry);
-        item.owningLibrary = library;
-        this.items.itemObjects[item.itemKey] = item;
-        deferred.resolve(item);
+        //item.owningLibrary = library;
+        //this.items.itemObjects[item.itemKey] = item;
+        var bibContent = item.bibContent;
+        deferred.resolve(bibContent);
     }, this);
     
     var jqxhr = J.ajax(Zotero.ajax.proxyWrapper(requestUrl, 'GET'),
@@ -1039,9 +1040,8 @@ Zotero.Library.prototype.loadItemBib = function(itemKey, style) {
     
     Zotero.ajax.activeRequests.push(jqxhr);
     
-    
     deferred.done(function(item){
-        J.publish('loadItemDone', [item]);
+        J.publish('loadItemBibDone', [item]);
     });
     
     return deferred;
