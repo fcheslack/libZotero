@@ -515,7 +515,8 @@ Zotero.ajax.apiQueryString = function(passedParams){
                              'locale',
                              'tag',
                              'tagType',
-                             'key'
+                             'key',
+                             'style'
                              ];
     //build simple api query parameters object
     var queryParams = {};
@@ -2080,8 +2081,9 @@ Zotero.Item.prototype.parseXmlItem = function (iel) {
     if(contentEl.attr('type') == 'application/json' || contentEl.attr('zapi:type') == 'json'){
         this.parseJsonItemContent(contentEl);
     }
-    else if(contentEl.attr('type') == 'xhtml' && contentEl.attr('zapi:type') == 'bib'){
-        this.bibContent = contentEl.html();
+    else if(contentEl.attr('zapi:type') == 'bib'){
+        this.bibContent = contentEl.text();
+        this.parsedBibContent = true;
     }
     else if(contentEl.attr('type') == 'xhtml'){
         this.parseXmlItemContent(contentEl);
