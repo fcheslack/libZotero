@@ -1,0 +1,2323 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class Zotero_Library</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class Zotero_Library</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+											<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+						
+			</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Interface to API and storage of a Zotero user or group library</p>
+		<p class="notes">
+			Located in <a class="field" href="_Library.php.html">/Library.php</a> (line <span class="field">15</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+	<a name="sec-const-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Class Constant Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Constants</span> (<a href="#sec-consts">details</a>)
+												<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<div class="const-summary">
+								<div class="const-title">
+					<a href="#ZOTERO_URI" title="details" class="const-name">ZOTERO_URI</a> = 					<span class="var-type"> 'https://api.zotero.org'</span>
+
+				</div>
+							</div>
+		</div>
+	</div>
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+															<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																																																																																																																																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$collections" title="details" class="var-name">$collections</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$dirty" title="details" class="var-name">$dirty</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$items" title="details" class="var-name">$items</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$libraryBaseWebsiteUrl" title="details" class="var-name">$libraryBaseWebsiteUrl</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$libraryID" title="details" class="var-name">$libraryID</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$libraryString" title="details" class="var-name">$libraryString</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$libraryType" title="details" class="var-name">$libraryType</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$libraryUrlIdentifier" title="details" class="var-name">$libraryUrlIdentifier</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$useLibraryAsContainer" title="details" class="var-name">$useLibraryAsContainer</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$_apiKey" title="details" class="var-name">$_apiKey</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$_cacheResponses" title="details" class="var-name">$_cacheResponses</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$_cachettl" title="details" class="var-name">$_cachettl</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$_ch" title="details" class="var-name">$_ch</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$_followRedirects" title="details" class="var-name">$_followRedirects</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$_lastFeed" title="details" class="var-name">$_lastFeed</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$_lastResponse" title="details" class="var-name">$_lastResponse</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																																																																																																																																																																																																												<div class="method-definition">
+					static 						<span class="method-result">string</span>
+										<a href="#libraryString" title="details" class="method-name">libraryString</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$type</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$libraryID</span>)
+									</div>
+																<div class="method-definition">
+					static 						<span class="method-result">void</span>
+										<a href="#loadLibrary" title="details" class="method-name">loadLibrary</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$dump</span>)
+									</div>
+																																																																																																																																
+												<div class="method-definition">
+											<span class="method-result"><a href="../libZotero/Zotero_Library.html">Zotero_Library</a></span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$libraryType</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$libraryID</span> = <span class="var-default">'me'</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$libraryUrlIdentifier</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$apiKey</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$baseWebsiteUrl</span> = <span class="var-default">&quot;http://www.zotero.org&quot;</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$cachettl</span> = <span class="var-default">0</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#__destruct" title="details" class="method-name">__destruct</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">Zotero_Response</span>
+										<a href="#addItemsToCollection" title="details" class="method-name">addItemsToCollection</a>
+											(<span class="var-type"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>&nbsp;<span class="var-name">$collection</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$items</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">Zotero_Response</span>
+										<a href="#addNotes" title="details" class="method-name">addNotes</a>
+											(<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>&nbsp;<span class="var-name">$parentItem</span>, <span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a>|array</span>&nbsp;<span class="var-name">$noteItem</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#apiQueryString" title="details" class="method-name">apiQueryString</a>
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$passedParams</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#apiRequestUrl" title="details" class="method-name">apiRequestUrl</a>
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$base</span> = <span class="var-default">Zotero_Library::ZOTERO_URI</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">Zotero_Response</span>
+										<a href="#createCollection" title="details" class="method-name">createCollection</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>&nbsp;<span class="var-name">$parent</span> = <span class="var-default">false</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">Zotero_Response</span>
+										<a href="#createItem" title="details" class="method-name">createItem</a>
+											(<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>&nbsp;<span class="var-name">$item</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">Zotero_Response</span>
+										<a href="#deleteItem" title="details" class="method-name">deleteItem</a>
+											(<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>&nbsp;<span class="var-name">$item</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">null</span>
+										<a href="#fetchAllCollections" title="details" class="method-name">fetchAllCollections</a>
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#fetchAllTags" title="details" class="method-name">fetchAllTags</a>
+											(<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>
+										<a href="#fetchCollection" title="details" class="method-name">fetchCollection</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$collectionKey</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">null</span>
+										<a href="#fetchCollections" title="details" class="method-name">fetchCollections</a>
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#fetchGroups" title="details" class="method-name">fetchGroups</a>
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$userID</span> = <span class="var-default">''</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>
+										<a href="#fetchItem" title="details" class="method-name">fetchItem</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$itemKey</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>
+										<a href="#fetchItemBib" title="details" class="method-name">fetchItemBib</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$itemKey</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$style</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#fetchItemChildren" title="details" class="method-name">fetchItemChildren</a>
+											(<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>&nbsp;<span class="var-name">$item</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#fetchItemKeys" title="details" class="method-name">fetchItemKeys</a>
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#fetchItems" title="details" class="method-name">fetchItems</a>
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#fetchItemsAfter" title="details" class="method-name">fetchItemsAfter</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$itemKey</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#fetchItemsTop" title="details" class="method-name">fetchItemsTop</a>
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#fetchTags" title="details" class="method-name">fetchTags</a>
+											(<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#fetchTrashedItems" title="details" class="method-name">fetchTrashedItems</a>
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#getCreatorFields" title="details" class="method-name">getCreatorFields</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#getCreatorTypes" title="details" class="method-name">getCreatorTypes</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$itemType</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#getCV" title="details" class="method-name">getCV</a>
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$userID</span> = <span class="var-default">''</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#getItemFields" title="details" class="method-name">getItemFields</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#getItemTypes" title="details" class="method-name">getItemTypes</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#getKeyPermissions" title="details" class="method-name">getKeyPermissions</a>
+											([<span class="var-type">int|string</span>&nbsp;<span class="var-name">$userID</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span> = <span class="var-default">false</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../libZotero/Zotero_Feed.html">Zotero_Feed</a></span>
+										<a href="#getLastFeed" title="details" class="method-name">getLastFeed</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">HTTP_Response</span>
+										<a href="#getLastResponse" title="details" class="method-name">getLastResponse</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">HTTP_Response</span>
+										<a href="#getLastStatus" title="details" class="method-name">getLastStatus</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>
+										<a href="#getTemplateItem" title="details" class="method-name">getTemplateItem</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$itemType</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#itemDownloadLink" title="details" class="method-name">itemDownloadLink</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$itemKey</span>)
+									</div>
+																																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#parseKey" title="details" class="method-name">parseKey</a>
+											(<span class="var-type">$keyNode</span>&nbsp;<span class="var-name">$keyNode</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#parseQueryString" title="details" class="method-name">parseQueryString</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$query</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#proxyHttpRequest" title="details" class="method-name">proxyHttpRequest</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$url</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$method</span> = <span class="var-default">'GET'</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$body</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$headers</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">Zotero_Response</span>
+										<a href="#removeCollection" title="details" class="method-name">removeCollection</a>
+											(<span class="var-type"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>&nbsp;<span class="var-name">$collection</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">Zotero_Response</span>
+										<a href="#removeItemFromCollection" title="details" class="method-name">removeItemFromCollection</a>
+											(<span class="var-type"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>&nbsp;<span class="var-name">$collection</span>, <span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>&nbsp;<span class="var-name">$item</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#removeItemsFromCollection" title="details" class="method-name">removeItemsFromCollection</a>
+											(<span class="var-type"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>&nbsp;<span class="var-name">$collection</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$items</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#saveLibrary" title="details" class="method-name">saveLibrary</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">null</span>
+										<a href="#setCacheTtl" title="details" class="method-name">setCacheTtl</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$cachettl</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#setFollow" title="details" class="method-name">setFollow</a>
+											(<span class="var-type">bool</span>&nbsp;<span class="var-name">$follow</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">Zotero_Response</span>
+										<a href="#trashItem" title="details" class="method-name">trashItem</a>
+											(<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>&nbsp;<span class="var-name">$item</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">Zotero_Response</span>
+										<a href="#writeUpdatedCollection" title="details" class="method-name">writeUpdatedCollection</a>
+											(<span class="var-type"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>&nbsp;<span class="var-name">$collection</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">Zotero_Response</span>
+										<a href="#writeUpdatedItem" title="details" class="method-name">writeUpdatedItem</a>
+											(<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>&nbsp;<span class="var-name">$item</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#_cacheLoad" title="details" class="method-name">_cacheLoad</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#_cacheSave" title="details" class="method-name">_cacheSave</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">HTTP_Response</span>
+										<a href="#_request" title="details" class="method-name">_request</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$method</span> = <span class="var-default">&quot;GET&quot;</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$body</span> = <span class="var-default">NULL</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$headers</span> = <span class="var-default">array()</span>])
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+												<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$collections" id="$collections"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$collections</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">27</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$dirty" id="$dirty"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$dirty</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">28</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$items" id="$items"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$items</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">26</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$libraryBaseWebsiteUrl" id="$libraryBaseWebsiteUrl"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$libraryBaseWebsiteUrl</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">25</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$libraryID" id="$libraryID"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$libraryID</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">22</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$libraryString" id="$libraryString"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$libraryString</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">23</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$libraryType" id="$libraryType"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$libraryType</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">21</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$libraryUrlIdentifier" id="$libraryUrlIdentifier"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$libraryUrlIdentifier</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">24</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$useLibraryAsContainer" id="$useLibraryAsContainer"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$useLibraryAsContainer</span>
+			 = <span class="var-default"> true</span>			(line <span class="line-number">29</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$_apiKey" id="$_apiKey"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_apiKey</span>
+			 = <span class="var-default"> ''</span>			(line <span class="line-number">18</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$_cacheResponses" id="$_cacheResponses"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_cacheResponses</span>
+			 = <span class="var-default"> false</span>			(line <span class="line-number">32</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$_cachettl" id="$_cachettl"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_cachettl</span>
+			 = <span class="var-default"> 0</span>			(line <span class="line-number">33</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$_ch" id="$_ch"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_ch</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">19</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$_followRedirects" id="$_followRedirects"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_followRedirects</span>
+			 = <span class="var-default"> true</span>			(line <span class="line-number">20</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$_lastFeed" id="$_lastFeed"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_lastFeed</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">31</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$_lastResponse" id="$_lastResponse"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$_lastResponse</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">30</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																			<a href="#sec-const-summary">Constants</a> (<a href="#sec-consts">details</a>)
+							
+										<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="methodlibraryString" id="libraryString"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method libraryString</span> (line <span class="line-number">257</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Construct a string that uniquely identifies a library  This is not related to the server GUIDs</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">string</span>
+		<span class="method-name">
+			libraryString
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$type</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$libraryID</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$type</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$libraryID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodloadLibrary" id="loadLibrary"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method loadLibrary</span> (line <span class="line-number">1232</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result">void</span>
+		<span class="method-name">
+			loadLibrary
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$dump</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$dump</span>			</li>
+				</ul>
+		
+			
+	</div>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">46</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Constructor for Zotero_Library</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../libZotero/Zotero_Library.html">Zotero_Library</a></span>
+		<span class="method-name">
+			__construct
+		</span>
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$libraryType</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$libraryID</span> = <span class="var-default">'me'</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$libraryUrlIdentifier</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$apiKey</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$baseWebsiteUrl</span> = <span class="var-default">&quot;http://www.zotero.org&quot;</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$cachettl</span> = <span class="var-default">0</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$libraryType</span><span class="var-description">: user|group</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$libraryID</span><span class="var-description">: id for zotero library, unique when combined with libraryType</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$libraryUrlIdentifier</span><span class="var-description">: library identifier used in urls, either ID or slug</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$apiKey</span><span class="var-description">: zotero api key</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$baseWebsiteUrl</span><span class="var-description">: base url to use when generating links to the website version of items</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$cachettl</span><span class="var-description">: cache time to live in seconds, cache disabled if 0</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method__destruct" id="__destruct"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">Destructor __destruct</span> (line <span class="line-number">80</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Destructor, closes cURL.</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			__destruct
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodaddItemsToCollection" id="addItemsToCollection"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">addItemsToCollection</span> (line <span class="line-number">867</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add Items to a collection</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Zotero_Response</span>
+		<span class="method-name">
+			addItemsToCollection
+		</span>
+					(<span class="var-type"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>&nbsp;<span class="var-name">$collection</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$items</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>
+				<span class="var-name">$collection</span><span class="var-description">: to add items to</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$items</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddNotes" id="addNotes"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">addNotes</span> (line <span class="line-number">810</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Add child notes to a parent item</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Zotero_Response</span>
+		<span class="method-name">
+			addNotes
+		</span>
+					(<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>&nbsp;<span class="var-name">$parentItem</span>, <span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a>|array</span>&nbsp;<span class="var-name">$noteItem</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>
+				<span class="var-name">$parentItem</span><span class="var-description">: the item the notes are to be children of</span>			</li>
+					<li>
+				<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a>|array</span>
+				<span class="var-name">$noteItem</span><span class="var-description">: the note item or items</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodapiQueryString" id="apiQueryString"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">apiQueryString</span> (line <span class="line-number">375</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">generate an api query string for a request based on array of parameters</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			apiQueryString
+		</span>
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$passedParams</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$passedParams</span><span class="var-description">: list of parameters that define the request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodapiRequestUrl" id="apiRequestUrl"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">apiRequestUrl</span> (line <span class="line-number">272</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">generate an api url for a request based on array of parameters</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			apiRequestUrl
+		</span>
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$base</span> = <span class="var-default">Zotero_Library::ZOTERO_URI</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params</span><span class="var-description">: list of parameters that define the request</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$base</span><span class="var-description">: the base api url</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreateCollection" id="createCollection"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">createCollection</span> (line <span class="line-number">835</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Create a new collection in this library</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Zotero_Response</span>
+		<span class="method-name">
+			createCollection
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>&nbsp;<span class="var-name">$parent</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$name</span><span class="var-description">: the name of the new item</span>			</li>
+					<li>
+				<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>
+				<span class="var-name">$parent</span><span class="var-description">: the optional parent collection for the new collection</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcreateItem" id="createItem"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">createItem</span> (line <span class="line-number">775</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Make API request to create a new item</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Zotero_Response</span>
+		<span class="method-name">
+			createItem
+		</span>
+					(<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>&nbsp;<span class="var-name">$item</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>
+				<span class="var-name">$item</span><span class="var-description">: the newly created Zotero_Item to be added to the server</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoddeleteItem" id="deleteItem"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">deleteItem</span> (line <span class="line-number">933</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Permanently delete an item from the API</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Zotero_Response</span>
+		<span class="method-name">
+			deleteItem
+		</span>
+					(<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>&nbsp;<span class="var-name">$item</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>
+				<span class="var-name">$item</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchAllCollections" id="fetchAllCollections"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">fetchAllCollections</span> (line <span class="line-number">455</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Load all collections in the library into the collections container</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">null</span>
+		<span class="method-name">
+			fetchAllCollections
+		</span>
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params</span><span class="var-description">: list of parameters limiting the request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchAllTags" id="fetchAllTags"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">fetchAllTags</span> (line <span class="line-number">1044</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Fetch all the tags defined by the passed parameters</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			fetchAllTags
+		</span>
+					(<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params</span><span class="var-description">: list of parameters defining the request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchCollection" id="fetchCollection"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">fetchCollection</span> (line <span class="line-number">522</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Load a single collection by collectionKey</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>
+		<span class="method-name">
+			fetchCollection
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$collectionKey</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$collectionKey</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchCollections" id="fetchCollections"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">fetchCollections</span> (line <span class="line-number">489</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Load 1 request worth of collections in the library into the collections container</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">null</span>
+		<span class="method-name">
+			fetchCollections
+		</span>
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params</span><span class="var-description">: list of parameters limiting the request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchGroups" id="fetchGroups"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">fetchGroups</span> (line <span class="line-number">1173</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get groups a user belongs to</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			fetchGroups
+		</span>
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$userID</span> = <span class="var-default">''</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$userID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchItem" id="fetchItem"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">fetchItem</span> (line <span class="line-number">676</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Load a single item by itemKey</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>
+		<span class="method-name">
+			fetchItem
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$itemKey</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$itemKey</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchItemBib" id="fetchItemBib"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">fetchItemBib</span> (line <span class="line-number">708</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Load a single item bib by itemKey</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>
+		<span class="method-name">
+			fetchItemBib
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$itemKey</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$style</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$itemKey</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$style</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchItemChildren" id="fetchItemChildren"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">fetchItemChildren</span> (line <span class="line-number">957</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Fetch any child items of a particular item</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			fetchItemChildren
+		</span>
+					(<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>&nbsp;<span class="var-name">$item</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>
+				<span class="var-name">$item</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchItemKeys" id="fetchItemKeys"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">fetchItemKeys</span> (line <span class="line-number">565</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Make a single request loading item keys</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> of fetched items</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			fetchItemKeys
+		</span>
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params</span><span class="var-description">: list of parameters that define the request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchItems" id="fetchItems"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">fetchItems</span> (line <span class="line-number">613</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Make a single request loading a list of items</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> of fetched items</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			fetchItems
+		</span>
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params</span><span class="var-description">: list of parameters that define the request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchItemsAfter" id="fetchItemsAfter"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">fetchItemsAfter</span> (line <span class="line-number">641</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Make a single request loading a list of items</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> of fetched items</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			fetchItemsAfter
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$itemKey</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$itemKey</span><span class="var-description">: key of item to stop retrieval at</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params</span><span class="var-description">: list of parameters that define the request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchItemsTop" id="fetchItemsTop"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">fetchItemsTop</span> (line <span class="line-number">554</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Make a single request loading top level items</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> of fetched items</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			fetchItemsTop
+		</span>
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params</span><span class="var-description">: list of parameters that define the request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchTags" id="fetchTags"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">fetchTags</span> (line <span class="line-number">1081</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Make a single request for Zotero tags in this library defined by the passed parameters</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			fetchTags
+		</span>
+					(<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params</span><span class="var-description">: list of parameters defining the request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfetchTrashedItems" id="fetchTrashedItems"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">fetchTrashedItems</span> (line <span class="line-number">586</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Make a single request loading items in the trash</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> of fetched items</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			fetchTrashedItems
+		</span>
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params</span><span class="var-description">: list of parameters additionally filtering the request</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetCreatorFields" id="getCreatorFields"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getCreatorFields</span> (line <span class="line-number">1028</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the creator Fields the API knows about</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			getCreatorFields
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetCreatorTypes" id="getCreatorTypes"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getCreatorTypes</span> (line <span class="line-number">1013</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the creatorTypes associated with an itemType</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			getCreatorTypes
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$itemType</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$itemType</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetCV" id="getCV"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getCV</span> (line <span class="line-number">1201</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get CV for a user</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			getCV
+		</span>
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$userID</span> = <span class="var-default">''</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$userID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetItemFields" id="getItemFields"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getItemFields</span> (line <span class="line-number">997</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the list of item Fields the API knows about</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			getItemFields
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetItemTypes" id="getItemTypes"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getItemTypes</span> (line <span class="line-number">982</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the list of itemTypes the API knows about</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			getItemTypes
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetKeyPermissions" id="getKeyPermissions"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getKeyPermissions</span> (line <span class="line-number">1112</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the permissions a key has for a library  if no key is passed use the currently set key for the library</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			getKeyPermissions
+		</span>
+					([<span class="var-type">int|string</span>&nbsp;<span class="var-name">$userID</span> = <span class="var-default">null</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int|string</span>
+				<span class="var-name">$userID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$key</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetLastFeed" id="getLastFeed"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getLastFeed</span> (line <span class="line-number">247</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the last Zotero_Feed parsed</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../libZotero/Zotero_Feed.html">Zotero_Feed</a></span>
+		<span class="method-name">
+			getLastFeed
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetLastResponse" id="getLastResponse"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getLastResponse</span> (line <span class="line-number">229</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">get the last HTTP_Response returned</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">HTTP_Response</span>
+		<span class="method-name">
+			getLastResponse
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetLastStatus" id="getLastStatus"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getLastStatus</span> (line <span class="line-number">238</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">get the last status code from last HTTP_Response returned</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">HTTP_Response</span>
+		<span class="method-name">
+			getLastStatus
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetTemplateItem" id="getTemplateItem"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getTemplateItem</span> (line <span class="line-number">790</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get a template for a new item of a certain type</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>
+		<span class="method-name">
+			getTemplateItem
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$itemType</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$itemType</span><span class="var-description">: type of item the template is for</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methoditemDownloadLink" id="itemDownloadLink"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">itemDownloadLink</span> (line <span class="line-number">744</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">construct the url for file download of the item if it exists</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			itemDownloadLink
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$itemKey</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$itemKey</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodparseKey" id="parseKey"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">parseKey</span> (line <span class="line-number">1142</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Parse a key response into an array</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			parseKey
+		</span>
+					(<span class="var-type">$keyNode</span>&nbsp;<span class="var-name">$keyNode</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$keyNode</span>
+				<span class="var-name">$keyNode</span><span class="var-description">: DOMNode from key response</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodparseQueryString" id="parseQueryString"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">parseQueryString</span> (line <span class="line-number">439</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">parse a query string and separate into parameters  without using the php way of representing query strings</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			parseQueryString
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$query</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$query</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodproxyHttpRequest" id="proxyHttpRequest"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">proxyHttpRequest</span> (line <span class="line-number">195</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			proxyHttpRequest
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$url</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$method</span> = <span class="var-default">'GET'</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$body</span> = <span class="var-default">null</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$headers</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$url</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$method</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$body</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$headers</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodremoveCollection" id="removeCollection"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">removeCollection</span> (line <span class="line-number">853</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Delete a collection from the library</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Zotero_Response</span>
+		<span class="method-name">
+			removeCollection
+		</span>
+					(<span class="var-type"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>&nbsp;<span class="var-name">$collection</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>
+				<span class="var-name">$collection</span><span class="var-description">: collection object to be deleted</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodremoveItemFromCollection" id="removeItemFromCollection"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">removeItemFromCollection</span> (line <span class="line-number">905</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Remove a single item from a collection</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Zotero_Response</span>
+		<span class="method-name">
+			removeItemFromCollection
+		</span>
+					(<span class="var-type"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>&nbsp;<span class="var-name">$collection</span>, <span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>&nbsp;<span class="var-name">$item</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>
+				<span class="var-name">$collection</span><span class="var-description">: to add items to</span>			</li>
+					<li>
+				<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>
+				<span class="var-name">$item</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodremoveItemsFromCollection" id="removeItemsFromCollection"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">removeItemsFromCollection</span> (line <span class="line-number">887</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Remove items from a collection</p>
+	<ul class="tags">
+				<li><span class="field">return:</span> list of itemKeys successfully removed</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			removeItemsFromCollection
+		</span>
+					(<span class="var-type"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>&nbsp;<span class="var-name">$collection</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$items</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>
+				<span class="var-name">$collection</span><span class="var-description">: to add items to</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$items</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsaveLibrary" id="saveLibrary"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">saveLibrary</span> (line <span class="line-number">1227</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			saveLibrary
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodsetCacheTtl" id="setCacheTtl"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">setCacheTtl</span> (line <span class="line-number">98</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">set the cache time to live after initialization</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">null</span>
+		<span class="method-name">
+			setCacheTtl
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$cachettl</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$cachettl</span><span class="var-description">: cache time to live in seconds, 0 disables</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsetFollow" id="setFollow"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">setFollow</span> (line <span class="line-number">88</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Set _followRedirect, controlling whether curl automatically follows location header redirects</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			setFollow
+		</span>
+					(<span class="var-type">bool</span>&nbsp;<span class="var-name">$follow</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">bool</span>
+				<span class="var-name">$follow</span><span class="var-description">: automatically follow location header redirect</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodtrashItem" id="trashItem"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">trashItem</span> (line <span class="line-number">946</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Put an item in the trash</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Zotero_Response</span>
+		<span class="method-name">
+			trashItem
+		</span>
+					(<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>&nbsp;<span class="var-name">$item</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>
+				<span class="var-name">$item</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodwriteUpdatedCollection" id="writeUpdatedCollection"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">writeUpdatedCollection</span> (line <span class="line-number">918</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Write a modified collection object back to the api</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Zotero_Response</span>
+		<span class="method-name">
+			writeUpdatedCollection
+		</span>
+					(<span class="var-type"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>&nbsp;<span class="var-name">$collection</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../libZotero/Zotero_Collection.html">Zotero_Collection</a></span>
+				<span class="var-name">$collection</span><span class="var-description">: to modify</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodwriteUpdatedItem" id="writeUpdatedItem"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">writeUpdatedItem</span> (line <span class="line-number">755</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Write a modified item back to the api</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Zotero_Response</span>
+		<span class="method-name">
+			writeUpdatedItem
+		</span>
+					(<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>&nbsp;<span class="var-name">$item</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"><a href="../libZotero/Zotero_Item.html">Zotero_Item</a></span>
+				<span class="var-name">$item</span><span class="var-description">: the modified item to be written back</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="method_cacheLoad" id="_cacheLoad"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">_cacheLoad</span> (line <span class="line-number">219</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_cacheLoad
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="method_cacheSave" id="_cacheSave"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">_cacheSave</span> (line <span class="line-number">215</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			_cacheSave
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="method_request" id="_request"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">_request</span> (line <span class="line-number">118</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Make http request to zotero api</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">HTTP_Response</span>
+		<span class="method-name">
+			_request
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$url</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$method</span> = <span class="var-default">&quot;GET&quot;</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$body</span> = <span class="var-default">NULL</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$headers</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$url</span><span class="var-description">: target api url</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$method</span><span class="var-description">: http method GET|POST|PUT|DELETE</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$body</span><span class="var-description">: request body if write</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$headers</span><span class="var-description">: headers to set on request</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+	<a name="sec-consts"></a>
+	<div class="info-box">
+		<div class="info-box-title">Class Constants</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Constants</a> (<span class="disabled">details</span>)
+						
+			
+												<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+														| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="constZOTERO_URI" id="ZOTERO_URI"><!-- --></A>
+<div class="oddrow">
+
+	<div class="const-header">
+		<span class="const-title">
+			<span class="const-name">ZOTERO_URI</span>
+			 = <span class="const-default"> 'https://api.zotero.org'</span>
+			(line <span class="line-number">17</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	
+</div>
+						
+		</div>
+	</div>
+
+	<p class="notes" id="credit">
+		Documentation generated on Thu, 15 Mar 2012 16:29:07 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
+	</p>
+	</div></body>
+</html>

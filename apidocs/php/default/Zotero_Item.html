@@ -1,0 +1,1055 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class Zotero_Item</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class Zotero_Item</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Representation of a Zotero Item</p>
+	<ul class="tags">
+				<li><span class="field">copyright:</span> Copyright (c) 2008  Center for History and New Media (http://chnm.gmu.edu)</li>
+				<li><span class="field">see:</span> <a href="../default/Zotero_Entry.html">Zotero_Entry</a></li>
+				<li><span class="field">since:</span> Class available since Release 0.0</li>
+				<li><span class="field">license:</span> <a href="http://www.opensource.org/licenses/ecl1.php">ECL License</a></li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_Item.php.html">/Item.php</a> (line <span class="field">11</span>)
+		</p>
+		
+				
+		<pre><a href="../default/Zotero_Entry.html">Zotero_Entry</a>
+   |
+   --Zotero_Item</pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																												<div class="var-title">
+					static <span class="var-type">array</span>
+					<a href="#$creatorMap" title="details" class="var-name">$creatorMap</a>
+				</div>
+																																								<div class="var-title">
+					static <span class="var-type">array</span>
+					<a href="#$fieldMap" title="details" class="var-name">$fieldMap</a>
+				</div>
+																																																																																																<div class="var-title">
+					static <span class="var-type">array</span>
+					<a href="#$typeMap" title="details" class="var-name">$typeMap</a>
+				</div>
+																				<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$apiObject" title="details" class="var-name">$apiObject</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">array</span>
+					<a href="#$childKeys" title="details" class="var-name">$childKeys</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$content" title="details" class="var-name">$content</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$createdByUserID" title="details" class="var-name">$createdByUserID</a>
+				</div>
+																								<div class="var-title">
+					<span class="var-type">array</span>
+					<a href="#$creators" title="details" class="var-name">$creators</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$creatorSummary" title="details" class="var-name">$creatorSummary</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$etag" title="details" class="var-name">$etag</a>
+				</div>
+																								<div class="var-title">
+					<span class="var-type">int</span>
+					<a href="#$itemKey" title="details" class="var-name">$itemKey</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$itemType" title="details" class="var-name">$itemType</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$lastModifiedByUserID" title="details" class="var-name">$lastModifiedByUserID</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">int</span>
+					<a href="#$linkMode" title="details" class="var-name">$linkMode</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$mimeType" title="details" class="var-name">$mimeType</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$note" title="details" class="var-name">$note</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$numChildren" title="details" class="var-name">$numChildren</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$numTags" title="details" class="var-name">$numTags</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$parentKey" title="details" class="var-name">$parentKey</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">mixed</span>
+					<a href="#$parsedJson" title="details" class="var-name">$parsedJson</a>
+				</div>
+																			</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																												
+												<div class="method-definition">
+											<span class="method-result">Zotero_Item</span>
+										<a href="#__construct" title="details" class="method-name">__construct</a>
+											([<span class="var-type"></span>&nbsp;<span class="var-name">$entryNode</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#addCreator" title="details" class="method-name">addCreator</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$creatorArray</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#compareItem" title="details" class="method-name">compareItem</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$otherItem</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#formatItemField" title="details" class="method-name">formatItemField</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$field</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#fullItemArray" title="details" class="method-name">fullItemArray</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#fullItemJSON" title="details" class="method-name">fullItemJSON</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#get" title="details" class="method-name">get</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$key</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#hasFile" title="details" class="method-name">hasFile</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#isAttachment" title="details" class="method-name">isAttachment</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#json" title="details" class="method-name">json</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#newItemObject" title="details" class="method-name">newItemObject</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#set" title="details" class="method-name">set</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$key</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$val</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#updateItemObject" title="details" class="method-name">updateItemObject</a>
+										()
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$creatorMap" id="$creatorMap"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			static <span class="var-type">array</span>
+			<span class="var-name">$creatorMap</span>
+			 = <span class="var-default">array(<br />        &quot;author&quot;         =&gt; &quot;Author&quot;,<br />        &quot;contributor&quot;    =&gt; &quot;Contributor&quot;,<br />        &quot;editor&quot;         =&gt; &quot;Editor&quot;,<br />        &quot;translator&quot;     =&gt; &quot;Translator&quot;,<br />        &quot;seriesEditor&quot;   =&gt; &quot;Series Editor&quot;,<br />        &quot;interviewee&quot;    =&gt; &quot;Interview With&quot;,<br />        &quot;interviewer&quot;    =&gt; &quot;Interviewer&quot;,<br />        &quot;director&quot;       =&gt; &quot;Director&quot;,<br />        &quot;scriptwriter&quot;   =&gt; &quot;Scriptwriter&quot;,<br />        &quot;producer&quot;       =&gt; &quot;Producer&quot;,<br />        &quot;castMember&quot;     =&gt; &quot;Cast Member&quot;,<br />        &quot;sponsor&quot;        =&gt; &quot;Sponsor&quot;,<br />        &quot;counsel&quot;        =&gt; &quot;Counsel&quot;,<br />        &quot;inventor&quot;       =&gt; &quot;Inventor&quot;,<br />        &quot;attorneyAgent&quot;  =&gt; &quot;Attorney/Agent&quot;,<br />        &quot;recipient&quot;      =&gt; &quot;Recipient&quot;,<br />        &quot;performer&quot;      =&gt; &quot;Performer&quot;,<br />        &quot;composer&quot;       =&gt; &quot;Composer&quot;,<br />        &quot;wordsBy&quot;        =&gt; &quot;Words By&quot;,<br />        &quot;cartographer&quot;   =&gt; &quot;Cartographer&quot;,<br />        &quot;programmer&quot;     =&gt; &quot;Programmer&quot;,<br />        &quot;reviewedAuthor&quot; =&gt; &quot;Reviewed Author&quot;,<br />        &quot;artist&quot;         =&gt; &quot;Artist&quot;,<br />        &quot;commenter&quot;      =&gt; &quot;Commenter&quot;,<br />        &quot;presenter&quot;      =&gt; &quot;Presenter&quot;,<br />        &quot;guest&quot;          =&gt; &quot;Guest&quot;,<br />        &quot;podcaster&quot;      =&gt; &quot;Podcaster&quot;<br />    )</span>			(line <span class="line-number">245</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$fieldMap" id="$fieldMap"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			static <span class="var-type">array</span>
+			<span class="var-name">$fieldMap</span>
+			 = <span class="var-default">array(<br />        &quot;creator&quot;             =&gt; &quot;Creator&quot;,<br />        &quot;itemType&quot;            =&gt; &quot;Type&quot;,<br />        &quot;title&quot;               =&gt; &quot;Title&quot;,<br />        &quot;dateAdded&quot;           =&gt; &quot;Date Added&quot;,<br />        &quot;dateModified&quot;        =&gt; &quot;Modified&quot;,<br />        &quot;source&quot;              =&gt; &quot;Source&quot;,<br />        &quot;notes&quot;               =&gt; &quot;Notes&quot;,<br />        &quot;tags&quot;                =&gt; &quot;Tags&quot;,<br />        &quot;attachments&quot;         =&gt; &quot;Attachments&quot;,<br />        &quot;related&quot;             =&gt; &quot;Related&quot;,<br />        &quot;url&quot;                 =&gt; &quot;URL&quot;,<br />        &quot;rights&quot;              =&gt; &quot;Rights&quot;,<br />        &quot;series&quot;              =&gt; &quot;Series&quot;,<br />        &quot;volume&quot;              =&gt; &quot;Volume&quot;,<br />        &quot;issue&quot;               =&gt; &quot;Issue&quot;,<br />        &quot;edition&quot;             =&gt; &quot;Edition&quot;,<br />        &quot;place&quot;               =&gt; &quot;Place&quot;,<br />        &quot;publisher&quot;           =&gt; &quot;Publisher&quot;,<br />        &quot;pages&quot;               =&gt; &quot;Pages&quot;,<br />        &quot;ISBN&quot;                =&gt; &quot;ISBN&quot;,<br />        &quot;publicationTitle&quot;    =&gt; &quot;Publication&quot;,<br />        &quot;ISSN&quot;                =&gt; &quot;ISSN&quot;,<br />        &quot;date&quot;                =&gt; &quot;Date&quot;,<br />        &quot;section&quot;             =&gt; &quot;Section&quot;,<br />        &quot;callNumber&quot;          =&gt; &quot;Call Number&quot;,<br />        &quot;archiveLocation&quot;     =&gt; &quot;Loc. in Archive&quot;,<br />        &quot;distributor&quot;         =&gt; &quot;Distributor&quot;,<br />        &quot;extra&quot;               =&gt; &quot;Extra&quot;,<br />        &quot;journalAbbreviation&quot; =&gt; &quot;Journal Abbr&quot;,<br />        &quot;DOI&quot;                 =&gt; &quot;DOI&quot;,<br />        &quot;accessDate&quot;          =&gt; &quot;Accessed&quot;,<br />        &quot;seriesTitle&quot;         =&gt; &quot;Series Title&quot;,<br />        &quot;seriesText&quot;          =&gt; &quot;Series Text&quot;,<br />        &quot;seriesNumber&quot;        =&gt; &quot;Series Number&quot;,<br />        &quot;institution&quot;         =&gt; &quot;Institution&quot;,<br />        &quot;reportType&quot;          =&gt; &quot;Report Type&quot;,<br />        &quot;code&quot;                =&gt; &quot;Code&quot;,<br />        &quot;session&quot;             =&gt; &quot;Session&quot;,<br />        &quot;legislativeBody&quot;     =&gt; &quot;Legislative Body&quot;,<br />        &quot;history&quot;             =&gt; &quot;History&quot;,<br />        &quot;reporter&quot;            =&gt; &quot;Reporter&quot;,<br />        &quot;court&quot;               =&gt; &quot;Court&quot;,<br />        &quot;numberOfVolumes&quot;     =&gt; &quot;# of Volumes&quot;,<br />        &quot;committee&quot;           =&gt; &quot;Committee&quot;,<br />        &quot;assignee&quot;            =&gt; &quot;Assignee&quot;,<br />        &quot;patentNumber&quot;        =&gt; &quot;Patent Number&quot;,<br />        &quot;priorityNumbers&quot;     =&gt; &quot;Priority Numbers&quot;,<br />        &quot;issueDate&quot;           =&gt; &quot;Issue Date&quot;,<br />        &quot;references&quot;          =&gt; &quot;References&quot;,<br />        &quot;legalStatus&quot;         =&gt; &quot;Legal Status&quot;,<br />        &quot;codeNumber&quot;          =&gt; &quot;Code Number&quot;,<br />        &quot;artworkMedium&quot;       =&gt; &quot;Medium&quot;,<br />        &quot;number&quot;              =&gt; &quot;Number&quot;,<br />        &quot;artworkSize&quot;         =&gt; &quot;Artwork Size&quot;,<br />        &quot;libraryCatalog&quot;      =&gt; &quot;Library Catalog&quot;,<br />        &quot;videoRecordingType&quot;  =&gt; &quot;Recording Type&quot;,<br />        &quot;interviewMedium&quot;     =&gt; &quot;Medium&quot;,<br />        &quot;letterType&quot;          =&gt; &quot;Type&quot;,<br />        &quot;manuscriptType&quot;      =&gt; &quot;Type&quot;,<br />        &quot;mapType&quot;             =&gt; &quot;Type&quot;,<br />        &quot;scale&quot;               =&gt; &quot;Scale&quot;,<br />        &quot;thesisType&quot;          =&gt; &quot;Type&quot;,<br />        &quot;websiteType&quot;         =&gt; &quot;Website Type&quot;,<br />        &quot;audioRecordingType&quot;  =&gt; &quot;Recording Type&quot;,<br />        &quot;label&quot;               =&gt; &quot;Label&quot;,<br />        &quot;presentationType&quot;    =&gt; &quot;Type&quot;,<br />        &quot;meetingName&quot;         =&gt; &quot;Meeting Name&quot;,<br />        &quot;studio&quot;              =&gt; &quot;Studio&quot;,<br />        &quot;runningTime&quot;         =&gt; &quot;Running Time&quot;,<br />        &quot;network&quot;             =&gt; &quot;Network&quot;,<br />        &quot;postType&quot;            =&gt; &quot;Post Type&quot;,<br />        &quot;audioFileType&quot;       =&gt; &quot;File Type&quot;,<br />        &quot;version&quot;             =&gt; &quot;Version&quot;,<br />        &quot;system&quot;              =&gt; &quot;System&quot;,<br />        &quot;company&quot;             =&gt; &quot;Company&quot;,<br />        &quot;conferenceName&quot;      =&gt; &quot;Conference Name&quot;,<br />        &quot;encyclopediaTitle&quot;   =&gt; &quot;Encyclopedia Title&quot;,<br />        &quot;dictionaryTitle&quot;     =&gt; &quot;Dictionary Title&quot;,<br />        &quot;language&quot;            =&gt; &quot;Language&quot;,<br />        &quot;programmingLanguage&quot; =&gt; &quot;Language&quot;,<br />        &quot;university&quot;          =&gt; &quot;University&quot;,<br />        &quot;abstractNote&quot;        =&gt; &quot;Abstract&quot;,<br />        &quot;websiteTitle&quot;        =&gt; &quot;Website Title&quot;,<br />        &quot;reportNumber&quot;        =&gt; &quot;Report Number&quot;,<br />        &quot;billNumber&quot;          =&gt; &quot;Bill Number&quot;,<br />        &quot;codeVolume&quot;          =&gt; &quot;Code Volume&quot;,<br />        &quot;codePages&quot;           =&gt; &quot;Code Pages&quot;,<br />        &quot;dateDecided&quot;         =&gt; &quot;Date Decided&quot;,<br />        &quot;reporterVolume&quot;      =&gt; &quot;Reporter Volume&quot;,<br />        &quot;firstPage&quot;           =&gt; &quot;First Page&quot;,<br />        &quot;documentNumber&quot;      =&gt; &quot;Document Number&quot;,<br />        &quot;dateEnacted&quot;         =&gt; &quot;Date Enacted&quot;,<br />        &quot;publicLawNumber&quot;     =&gt; &quot;Public Law Number&quot;,<br />        &quot;country&quot;             =&gt; &quot;Country&quot;,<br />        &quot;applicationNumber&quot;   =&gt; &quot;Application Number&quot;,<br />        &quot;forumTitle&quot;          =&gt; &quot;Forum/Listserv Title&quot;,<br />        &quot;episodeNumber&quot;       =&gt; &quot;Episode Number&quot;,<br />        &quot;blogTitle&quot;           =&gt; &quot;Blog Title&quot;,<br />        &quot;caseName&quot;            =&gt; &quot;Case Name&quot;,<br />        &quot;nameOfAct&quot;           =&gt; &quot;Name of Act&quot;,<br />        &quot;subject&quot;             =&gt; &quot;Subject&quot;,<br />        &quot;proceedingsTitle&quot;    =&gt; &quot;Proceedings Title&quot;,<br />        &quot;bookTitle&quot;           =&gt; &quot;Book Title&quot;,<br />        &quot;shortTitle&quot;          =&gt; &quot;Short Title&quot;,<br />        &quot;docketNumber&quot;        =&gt; &quot;Docket Number&quot;,<br />        &quot;numPages&quot;            =&gt; &quot;# of Pages&quot;<br />    )</span>			(line <span class="line-number">91</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$typeMap" id="$typeMap"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			static <span class="var-type">array</span>
+			<span class="var-name">$typeMap</span>
+			 = <span class="var-default">array(<br />        &quot;note&quot;                =&gt; &quot;Note&quot;,<br />        &quot;attachment&quot;          =&gt; &quot;Attachment&quot;,<br />        &quot;book&quot;                =&gt; &quot;Book&quot;,<br />        &quot;bookSection&quot;         =&gt; &quot;Book Section&quot;,<br />        &quot;journalArticle&quot;      =&gt; &quot;Journal Article&quot;,<br />        &quot;magazineArticle&quot;     =&gt; &quot;Magazine Article&quot;,<br />        &quot;newspaperArticle&quot;    =&gt; &quot;Newspaper Article&quot;,<br />        &quot;thesis&quot;              =&gt; &quot;Thesis&quot;,<br />        &quot;letter&quot;              =&gt; &quot;Letter&quot;,<br />        &quot;manuscript&quot;          =&gt; &quot;Manuscript&quot;,<br />        &quot;interview&quot;           =&gt; &quot;Interview&quot;,<br />        &quot;film&quot;                =&gt; &quot;Film&quot;,<br />        &quot;artwork&quot;             =&gt; &quot;Artwork&quot;,<br />        &quot;webpage&quot;             =&gt; &quot;Web Page&quot;,<br />        &quot;report&quot;              =&gt; &quot;Report&quot;,<br />        &quot;bill&quot;                =&gt; &quot;Bill&quot;,<br />        &quot;case&quot;                =&gt; &quot;Case&quot;,<br />        &quot;hearing&quot;             =&gt; &quot;Hearing&quot;,<br />        &quot;patent&quot;              =&gt; &quot;Patent&quot;,<br />        &quot;statute&quot;             =&gt; &quot;Statute&quot;,<br />        &quot;email&quot;               =&gt; &quot;E-mail&quot;,<br />        &quot;map&quot;                 =&gt; &quot;Map&quot;,<br />        &quot;blogPost&quot;            =&gt; &quot;Blog Post&quot;,<br />        &quot;instantMessage&quot;      =&gt; &quot;Instant Message&quot;,<br />        &quot;forumPost&quot;           =&gt; &quot;Forum Post&quot;,<br />        &quot;audioRecording&quot;      =&gt; &quot;Audio Recording&quot;,<br />        &quot;presentation&quot;        =&gt; &quot;Presentation&quot;,<br />        &quot;videoRecording&quot;      =&gt; &quot;Video Recording&quot;,<br />        &quot;tvBroadcast&quot;         =&gt; &quot;TV Broadcast&quot;,<br />        &quot;radioBroadcast&quot;      =&gt; &quot;Radio Broadcast&quot;,<br />        &quot;podcast&quot;             =&gt; &quot;Podcast&quot;,<br />        &quot;computerProgram&quot;     =&gt; &quot;Computer Program&quot;,<br />        &quot;conferencePaper&quot;     =&gt; &quot;Conference Paper&quot;,<br />        &quot;document&quot;            =&gt; &quot;Document&quot;,<br />        &quot;encyclopediaArticle&quot; =&gt; &quot;Encyclopedia Article&quot;,<br />        &quot;dictionaryEntry&quot;     =&gt; &quot;Dictionary Entry&quot;,<br />    )</span>			(line <span class="line-number">203</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$apiObject" id="$apiObject"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$apiObject</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">86</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$childKeys" id="$childKeys"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>
+			<span class="var-name">$childKeys</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">41</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$content" id="$content"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$content</span>
+						(line <span class="line-number">84</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">var:</span> content node of response useful if formatted bib request and we need to use the raw content</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$createdByUserID" id="$createdByUserID"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$createdByUserID</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">56</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$creators" id="$creators"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">array</span>
+			<span class="var-name">$creators</span>
+			 = <span class="var-default">array()</span>			(line <span class="line-number">51</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$creatorSummary" id="$creatorSummary"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$creatorSummary</span>
+			 = <span class="var-default"> ''</span>			(line <span class="line-number">26</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$etag" id="$etag"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$etag</span>
+			 = <span class="var-default"> ''</span>			(line <span class="line-number">79</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$itemKey" id="$itemKey"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">int</span>
+			<span class="var-name">$itemKey</span>
+			 = <span class="var-default"> ''</span>			(line <span class="line-number">16</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$itemType" id="$itemType"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$itemType</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">21</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$lastModifiedByUserID" id="$lastModifiedByUserID"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$lastModifiedByUserID</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">61</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$linkMode" id="$linkMode"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">int</span>
+			<span class="var-name">$linkMode</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">71</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">var:</span> Represents the relationship of the child to the parent. 0:file, 1:file, 2:snapshot, 3:web-link</li>
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$mimeType" id="$mimeType"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$mimeType</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">76</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$note" id="$note"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$note</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">66</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$numChildren" id="$numChildren"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$numChildren</span>
+			 = <span class="var-default"> 0</span>			(line <span class="line-number">31</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$numTags" id="$numTags"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$numTags</span>
+			 = <span class="var-default"> 0</span>			(line <span class="line-number">36</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$parentKey" id="$parentKey"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$parentKey</span>
+			 = <span class="var-default"> ''</span>			(line <span class="line-number">46</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$parsedJson" id="$parsedJson"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">mixed</span>
+			<span class="var-name">$parsedJson</span>
+			 = <span class="var-default"> null</span>			(line <span class="line-number">78</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+							<h4>Inherited Variables</h4>
+				<A NAME='inherited_vars'><!-- --></A>
+									<p>Inherited from <span class="classname"><a href="../default/Zotero_Entry.html">Zotero_Entry</a></span></p>
+					<blockquote>
+													<span class="var-title">
+								<span class="var-name"><a href="../default/Zotero_Entry.html#var$contentArray">Zotero_Entry::$contentArray</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../default/Zotero_Entry.html#var$dateAdded">Zotero_Entry::$dateAdded</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../default/Zotero_Entry.html#var$dateUpdated">Zotero_Entry::$dateUpdated</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../default/Zotero_Entry.html#var$entries">Zotero_Entry::$entries</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../default/Zotero_Entry.html#var$id">Zotero_Entry::$id</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../default/Zotero_Entry.html#var$links">Zotero_Entry::$links</a></span><br>
+							</span>
+													<span class="var-title">
+								<span class="var-name"><a href="../default/Zotero_Entry.html#var$title">Zotero_Entry::$title</a></span><br>
+							</span>
+											</blockquote> 
+										
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="method__construct" id="__construct"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor __construct</span> (line <span class="line-number">276</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">Zotero_Item</span>
+		<span class="method-name">
+			__construct
+		</span>
+					([<span class="var-type"></span>&nbsp;<span class="var-name">$entryNode</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$entryNode</span>			</li>
+				</ul>
+		
+			<hr class="separator" />
+		<div class="notes">Redefinition of:</div>
+		<dl>
+			<dt><a href="../default/Zotero_Entry.html#method__construct">Zotero_Entry::__construct()</a></dt>
+					</dl>
+			
+	</div>
+<a name="methodaddCreator" id="addCreator"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">addCreator</span> (line <span class="line-number">407</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			addCreator
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$creatorArray</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$creatorArray</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodcompareItem" id="compareItem"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">compareItem</span> (line <span class="line-number">534</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			compareItem
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$otherItem</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$otherItem</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodformatItemField" id="formatItemField"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">formatItemField</span> (line <span class="line-number">505</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			formatItemField
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$field</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$field</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodfullItemArray" id="fullItemArray"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">fullItemArray</span> (line <span class="line-number">476</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			fullItemArray
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodfullItemJSON" id="fullItemJSON"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">fullItemJSON</span> (line <span class="line-number">472</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			fullItemJSON
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodget" id="get"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">get</span> (line <span class="line-number">373</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			get
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$key</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$key</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodhasFile" id="hasFile"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">hasFile</span> (line <span class="line-number">457</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			hasFile
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodisAttachment" id="isAttachment"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">isAttachment</span> (line <span class="line-number">451</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			isAttachment
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodjson" id="json"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">json</span> (line <span class="line-number">468</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			json
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodnewItemObject" id="newItemObject"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">newItemObject</span> (line <span class="line-number">431</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			newItemObject
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodset" id="set"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">set</span> (line <span class="line-number">395</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			set
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$key</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$val</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$key</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$val</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodupdateItemObject" id="updateItemObject"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">updateItemObject</span> (line <span class="line-number">412</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			updateItemObject
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+							<h4>Inherited Methods</h4>
+				<a name='inherited_methods'><!-- --></a>	
+									<!-- =========== Summary =========== -->
+					<p>Inherited From <span class="classname"><a href="../default/Zotero_Entry.html">Zotero_Entry</a></span></p>
+					<blockquote>
+													<span class="method-name"><a href="../default/Zotero_Entry.html#method__construct">Zotero_Entry::__construct()</a></span><br>
+													<span class="method-name"><a href="../default/Zotero_Entry.html#methodgetContentType">Zotero_Entry::getContentType()</a></span><br>
+											</blockquote>
+										
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Thu, 15 Mar 2012 15:56:46 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
+	</p>
+	</div></body>
+</html>
