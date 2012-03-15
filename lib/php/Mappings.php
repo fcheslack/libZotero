@@ -1,5 +1,10 @@
 <?php
 
+ /**
+  * Explicit mappings for Zotero
+  *
+  * @package    libZotero
+  */
 class Zotero_Mappings
 {
     public $itemTypes = array();

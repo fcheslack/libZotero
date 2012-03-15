@@ -1,5 +1,11 @@
 <?php
 
+
+ /**
+  * Representation of a Zotero Item Creator
+  *
+  * @package    libZotero
+  */
 class Zotero_Creator
 {
     public $creatorType = null;

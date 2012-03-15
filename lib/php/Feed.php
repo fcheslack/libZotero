@@ -1,11 +1,9 @@
 <?php
 
  /**
-  * Representation of a Zotero Feed
-  *
-  * @copyright  Copyright (c) 2008  Center for History and New Media (http://chnm.gmu.edu)
-  * @license    http://www.opensource.org/licenses/ecl1.php    ECL License
-  * @since      Class available since Release 0.0
+  * Representation of a Zotero Feed (ATOM)
+  * 
+  * @package    libZotero
   */
 class Zotero_Feed
 {

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Representation of the set of collections belonging to a particular Zotero library
+ * 
+ * @package libZotero
+ */
 class Zotero_Collections
 {
     public $orderedArray;

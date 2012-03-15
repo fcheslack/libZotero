@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Representation of a set of items belonging to a particular Zotero library
+ * 
+ * @package  libZotero
+ */
 class Zotero_Items
 {
     public $itemObjects = array();

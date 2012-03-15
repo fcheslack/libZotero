@@ -1,7 +1,12 @@
 <?php
-/* class to access the Zotero API with a key or anonymously
- *
- */
+
+
+
+ /**
+  * Accessor for Zotero API
+  *
+  * @package    libZotero
+  */
 class Zotero_Accessor
 {
     const ZOTERO_URI = 'https://api.zotero.org';

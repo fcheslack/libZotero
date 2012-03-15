@@ -7,6 +7,11 @@ function libZoteroDebug($m){
     return;
 }
 
+/**
+ * Interface to API and storage of a Zotero user or group library
+ * 
+ * @package libZotero
+ */
 class Zotero_Library
 {
     const ZOTERO_URI = 'https://api.zotero.org';
