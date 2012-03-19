@@ -2078,6 +2078,24 @@ Zotero.Item.prototype.parseXmlItem = function (iel) {
     
     //parse content block
     var contentEl = iel.children("content");
+    //check for multi-content response
+    var subcontents = iel.find("zapi\\:subcontent, subcontent");
+    if(subcontents.size() > 0){
+        for(var i = 0; i < subcontents.size(); i++){
+            var sc = J(subcontents.get(i));
+            this.parseContentBlock(sc);
+        }
+    }
+    else{
+        this.parseContentBlock(contentEl);
+    }
+};
+
+/**
+ * Parse a content or subcontent node based on its type
+ * @param  {jQuery wrapped node} cel content or subcontent element
+ */
+Zotero.Item.prototype.parseContentBlock = function(contentEl){
     if(contentEl.attr('type') == 'application/json' || contentEl.attr('zapi:type') == 'json'){
         this.parseJsonItemContent(contentEl);
     }
@@ -2088,7 +2106,6 @@ Zotero.Item.prototype.parseXmlItem = function (iel) {
     else if(contentEl.attr('type') == 'xhtml'){
         this.parseXmlItemContent(contentEl);
     }
-    
 };
 
 Zotero.Item.prototype.parseXmlItemContent = function (cel) {
@@ -2261,7 +2278,7 @@ Zotero.Item.prototype.writeItem = function(){
             {data: requestData,
              type: "PUT",
              processData: false,
-             headers:{'If-Match': this.etag},
+             headers:{'If-Match': this.etag, 'Content-Type': 'application/json'},
              success: successCallback,
              cache:false,
              error: Zotero.ajax.errorCallback
@@ -2280,6 +2297,7 @@ Zotero.Item.prototype.writeItem = function(){
                 {data: requestData,
                  type: "POST",
                  processData: false,
+                 headers:{'Content-Type': 'application/json'},
                  success: childSuccessCallback,
                  cache:false,
                  error: Zotero.ajax.errorCallback
@@ -2295,6 +2313,7 @@ Zotero.Item.prototype.writeItem = function(){
             {data: requestData,
              type: "POST",
              processData: false,
+             headers:{'Content-Type': 'application/json'},
              success: successCallback,
              cache:false,
              error: Zotero.ajax.errorCallback

@@ -1,11 +1,22 @@
 <?php
 
+
+/**
+ * Zotero specific exception class with no added functionality
+ * 
+ * @package libZotero
+ */
 class Zotero_Exception extends Exception
 {
     
 }
 
 
+ /**
+  * Explicit mappings for Zotero
+  *
+  * @package    libZotero
+  */
 class Zotero_Mappings
 {
     public $itemTypes = array();
@@ -19,11 +30,9 @@ class Zotero_Mappings
 
 
  /**
-  * Representation of a Zotero Feed
-  *
-  * @copyright  Copyright (c) 2008  Center for History and New Media (http://chnm.gmu.edu)
-  * @license    http://www.opensource.org/licenses/ecl1.php    ECL License
-  * @since      Class available since Release 0.0
+  * Representation of a Zotero Feed (ATOM)
+  * 
+  * @package    libZotero
   */
 class Zotero_Feed
 {
@@ -172,12 +181,9 @@ class Zotero_Feed
 
 
  /**
-  * Representation of a Zotero Item
-  *
-  * @copyright  Copyright (c) 2008  Center for History and New Media (http://chnm.gmu.edu)
-  * @license    http://www.opensource.org/licenses/ecl1.php    ECL License
-  * @since      Class available since Release 0.0
-  * @see        Zend_Service_Abstract
+  * Zotero API Feed entry (ATOM)
+  * 
+  * @package libZotero
   */
 class Zotero_Entry
 {
@@ -248,12 +254,9 @@ class Zotero_Entry
  /**
   * Representation of a Zotero Collection
   *
-  * @copyright  Copyright (c) 2008  Center for History and New Media (http://chnm.gmu.edu)
-  * @license    http://www.opensource.org/licenses/ecl1.php    ECL License
-  * @since      Class available since Release 0.0
+  * @package    libZotero
   * @see        Zotero_Entry
   */
-
 class Zotero_Collection extends Zotero_Entry
 {
     /**
@@ -327,6 +330,11 @@ class Zotero_Collection extends Zotero_Entry
 }
 
 
+/**
+ * Representation of the set of collections belonging to a particular Zotero library
+ * 
+ * @package libZotero
+ */
 class Zotero_Collections
 {
     public $orderedArray;
@@ -419,6 +427,11 @@ class Zotero_Collections
 
 
 
+/**
+ * Representation of a set of items belonging to a particular Zotero library
+ * 
+ * @package  libZotero
+ */
 class Zotero_Items
 {
     public $itemObjects = array();
@@ -1165,10 +1178,8 @@ class libZotero_Http_Response
 
  /**
   * Representation of a Zotero Item
-  *
-  * @copyright  Copyright (c) 2008  Center for History and New Media (http://chnm.gmu.edu)
-  * @license    http://www.opensource.org/licenses/ecl1.php    ECL License
-  * @since      Class available since Release 0.0
+  * 
+  * @package libZotero
   * @see        Zotero_Entry
   */
 
@@ -1703,10 +1714,8 @@ class Zotero_Item extends Zotero_Entry
 
  /**
   * Representation of a Zotero Group
-  *
-  * @copyright  Copyright (c) 2008  Center for History and New Media (http://chnm.gmu.edu)
-  * @license    http://www.opensource.org/licenses/ecl1.php    ECL License
-  * @since      Class available since Release 0.0
+  * 
+  * @package libZotero
   * @see        Zotero_Entry
   */
 class Zotero_Group extends Zotero_Entry
@@ -1942,11 +1951,8 @@ class Zotero_Group extends Zotero_Entry
 
  /**
   * Representation of a Zotero Tag
-  *
-  * @copyright  Copyright (c) 2008  Center for History and New Media (http://chnm.gmu.edu)
-  * @license    http://www.opensource.org/licenses/ecl1.php    ECL License
-  * @since      Class available since Release 0.0
-  * @see        Zotero_Entry
+  * 
+  * @package libZotero
   */
 class Zotero_Tag extends Zotero_Entry
 {
@@ -2016,12 +2022,11 @@ class Zotero_Tag extends Zotero_Entry
     }
 }
 
+
  /**
   * Representation of a Zotero User
-  *
-  * @copyright  Copyright (c) 2008  Center for History and New Media (http://chnm.gmu.edu)
-  * @license    http://www.opensource.org/licenses/ecl1.php    ECL License
-  * @since      Class available since Release 0.0
+  * 
+  * @package libZotero
   * @see        Zotero_Entry
   */
 class Zotero_User extends Zotero_Entry
@@ -2038,6 +2043,12 @@ class Zotero_User extends Zotero_Entry
     }
 }
 
+
+ /**
+  * Representation of a Zotero Item Creator
+  *
+  * @package    libZotero
+  */
 class Zotero_Creator
 {
     public $creatorType = null;
@@ -2071,6 +2082,11 @@ function libZoteroDebug($m){
     return;
 }
 
+/**
+ * Interface to API and storage of a Zotero user or group library
+ * 
+ * @package libZotero
+ */
 class Zotero_Library
 {
     const ZOTERO_URI = 'https://api.zotero.org';
