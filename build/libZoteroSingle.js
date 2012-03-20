@@ -106,16 +106,16 @@ var Zotero = {
             this.debug(warnstring);
         }
         else{
-            console.warn(debugstring);
+            console.warn(warnstring);
         }
     },
     
     error: function(errorstring){
         if(typeof console == 'undefined' || typeof console.error == 'undefined'){
-            this.debug(warnstring);
+            this.debug(errorstring);
         }
         else{
-            console.error(debugstring);
+            console.error(errorstring);
         }
     },
     
