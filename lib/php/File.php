@@ -1,0 +1,4 @@
+class Zotero_File
+{
+    
+}

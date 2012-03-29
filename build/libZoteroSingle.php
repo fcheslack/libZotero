@@ -1604,22 +1604,23 @@ class Zotero_Item extends Zotero_Entry
     }
     
     public function newItemObject(){
+        echo "Zotero_Item::newItemObject<br />";
         $newItem = $this->apiObject;
         $newCreatorsArray = array();
-        if(!isset($newItem['creators'])) {
-            return $newItem;
-        }
-        foreach($newItem['creators'] as $creator){
-            if($creator['creatorType']){
-                if(empty($creator['name']) && empty($creator['firstName']) && empty($creator['lastName'])){
-                    continue;
-                }
-                else{
-                    $newCreatorsArray[] = $creator;
+        if(isset($newItem['creators'])) {
+            foreach($newItem['creators'] as $creator){
+                if($creator['creatorType']){
+                    if(empty($creator['name']) && empty($creator['firstName']) && empty($creator['lastName'])){
+                        continue;
+                    }
+                    else{
+                        $newCreatorsArray[] = $creator;
+                    }
                 }
             }
+            $newItem['creators'] = $newCreatorsArray;
         }
-        $newItem['creators'] = $newCreatorsArray;
+        
         return $newItem;
     }
     
@@ -2089,7 +2090,7 @@ function libZoteroDebug($m){
  */
 class Zotero_Library
 {
-    const ZOTERO_URI = 'https://api.zotero.org';
+    const ZOTERO_URI = 'https://apidev.zotero.org';
     protected $_apiKey = '';
     protected $_ch = null;
     protected $_followRedirects = true;
@@ -2197,12 +2198,15 @@ class Zotero_Library
         foreach($headers as $key=>$val){
             $httpHeaders[] = "$key: $val";
         }
+        //disable Expect header
+        $httpHeaders[] = 'Expect:';
         
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLINFO_HEADER_OUT, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $httpHeaders);
+        //curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
         curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
         if($this->_followRedirects){
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -2471,7 +2475,8 @@ class Zotero_Library
                                  'tag',
                                  'tagType',
                                  'style',
-                                 'format'
+                                 'format',
+                                 'linkMode'
                                  );
         //build simple api query parameters object
         if((!isset($passedParams['key'])) && $this->_apiKey){
@@ -2841,6 +2846,69 @@ class Zotero_Library
         return $response;
     }
     
+    public function uploadNewAttachedFile($item, $fileContents, $fileinfo=array()){
+        //get upload authorization
+        $aparams = array('target'=>'item', 'targetModifier'=>'file', 'itemKey'=>$item->itemKey);
+        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
+        $postData = "md5={$fileinfo['md5']}&filename={$fileinfo['filename']}&filesize={$fileinfo['filesize']}&mtime={$fileinfo['mtime']}";
+        //$postData = $fileinfo;
+        echo "uploadNewAttachedFile postData: $postData";
+        $headers = array('If-None-Match'=>'*');
+        $response = $this->_request($reqUrl, 'POST', $postData, $headers);
+        
+        if($response->getStatus() == 200){
+            echo "200 response from upload authorization ";
+            $body = $response->getRawBody();
+            $resObject = json_decode($body, true);
+            if(!empty($resObject['exists'])){
+                echo "File already exists ";
+                return true;//api already has a copy, short-circuit with positive result
+            }
+            else{
+                echo "uploading filecontents padded as specified ";
+                //upload file padded with information we just got
+                $uploadPostData = $resObject['prefix'] . $fileContents . $resObject['suffix'];
+                echo $uploadPostData;
+                $uploadHeaders = array('Content-Type'=>$resObject['contentType']);
+                $uploadResponse = $this->_request($resObject['url'], 'POST', $uploadPostData, $uploadHeaders);
+                if($uploadResponse->getStatus() == 201){
+                    echo "got upload response 201 ";
+                    //register upload
+                    $ruparams = array('target'=>'item', 'targetModifier'=>'file', 'itemKey'=>$item->itemKey);
+                    $registerReqUrl = $this->apiRequestUrl($ruparams) . $this->apiQueryString($ruparams);
+                    //$registerUploadData = array('upload'=>$resObject['uploadKey']);
+                    $registerUploadData = "upload=" . $resObject['uploadKey'];
+                    echo "<br />Register Upload Data <br /><br />";
+                    var_dump($registerUploadData);
+                    $regUpResponse = $this->_request($registerReqUrl, 'POST', $registerUploadData, array('If-None-Match'=>'*'));
+                    if($regUpResponse->getStatus() == 204){
+                        echo "successfully registered upload ";
+                        return true;
+                    }
+                    else{
+                        return false;
+                    }
+                }
+                else{
+                    return false;
+                }
+            }
+        }
+        else{
+            echo "non-200 response from upload authorization ";
+            return false;
+        }
+    }
+    
+    public function createAttachmentItem($parentItem, $attachmentInfo){
+        //get attachment template
+        $templateItem = $this->getTemplateItem('attachment', 'imported_file');
+        $templateItem->parentKey = $parentItem->itemKey;
+        
+        //create child item
+        return $this->createItem($templateItem);
+    }
+    
     /**
      * Make API request to create a new item
      *
@@ -2848,9 +2916,26 @@ class Zotero_Library
      * @return Zotero_Response
      */
     public function createItem($item){
-        $createItemJson = json_encode(array('items'=>array($item->newItemObject())));;
+        $createItemObject = $item->newItemObject();
+        //unset variables the api won't accept
+        unset($createItemObject['mimeType']);
+        unset($createItemObject['charset']);
+        unset($createItemObject['contentType']);
+        unset($createItemObject['filename']);
+        unset($createItemObject['md5']);
+        unset($createItemObject['mtime']);
+        unset($createItemObject['zip']);
+        
+        $createItemJson = json_encode(array('items'=>array($createItemObject)));;
+        echo "create item json: " . $createItemJson;
         //libZoteroDebug( $createItemJson );die;
         $aparams = array('target'=>'items');
+        //alter if item is a child
+        if($item->parentKey){
+            $aparams['itemKey'] = $item->parentKey;
+            $aparams['target'] = 'item';
+            $aparams['targetModifier'] = 'children';
+        }
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $response = $this->_request($reqUrl, 'POST', $createItemJson);
         return $response;
@@ -2862,14 +2947,22 @@ class Zotero_Library
      * @param string $itemType type of item the template is for
      * @return Zotero_Item
      */
-    public function getTemplateItem($itemType){
+    public function getTemplateItem($itemType, $linkMode=null){
+        echo 1;
         $newItem = new Zotero_Item();
         $aparams = array('target'=>'itemTemplate', 'itemType'=>$itemType);
+        if($linkMode){
+            $aparams['linkMode'] = $linkMode;
+        }
+        var_dump($aparams);
+        
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
+        echo $reqUrl;
         $response = $this->_request($reqUrl);
         if($response->isError()){
             throw new Exception("Error with api");
         }
+        echo $response->getRawBody();
         $itemTemplate = json_decode($response->getRawBody(), true);
         $newItem->apiObject = $itemTemplate;
         return $newItem;

@@ -37,6 +37,7 @@ file_put_contents('../build/libZoteroSingle.php', $fullText);
 //concatenate js files into a single file to include
 $jsfiles = array(
 'jquery.ba-bbq.min.js',
+'WebToolKit.MD5.js',
 'Base.js',
 'Ajax.js',
 'Feed.js',
@@ -51,7 +52,8 @@ $jsfiles = array(
 'Group.js',
 'User.js',
 'Utils.js',
-'Url.js'
+'Url.js',
+'File.js'
 );
 
 $fulljs = "";
