@@ -427,22 +427,23 @@ class Zotero_Item extends Zotero_Entry
     }
     
     public function newItemObject(){
+        echo "Zotero_Item::newItemObject<br />";
         $newItem = $this->apiObject;
         $newCreatorsArray = array();
-        if(!isset($newItem['creators'])) {
-            return $newItem;
-        }
-        foreach($newItem['creators'] as $creator){
-            if($creator['creatorType']){
-                if(empty($creator['name']) && empty($creator['firstName']) && empty($creator['lastName'])){
-                    continue;
-                }
-                else{
-                    $newCreatorsArray[] = $creator;
+        if(isset($newItem['creators'])) {
+            foreach($newItem['creators'] as $creator){
+                if($creator['creatorType']){
+                    if(empty($creator['name']) && empty($creator['firstName']) && empty($creator['lastName'])){
+                        continue;
+                    }
+                    else{
+                        $newCreatorsArray[] = $creator;
+                    }
                 }
             }
+            $newItem['creators'] = $newCreatorsArray;
         }
-        $newItem['creators'] = $newCreatorsArray;
+        
         return $newItem;
     }
     

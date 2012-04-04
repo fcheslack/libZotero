@@ -2075,7 +2075,7 @@ class Zotero_Creator
     }
 }
 
-define('LIBZOTERO_DEBUG', 0);
+define('LIBZOTERO_DEBUG', 1);
 function libZoteroDebug($m){
     if(LIBZOTERO_DEBUG){
         echo $m;
@@ -2107,6 +2107,7 @@ class Zotero_Library
     protected $_lastFeed = null;
     protected $_cacheResponses = false;
     protected $_cachettl = 0;
+    protected $_cachePrefix = 'libZotero';
     
     /**
      * Constructor for Zotero_Library
@@ -2852,37 +2853,37 @@ class Zotero_Library
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $postData = "md5={$fileinfo['md5']}&filename={$fileinfo['filename']}&filesize={$fileinfo['filesize']}&mtime={$fileinfo['mtime']}";
         //$postData = $fileinfo;
-        echo "uploadNewAttachedFile postData: $postData";
+        libZoteroDebug("uploadNewAttachedFile postData: $postData");
         $headers = array('If-None-Match'=>'*');
         $response = $this->_request($reqUrl, 'POST', $postData, $headers);
         
         if($response->getStatus() == 200){
-            echo "200 response from upload authorization ";
+            libZoteroDebug("200 response from upload authorization ");
             $body = $response->getRawBody();
             $resObject = json_decode($body, true);
             if(!empty($resObject['exists'])){
-                echo "File already exists ";
+                libZoteroDebug("File already exists ");
                 return true;//api already has a copy, short-circuit with positive result
             }
             else{
-                echo "uploading filecontents padded as specified ";
+                libZoteroDebug("uploading filecontents padded as specified ");
                 //upload file padded with information we just got
                 $uploadPostData = $resObject['prefix'] . $fileContents . $resObject['suffix'];
-                echo $uploadPostData;
+                libZoteroDebug($uploadPostData);
                 $uploadHeaders = array('Content-Type'=>$resObject['contentType']);
                 $uploadResponse = $this->_request($resObject['url'], 'POST', $uploadPostData, $uploadHeaders);
                 if($uploadResponse->getStatus() == 201){
-                    echo "got upload response 201 ";
+                    libZoteroDebug("got upload response 201 ");
                     //register upload
                     $ruparams = array('target'=>'item', 'targetModifier'=>'file', 'itemKey'=>$item->itemKey);
                     $registerReqUrl = $this->apiRequestUrl($ruparams) . $this->apiQueryString($ruparams);
                     //$registerUploadData = array('upload'=>$resObject['uploadKey']);
                     $registerUploadData = "upload=" . $resObject['uploadKey'];
-                    echo "<br />Register Upload Data <br /><br />";
+                    libZoteroDebug("<br />Register Upload Data <br /><br />");
                     var_dump($registerUploadData);
                     $regUpResponse = $this->_request($registerReqUrl, 'POST', $registerUploadData, array('If-None-Match'=>'*'));
                     if($regUpResponse->getStatus() == 204){
-                        echo "successfully registered upload ";
+                        libZoteroDebug("successfully registered upload ");
                         return true;
                     }
                     else{
@@ -2895,7 +2896,7 @@ class Zotero_Library
             }
         }
         else{
-            echo "non-200 response from upload authorization ";
+            libZoteroDebug("non-200 response from upload authorization ");
             return false;
         }
     }
@@ -2927,7 +2928,7 @@ class Zotero_Library
         unset($createItemObject['zip']);
         
         $createItemJson = json_encode(array('items'=>array($createItemObject)));;
-        echo "create item json: " . $createItemJson;
+        libZoteroDebug("create item json: " . $createItemJson);
         //libZoteroDebug( $createItemJson );die;
         $aparams = array('target'=>'items');
         //alter if item is a child
@@ -2948,7 +2949,7 @@ class Zotero_Library
      * @return Zotero_Item
      */
     public function getTemplateItem($itemType, $linkMode=null){
-        echo 1;
+        libZoteroDebug(1);
         $newItem = new Zotero_Item();
         $aparams = array('target'=>'itemTemplate', 'itemType'=>$itemType);
         if($linkMode){
@@ -2957,12 +2958,12 @@ class Zotero_Library
         var_dump($aparams);
         
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
-        echo $reqUrl;
+        libZoteroDebug($reqUrl);
         $response = $this->_request($reqUrl);
         if($response->isError()){
             throw new Exception("Error with api");
         }
-        echo $response->getRawBody();
+        libZoteroDebug($response->getRawBody());
         $itemTemplate = json_decode($response->getRawBody(), true);
         $newItem->apiObject = $itemTemplate;
         return $newItem;

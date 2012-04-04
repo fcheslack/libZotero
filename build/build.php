@@ -38,6 +38,7 @@ file_put_contents('../build/libZoteroSingle.php', $fullText);
 $jsfiles = array(
 'jquery.ba-bbq.min.js',
 'WebToolKit.MD5.js',
+'spark-md5.min.js',
 'Base.js',
 'Ajax.js',
 'Feed.js',

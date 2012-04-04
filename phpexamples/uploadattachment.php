@@ -9,7 +9,7 @@ $library = new Zotero_Library($libraryType, $libraryID, $librarySlug, $apiKey);
 echo "adding attachment item\n";
 try{
 $templateItem = $library->getTemplateItem('attachment', 'imported_file');
-$templateItem->parentKey = 'VJ9WHSUS';
+$templateItem->parentKey = 'HP8M9UQB';
 echo "creating attachment \n";
 $createAttachmentResponse = $library->createItem($templateItem);
 if($createAttachmentResponse->isError()){
@@ -25,9 +25,9 @@ else {
     echo "attachment item created \n";
     
     //upload file for attachment
-    $fileContents = file_get_contents('./uploadattachment.php');
+    $fileContents = file_get_contents('./zotero_sticker.ai');
     
-    $fileinfo = array('md5'=>md5($fileContents), 'filename'=>'uploadattachment.php', 'filesize'=>filesize('./uploadattachment.php'), 'mtime'=>filemtime('./uploadattachment.php'));
+    $fileinfo = array('md5'=>md5($fileContents), 'filename'=>'zotero_sticker.ai', 'filesize'=>filesize('./zotero_sticker.ai'), 'mtime'=>filemtime('./zotero_sticker.ai'));
     echo "<br /><br />\n\nFile Info:";
     var_dump($fileinfo);
     $res = $library->uploadNewAttachedFile($createdAttachment, $fileContents, $fileinfo);
