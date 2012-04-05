@@ -36,9 +36,9 @@ file_put_contents('../build/libZoteroSingle.php', $fullText);
 
 //concatenate js files into a single file to include
 $jsfiles = array(
-'underscore-min.js',
+//'underscore-min.js',
 'jquery.ba-bbq.min.js',
-'WebToolKit.MD5.js',
+//'WebToolKit.MD5.js',
 'spark-md5.min.js',
 'Base.js',
 'Ajax.js',

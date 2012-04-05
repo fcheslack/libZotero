@@ -1,34 +1,3 @@
-// Underscore.js 1.3.1
-// (c) 2009-2012 Jeremy Ashkenas, DocumentCloud Inc.
-// Underscore is freely distributable under the MIT license.
-// Portions of Underscore are inspired or borrowed from Prototype,
-// Oliver Steele's Functional, and John Resig's Micro-Templating.
-// For all details and documentation:
-// http://documentcloud.github.com/underscore
-(function(){function q(a,c,d){if(a===c)return a!==0||1/a==1/c;if(a==null||c==null)return a===c;if(a._chain)a=a._wrapped;if(c._chain)c=c._wrapped;if(a.isEqual&&b.isFunction(a.isEqual))return a.isEqual(c);if(c.isEqual&&b.isFunction(c.isEqual))return c.isEqual(a);var e=l.call(a);if(e!=l.call(c))return false;switch(e){case "[object String]":return a==String(c);case "[object Number]":return a!=+a?c!=+c:a==0?1/a==1/c:a==+c;case "[object Date]":case "[object Boolean]":return+a==+c;case "[object RegExp]":return a.source==
-c.source&&a.global==c.global&&a.multiline==c.multiline&&a.ignoreCase==c.ignoreCase}if(typeof a!="object"||typeof c!="object")return false;for(var f=d.length;f--;)if(d[f]==a)return true;d.push(a);var f=0,g=true;if(e=="[object Array]"){if(f=a.length,g=f==c.length)for(;f--;)if(!(g=f in a==f in c&&q(a[f],c[f],d)))break}else{if("constructor"in a!="constructor"in c||a.constructor!=c.constructor)return false;for(var h in a)if(b.has(a,h)&&(f++,!(g=b.has(c,h)&&q(a[h],c[h],d))))break;if(g){for(h in c)if(b.has(c,
-h)&&!f--)break;g=!f}}d.pop();return g}var r=this,G=r._,n={},k=Array.prototype,o=Object.prototype,i=k.slice,H=k.unshift,l=o.toString,I=o.hasOwnProperty,w=k.forEach,x=k.map,y=k.reduce,z=k.reduceRight,A=k.filter,B=k.every,C=k.some,p=k.indexOf,D=k.lastIndexOf,o=Array.isArray,J=Object.keys,s=Function.prototype.bind,b=function(a){return new m(a)};if(typeof exports!=="undefined"){if(typeof module!=="undefined"&&module.exports)exports=module.exports=b;exports._=b}else r._=b;b.VERSION="1.3.1";var j=b.each=
-b.forEach=function(a,c,d){if(a!=null)if(w&&a.forEach===w)a.forEach(c,d);else if(a.length===+a.length)for(var e=0,f=a.length;e<f;e++){if(e in a&&c.call(d,a[e],e,a)===n)break}else for(e in a)if(b.has(a,e)&&c.call(d,a[e],e,a)===n)break};b.map=b.collect=function(a,c,b){var e=[];if(a==null)return e;if(x&&a.map===x)return a.map(c,b);j(a,function(a,g,h){e[e.length]=c.call(b,a,g,h)});if(a.length===+a.length)e.length=a.length;return e};b.reduce=b.foldl=b.inject=function(a,c,d,e){var f=arguments.length>2;a==
-null&&(a=[]);if(y&&a.reduce===y)return e&&(c=b.bind(c,e)),f?a.reduce(c,d):a.reduce(c);j(a,function(a,b,i){f?d=c.call(e,d,a,b,i):(d=a,f=true)});if(!f)throw new TypeError("Reduce of empty array with no initial value");return d};b.reduceRight=b.foldr=function(a,c,d,e){var f=arguments.length>2;a==null&&(a=[]);if(z&&a.reduceRight===z)return e&&(c=b.bind(c,e)),f?a.reduceRight(c,d):a.reduceRight(c);var g=b.toArray(a).reverse();e&&!f&&(c=b.bind(c,e));return f?b.reduce(g,c,d,e):b.reduce(g,c)};b.find=b.detect=
-function(a,c,b){var e;E(a,function(a,g,h){if(c.call(b,a,g,h))return e=a,true});return e};b.filter=b.select=function(a,c,b){var e=[];if(a==null)return e;if(A&&a.filter===A)return a.filter(c,b);j(a,function(a,g,h){c.call(b,a,g,h)&&(e[e.length]=a)});return e};b.reject=function(a,c,b){var e=[];if(a==null)return e;j(a,function(a,g,h){c.call(b,a,g,h)||(e[e.length]=a)});return e};b.every=b.all=function(a,c,b){var e=true;if(a==null)return e;if(B&&a.every===B)return a.every(c,b);j(a,function(a,g,h){if(!(e=
-e&&c.call(b,a,g,h)))return n});return e};var E=b.some=b.any=function(a,c,d){c||(c=b.identity);var e=false;if(a==null)return e;if(C&&a.some===C)return a.some(c,d);j(a,function(a,b,h){if(e||(e=c.call(d,a,b,h)))return n});return!!e};b.include=b.contains=function(a,c){var b=false;if(a==null)return b;return p&&a.indexOf===p?a.indexOf(c)!=-1:b=E(a,function(a){return a===c})};b.invoke=function(a,c){var d=i.call(arguments,2);return b.map(a,function(a){return(b.isFunction(c)?c||a:a[c]).apply(a,d)})};b.pluck=
-function(a,c){return b.map(a,function(a){return a[c]})};b.max=function(a,c,d){if(!c&&b.isArray(a))return Math.max.apply(Math,a);if(!c&&b.isEmpty(a))return-Infinity;var e={computed:-Infinity};j(a,function(a,b,h){b=c?c.call(d,a,b,h):a;b>=e.computed&&(e={value:a,computed:b})});return e.value};b.min=function(a,c,d){if(!c&&b.isArray(a))return Math.min.apply(Math,a);if(!c&&b.isEmpty(a))return Infinity;var e={computed:Infinity};j(a,function(a,b,h){b=c?c.call(d,a,b,h):a;b<e.computed&&(e={value:a,computed:b})});
-return e.value};b.shuffle=function(a){var b=[],d;j(a,function(a,f){f==0?b[0]=a:(d=Math.floor(Math.random()*(f+1)),b[f]=b[d],b[d]=a)});return b};b.sortBy=function(a,c,d){return b.pluck(b.map(a,function(a,b,g){return{value:a,criteria:c.call(d,a,b,g)}}).sort(function(a,b){var c=a.criteria,d=b.criteria;return c<d?-1:c>d?1:0}),"value")};b.groupBy=function(a,c){var d={},e=b.isFunction(c)?c:function(a){return a[c]};j(a,function(a,b){var c=e(a,b);(d[c]||(d[c]=[])).push(a)});return d};b.sortedIndex=function(a,
-c,d){d||(d=b.identity);for(var e=0,f=a.length;e<f;){var g=e+f>>1;d(a[g])<d(c)?e=g+1:f=g}return e};b.toArray=function(a){return!a?[]:a.toArray?a.toArray():b.isArray(a)?i.call(a):b.isArguments(a)?i.call(a):b.values(a)};b.size=function(a){return b.toArray(a).length};b.first=b.head=function(a,b,d){return b!=null&&!d?i.call(a,0,b):a[0]};b.initial=function(a,b,d){return i.call(a,0,a.length-(b==null||d?1:b))};b.last=function(a,b,d){return b!=null&&!d?i.call(a,Math.max(a.length-b,0)):a[a.length-1]};b.rest=
-b.tail=function(a,b,d){return i.call(a,b==null||d?1:b)};b.compact=function(a){return b.filter(a,function(a){return!!a})};b.flatten=function(a,c){return b.reduce(a,function(a,e){if(b.isArray(e))return a.concat(c?e:b.flatten(e));a[a.length]=e;return a},[])};b.without=function(a){return b.difference(a,i.call(arguments,1))};b.uniq=b.unique=function(a,c,d){var d=d?b.map(a,d):a,e=[];b.reduce(d,function(d,g,h){if(0==h||(c===true?b.last(d)!=g:!b.include(d,g)))d[d.length]=g,e[e.length]=a[h];return d},[]);
-return e};b.union=function(){return b.uniq(b.flatten(arguments,true))};b.intersection=b.intersect=function(a){var c=i.call(arguments,1);return b.filter(b.uniq(a),function(a){return b.every(c,function(c){return b.indexOf(c,a)>=0})})};b.difference=function(a){var c=b.flatten(i.call(arguments,1));return b.filter(a,function(a){return!b.include(c,a)})};b.zip=function(){for(var a=i.call(arguments),c=b.max(b.pluck(a,"length")),d=Array(c),e=0;e<c;e++)d[e]=b.pluck(a,""+e);return d};b.indexOf=function(a,c,
-d){if(a==null)return-1;var e;if(d)return d=b.sortedIndex(a,c),a[d]===c?d:-1;if(p&&a.indexOf===p)return a.indexOf(c);for(d=0,e=a.length;d<e;d++)if(d in a&&a[d]===c)return d;return-1};b.lastIndexOf=function(a,b){if(a==null)return-1;if(D&&a.lastIndexOf===D)return a.lastIndexOf(b);for(var d=a.length;d--;)if(d in a&&a[d]===b)return d;return-1};b.range=function(a,b,d){arguments.length<=1&&(b=a||0,a=0);for(var d=arguments[2]||1,e=Math.max(Math.ceil((b-a)/d),0),f=0,g=Array(e);f<e;)g[f++]=a,a+=d;return g};
-var F=function(){};b.bind=function(a,c){var d,e;if(a.bind===s&&s)return s.apply(a,i.call(arguments,1));if(!b.isFunction(a))throw new TypeError;e=i.call(arguments,2);return d=function(){if(!(this instanceof d))return a.apply(c,e.concat(i.call(arguments)));F.prototype=a.prototype;var b=new F,g=a.apply(b,e.concat(i.call(arguments)));return Object(g)===g?g:b}};b.bindAll=function(a){var c=i.call(arguments,1);c.length==0&&(c=b.functions(a));j(c,function(c){a[c]=b.bind(a[c],a)});return a};b.memoize=function(a,
-c){var d={};c||(c=b.identity);return function(){var e=c.apply(this,arguments);return b.has(d,e)?d[e]:d[e]=a.apply(this,arguments)}};b.delay=function(a,b){var d=i.call(arguments,2);return setTimeout(function(){return a.apply(a,d)},b)};b.defer=function(a){return b.delay.apply(b,[a,1].concat(i.call(arguments,1)))};b.throttle=function(a,c){var d,e,f,g,h,i=b.debounce(function(){h=g=false},c);return function(){d=this;e=arguments;var b;f||(f=setTimeout(function(){f=null;h&&a.apply(d,e);i()},c));g?h=true:
-a.apply(d,e);i();g=true}};b.debounce=function(a,b){var d;return function(){var e=this,f=arguments;clearTimeout(d);d=setTimeout(function(){d=null;a.apply(e,f)},b)}};b.once=function(a){var b=false,d;return function(){if(b)return d;b=true;return d=a.apply(this,arguments)}};b.wrap=function(a,b){return function(){var d=[a].concat(i.call(arguments,0));return b.apply(this,d)}};b.compose=function(){var a=arguments;return function(){for(var b=arguments,d=a.length-1;d>=0;d--)b=[a[d].apply(this,b)];return b[0]}};
-b.after=function(a,b){return a<=0?b():function(){if(--a<1)return b.apply(this,arguments)}};b.keys=J||function(a){if(a!==Object(a))throw new TypeError("Invalid object");var c=[],d;for(d in a)b.has(a,d)&&(c[c.length]=d);return c};b.values=function(a){return b.map(a,b.identity)};b.functions=b.methods=function(a){var c=[],d;for(d in a)b.isFunction(a[d])&&c.push(d);return c.sort()};b.extend=function(a){j(i.call(arguments,1),function(b){for(var d in b)a[d]=b[d]});return a};b.defaults=function(a){j(i.call(arguments,
-1),function(b){for(var d in b)a[d]==null&&(a[d]=b[d])});return a};b.clone=function(a){return!b.isObject(a)?a:b.isArray(a)?a.slice():b.extend({},a)};b.tap=function(a,b){b(a);return a};b.isEqual=function(a,b){return q(a,b,[])};b.isEmpty=function(a){if(b.isArray(a)||b.isString(a))return a.length===0;for(var c in a)if(b.has(a,c))return false;return true};b.isElement=function(a){return!!(a&&a.nodeType==1)};b.isArray=o||function(a){return l.call(a)=="[object Array]"};b.isObject=function(a){return a===Object(a)};
-b.isArguments=function(a){return l.call(a)=="[object Arguments]"};if(!b.isArguments(arguments))b.isArguments=function(a){return!(!a||!b.has(a,"callee"))};b.isFunction=function(a){return l.call(a)=="[object Function]"};b.isString=function(a){return l.call(a)=="[object String]"};b.isNumber=function(a){return l.call(a)=="[object Number]"};b.isNaN=function(a){return a!==a};b.isBoolean=function(a){return a===true||a===false||l.call(a)=="[object Boolean]"};b.isDate=function(a){return l.call(a)=="[object Date]"};
-b.isRegExp=function(a){return l.call(a)=="[object RegExp]"};b.isNull=function(a){return a===null};b.isUndefined=function(a){return a===void 0};b.has=function(a,b){return I.call(a,b)};b.noConflict=function(){r._=G;return this};b.identity=function(a){return a};b.times=function(a,b,d){for(var e=0;e<a;e++)b.call(d,e)};b.escape=function(a){return(""+a).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#x27;").replace(/\//g,"&#x2F;")};b.mixin=function(a){j(b.functions(a),
-function(c){K(c,b[c]=a[c])})};var L=0;b.uniqueId=function(a){var b=L++;return a?a+b:b};b.templateSettings={evaluate:/<%([\s\S]+?)%>/g,interpolate:/<%=([\s\S]+?)%>/g,escape:/<%-([\s\S]+?)%>/g};var t=/.^/,u=function(a){return a.replace(/\\\\/g,"\\").replace(/\\'/g,"'")};b.template=function(a,c){var d=b.templateSettings,d="var __p=[],print=function(){__p.push.apply(__p,arguments);};with(obj||{}){__p.push('"+a.replace(/\\/g,"\\\\").replace(/'/g,"\\'").replace(d.escape||t,function(a,b){return"',_.escape("+
-u(b)+"),'"}).replace(d.interpolate||t,function(a,b){return"',"+u(b)+",'"}).replace(d.evaluate||t,function(a,b){return"');"+u(b).replace(/[\r\n\t]/g," ")+";__p.push('"}).replace(/\r/g,"\\r").replace(/\n/g,"\\n").replace(/\t/g,"\\t")+"');}return __p.join('');",e=new Function("obj","_",d);return c?e(c,b):function(a){return e.call(this,a,b)}};b.chain=function(a){return b(a).chain()};var m=function(a){this._wrapped=a};b.prototype=m.prototype;var v=function(a,c){return c?b(a).chain():a},K=function(a,c){m.prototype[a]=
-function(){var a=i.call(arguments);H.call(a,this._wrapped);return v(c.apply(b,a),this._chain)}};b.mixin(b);j("pop,push,reverse,shift,sort,splice,unshift".split(","),function(a){var b=k[a];m.prototype[a]=function(){var d=this._wrapped;b.apply(d,arguments);var e=d.length;(a=="shift"||a=="splice")&&e===0&&delete d[0];return v(d,this._chain)}});j(["concat","join","slice"],function(a){var b=k[a];m.prototype[a]=function(){return v(b.apply(this._wrapped,arguments),this._chain)}});m.prototype.chain=function(){this._chain=
-true;return this};m.prototype.value=function(){return this._wrapped}}).call(this);
 /*
  * jQuery BBQ: Back Button & Query Library - v1.2.1 - 2/17/2010
  * http://benalman.com/projects/jquery-bbq-plugin/
@@ -58,213 +27,7 @@ true;return this};m.prototype.value=function(){return this._wrapped}}).call(this
  */
 (function($){var a=$("<b/>");$.subscribe=function(b,c){function d(){return c.apply(this,Array.prototype.slice.call(arguments,1))}d.guid=c.guid=c.guid||($.guid?$.guid++:$.event.guid++);a.bind(b,d)};$.unsubscribe=function(){a.unbind.apply(a,arguments)};$.publish=function(){a.trigger.apply(a,arguments)}})(jQuery);
 
-/**
-*
-*  MD5 (Message-Digest Algorithm)
-*  http://www.webtoolkit.info/
-*
-**/
- 
-var MD5 = function (string) {
- 
-	function RotateLeft(lValue, iShiftBits) {
-		return (lValue<<iShiftBits) | (lValue>>>(32-iShiftBits));
-	}
- 
-	function AddUnsigned(lX,lY) {
-		var lX4,lY4,lX8,lY8,lResult;
-		lX8 = (lX & 0x80000000);
-		lY8 = (lY & 0x80000000);
-		lX4 = (lX & 0x40000000);
-		lY4 = (lY & 0x40000000);
-		lResult = (lX & 0x3FFFFFFF)+(lY & 0x3FFFFFFF);
-		if (lX4 & lY4) {
-			return (lResult ^ 0x80000000 ^ lX8 ^ lY8);
-		}
-		if (lX4 | lY4) {
-			if (lResult & 0x40000000) {
-				return (lResult ^ 0xC0000000 ^ lX8 ^ lY8);
-			} else {
-				return (lResult ^ 0x40000000 ^ lX8 ^ lY8);
-			}
-		} else {
-			return (lResult ^ lX8 ^ lY8);
-		}
- 	}
- 
- 	function F(x,y,z) { return (x & y) | ((~x) & z); }
- 	function G(x,y,z) { return (x & z) | (y & (~z)); }
- 	function H(x,y,z) { return (x ^ y ^ z); }
-	function I(x,y,z) { return (y ^ (x | (~z))); }
- 
-	function FF(a,b,c,d,x,s,ac) {
-		a = AddUnsigned(a, AddUnsigned(AddUnsigned(F(b, c, d), x), ac));
-		return AddUnsigned(RotateLeft(a, s), b);
-	};
- 
-	function GG(a,b,c,d,x,s,ac) {
-		a = AddUnsigned(a, AddUnsigned(AddUnsigned(G(b, c, d), x), ac));
-		return AddUnsigned(RotateLeft(a, s), b);
-	};
- 
-	function HH(a,b,c,d,x,s,ac) {
-		a = AddUnsigned(a, AddUnsigned(AddUnsigned(H(b, c, d), x), ac));
-		return AddUnsigned(RotateLeft(a, s), b);
-	};
- 
-	function II(a,b,c,d,x,s,ac) {
-		a = AddUnsigned(a, AddUnsigned(AddUnsigned(I(b, c, d), x), ac));
-		return AddUnsigned(RotateLeft(a, s), b);
-	};
- 
-	function ConvertToWordArray(string) {
-		var lWordCount;
-		var lMessageLength = string.length;
-		var lNumberOfWords_temp1=lMessageLength + 8;
-		var lNumberOfWords_temp2=(lNumberOfWords_temp1-(lNumberOfWords_temp1 % 64))/64;
-		var lNumberOfWords = (lNumberOfWords_temp2+1)*16;
-		var lWordArray=Array(lNumberOfWords-1);
-		var lBytePosition = 0;
-		var lByteCount = 0;
-		while ( lByteCount < lMessageLength ) {
-			lWordCount = (lByteCount-(lByteCount % 4))/4;
-			lBytePosition = (lByteCount % 4)*8;
-			lWordArray[lWordCount] = (lWordArray[lWordCount] | (string.charCodeAt(lByteCount)<<lBytePosition));
-			lByteCount++;
-		}
-		lWordCount = (lByteCount-(lByteCount % 4))/4;
-		lBytePosition = (lByteCount % 4)*8;
-		lWordArray[lWordCount] = lWordArray[lWordCount] | (0x80<<lBytePosition);
-		lWordArray[lNumberOfWords-2] = lMessageLength<<3;
-		lWordArray[lNumberOfWords-1] = lMessageLength>>>29;
-		return lWordArray;
-	};
- 
-	function WordToHex(lValue) {
-		var WordToHexValue="",WordToHexValue_temp="",lByte,lCount;
-		for (lCount = 0;lCount<=3;lCount++) {
-			lByte = (lValue>>>(lCount*8)) & 255;
-			WordToHexValue_temp = "0" + lByte.toString(16);
-			WordToHexValue = WordToHexValue + WordToHexValue_temp.substr(WordToHexValue_temp.length-2,2);
-		}
-		return WordToHexValue;
-	};
- 
-	function Utf8Encode(string) {
-		string = string.replace(/\r\n/g,"\n");
-		var utftext = "";
- 
-		for (var n = 0; n < string.length; n++) {
- 
-			var c = string.charCodeAt(n);
- 
-			if (c < 128) {
-				utftext += String.fromCharCode(c);
-			}
-			else if((c > 127) && (c < 2048)) {
-				utftext += String.fromCharCode((c >> 6) | 192);
-				utftext += String.fromCharCode((c & 63) | 128);
-			}
-			else {
-				utftext += String.fromCharCode((c >> 12) | 224);
-				utftext += String.fromCharCode(((c >> 6) & 63) | 128);
-				utftext += String.fromCharCode((c & 63) | 128);
-			}
- 
-		}
- 
-		return utftext;
-	};
- 
-	var x=Array();
-	var k,AA,BB,CC,DD,a,b,c,d;
-	var S11=7, S12=12, S13=17, S14=22;
-	var S21=5, S22=9 , S23=14, S24=20;
-	var S31=4, S32=11, S33=16, S34=23;
-	var S41=6, S42=10, S43=15, S44=21;
- 
-	string = Utf8Encode(string);
- 
-	x = ConvertToWordArray(string);
- 
-	a = 0x67452301; b = 0xEFCDAB89; c = 0x98BADCFE; d = 0x10325476;
- 
-	for (k=0;k<x.length;k+=16) {
-		AA=a; BB=b; CC=c; DD=d;
-		a=FF(a,b,c,d,x[k+0], S11,0xD76AA478);
-		d=FF(d,a,b,c,x[k+1], S12,0xE8C7B756);
-		c=FF(c,d,a,b,x[k+2], S13,0x242070DB);
-		b=FF(b,c,d,a,x[k+3], S14,0xC1BDCEEE);
-		a=FF(a,b,c,d,x[k+4], S11,0xF57C0FAF);
-		d=FF(d,a,b,c,x[k+5], S12,0x4787C62A);
-		c=FF(c,d,a,b,x[k+6], S13,0xA8304613);
-		b=FF(b,c,d,a,x[k+7], S14,0xFD469501);
-		a=FF(a,b,c,d,x[k+8], S11,0x698098D8);
-		d=FF(d,a,b,c,x[k+9], S12,0x8B44F7AF);
-		c=FF(c,d,a,b,x[k+10],S13,0xFFFF5BB1);
-		b=FF(b,c,d,a,x[k+11],S14,0x895CD7BE);
-		a=FF(a,b,c,d,x[k+12],S11,0x6B901122);
-		d=FF(d,a,b,c,x[k+13],S12,0xFD987193);
-		c=FF(c,d,a,b,x[k+14],S13,0xA679438E);
-		b=FF(b,c,d,a,x[k+15],S14,0x49B40821);
-		a=GG(a,b,c,d,x[k+1], S21,0xF61E2562);
-		d=GG(d,a,b,c,x[k+6], S22,0xC040B340);
-		c=GG(c,d,a,b,x[k+11],S23,0x265E5A51);
-		b=GG(b,c,d,a,x[k+0], S24,0xE9B6C7AA);
-		a=GG(a,b,c,d,x[k+5], S21,0xD62F105D);
-		d=GG(d,a,b,c,x[k+10],S22,0x2441453);
-		c=GG(c,d,a,b,x[k+15],S23,0xD8A1E681);
-		b=GG(b,c,d,a,x[k+4], S24,0xE7D3FBC8);
-		a=GG(a,b,c,d,x[k+9], S21,0x21E1CDE6);
-		d=GG(d,a,b,c,x[k+14],S22,0xC33707D6);
-		c=GG(c,d,a,b,x[k+3], S23,0xF4D50D87);
-		b=GG(b,c,d,a,x[k+8], S24,0x455A14ED);
-		a=GG(a,b,c,d,x[k+13],S21,0xA9E3E905);
-		d=GG(d,a,b,c,x[k+2], S22,0xFCEFA3F8);
-		c=GG(c,d,a,b,x[k+7], S23,0x676F02D9);
-		b=GG(b,c,d,a,x[k+12],S24,0x8D2A4C8A);
-		a=HH(a,b,c,d,x[k+5], S31,0xFFFA3942);
-		d=HH(d,a,b,c,x[k+8], S32,0x8771F681);
-		c=HH(c,d,a,b,x[k+11],S33,0x6D9D6122);
-		b=HH(b,c,d,a,x[k+14],S34,0xFDE5380C);
-		a=HH(a,b,c,d,x[k+1], S31,0xA4BEEA44);
-		d=HH(d,a,b,c,x[k+4], S32,0x4BDECFA9);
-		c=HH(c,d,a,b,x[k+7], S33,0xF6BB4B60);
-		b=HH(b,c,d,a,x[k+10],S34,0xBEBFBC70);
-		a=HH(a,b,c,d,x[k+13],S31,0x289B7EC6);
-		d=HH(d,a,b,c,x[k+0], S32,0xEAA127FA);
-		c=HH(c,d,a,b,x[k+3], S33,0xD4EF3085);
-		b=HH(b,c,d,a,x[k+6], S34,0x4881D05);
-		a=HH(a,b,c,d,x[k+9], S31,0xD9D4D039);
-		d=HH(d,a,b,c,x[k+12],S32,0xE6DB99E5);
-		c=HH(c,d,a,b,x[k+15],S33,0x1FA27CF8);
-		b=HH(b,c,d,a,x[k+2], S34,0xC4AC5665);
-		a=II(a,b,c,d,x[k+0], S41,0xF4292244);
-		d=II(d,a,b,c,x[k+7], S42,0x432AFF97);
-		c=II(c,d,a,b,x[k+14],S43,0xAB9423A7);
-		b=II(b,c,d,a,x[k+5], S44,0xFC93A039);
-		a=II(a,b,c,d,x[k+12],S41,0x655B59C3);
-		d=II(d,a,b,c,x[k+3], S42,0x8F0CCC92);
-		c=II(c,d,a,b,x[k+10],S43,0xFFEFF47D);
-		b=II(b,c,d,a,x[k+1], S44,0x85845DD1);
-		a=II(a,b,c,d,x[k+8], S41,0x6FA87E4F);
-		d=II(d,a,b,c,x[k+15],S42,0xFE2CE6E0);
-		c=II(c,d,a,b,x[k+6], S43,0xA3014314);
-		b=II(b,c,d,a,x[k+13],S44,0x4E0811A1);
-		a=II(a,b,c,d,x[k+4], S41,0xF7537E82);
-		d=II(d,a,b,c,x[k+11],S42,0xBD3AF235);
-		c=II(c,d,a,b,x[k+2], S43,0x2AD7D2BB);
-		b=II(b,c,d,a,x[k+9], S44,0xEB86D391);
-		a=AddUnsigned(a,AA);
-		b=AddUnsigned(b,BB);
-		c=AddUnsigned(c,CC);
-		d=AddUnsigned(d,DD);
-	}
- 
-	var temp = WordToHex(a)+WordToHex(b)+WordToHex(c)+WordToHex(d);
- 
-	return temp.toLowerCase();
-};var SparkMD5=function(){function h(f,d,b,a,c,e){d=k(k(d,f),k(a,e));return k(d<<c|d>>>32-c,b)}function g(f,d,b,a,c,e,g){return h(d&b|~d&a,f,d,c,e,g)}function i(f,d,b,a,c,e,g){return h(d&a|b&~a,f,d,c,e,g)}function j(f,d,b,a,c,e,g){return h(b^(d|~a),f,d,c,e,g)}function l(f,d){var b=f[0],a=f[1],c=f[2],e=f[3],b=g(b,a,c,e,d[0],7,-680876936),e=g(e,b,a,c,d[1],12,-389564586),c=g(c,e,b,a,d[2],17,606105819),a=g(a,c,e,b,d[3],22,-1044525330),b=g(b,a,c,e,d[4],7,-176418897),e=g(e,b,a,c,d[5],12,1200080426),c=g(c,
+var SparkMD5=function(){function h(f,d,b,a,c,e){d=k(k(d,f),k(a,e));return k(d<<c|d>>>32-c,b)}function g(f,d,b,a,c,e,g){return h(d&b|~d&a,f,d,c,e,g)}function i(f,d,b,a,c,e,g){return h(d&a|b&~a,f,d,c,e,g)}function j(f,d,b,a,c,e,g){return h(b^(d|~a),f,d,c,e,g)}function l(f,d){var b=f[0],a=f[1],c=f[2],e=f[3],b=g(b,a,c,e,d[0],7,-680876936),e=g(e,b,a,c,d[1],12,-389564586),c=g(c,e,b,a,d[2],17,606105819),a=g(a,c,e,b,d[3],22,-1044525330),b=g(b,a,c,e,d[4],7,-176418897),e=g(e,b,a,c,d[5],12,1200080426),c=g(c,
 e,b,a,d[6],17,-1473231341),a=g(a,c,e,b,d[7],22,-45705983),b=g(b,a,c,e,d[8],7,1770035416),e=g(e,b,a,c,d[9],12,-1958414417),c=g(c,e,b,a,d[10],17,-42063),a=g(a,c,e,b,d[11],22,-1990404162),b=g(b,a,c,e,d[12],7,1804603682),e=g(e,b,a,c,d[13],12,-40341101),c=g(c,e,b,a,d[14],17,-1502002290),a=g(a,c,e,b,d[15],22,1236535329),b=i(b,a,c,e,d[1],5,-165796510),e=i(e,b,a,c,d[6],9,-1069501632),c=i(c,e,b,a,d[11],14,643717713),a=i(a,c,e,b,d[0],20,-373897302),b=i(b,a,c,e,d[5],5,-701558691),e=i(e,b,a,c,d[10],9,38016083),
 c=i(c,e,b,a,d[15],14,-660478335),a=i(a,c,e,b,d[4],20,-405537848),b=i(b,a,c,e,d[9],5,568446438),e=i(e,b,a,c,d[14],9,-1019803690),c=i(c,e,b,a,d[3],14,-187363961),a=i(a,c,e,b,d[8],20,1163531501),b=i(b,a,c,e,d[13],5,-1444681467),e=i(e,b,a,c,d[2],9,-51403784),c=i(c,e,b,a,d[7],14,1735328473),a=i(a,c,e,b,d[12],20,-1926607734),b=h(a^c^e,b,a,d[5],4,-378558),e=h(b^a^c,e,b,d[8],11,-2022574463),c=h(e^b^a,c,e,d[11],16,1839030562),a=h(c^e^b,a,c,d[14],23,-35309556),b=h(a^c^e,b,a,d[1],4,-1530992060),e=h(b^a^c,e,
 b,d[4],11,1272893353),c=h(e^b^a,c,e,d[7],16,-155497632),a=h(c^e^b,a,c,d[10],23,-1094730640),b=h(a^c^e,b,a,d[13],4,681279174),e=h(b^a^c,e,b,d[0],11,-358537222),c=h(e^b^a,c,e,d[3],16,-722521979),a=h(c^e^b,a,c,d[6],23,76029189),b=h(a^c^e,b,a,d[9],4,-640364487),e=h(b^a^c,e,b,d[12],11,-421815835),c=h(e^b^a,c,e,d[15],16,530742520),a=h(c^e^b,a,c,d[2],23,-995338651),b=j(b,a,c,e,d[0],6,-198630844),e=j(e,b,a,c,d[7],10,1126891415),c=j(c,e,b,a,d[14],15,-1416354905),a=j(a,c,e,b,d[5],21,-57434055),b=j(b,a,c,e,
@@ -2277,7 +2040,7 @@ Zotero.Item.prototype.loadDump = function(dump){
 };
 
 Zotero.Item.prototype.loadObject = function(ob) {
-    Z.debug('Zotero.Item.loadObject');
+    Z.debug('Zotero.Item.loadObject', 3);
     if(typeof(ob) === 'string'){
         ob = JSON.parse(ob);
     }
@@ -2478,7 +2241,7 @@ Zotero.Item.prototype.writeItem = function(){
         childrenConfig = {'target':'children', 'libraryType':this.libraryType, 'libraryID':this.libraryID, 'itemKey':this.itemKey, 'content':'json'};
         newChildrenRequestUrl = Zotero.ajax.apiRequestUrl(childrenConfig) + Zotero.ajax.apiQueryString(childrenConfig);
     }
-    Z.debug(this.apiObj);
+    Z.debug(this.apiObj, 4);
     
     //add empty creators if we don't have any so we don't get an error
     if(!this.apiObj.hasOwnProperty('creators')){
@@ -2507,7 +2270,7 @@ Zotero.Item.prototype.writeItem = function(){
     }, this);
     
     var childSuccessCallback = J.proxy(function(data, successcode, jqXhr){
-        Z.debug("writeItem childSuccessCallback");
+        Z.debug("writeItem childSuccessCallback", 3);
         if(item.numChildren){
             item.numChildren++;
         }
@@ -2563,7 +2326,7 @@ Zotero.Item.prototype.writeItem = function(){
             Z.debug("have child notes for existing item - making separate requests to create children", 3);
             var noteItemsObj = {items:notes};
             Z.debug("new child notes on existing item", 3);
-            Z.debug(noteItemsObj, 3);
+            Z.debug(noteItemsObj, 4);
             requestData = JSON.stringify(noteItemsObj);
             jqxhr = J.ajax(Zotero.ajax.proxyWrapper(newChildrenRequestUrl, 'POST'),
                 {data: requestData,
@@ -2604,7 +2367,6 @@ Zotero.Item.prototype.writeItem = function(){
 
 Zotero.Item.prototype.getChildren = function(library){
     Z.debug("Zotero.Item.getChildren", 3);
-    Z.debug(library);
     var deferred = J.Deferred();
     //short circuit if has item has no children
     if(!(this.numChildren) || (this.parentKey !== false)){
@@ -2616,8 +2378,7 @@ Zotero.Item.prototype.getChildren = function(library){
     var requestUrl = Zotero.ajax.apiRequestUrl(config) + Zotero.ajax.apiQueryString(config);
     
     var callback = J.proxy(function(data, textStatus, jqxhr){
-        Z.debug('getChildren proxied callback');
-        Z.debug(library);
+        Z.debug('getChildren proxied callback', 4);
         var itemfeed = new Zotero.Feed(data);
         var items = library.items;
         var childItems = items.addItemsFromFeed(itemfeed);
@@ -2669,7 +2430,7 @@ Zotero.Item.prototype.getItemTypes = function (locale) {
             {},
             function(data, textStatus, XMLHttpRequest){
                 Z.debug("got itemTypes response", 3);
-                Z.debug(data, 3);
+                Z.debug(data, 4);
                 Zotero.Item.prototype.itemTypes = data;
                 Zotero.cache.save({locale:locale, target:'itemTypes'}, Zotero.Item.prototype.itemTypes);
             }
@@ -2677,7 +2438,7 @@ Zotero.Item.prototype.getItemTypes = function (locale) {
 };
 
 Zotero.Item.prototype.getItemFields = function (locale) {
-    Z.debug("Zotero.Item.prototype.getItemFields");
+    Z.debug("Zotero.Item.prototype.getItemFields", 3);
     if(!locale){
         locale = 'en-US';
     }
@@ -2698,7 +2459,7 @@ Zotero.Item.prototype.getItemFields = function (locale) {
     J.getJSON(Zotero.ajax.proxyWrapper(requestUrl),
             {},
             function(data, textStatus, XMLHttpRequest){
-                Z.debug("got itemTypes response");
+                Z.debug("got itemTypes response", 4);
                 Zotero.Item.prototype.itemFields = data;
                 Zotero.cache.save({locale:locale, target:'itemFields'}, data);
                 //Zotero.storage.localStorage['itemFields'] = JSON.stringify(data);
@@ -2710,11 +2471,10 @@ Zotero.Item.prototype.getItemFields = function (locale) {
 };
 
 Zotero.Item.prototype.getItemTemplate = function (itemType, linkMode) {
-    Z.debug("Zotero.Item.prototype.getItemTemplate");
+    Z.debug("Zotero.Item.prototype.getItemTemplate", 3);
     var deferred = new J.Deferred();
     
     if(typeof itemType == 'undefined') itemType = 'document';
-    Z.debug(linkMode);
     if(itemType == 'attachment' && typeof linkMode == 'undefined'){
         throw "attachment template requested with no linkMode";
     }
@@ -2734,7 +2494,7 @@ Zotero.Item.prototype.getItemTemplate = function (itemType, linkMode) {
     //callback always executed in this context
     var callback = J.proxy(function(data, textStatus, XMLHttpRequest){
         Z.debug("got itemTemplate response", 3);
-        Z.debug(data);
+        Z.debug(data, 4);
         Zotero.cache.save(cacheConfig, data);
         //Zotero.storage.localStorage[url] = JSON.stringify(data);
         deferred.resolve(data);
@@ -2781,7 +2541,7 @@ Zotero.Item.prototype.getUploadAuthorization = function(fileinfo, oldmd5){
             }
         );
     
-    Z.debug("returning jqxhr from getUploadAuthorization");
+    Z.debug("returning jqxhr from getUploadAuthorization", 4);
     return jqxhr;
 };
 
@@ -2831,16 +2591,16 @@ Zotero.Item.prototype.getCreatorTypes = function (itemType) {
     }
     
     if(Zotero.Item.prototype.creatorTypes[itemType]){
-        Z.debug("creatorTypes of requested itemType available in localStorage");
-        Z.debug(Zotero.Item.prototype.creatorTypes);
+        Z.debug("creatorTypes of requested itemType available in localStorage", 3);
+        Z.debug(Zotero.Item.prototype.creatorTypes, 4);
         deferred.resolve(Zotero.Item.prototype.creatorTypes[itemType]);
     }
     else{
-        Z.debug("sending request for creatorTypes");
+        Z.debug("sending request for creatorTypes", 3);
         var query = Zotero.ajax.apiQueryString({itemType:itemType});
         var requestUrl = Zotero.config.baseApiUrl + '/itemTypeCreatorTypes' + query;
         var callback = J.proxy(function(data, textStatus, XMLHttpRequest){
-                    Z.debug("got creatorTypes response");
+                    Z.debug("got creatorTypes response", 4);
                     Zotero.Item.prototype.creatorTypes[itemType] = data;
                     //Zotero.storage.localStorage['creatorTypes'] = JSON.stringify(Zotero.Item.prototype.creatorTypes);
                     Zotero.cache.save({target:'creatorTypes'}, Zotero.Item.prototype.creatorTypes);
@@ -2856,7 +2616,7 @@ Zotero.Item.prototype.getCreatorTypes = function (itemType) {
 };
 
 Zotero.Item.prototype.getCreatorFields = function (locale) {
-    Z.debug("Zotero.Item.prototype.getCreatorFields");
+    Z.debug("Zotero.Item.prototype.getCreatorFields", 3);
     var creatorFields = Zotero.cache.load({target:'creatorFields'});
     if(creatorFields){
         Z.debug("have creatorFields in localStorage", 3);
@@ -2869,7 +2629,7 @@ Zotero.Item.prototype.getCreatorFields = function (locale) {
     J.getJSON(Zotero.ajax.proxyWrapper(requestUrl),
             {},
             function(data, textStatus, XMLHttpRequest){
-                Z.debug("got itemTypes response");
+                Z.debug("got itemTypes response", 4);
                 Zotero.Item.prototype.creatorFields = data;
                 //Zotero.storage.localStorage['creatorFields'] = JSON.stringify(data);
                 Zotero.cache.save({target:'creatorFields'}, data);
@@ -3677,8 +3437,7 @@ Zotero.file.getFileInfo = function(file, callback){
         //fileInfo.md5 = MD5(result);
         spark.appendBinary(result);
         fileInfo.md5 = spark.end();
-        console.log("md5:");
-        console.log(fileInfo.md5);
+        Z.debug("md5:" + fileInfo.md5, 4);
         fileInfo.filename = file.name;
         fileInfo.filesize = file.size;
         fileInfo.mtime = Date.now();
@@ -3688,75 +3447,27 @@ Zotero.file.getFileInfo = function(file, callback){
     };
     
     reader.readAsBinaryString(file);
-    console.log('using binary string');
-    Z.debug("leaving synchronous part of getFileInfo");
 };
 
 Zotero.file.uploadFile = function(uploadInfo, file){
     Z.debug("Zotero.file.uploadFile", 3);
-    Z.debug(uploadInfo);
-    /*
-    var data = uploadInfo.prefix + filedata + uploadInfo.suffix;
-    
-    var jqxhr = J.ajax(uploadInfo.url,
-            {
-                data:data,
-                type:'POST',
-                processData:false,
-                crossDomain:true,
-                headers:{'Content-Type': uploadInfo.contentType},
-                cache:false,
-                statusCode: {
-                    201: function(){
-                        Z.debug("uploadFile got status 201");
-                    }
-                }
-            });
-    Z.debug(jqxhr);
-    Z.uploadjqxhr2 = jqxhr;
-    //return jqxhr;
-    */
-    //var data = uploadInfo.prefix + filedata + uploadInfo.suffix;
-    /*
-    var bufferLength = uploadInfo.prefix.length + uploadInfo.suffix.length + filedata.byteLength;
-    
-    window.BlobBuilder = window.MozBlobBuilder || window.WebKitBlobBuilder || window.BlobBuilder;
-    var bb = new BlobBuilder();
-    bb.append(uploadInfo.prefix);
-    bb.append(filedata);
-    bb.append(uploadInfo.suffix);
-    var blob = bb.getBlob();
-    */
+    Z.debug(uploadInfo, 4);
     
     var formData = new FormData();
     J.each(uploadInfo.params, function(index, val){
         formData.append(index, val);
     });
-    //formData.append('username', 'johndoe');
-    //formData.append('id', 123456);
     
     formData.append('file', file);
     
     var xhr = new XMLHttpRequest();
-    //xhr.withCredentials = false;
     xhr.open('POST', uploadInfo.url, true);
-    //console.log("contentType: " + uploadInfo.params['Content-Type']);
-    //xhr.setRequestHeader('Content-Type', uploadInfo.params['Content-Type']);
-    /*
-    xhr.onload = function(e) {
-        console.log("file upload onload event");
-    };
     
-    xhr.upload.onprogress = function(e) {
-        if (e.lengthComputable) {
-            console.log((e.loaded / e.total) * 100 );
-            //progressBar.value = (e.loaded / e.total) * 100;
-            //progressBar.textContent = progressBar.value; // Fallback for unsupported browsers.
-        }
-    };
-    //var uInt8Array = new Uint8Array([1, 2, 3]);
-    */
     xhr.send(formData);
     return xhr;
+    //While s3 does not allow CORS this XHR will not have the normal status
+    //information, but will still fire readyStateChanges so you can tell
+    //when the upload has finished (even if you can't tell if it was successful
+    //from JS)
 };
 
