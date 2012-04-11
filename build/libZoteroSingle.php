@@ -1256,7 +1256,9 @@ class Zotero_Item extends Zotero_Entry
     /**
      * @var string content node of response useful if formatted bib request and we need to use the raw content
      */
-    public $content;
+    public $content = null;
+    
+    public $bibContent = null;
     
     public $apiObject = array();
     
