@@ -2090,7 +2090,7 @@ function libZoteroDebug($m){
  */
 class Zotero_Library
 {
-    const ZOTERO_URI = 'https://apidev.zotero.org';
+    const ZOTERO_URI = 'https://api.zotero.org';
     protected $_apiKey = '';
     protected $_ch = null;
     protected $_followRedirects = true;
