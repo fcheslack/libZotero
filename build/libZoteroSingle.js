@@ -196,6 +196,7 @@ var Zotero = {
     disableLogging: function(){
         Zotero._logEnabled--;
         if(Zotero._logEnabled <= 0){
+            Zotero._logEnabled = 0;
             Zotero.prefs.debug_log = false;
         }
     },
@@ -3426,7 +3427,7 @@ Zotero.file.getFileInfo = function(file, callback){
     if(typeof FileReader != 'function'){
         throw "FileReader not supported";
     }
-
+    
     var fileInfo = {};
     var reader = new FileReader();
     reader.onload = function(e){

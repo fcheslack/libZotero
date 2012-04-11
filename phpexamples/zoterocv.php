@@ -22,7 +22,8 @@ else{
     <?if($cv):?>
         <?foreach($cv as $section):?>
             <div class='cv-section' style="padding:5px; margin:5px;">
-            <?=$section;?>
+            <h2><?=$section['title'];?></h2>
+            <?=$section['content'];?>
             </div>
         <?endforeach;?>
     <?else:?>

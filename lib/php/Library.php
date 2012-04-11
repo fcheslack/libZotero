@@ -1308,8 +1308,9 @@ class Zotero_Library
         $sectionNodes = $doc->getElementsByTagNameNS('*', 'cvsection');
         $sections = array();
         foreach($sectionNodes as $sectionNode){
+            $sectionTitle = $sectionNode->getAttribute('title');
             $c = $sectionNode->nodeValue;
-            $sections[] = $c;
+            $sections[] = array('title'=> $sectionTitle, 'content'=>$c);
         }
         return $sections;
     }
