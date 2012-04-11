@@ -1,5 +1,5 @@
 <?php
-define('LIBZOTERO_DEBUG', 1);
+define('LIBZOTERO_DEBUG', 0);
 function libZoteroDebug($m){
     if(LIBZOTERO_DEBUG){
         echo $m;

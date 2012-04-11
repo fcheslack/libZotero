@@ -1521,8 +1521,10 @@ class Zotero_Item extends Zotero_Entry
         }
         else{
             $contentNode = $entryNode->getElementsByTagName('content')->item(0);
-            $contentType = parent::getContentType($entryNode);
-            if($contentType == 'application/json' || $contentType == 'json'){
+            $contentType = $contentNode->getAttribute('type');
+            $zType = $contentNode->getAttribute('zapi:type');
+            
+            if($contentType == 'application/json' || $contentType == 'json' || $zType == 'json'){
                 $this->apiObject = json_decode($contentNode->nodeValue, true);
                 $this->etag = $contentNode->getAttribute('zapi:etag');
                 if(isset($this->apiObject['creators'])){
@@ -1531,6 +1533,13 @@ class Zotero_Item extends Zotero_Entry
                 else{
                     $this->creators = array();
                 }
+            }
+            elseif($contentType == 'bib' || $zType == 'bib'){
+                $bibNode = $contentNode->getElementsByTagName('div')->item(0);
+                $this->bibContent = $bibNode->ownerDocument->saveXML($bibNode);
+            }
+            else{
+                //didn't find a content type we deal with
             }
         }
         
@@ -1606,7 +1615,6 @@ class Zotero_Item extends Zotero_Entry
     }
     
     public function newItemObject(){
-        echo "Zotero_Item::newItemObject<br />";
         $newItem = $this->apiObject;
         $newCreatorsArray = array();
         if(isset($newItem['creators'])) {
@@ -2077,7 +2085,7 @@ class Zotero_Creator
     }
 }
 
-define('LIBZOTERO_DEBUG', 1);
+define('LIBZOTERO_DEBUG', 0);
 function libZoteroDebug($m){
     if(LIBZOTERO_DEBUG){
         echo $m;
