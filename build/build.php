@@ -18,7 +18,8 @@ $files = array(
 "Tag.php",
 "User.php",
 "Creator.php",
-"Library.php"
+"Library.php",
+"Utils.php"
 );
 
 $fullText = "<?php\n";

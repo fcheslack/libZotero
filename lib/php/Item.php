@@ -83,6 +83,8 @@ class Zotero_Item extends Zotero_Entry
     
     public $bibContent = null;
     
+    public $subContents = array();
+    
     public $apiObject = array();
     
     /**
@@ -337,9 +339,13 @@ class Zotero_Item extends Zotero_Entry
                     $bibNode = $scnode->getElementsByTagName('div')->item(0);
                     $this->bibContent = $bibNode->ownerDocument->saveXML($bibNode);
                 }
-                else{
-                    throw new Exception("Unknown zapi:subcontent type " . $type);
+                
+                $contentString = '';
+                $childNodes = $scnode->childNodes;
+                foreach($childNodes as $childNode){
+                    $contentString .= $bibNode->ownerDocument->saveXML($childNode);
                 }
+                $this->subContents[$type] = $contentString;
             }
         }
         else{
