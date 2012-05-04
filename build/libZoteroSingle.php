@@ -3437,7 +3437,7 @@ class Zotero_Lib_Utils
             $repstring = " <a href='$1'>$1</a>";
         }
         //will break completely on CDATA with unescaped brackets, and probably on alot of malformed html
-        return preg_replace('/(http:\/\/[-a-zA-Z0-9._~:\/?#\[\]@!$&\'\(\)*+,;=]+)(?![^<]*>)/i', $repstring, $txt);
+        return preg_replace('/(http:\/\/[-a-zA-Z0-9._~:\/?#\[\]@!$&\'\(\)*+,;=]+)(?=\.|,|;)(?![^<]*>)/i', $repstring, $txt);
         
         
         //alternative regexes
