@@ -2286,7 +2286,7 @@ Zotero.Item.prototype.writeItem = function(){
     //delete writeApiObj['linkMode'];
     delete writeApiObj['mimeType'];
     delete writeApiObj['charset'];
-    delete writeApiObj['contentType'];
+    //delete writeApiObj['contentType'];
     delete writeApiObj['filename'];
     delete writeApiObj['md5'];
     delete writeApiObj['mtime'];

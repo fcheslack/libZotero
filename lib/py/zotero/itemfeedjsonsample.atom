@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:zapi="http://zotero.org/ns/api">
+  <title>Zotero / CHNM Group / Items</title>
+  <id>http://zotero.org/groups/1/items?limit=3&amp;content=json</id>
+  <link rel="self" type="application/atom+xml" href="https://api.zotero.org/groups/1/items?limit=3&amp;content=json"/>
+  <link rel="first" type="application/atom+xml" href="https://api.zotero.org/groups/1/items?limit=3&amp;content=json"/>
+  <link rel="next" type="application/atom+xml" href="https://api.zotero.org/groups/1/items?limit=3&amp;content=json&amp;start=3"/>
+  <link rel="last" type="application/atom+xml" href="https://api.zotero.org/groups/1/items?limit=3&amp;content=json&amp;start=48"/>
+  <link rel="alternate" type="text/html" href="http://zotero.org/groups/1/items?limit=3"/>
+  <zapi:totalResults>50</zapi:totalResults>
+  <zapi:apiVersion>1</zapi:apiVersion>
+  <updated>2012-03-01T06:48:38Z</updated>
+  <entry>
+    <title>201_Final_Submission.pdf</title>
+    <author>
+      <name>Sheila</name>
+      <uri>http://zotero.org/sheila</uri>
+    </author>
+    <id>http://zotero.org/groups/chnm/items/Z4U9679K</id>
+    <published>2010-12-03T02:35:15Z</published>
+    <updated>2011-02-16T14:35:05Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/groups/1/items/Z4U9679K?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/groups/chnm/items/Z4U9679K"/>
+    <zapi:key>Z4U9679K</zapi:key>
+    <zapi:itemType>attachment</zapi:itemType>
+    <zapi:numTags>0</zapi:numTags>
+    <content zapi:type="json" zapi:etag="84998530cccb202e3fed277a2bd15f6a">{"itemType":"attachment","linkMode":"imported_url","title":"201_Final_Submission.pdf","accessDate":"2010-12-03 02:35:15","url":"http://mail.asis.org/asist2010/proceedings/proceedings/ASIST_AM10/submissions/201_Final_Submission.pdf","note":"","contentType":"application/pdf","charset":"iso-8859-1","filename":"201_Final_Submission.pdf","md5":"b7ea1755e9c8ab57725f24fb787262f5","mtime":"1297872756000","tags":[]}</content>
+  </entry>
+  <entry>
+    <title>AOTUS: Collector in Chief | Are these Records?</title>
+    <author>
+      <name>sleon</name>
+      <uri>http://zotero.org/sleon</uri>
+    </author>
+    <id>http://zotero.org/groups/chnm/items/PPXSQDSK</id>
+    <published>2010-11-03T00:28:51Z</published>
+    <updated>2012-03-01T06:48:38Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/groups/1/items/PPXSQDSK?content=json"/>
+    <link rel="up" type="application/atom+xml" href="https://api.zotero.org/groups/1/items/G875VCGJ?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/groups/chnm/items/PPXSQDSK"/>
+    <zapi:key>PPXSQDSK</zapi:key>
+    <zapi:itemType>attachment</zapi:itemType>
+    <zapi:numTags>0</zapi:numTags>
+    <content zapi:type="json" zapi:etag="28963943f93eaaf04320cad1d267679f">{"itemType":"attachment","linkMode":"imported_url","title":"AOTUS: Collector in Chief | Are these Records?","accessDate":"2010-11-03 00:28:51","url":"http://blogs.archives.gov/aotus/?p=1853","note":"","contentType":"text/html","charset":"utf-8","filename":"aotus.html","md5":"fded02745b2a1d3f0eaf957b2adfd5f6","mtime":"1330225596000","tags":[]}</content>
+  </entry>
+  <entry>
+    <title>AOTUS: Collector in Chief | Are these Records?</title>
+    <author>
+      <name>sleon</name>
+      <uri>http://zotero.org/sleon</uri>
+    </author>
+    <id>http://zotero.org/groups/chnm/items/G875VCGJ</id>
+    <published>2010-11-03T00:28:49Z</published>
+    <updated>2010-11-03T00:28:49Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/groups/1/items/G875VCGJ?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/groups/chnm/items/G875VCGJ"/>
+    <zapi:key>G875VCGJ</zapi:key>
+    <zapi:itemType>webpage</zapi:itemType>
+    <zapi:year/>
+    <zapi:numChildren>1</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content zapi:type="json" zapi:etag="4e698e98826ce02fd2308b4c1f0e2725">{"itemType":"webpage","title":"AOTUS: Collector in Chief | Are these Records?","creators":[],"abstractNote":"","websiteTitle":"","websiteType":"","date":"","shortTitle":"","url":"http://blogs.archives.gov/aotus/?p=1853","accessDate":"2010-11-03 00:28:49","language":"","rights":"","extra":"","tags":[]}</content>
+  </entry>
+</feed>

@@ -410,6 +410,7 @@ class Zotero_Library
         $queryParams = array();
         foreach($queryParamOptions as $i=>$val){
             if(isset($passedParams[$val]) && ($passedParams[$val] != '')) {
+                //check if itemKey belongs in the url or the querystring
                 if($val == 'itemKey' && isset($passedParams['target']) && ($passedParams['target'] != 'items') ) continue;
                 $queryParams[$val] = $passedParams[$val];
             }
@@ -873,7 +874,6 @@ class Zotero_Library
      * @return Zotero_Item
      */
     public function getTemplateItem($itemType, $linkMode=null){
-        libZoteroDebug(1);
         $newItem = new Zotero_Item();
         $aparams = array('target'=>'itemTemplate', 'itemType'=>$itemType);
         if($linkMode){

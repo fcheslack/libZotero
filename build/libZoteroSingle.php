@@ -2502,6 +2502,7 @@ class Zotero_Library
         $queryParams = array();
         foreach($queryParamOptions as $i=>$val){
             if(isset($passedParams[$val]) && ($passedParams[$val] != '')) {
+                //check if itemKey belongs in the url or the querystring
                 if($val == 'itemKey' && isset($passedParams['target']) && ($passedParams['target'] != 'items') ) continue;
                 $queryParams[$val] = $passedParams[$val];
             }
@@ -2965,7 +2966,6 @@ class Zotero_Library
      * @return Zotero_Item
      */
     public function getTemplateItem($itemType, $linkMode=null){
-        libZoteroDebug(1);
         $newItem = new Zotero_Item();
         $aparams = array('target'=>'itemTemplate', 'itemType'=>$itemType);
         if($linkMode){
@@ -3437,7 +3437,7 @@ class Zotero_Lib_Utils
             $repstring = " <a href='$1'>$1</a>";
         }
         //will break completely on CDATA with unescaped brackets, and probably on alot of malformed html
-        return preg_replace('/(http:\/\/[-a-zA-Z0-9._~:\/?#\[\]@!$&\'\(\)*+,;=]+)(?=\.|,|;)(?![^<]*>)/i', $repstring, $txt);
+        return preg_replace('/(http:\/\/[-a-zA-Z0-9._~:\/?#\[\]@!$&\'\(\)*+,;=]+)(?=\.|,|;|\s)(?![^<]*>)/i', $repstring, $txt);
         
         
         //alternative regexes
