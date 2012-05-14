@@ -3,6 +3,7 @@ from feed import *
 from item import *
 from items import *
 from collection import *
-from collections import *
+from zcollections import *
+from tag import *
 
 ZOTERO_URI = 'https://apidev.zotero.org'

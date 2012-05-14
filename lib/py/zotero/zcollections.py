@@ -1,3 +1,4 @@
+import logging
 from collection import *
 
 
@@ -9,7 +10,7 @@ class Collections(object):
         self.loaded = False
 
     def addCollection(self, collection):
-        self.collectionObjects[collection.collectionKey]
+        self.collectionObjects[collection.collectionKey] = collection
         self.orderedArray.append(collection)
 
     def getCollection(self, collectionKey):
