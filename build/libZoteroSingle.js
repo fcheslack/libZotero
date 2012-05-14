@@ -2168,7 +2168,7 @@ Zotero.Item.prototype.parseJsonItemContent = function (cel) {
     this.apiObj = dataFields;
     
     if(this.dataFields['itemType'] == 'attachment'){
-        this.mimeType = this.dataFields['mimeType'];
+        this.mimeType = this.dataFields['contentType'];
         this.translatedMimeType = Zotero.utils.translateMimeType(this.mimeType);
     }
     if(this.dataFields.hasOwnProperty('linkMode')){
@@ -2873,23 +2873,26 @@ Zotero.Item.prototype.itemTypeImageSrc = {
 };
 
 Zotero.Item.prototype.itemTypeImageClass = function(){
+    //linkModes: imported_file,imported_url,linked_file,linked_url
     var item = this;
     if(item.itemType == 'attachment'){
         switch(item.linkMode){
-            case 0:
+            case 'imported_file':
                 if(item.translatedMimeType == 'pdf'){
                     return this.itemTypeImageSrc['attachmentPdf'];
                 }
                 return this.itemTypeImageSrc['attachmentFile'];
-            case 1:
+            case 'imported_url':
                 if(item.translatedMimeType == 'pdf'){
                     return this.itemTypeImageSrc['attachmentPdf'];
                 }
                 return this.itemTypeImageSrc['attachmentSnapshot'];
-            case 2:
+            case 'linked_file':
                 return this.itemTypeImageSrc['attachmentLink'];
-            case 3:
+            case 'linked_url':
                 return this.itemTypeImageSrc['attachmentWeblink'];
+            default:
+                return this.itemTypeImageSrc['attachment'];
         }
     }
     else {
