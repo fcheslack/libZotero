@@ -608,16 +608,5 @@ class Library(object):
         pass
 
 if __name__ == "__main__":
-    #import sys
-    #import os
-    import pprint
-
-    pp = pprint.PrettyPrinter(indent=4)
-    itemFeedString = open('./itemfeedjsonsample.atom').read()
-
-    print("itemFeedString read in")
-    zlib = zotero.Library('user', 10150, 'fcheslack', 'h0y6dKQdoMpWcs4YWsEicppg')
-    zlib.fetchItemsTop({'limit': 5})
-
-
-#a = zotero.Feed('')
+    pass
+    
