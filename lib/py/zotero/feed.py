@@ -1,3 +1,4 @@
+import logging
 import xml.dom.minidom
 
 
@@ -5,10 +6,10 @@ class Feed(object):
     def __init__(self, doc):
         #construct dom doc if we were passed a string
         if isinstance(doc, basestring):
-            print("doc is a string. make it a dom")
+            logging.info("doc is a string. make it a dom")
             doc = xml.dom.minidom.parseString(doc)
             if not doc:
-                print(doc)
+                logging.info(doc)
                 raise Exception("Error constructing feed Domdoc")
         feedEl = doc.getElementsByTagName('feed').item(0)
         if not feedEl:

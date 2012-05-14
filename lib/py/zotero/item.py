@@ -1,3 +1,4 @@
+import logging
 import xml.dom.minidom
 import re
 import json

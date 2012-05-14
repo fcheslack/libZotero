@@ -3,6 +3,7 @@ import urlparse
 import requests
 import json
 import xml.dom.minidom
+import logging
 import zotero
 
 
@@ -97,7 +98,7 @@ def apiQueryString(passedParams={}):
                          'format',
                          'linkMode']
     #build simple api query parameters object
-    print(passedParams)
+    logging.info(passedParams)
     queryParams = []
     for val in queryParamOptions:
         if (val in passedParams) and (passedParams[val] != ''):
@@ -154,15 +155,14 @@ class Library(object):
         self.libraryString = self.libraryString(libraryType, libraryID)
         self.libraryUrlIdentifier = libraryUrlIdentifier
         self.libraryBaseWebsiteUrl = baseWebsiteUrl
-        self.items = {}
-        self.collections = {}
+        self.items = zotero.Items()
+        self.collections = zotero.Collections()
         self.dirty = False
         self.useLibraryAsContainer = True
         self._lastResponse = None
         self._lastFeed = None
         self._cachettl = cachettl
         self._cachePrefix = 'libZotero'
-        self.items = zotero.Items()
         if cachettl > 0:
             self._cacheResponses = True
         else:
@@ -198,6 +198,28 @@ class Library(object):
         self._lastResponse = r
         return r
 
+    def fetchCollections(self, params={}):
+        aparams = {'target': 'collections', 'content': 'json', 'limit': 100}
+        aparams.update(params)
+        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
+        response = self._request(reqUrl)
+        if response.status_code != 200:
+            raise Exception("Error fetching collections")
+        feed = zotero.Feed(response.text)
+        self._lastFeed = feed
+        addedCollections = self.collections.addCollectionsFromFeed(feed)
+
+        if 'next' in feed.links:
+            nextUrl = feed.links['next']['href']
+            parsedNextUrl = urlparse.urlparse(nextUrl)
+            parsedNextQuery = urlparse.parse_qs(parsedNextUrl.query)
+            parsedNextQuery = self.apiQueryString(parsedNextQuery.update({'key': self._apiKey}))
+            #parsedNextUrl['query'] = self.apiQueryString(array_merge({'key': self._apiKey}, self.parseQueryString(parsedNextUrl['query']) ) )
+            reqUrl = parsedNextUrl['scheme'] + '://' + parsedNextUrl['host'] + parsedNextUrl['path'] + parsedNextQuery
+        else:
+            reqUrl = False
+        return addedCollections
+
     def fetchItemsTop(self, params={}):
         params['targetModifier'] = 'top'
         return self.fetchItems(params)
@@ -207,7 +229,7 @@ class Library(object):
         aparams = {'target': 'items', 'content': 'json', 'key': self._apiKey}
         aparams.update(params)
         reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
-        print(reqUrl)
+        logging.info(reqUrl)
         response = self._request(reqUrl)
         if(response.status_code != 200):
             raise Exception("Error fetching items. " + str(response.status_code))
@@ -219,7 +241,7 @@ class Library(object):
 
         return fetchedItems
 
-    def fetchItemKeys(self, params):
+    def fetchItemKeys(self, params={}):
         fetchedKeys = []
         aparams = {'target': 'items', 'format': 'keys'}
         aparams.update(params)
@@ -231,7 +253,7 @@ class Library(object):
         fetchedKeys = body.strip().split("\n")
         return fetchedKeys
 
-    def fetchTrashedItems(self, params):
+    def fetchTrashedItems(self, params={}):
         pass
         fetchedItems = []
         aparams = {'target': 'trash', 'content': 'json'}
@@ -246,7 +268,7 @@ class Library(object):
         fetchedItems = self.items.addItemsFromFeed(feed)
         return fetchedItems
 
-    def fetchItemsAfter(self, itemKey, params):
+    def fetchItemsAfter(self, itemKey, params={}):
         #this might be completely broken
         pass
         fetchedItems = []
@@ -352,7 +374,7 @@ class Library(object):
         return response
 
     def addNotes(self, parentItem, noteItem):
-        print(noteItem)
+        logging.info(noteItem)
         aparams = {'target': 'children', 'itemKey': parentItem.itemKey}
         reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
         if isinstance(noteItem, zotero.Item):
@@ -366,7 +388,7 @@ class Library(object):
         response = self._request(reqUrl, 'POST', noteJson)
         return response
 
-    def createCollection(self, name, parent):
+    def createCollection(self, name, parent=None):
         collection = zotero.Collection()
         collection.name = name
         collection.parentCollectionKey = parent
