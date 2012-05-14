@@ -22,7 +22,7 @@ def apiRequestUrl(params={}, base=None):
         return base + '/items/new'
     url = base + '/' + params['libraryType'] + 's/' + str(params['libraryID'])
 
-    if 'collectionKey' in params:
+    if ('collectionKey' in params) and (params['collectionKey']):
         if params['collectionKey'] == 'trash':
             url += '/items/trash'
             return url
