@@ -1,9 +1,11 @@
+import logging
 import xml.dom.minidom
 
 
 class Entry(object):
     def __init__(self, entryNode):
         if isinstance(entryNode, basestring):
+            logging.info("doc is a string. make it a dom")
             entryNode = xml.dom.minidom.parseString(entryNode)
             if not entryNode:
                 raise Exception("Error constructing feed Domdoc")
@@ -24,5 +26,6 @@ class Entry(object):
                     self.links[linkrel]['size'] = n.getAttribute('size')
 
         contentNode = entryNode.getElementsByTagName("content").item(0)
-        self.contentType = contentNode.getAttribute('type')
-        self.contentZType = contentNode.getAttribute('zapi:type')
+        if(contentNode):
+            self.contentType = contentNode.getAttribute('type')
+            self.contentZType = contentNode.getAttribute('zapi:type')
