@@ -5,7 +5,7 @@ require_once './config.php';
 require_once '../build/libZoteroSingle.php';
 
 //create a library object to interact with the zotero API
-$library = new Zotero_Library($libraryType, $libraryID, 'fcheslack', '3yRptRxDIpL3qHMHDfB5Kh8S');
+$library = new Zotero_Library($libraryType, $libraryID, $userSlug, $apiKey);
 
 //use Alternative PHP Cache to save API responses for 30 minutes
 //this will cache unique api responses so we get faster responses
