@@ -274,7 +274,6 @@ class Zotero_Library
      * @return string
      */
     public function apiRequestUrl($params = array(), $base = Zotero_Library::ZOTERO_URI) {
-        //var_dump($params);
         if(!isset($params['target'])){
             throw new Exception("No target defined for api request");
         }
@@ -805,7 +804,7 @@ class Zotero_Library
                     //$registerUploadData = array('upload'=>$resObject['uploadKey']);
                     $registerUploadData = "upload=" . $resObject['uploadKey'];
                     libZoteroDebug("<br />Register Upload Data <br /><br />");
-                    var_dump($registerUploadData);
+                    
                     $regUpResponse = $this->_request($registerReqUrl, 'POST', $registerUploadData, array('If-None-Match'=>'*'));
                     if($regUpResponse->getStatus() == 204){
                         libZoteroDebug("successfully registered upload ");
@@ -879,7 +878,6 @@ class Zotero_Library
         if($linkMode){
             $aparams['linkMode'] = $linkMode;
         }
-        var_dump($aparams);
         
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         libZoteroDebug($reqUrl);
