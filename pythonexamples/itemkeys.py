@@ -4,6 +4,10 @@ import sys
 sys.path.append('../lib/py/zotero')
 import json
 import zotero
+import logging
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
 creds = json.loads(open('./user_writing_config.json').read())  # library credentials
 print(creds)

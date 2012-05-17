@@ -4,6 +4,7 @@ import requests
 import json
 import xml.dom.minidom
 import logging
+import pickle
 import zotero
 
 
@@ -139,6 +140,14 @@ def getTemplateItem(itemType, linkMode=None):
     return newItem
 
 
+def saveLibrary(self):
+    return pickle.dumps(self)
+
+
+def loadLibrary(self, picklestring):
+    return pickle.loads(picklestring)
+
+
 class Library(object):
     def __init__(self,
                  libraryType,
@@ -146,7 +155,7 @@ class Library(object):
                  libraryUrlIdentifier,
                  apiKey,
                  baseWebsiteUrl="http://www.zotero.org",
-                 cachettl=0):
+                 cachettl=300):
         self.ZOTERO_URI = 'https://api.zotero.org'
         self._apiKey = apiKey
         self._followRedirects = True
@@ -163,6 +172,7 @@ class Library(object):
         self._lastFeed = None
         self._cachettl = cachettl
         self._cachePrefix = 'libZotero'
+        self._cache = zotero.Cache()
         if cachettl > 0:
             self._cacheResponses = True
         else:
@@ -194,7 +204,18 @@ class Library(object):
         return apiQueryString(passedParams)
 
     def _request(self, url, method='GET', body=None, headers={}):
+        logging.debug("zotero.Library._request")
+        #check for cached result before http request
+        r = None
+        logging.debug("checking for cached request")
+        if (self._cacheResponses) and (method.upper() == 'GET'):
+            r = self._cache.cache_fetch(url)
+        if(r != None):
+            self._lastResponse = r
+            return r
         r = zrequest(url, method, body, headers)
+        if self._cacheResponses and (method.upper() == 'GET'):
+            self._cache.cache_store(url, r)
         self._lastResponse = r
         return r
 
@@ -242,6 +263,7 @@ class Library(object):
         return fetchedItems
 
     def fetchItemKeys(self, params={}):
+        logging.info('zotero.Library.fetchItemKeys')
         fetchedKeys = []
         aparams = {'target': 'items', 'format': 'keys'}
         aparams.update(params)
