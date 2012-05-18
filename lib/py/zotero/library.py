@@ -1,6 +1,7 @@
 import urllib
+import urllib2
 import urlparse
-import requests
+#import requests
 import json
 import xml.dom.minidom
 import logging
@@ -115,7 +116,21 @@ def apiQueryString(passedParams={}):
 
 def zrequest(url, method='GET', body=None, headers={}):
     """Make a request to the Zotero API and return the response object."""
+    opener = urllib2.build_opener(urllib2.HTTPHandler)
+    req = urllib2.Request(url, body)
+    for key, val in headers.items():
+        req.add_header(key, val)
+    req.get_method = lambda: method
     r = None
+    try:
+        res = opener.open(req)
+        r = zotero.Response(res)
+        return r
+    except (urllib2.URLError, urllib2.HTTPError) as err:
+        r = zotero.Response(err)
+        return r
+        pass
+    """
     if method == 'GET':
         r = requests.get(url, headers=headers)
     elif method == 'POST':
@@ -125,6 +140,7 @@ def zrequest(url, method='GET', body=None, headers={}):
     elif method == 'DELETE':
         r = requests.delete(url, data=body, headers=headers)
     return r
+    """
 
 
 def getTemplateItem(itemType, linkMode=None):
