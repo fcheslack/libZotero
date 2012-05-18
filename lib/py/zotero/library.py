@@ -9,6 +9,7 @@ import zotero
 
 
 def apiRequestUrl(params={}, base=None):
+    """ """
     if base == None:
         base = zotero.ZOTERO_URI
     if 'target' not in params:
@@ -113,16 +114,17 @@ def apiQueryString(passedParams={}):
 
 
 def zrequest(url, method='GET', body=None, headers={}):
-        r = None
-        if method == 'GET':
-            r = requests.get(url, headers=headers)
-        elif method == 'POST':
-            r = requests.post(url, data=body, headers=headers)
-        elif method == 'PUT':
-            r = requests.put(url, data=body, headers=headers)
-        elif method == 'DELETE':
-            r = requests.delete(url, data=body, headers=headers)
-        return r
+    """Make a request to the Zotero API and return the response object."""
+    r = None
+    if method == 'GET':
+        r = requests.get(url, headers=headers)
+    elif method == 'POST':
+        r = requests.post(url, data=body, headers=headers)
+    elif method == 'PUT':
+        r = requests.put(url, data=body, headers=headers)
+    elif method == 'DELETE':
+        r = requests.delete(url, data=body, headers=headers)
+    return r
 
 
 def getTemplateItem(itemType, linkMode=None):
@@ -140,11 +142,8 @@ def getTemplateItem(itemType, linkMode=None):
     return newItem
 
 
-def saveLibrary(self):
-    return pickle.dumps(self)
 
-
-def loadLibrary(self, picklestring):
+def loadLibrary(picklestring):
     return pickle.loads(picklestring)
 
 
@@ -651,6 +650,20 @@ class Library(object):
         return sections
         pass
 
+    def saveLibrary(self):
+        """Return the library, excluding cache and lastResponse, in a serialized string."""
+        #Library can't be pickled as long as there are http request objects in _lastResponse and _cache
+        #this might be a job for __getstate__ but we'll leave it in here for now
+        #save unpicklables temporarily, then put them back in the library
+        c = self._cache
+        self._cache = zotero.Cache()
+        ls = self._lastResponse
+        self._lastResponse = None
+        s = pickle.dumps(self)
+        #restore unpicklables for this process
+        self._cache = c
+        self._lastResponse = ls
+        return s
+
 if __name__ == "__main__":
     pass
-    
