@@ -667,19 +667,8 @@ class Library(object):
         pass
 
     def saveLibrary(self):
-        """Return the library, excluding cache and lastResponse, in a serialized string."""
-        #Library can't be pickled as long as there are http request objects in _lastResponse and _cache
-        #this might be a job for __getstate__ but we'll leave it in here for now
-        #save unpicklables temporarily, then put them back in the library
-        c = self._cache
-        self._cache = zotero.Cache()
-        ls = self._lastResponse
-        self._lastResponse = None
-        s = pickle.dumps(self)
-        #restore unpicklables for this process
-        self._cache = c
-        self._lastResponse = ls
-        return s
+        """Return pickled self for storage"""
+        return pickle.dumps(self)
 
 if __name__ == "__main__":
     pass
