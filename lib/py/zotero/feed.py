@@ -1,4 +1,5 @@
 import logging
+from exceptions import *
 import xml.dom.minidom
 
 
@@ -10,10 +11,10 @@ class Feed(object):
             doc = xml.dom.minidom.parseString(doc)
             if not doc:
                 logging.info(doc)
-                raise Exception("Error constructing feed Domdoc")
+                raise ZoteroParseError("Error constructing feed Domdoc")
         feedEl = doc.getElementsByTagName('feed').item(0)
         if not feedEl:
-            raise Exception("No feed node in passed doc")
+            raise ZoteroParseError("No feed node in passed doc")
         self.title = feedEl.getElementsByTagName('title').item(0).childNodes.item(0).nodeValue
         self.id = feedEl.getElementsByTagName("id").item(0).childNodes.item(0).nodeValue
         self.dateUpdated = feedEl.getElementsByTagName("updated").item(0).childNodes.item(0).nodeValue

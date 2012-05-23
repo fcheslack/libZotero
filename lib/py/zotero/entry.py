@@ -1,4 +1,5 @@
 import logging
+from exceptions import *
 import xml.dom.minidom
 
 
@@ -8,7 +9,7 @@ class Entry(object):
             logging.info("doc is a string. make it a dom")
             entryNode = xml.dom.minidom.parseString(entryNode)
             if not entryNode:
-                raise Exception("Error constructing feed Domdoc")
+                raise ZoteroParseError("Error constructing feed Domdoc")
 
         self.title = entryNode.getElementsByTagName('title').item(0).childNodes.item(0).nodeValue
         self.id = entryNode.getElementsByTagName('id').item(0).childNodes.item(0).nodeValue

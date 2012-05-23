@@ -14,11 +14,11 @@ def apiRequestUrl(params={}, base=None):
     if base == None:
         base = zotero.ZOTERO_URI
     if 'target' not in params:
-        raise Exception("No target defined for api request")
+        raise zotero.ZoteroUrlError("No target defined for api request")
     if 'libraryType' not in params and params['target'] != 'itemTemplate':
-        raise Exception("No libraryType defined for api request")
+        raise zotero.ZoteroUrlError("No libraryType defined for api request")
     if 'libraryID' not in params and params['target'] != 'itemTemplate':
-        raise Exception("No libraryID defined for api request")
+        raise zotero.ZoteroUrlError("No libraryID defined for api request")
     #special elif for www based api requests until those methods are mapped for api.zotero
     if params['target'] == 'user' or params['target'] == 'cv':
         base = 'https://www.zotero.org/api'
@@ -65,11 +65,11 @@ def apiRequestUrl(params={}, base=None):
             url += '/children'
         elif params['targetModifier'] == 'file':
             if params['target'] != 'item':
-                raise Exception('Trying to get file on non-item target')
+                raise zotero.ZoteroUrlError('Trying to get file on non-item target')
             url += '/file'
         elif params['targetModifier'] == 'fileview':
             if params['target'] != 'item':
-                raise Exception('Trying to get file on non-item target')
+                raise zotero.ZoteroUrlError('Trying to get file on non-item target')
             url += '/file/view'
     #print "apiRequestUrl: " . url . "\n"
     return url
@@ -152,7 +152,7 @@ def getTemplateItem(itemType, linkMode=None):
     reqUrl = apiRequestUrl(aparams) + apiQueryString(aparams)
     response = zrequest(reqUrl)
     if response.status_code != 200:
-        raise Exception("Error getting template item")
+        raise zotero.ZoteroApiError("Error getting template item")
     itemTemplate = json.loads(response.text)
     newItem.apiObject = itemTemplate
     return newItem
@@ -204,7 +204,7 @@ class Library(object):
 
     def apiRequestUrl(self, params={}, base=None):
         if 'target' not in params:
-            raise Exception("No target defined for api request")
+            raise zotero.ZoteroUrlError("No target defined for api request")
         #fill library specific params in if not present
         if 'libraryType' not in params:
             params['libraryType'] = self.libraryType
@@ -240,7 +240,7 @@ class Library(object):
         reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
         response = self._request(reqUrl)
         if response.status_code != 200:
-            raise Exception("Error fetching collections")
+            raise zotero.ZoteroApiError("Error fetching collections")
         feed = zotero.Feed(response.text)
         self._lastFeed = feed
         addedCollections = self.collections.addCollectionsFromFeed(feed)
@@ -268,7 +268,7 @@ class Library(object):
         logging.info(reqUrl)
         response = self._request(reqUrl)
         if(response.status_code != 200):
-            raise Exception("Error fetching items. " + str(response.status_code))
+            raise zotero.ZoteroApiError("Error fetching items. " + str(response.status_code))
         body = response.text
         feed = zotero.Feed(body)
         self._lastFeed = feed
@@ -285,7 +285,7 @@ class Library(object):
         reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
         response = self._request(reqUrl)
         if response.status_code != 200:
-            raise Exception("Error fetching item keys" + str(response.status_code))
+            raise zotero.ZoteroApiError("Error fetching item keys" + str(response.status_code))
         body = response.text
         fetchedKeys = body.strip().split("\n")
         return fetchedKeys
@@ -298,7 +298,7 @@ class Library(object):
         reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
         response = self._request(reqUrl)
         if response.status_code != 200:
-            raise Exception("Error fetching items" + str(response.status_code))
+            raise zotero.ZoteroApiError("Error fetching items" + str(response.status_code))
         body = response.text
         feed = zotero.Feed(body)
         self._lastFeed = feed
@@ -335,7 +335,7 @@ class Library(object):
 
         response = self._request(reqUrl, 'GET')
         if response.status_code != 200:
-            raise Exception("Error fetching items")
+            raise zotero.ZoteroApiError("Error fetching items")
 
         body = response.text
         item = zotero.Item(body)
@@ -354,7 +354,7 @@ class Library(object):
 
         response = self._request(reqUrl, 'GET')
         if response.status_code != 200:
-            raise Exception("Error fetching items")
+            raise zotero.ZoteroApiError("Error fetching items")
         body = response.text
         feed = zotero.Feed(body)
         if len(feed.entries) == 0:
@@ -511,7 +511,7 @@ class Library(object):
         reqUrl = zotero.ZOTERO_URI + 'itemTypes'
         response = self._request(reqUrl, 'GET')
         if response.status_code != 200:
-            raise Exception("failed to fetch itemTypes")
+            raise zotero.ZoteroApiError("failed to fetch itemTypes")
         itemTypes = json.loads(response.getBody())
         return itemTypes
         pass
@@ -520,7 +520,7 @@ class Library(object):
         reqUrl = zotero.ZOTERO_URI + 'itemFields'
         response = self._request(reqUrl, 'GET')
         if response.status_code != 200:
-            raise Exception("failed to fetch itemFields")
+            raise zotero.ZoteroApiError("failed to fetch itemFields")
         itemFields = json.loads(response.getBody())
         return itemFields
         pass
@@ -529,7 +529,7 @@ class Library(object):
         reqUrl = zotero.ZOTERO_URI + 'itemTypeCreatorTypes?itemType=' + itemType
         response = self._request(reqUrl, 'GET')
         if response.status_code != 200:
-            raise Exception("failed to fetch creatorTypes")
+            raise zotero.ZoteroApiError("failed to fetch creatorTypes")
         creatorTypes = json.loads(response.getBody())
         return creatorTypes
         pass
@@ -538,7 +538,7 @@ class Library(object):
         reqUrl = zotero.ZOTERO_URI + 'creatorFields'
         response = self._request(reqUrl, 'GET')
         if response.status_code != 200:
-            raise Exception("failed to fetch creatorFields")
+            raise zotero.ZoteroApiError("failed to fetch creatorFields")
         creatorFields = json.loads(response.getBody())
         return creatorFields
         pass
