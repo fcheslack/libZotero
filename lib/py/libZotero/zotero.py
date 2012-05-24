@@ -9,4 +9,4 @@ from tag import *
 from cache import *
 from response import *
 
-ZOTERO_URI = 'https://apidev.zotero.org'
+ZOTERO_URI = 'https://api.zotero.org'
