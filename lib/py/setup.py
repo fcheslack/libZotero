@@ -4,5 +4,5 @@ setup(name='libZotero',
       description='Python module for interacting with the zotero.org API',
       author='Faolan Cheslack-Postava',
       url='https://github.com/fcheslack/libZotero',
-      packages=['libzotero'],
+      packages=['libZotero'],
       )
