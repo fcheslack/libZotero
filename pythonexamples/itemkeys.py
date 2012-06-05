@@ -1,9 +1,9 @@
 #!/usr/bin/python
 
 import sys
-sys.path.append('../lib/py/zotero')
+sys.path.append('../lib/py')
 import json
-import zotero
+from libZotero import zotero
 import logging
 
 logger = logging.getLogger()

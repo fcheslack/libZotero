@@ -1,9 +1,13 @@
 #!/usr/bin/python
 
 import sys
-sys.path.append('../lib/py/zotero')
+sys.path.append('../lib/py')
 import json
-import zotero
+from libZotero import zotero
+import logging
+
+logger = logging.getLogger()
+logger.setLevel(logging.DEBUG)
 
 creds = json.loads(open('./user_writing_config.json').read())  # library credentials
 print(creds)
