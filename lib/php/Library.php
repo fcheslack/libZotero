@@ -136,6 +136,9 @@ class Zotero_Library
         if($this->_followRedirects){
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
         }
+        else{
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, false);
+        }
         
         $umethod = strtoupper($method);
         switch($umethod){
