@@ -305,6 +305,8 @@ class Item(Entry):
         else:
             if key in self.apiObject:
                 return self.apiObject[key]
+            elif key in dir(self):
+                return self.__getattribute__(key)
             else:
                 return None
 

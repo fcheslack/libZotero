@@ -99,7 +99,9 @@ def apiQueryString(passedParams={}):
                          'tagType',
                          'style',
                          'format',
-                         'linkMode']
+                         'linkMode',
+                         'upload',
+                         'algorithm']
     #build simple api query parameters object
     logging.info(passedParams)
     queryParams = []
@@ -224,6 +226,7 @@ class Library(object):
         r = None
         logging.debug("checking for cached request")
         if (self._cacheResponses) and (method.upper() == 'GET'):
+            logging.debug("caching responses and get request - checking cache")
             r = self._cache.cache_fetch(url)
         if(r != None):
             self._lastResponse = r
@@ -379,16 +382,105 @@ class Library(object):
         response = self._request(reqUrl, 'PUT', updateItemJson, {'If-Match': etag})
         return response
 
-    def uploadNewAttachedFile(self, item, file, fileinfo):
+    def uploadNewAttachedFile(self, item, filedata, fileinfo):
+        #get upload authorization
+        #post file or patch
+        uaparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.itemKey}
+        reqUrl = self.apiRequestUrl(uaparams) + self.apiQueryString(uaparams)
+        uaPostData = urllib.urlencode({'md5': fileinfo['md5'],
+                                       'filename': fileinfo['filename'],
+                                       'filesize': fileinfo['filesize'],
+                                       'mtime': fileinfo['mtime']
+                                       })
+        uploadAuthResponse = zrequest(reqUrl, 'POST', uaPostData, {'If-None-Match': '*'})
+        if uploadAuthResponse.status_code != 200:
+            logging.info('upload new attached file - uploadAuthResponse: ')
+            logging.info(uploadAuthResponse.status_code)
+            logging.info(uploadAuthResponse.text)
+            raise zotero.ZoteroApiError("Upload Authorization Failed")
+        #full upload
+        upAuthOb = json.loads(uploadAuthResponse.text)
+        if 'exists' in upAuthOb and upAuthOb['exists'] == 1:
+            #file already exists with this hash
+            return None
+        #uploadBody = u'' + upAuthOb['prefix'] + filedata + upAuthOb['suffix']
+        uploadBody = bytearray(upAuthOb['prefix'].encode())
+        uploadBody.extend(filedata)
+        uploadBody.extend(bytearray(upAuthOb['suffix'].encode()))
+
+        uploadResponse = zrequest(upAuthOb['url'], 'POST', uploadBody, {'Content-Type': upAuthOb['contentType']})
+        if uploadResponse.status_code != 201:
+            raise zotero.ZoteroApiError("Error uploading attachment file")
+        ucparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.itemKey}
+        ucReqUrl = self.apiRequestUrl(ucparams) + self.apiQueryString(ucparams)
+        registerUploadBody = uaPostData = urllib.urlencode({'upload': upAuthOb['uploadKey']})
+        ucResponse = zrequest(ucReqUrl, 'POST', registerUploadBody, {'Content-Type': 'application/x-www-form-urlencoded',
+                                                                     'If-None-Match': '*'})
+        if ucResponse.status_code != 204:
+            raise zotero.ZoteroApiError("Error confirming upload to Zotero API - " + ucResponse.text)
+        return True
+        pass
+
+    def uploadAttachedFilePatch(self, item, patchdata, fileinfo, algorithm='bsdiff'):
+        #get upload authorization
+        #post file or patch
+        uaparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.itemKey}
+        reqUrl = self.apiRequestUrl(uaparams) + self.apiQueryString(uaparams)
+        uaPostData = urllib.urlencode({'md5': fileinfo['md5'],
+                                       'filename': fileinfo['filename'],
+                                       'filesize': fileinfo['filesize'],
+                                       'mtime': fileinfo['mtime']
+                                       })
+        uploadAuthResponse = zrequest(reqUrl, 'POST', uaPostData, {'If-Match': item.get('md5')})
+        if uploadAuthResponse.status_code != 200:
+            logging.info('upload new attached file - uploadAuthResponse: ')
+            logging.info(uploadAuthResponse.status_code)
+            logging.info(uploadAuthResponse.text)
+            raise zotero.ZoteroApiError("Upload Authorization Failed")
+        #patch upload
+        upAuthOb = json.loads(uploadAuthResponse.text)
+        if 'exists' in upAuthOb and upAuthOb['exists'] == 1:
+            #file already exists with this hash
+            return None
+        upparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.itemKey, 'upload': upAuthOb['uploadKey'], 'algorithm': algorithm}
+        uploadUrl = self.apiRequestUrl(upparams) + self.apiQueryString(upparams)
+        logging.info(upAuthOb)
+        #uploadBody = bytearray(upAuthOb['prefix'].encode())
+        #uploadBody.extend(patchdata)
+        #uploadBody.extend(bytearray(upAuthOb['suffix'].encode()))
+        uploadBody = bytearray(patchdata)
+        logging.info(uploadBody)
+        logging.info(upAuthOb['contentType'])
+        uploadResponse = zrequest(uploadUrl, 'PATCH', uploadBody, {'Content-Type': upAuthOb['contentType'],
+                                                                   'If-Match': item.get('md5')})
+        if uploadResponse.status_code != 204:
+            logging.info(uploadResponse.status_code)
+            logging.info(uploadResponse.text)
+            raise zotero.ZoteroApiError("Error uploading or applying attachment file patch")
+        return True
+
+    def uploadExistingAttachedFile(self, item, f, fileinfo):
         pass
 
     def createAttachmentItem(self, parentItem, attachmentInfo):
-        pass
+        logging.info("createAttachmentItem")
+        #get attachment template
+        adata = {'attachmentType': 'imported_file', 'contentType': None, 'filename': ''}
+        adata.update(attachmentInfo)
+        logging.info("createAttachmentItem: " + str(adata))
+        templateItem = self.getTemplateItem('attachment', adata['attachmentType'])
+        templateItem.parentKey = parentItem.itemKey
+        templateItem.set('title', adata['filename'])
+        templateItem.set('contentType', adata['contentType'])
+        #create child item
+        logging.info("creating attachment Item: ")
+        return self.createItem(templateItem)
 
-    def getTemplateItem(self, itemType):
-        return getTemplateItem(itemType)
+    def getTemplateItem(self, itemType, linkMode=None):
+        return getTemplateItem(itemType, linkMode)
 
     def createItem(self, item):
+        logging.info("createItem")
         createItemObject = item.newItemObject()
         #unset variables the api won't accept
         #del createItemObject['mimeType']
@@ -408,6 +500,8 @@ class Library(object):
             aparams['targetModifier'] = 'children'
         reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
         response = self._request(reqUrl, 'POST', createItemJson)
+        logging.info('createItemResponse')
+        logging.info(response)
         return response
 
     def addNotes(self, parentItem, noteItem):
