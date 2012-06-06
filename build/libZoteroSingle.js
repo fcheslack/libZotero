@@ -485,9 +485,13 @@ Zotero.ajax.apiRequestUrl = function(params){
     return url;
 };
 
-Zotero.ajax.apiQueryString = function(passedParams){
+Zotero.ajax.apiQueryString = function(passedParams, useConfigKey){
     Z.debug("Zotero.ajax.apiQueryString");
     Z.debug(passedParams);
+    if(useConfigKey === null){
+        useConfigKey = true;
+    }
+    
     J.each(passedParams, function(key, val){
         if(typeof val == 'string'){
             val = val.split('#', 1);
@@ -500,7 +504,7 @@ Zotero.ajax.apiQueryString = function(passedParams){
     if(passedParams.hasOwnProperty('order') && passedParams['order'] == 'year'){
         passedParams['order'] = 'date';
     }
-    if(Zotero.config.apiKey){
+    if(useConfigKey && Zotero.config.apiKey){
         passedParams['key'] = Zotero.config.apiKey;
     }
     
