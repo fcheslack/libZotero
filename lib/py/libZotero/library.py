@@ -387,11 +387,7 @@ class Library(object):
         #post file or patch
         uaparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.itemKey}
         reqUrl = self.apiRequestUrl(uaparams) + self.apiQueryString(uaparams)
-        uaPostData = urllib.urlencode({'md5': fileinfo['md5'],
-                                       'filename': fileinfo['filename'],
-                                       'filesize': fileinfo['filesize'],
-                                       'mtime': fileinfo['mtime']
-                                       })
+        uaPostData = urllib.urlencode(fileinfo)
         uploadAuthResponse = zrequest(reqUrl, 'POST', uaPostData, {'If-None-Match': '*'})
         if uploadAuthResponse.status_code != 200:
             logging.info('upload new attached file - uploadAuthResponse: ')
@@ -426,11 +422,7 @@ class Library(object):
         #post file or patch
         uaparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.itemKey}
         reqUrl = self.apiRequestUrl(uaparams) + self.apiQueryString(uaparams)
-        uaPostData = urllib.urlencode({'md5': fileinfo['md5'],
-                                       'filename': fileinfo['filename'],
-                                       'filesize': fileinfo['filesize'],
-                                       'mtime': fileinfo['mtime']
-                                       })
+        uaPostData = urllib.urlencode(fileinfo)
         uploadAuthResponse = zrequest(reqUrl, 'POST', uaPostData, {'If-Match': item.get('md5')})
         if uploadAuthResponse.status_code != 200:
             logging.info('upload new attached file - uploadAuthResponse: ')
