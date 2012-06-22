@@ -10,7 +10,7 @@ import zotero
 
 
 def apiRequestUrl(params={}, base=None):
-    """ """
+    """Build and return a valid url to request a Zotero API resource."""
     if base == None:
         base = zotero.ZOTERO_URI
     if 'target' not in params:
@@ -76,6 +76,7 @@ def apiRequestUrl(params={}, base=None):
 
 
 def apiQueryString(passedParams={}):
+    """Build and return a valid query string for a request for a Zotero API resource."""
     # Tags query formats
     #
     # ?tag=foo
@@ -131,21 +132,10 @@ def zrequest(url, method='GET', body=None, headers={}):
     except (urllib2.URLError, urllib2.HTTPError) as err:
         r = zotero.Response(err)
         return r
-        pass
-    """
-    if method == 'GET':
-        r = requests.get(url, headers=headers)
-    elif method == 'POST':
-        r = requests.post(url, data=body, headers=headers)
-    elif method == 'PUT':
-        r = requests.put(url, data=body, headers=headers)
-    elif method == 'DELETE':
-        r = requests.delete(url, data=body, headers=headers)
-    return r
-    """
 
 
 def getTemplateItem(itemType, linkMode=None):
+    """Return a template for a Zotero API item of a particular type."""
     newItem = zotero.Item()
     aparams = {'target': 'itemTemplate', 'itemType': itemType}
     if linkMode != None:
@@ -196,6 +186,7 @@ class Library(object):
             self._cacheResponses = False
 
     def libraryString(self, ltype, libraryID):
+        """Return a string that uniquely identifies a library for use as a cache key."""
         lstring = ''
         if(ltype == 'user'):
             lstring = 'u'
@@ -205,6 +196,7 @@ class Library(object):
         return lstring
 
     def apiRequestUrl(self, params={}, base=None):
+        """Build and return a valid url to request a Zotero API resource."""
         if 'target' not in params:
             raise zotero.ZoteroUrlError("No target defined for api request")
         #fill library specific params in if not present
@@ -216,11 +208,13 @@ class Library(object):
         return apiRequestUrl(params)
 
     def apiQueryString(self, passedParams={}):
+        """Build and return a valid query string for a request for a Zotero API resource."""
         if 'key' not in passedParams:
             passedParams['key'] = self._apiKey
         return apiQueryString(passedParams)
 
     def _request(self, url, method='GET', body=None, headers={}):
+        """Make a request to the Zotero API and return the response object."""
         logging.debug("zotero.Library._request")
         #check for cached result before http request
         r = None
@@ -238,6 +232,7 @@ class Library(object):
         return r
 
     def fetchCollections(self, params={}):
+        """Fetch a set of collections."""
         aparams = {'target': 'collections', 'content': 'json', 'limit': 100}
         aparams.update(params)
         reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
@@ -260,10 +255,12 @@ class Library(object):
         return addedCollections
 
     def fetchItemsTop(self, params={}):
+        """Fetch a set of top level items."""
         params['targetModifier'] = 'top'
         return self.fetchItems(params)
 
     def fetchItems(self, params={}):
+        """Fetch a set of items."""
         fetchedItems = []
         aparams = {'target': 'items', 'content': 'json', 'key': self._apiKey}
         aparams.update(params)
@@ -281,6 +278,7 @@ class Library(object):
         return fetchedItems
 
     def fetchItemKeys(self, params={}):
+        """Fetch all item keys in the library, specified by params."""
         logging.info('zotero.Library.fetchItemKeys')
         fetchedKeys = []
         aparams = {'target': 'items', 'format': 'keys'}
@@ -294,7 +292,7 @@ class Library(object):
         return fetchedKeys
 
     def fetchTrashedItems(self, params={}):
-        pass
+        """Fetch a set of items marked for deletion."""
         fetchedItems = []
         aparams = {'target': 'trash', 'content': 'json'}
         aparams.update(params)
@@ -309,8 +307,8 @@ class Library(object):
         return fetchedItems
 
     def fetchItemsAfter(self, itemKey, params={}):
+        """Fetch a set of items after the specified itemKey."""
         #this might be completely broken
-        pass
         fetchedItems = []
         itemKeys = self.fetchItemKeys(params)
         if itemKey != '':
@@ -333,6 +331,7 @@ class Library(object):
         return fetchedItems
 
     def fetchItem(self, itemKey):
+        """Fetch a single item."""
         aparams = {'target': 'item', 'content': 'json', 'itemKey': itemKey}
         reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
 
@@ -348,7 +347,7 @@ class Library(object):
         return item
 
     def fetchItemBib(self, itemKey, style=None):
-        pass
+        """Fetch a bibliography entry for an item."""
         #TODO:parse correctly and return just bib
         aparams = {'target': 'item', 'content': 'bib', 'itemKey': itemKey}
         if style != None:
@@ -368,12 +367,12 @@ class Library(object):
             return item
 
     def itemDownloadLink(self, itemKey):
-        pass
+        """Get the link to download an attached item file."""
         aparams = {'target': 'item', 'itemKey': itemKey, 'targetModifier': 'file'}
         return self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
 
     def writeUpdatedItem(self, item):
-        pass
+        """Attempt to write a modified item back to the server."""
         updateItemJson = json.dumps(item.updateItemObject())
         etag = item.etag
 
@@ -383,6 +382,9 @@ class Library(object):
         return response
 
     def uploadNewAttachedFile(self, item, filedata, fileinfo):
+        """Create an attachment item as a child of the passed item and upload
+        a file as the attachment.
+        """
         #get upload authorization
         #post file or patch
         uaparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.itemKey}
@@ -418,6 +420,7 @@ class Library(object):
         pass
 
     def uploadAttachedFilePatch(self, item, patchdata, fileinfo, algorithm='bsdiff'):
+        """Upload a patch for an attached file already present on the server."""
         #get upload authorization
         #post file or patch
         uaparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.itemKey}
@@ -452,9 +455,11 @@ class Library(object):
         return True
 
     def uploadExistingAttachedFile(self, item, f, fileinfo):
+        """Upload a full copy of a file for an attachment that already exists on the server."""
         pass
 
     def createAttachmentItem(self, parentItem, attachmentInfo):
+        """Create a new attachment item as a child of parentItem."""
         logging.info("createAttachmentItem")
         #get attachment template
         adata = {'attachmentType': 'imported_file', 'contentType': None, 'filename': ''}
@@ -469,9 +474,11 @@ class Library(object):
         return self.createItem(templateItem)
 
     def getTemplateItem(self, itemType, linkMode=None):
+        """Return a template for a Zotero API item of a particular type."""
         return getTemplateItem(itemType, linkMode)
 
     def createItem(self, item):
+        """Create a new item on the server."""
         logging.info("createItem")
         createItemObject = item.newItemObject()
         #unset variables the api won't accept
@@ -497,6 +504,7 @@ class Library(object):
         return response
 
     def addNotes(self, parentItem, noteItem):
+        """Add note items as children of parentItem."""
         logging.info(noteItem)
         aparams = {'target': 'children', 'itemKey': parentItem.itemKey}
         reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
@@ -512,6 +520,7 @@ class Library(object):
         return response
 
     def createCollection(self, name, parent=None):
+        """Create a new collection on the server."""
         collection = zotero.Collection()
         collection.name = name
         collection.parentCollectionKey = parent
@@ -524,6 +533,7 @@ class Library(object):
         pass
 
     def removeCollection(self, collection):
+        """Remove an existing collection from the server."""
         aparams = {'target': 'collection', 'collectionKey': collection.collectionKey}
         reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
         response = self._request(reqUrl, 'DELETE', None, {'If-Match': collection.etag})
@@ -531,6 +541,7 @@ class Library(object):
         pass
 
     def addItemsToCollection(self, collection, items):
+        """Add specified items to the specified collection."""
         aparams = {'target': 'items', 'collectionKey': collection.collectionKey}
         itemKeysString = ''
         for item in items:
@@ -543,12 +554,14 @@ class Library(object):
         pass
 
     def removeItemFromCollection(self, collection, item):
+        """Remove item from collection."""
         aparams = {'target': 'items', 'collectionKey': collection.collectionKey}
         reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
         response = self._request(reqUrl, 'DELETE', None, {'If-Match': collection.etag})
         return response
 
     def removeItemsFromCollection(self, collection, items):
+        """Remove multiple items from the specified collection."""
         removedItemKeys = []
         for item in items:
             response = self.removeItemFromCollection(collection, item)
@@ -558,6 +571,7 @@ class Library(object):
         pass
 
     def writeUpdatedCollection(self, collection):
+        """Submit a modified collection to be saved on the server."""
         json = collection.collectionJson()
 
         aparams = {'target': 'collection', 'collectionKey': collection.collectionKey}
@@ -567,6 +581,7 @@ class Library(object):
         pass
 
     def deleteItem(self, item):
+        """Permanently delete an existing item."""
         aparams = {'target': 'item', 'itemKey': item.itemKey}
         reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
         response = self._request(reqUrl, 'DELETE', None, {'If-Match': item.etag})
@@ -574,11 +589,13 @@ class Library(object):
         pass
 
     def trashItem(self, item):
+        """Mark an existing item for deletion, adding it to the trash metacollection."""
         item.set('deleted', 1)
         self.writeUpdatedItem(item)
         pass
 
     def fetchItemChildren(self, item):
+        """Fetch child items of the specified item."""
         aparams = {'target': 'children', 'itemKey': item.itemKey, 'content': 'json'}
         reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
         response = self._request(reqUrl, 'GET')
@@ -594,6 +611,7 @@ class Library(object):
         pass
 
     def getItemTypes(self):
+        """Get the list of possible Zotero item types."""
         reqUrl = zotero.ZOTERO_URI + 'itemTypes'
         response = self._request(reqUrl, 'GET')
         if response.status_code != 200:
@@ -603,6 +621,7 @@ class Library(object):
         pass
 
     def getItemFields(self, itemType):
+        """Get the list of possible item fields for a particular Zotero item type."""
         reqUrl = zotero.ZOTERO_URI + 'itemFields'
         response = self._request(reqUrl, 'GET')
         if response.status_code != 200:
@@ -612,6 +631,7 @@ class Library(object):
         pass
 
     def getCreatorTypes(self, itemType):
+        """Get the list of possible creator types for a particular Zotero item type."""
         reqUrl = zotero.ZOTERO_URI + 'itemTypeCreatorTypes?itemType=' + itemType
         response = self._request(reqUrl, 'GET')
         if response.status_code != 200:
@@ -621,6 +641,7 @@ class Library(object):
         pass
 
     def getCreatorFields(self, creatorType):
+        """Get the list of creator fields and translations for a particular creator type."""
         reqUrl = zotero.ZOTERO_URI + 'creatorFields'
         response = self._request(reqUrl, 'GET')
         if response.status_code != 200:
@@ -630,6 +651,7 @@ class Library(object):
         pass
 
     def fetchAllTags(self, params):
+        """Fetch all tags, even over multiple requests, present in the library."""
         aparams = {'target': 'tags', 'content': 'json', 'limit': 50}
         aparams.update(params)
         reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
@@ -658,6 +680,7 @@ class Library(object):
         pass
 
     def fetchTags(self, params):
+        """Make a single request to get a set of tags."""
         aparams = {'target': 'tags', 'content': 'json', 'limit': 50}
         aparams.update(params)
         reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
@@ -675,6 +698,7 @@ class Library(object):
         pass
 
     def getKeyPermissions(self, userID, key):
+        """Get information about the permissions a particular key has."""
         if userID == None:
             userID = self.libraryID
         if key == False:
@@ -693,6 +717,7 @@ class Library(object):
         pass
 
     def parseKey(self, keyNode):
+        """Parse the api key xml returned by the Zotero API."""
         keyPerms = {"library": "0", "notes": "0", "write": "0", 'groups': {}}
 
         accessEls = keyNode.getElementsByTagName('access')
@@ -715,6 +740,7 @@ class Library(object):
         pass
 
     def fetchGroups(self, userID):
+        """Fetch the set of groups a user is a member of."""
         if not userID:
             userID = self.libraryID
         aparams = {'target': 'userGroups', 'userID': userID, 'content': 'json'}
@@ -733,6 +759,7 @@ class Library(object):
         pass
 
     def getCV(self, userID):
+        """Get a user's C.V."""
         if userID == '' and self.libraryType == 'user':
             userID = self.libraryID
         aparams = {'target': 'cv', 'libraryType': 'user', 'libraryID': userID}
