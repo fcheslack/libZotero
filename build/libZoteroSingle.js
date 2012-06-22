@@ -143,7 +143,7 @@ var Zotero = {
     
     validator: {
         patterns: {
-            'itemKey': /^[A-Z0-9]{8,}$/,
+            'itemKey': /^([A-Z0-9]{8,},?)+$/,
             'collectionKey': /^([A-Z0-9]{8,})|trash$/,
             //'tag': /^[^#]*$/,
             'libraryID': /^[0-9]+$/,
@@ -527,6 +527,7 @@ Zotero.ajax.apiQueryString = function(passedParams, useConfigKey){
                              'q',
                              'fq',
                              'itemType',
+                             'itemKey',
                              'locale',
                              'tag',
                              'tagType',
@@ -541,6 +542,11 @@ Zotero.ajax.apiQueryString = function(passedParams, useConfigKey){
             queryParams[val] = passedParams[val];
         }
     });
+    
+    //take out itemKey if it is not a list
+    if(queryParams.hasOwnProperty('itemKey') && queryParams['itemKey'].indexOf(',') == -1){
+        delete queryParams['itemKey'];
+    }
     
     //add each of the found queryParams onto array
     J.each(queryParams, function(index, value){
@@ -1014,6 +1020,45 @@ Zotero.Library.prototype.loadItem = function(itemKey) {
     
     deferred.done(function(item){
         J.publish('loadItemDone', [item]);
+    });
+    
+    return deferred;
+};
+
+Zotero.Library.prototype.loadFullBib = function(itemKeys, style){
+    var itemKeyString = itemKeys.join(',');
+    var deferred = new J.Deferred();
+    var urlconfig = {'target':'items', 'libraryType':this.type, 'libraryID':this.libraryID, 'itemKey':itemKeyString, 'format':'bib'};
+    if(itemKeys.length == 1){
+        urlconfig.target = 'item';
+    }
+    if(style){
+        urlconfig['style'] = style;
+    }
+
+    var requestUrl = Zotero.ajax.apiRequestUrl(urlconfig) + Zotero.ajax.apiQueryString(urlconfig);
+    var library = this;
+    
+    var callback = J.proxy(function(data, textStatus, XMLHttpRequest){
+        var bib = data;
+        deferred.resolve(data);
+    }, this);
+    
+    var jqxhr = J.ajax(Zotero.ajax.proxyWrapper(requestUrl, 'GET'),
+        {type: "GET",
+         headers:{},
+         cache:false,
+         error: Zotero.ajax.errorCallback
+        }
+    );
+    
+    jqxhr.done(callback);
+    jqxhr.fail(function(){deferred.reject.apply(null, arguments);}).fail(Zotero.error);
+    
+    Zotero.ajax.activeRequests.push(jqxhr);
+    
+    deferred.done(function(item){
+        J.publish('loadItemBibDone', [item]);
     });
     
     return deferred;
@@ -3333,7 +3378,6 @@ Zotero.url.attachmentDownloadLink = function(item){
         }
         else{
             //file: offer download
-            Zotero.enableLogging();
             var enctype = Zotero.utils.translateMimeType(item.links['enclosure'].type);
             var enc = item.links['enclosure'];
             var filesize = parseInt(enc['length'], 10);
@@ -3355,7 +3399,6 @@ Zotero.url.attachmentDownloadLink = function(item){
             else{
                 retString += enctype + ', ' + filesizeString + '</a>';
             }
-            Zotero.disableLogging();
             return retString;
         }
     }
