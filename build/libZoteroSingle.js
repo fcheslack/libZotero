@@ -165,7 +165,8 @@ var Zotero = {
             'tagType': /^(0|1)$/,
             'key': /^\S*/,
             'format': /^(atom|bib|keys|bibtex|bookmarks|mods|refer|rdf_bibliontology|rdf_dc|rdf_zotero|ris|wikipedia)$/,
-            'style': /^\S*$/
+            'style': /^\S*$/,
+            'linkwrap': /^(0|1)*$/
         },
         
         validate: function(arg, type){
@@ -533,7 +534,8 @@ Zotero.ajax.apiQueryString = function(passedParams, useConfigKey){
                              'tagType',
                              'key',
                              'style',
-                             'linkMode'
+                             'linkMode',
+                             'linkwrap'
                              ];
     //build simple api query parameters object
     var queryParams = {};
@@ -1028,7 +1030,7 @@ Zotero.Library.prototype.loadItem = function(itemKey) {
 Zotero.Library.prototype.loadFullBib = function(itemKeys, style){
     var itemKeyString = itemKeys.join(',');
     var deferred = new J.Deferred();
-    var urlconfig = {'target':'items', 'libraryType':this.type, 'libraryID':this.libraryID, 'itemKey':itemKeyString, 'format':'bib'};
+    var urlconfig = {'target':'items', 'libraryType':this.type, 'libraryID':this.libraryID, 'itemKey':itemKeyString, 'format':'bib', 'linkwrap':'1'};
     if(itemKeys.length == 1){
         urlconfig.target = 'item';
     }
