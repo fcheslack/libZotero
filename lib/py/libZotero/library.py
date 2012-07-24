@@ -24,7 +24,11 @@ def apiRequestUrl(params={}, base=None):
         base = 'https://www.zotero.org/api'
     elif params['target'] == 'itemTemplate':
         return base + '/items/new'
-    url = base + '/' + params['libraryType'] + 's/' + str(params['libraryID'])
+
+    if (params['libraryType'] == 'user') or (params['libraryType'] == 'group'):
+        url = base + '/' + params['libraryType'] + 's/' + str(params['libraryID'])
+    else:
+        url = base
 
     if ('collectionKey' in params) and (params['collectionKey']):
         if params['collectionKey'] == 'trash':
