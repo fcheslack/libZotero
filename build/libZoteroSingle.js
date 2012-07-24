@@ -44,6 +44,8 @@ var Zotero = {
     ui: {callbacks:{}},
     url: {},
     utils: {},
+    offline: {},
+    temp: {},
     localizations: {},
     
     config: {librarySettings: {},
@@ -143,11 +145,12 @@ var Zotero = {
     
     validator: {
         patterns: {
-            'itemKey': /^([A-Z0-9]{8,},?)+$/,
+            //'itemKey': /^([A-Z0-9]{8,},?)+$/,
+            'itemKey': /^.+$/,
             'collectionKey': /^([A-Z0-9]{8,})|trash$/,
             //'tag': /^[^#]*$/,
             'libraryID': /^[0-9]+$/,
-            'libraryType': /^(user|group)$/,
+            'libraryType': /^(user|group|)$/,
             'target': /^(items?|collections?|tags|children)$/,
             'targetModifier': /^(top|file|file\/view)$/,
             
@@ -173,6 +176,9 @@ var Zotero = {
             Z.debug("Zotero.validate");
             if(arg === ''){
                 return null;
+            }
+            else if(arg === null){
+                return true;
             }
             Z.debug(arg + " " + type);
             var patterns = this.patterns;
@@ -348,8 +354,8 @@ Zotero.apiRequest = function(url, method, body, headers){
 };
 
 Zotero.error = function(e){
-    Z.debug("Zotero Error");
-    Z.debug(e);
+    Z.debug("====================Zotero Error", 1);
+    Z.debug(e, 1);
 };
 
 Zotero.saveLibrary = function(library){
@@ -429,20 +435,26 @@ Zotero.ajax.apiRequestUrl = function(params){
     });
     
     if(!params.target) throw "No target defined for api request";
-    if(!(params.libraryType == 'user' || params.libraryType == 'group')) throw "Unexpected libraryType for api request" + params.libraryType;
-    if(!(params.libraryID)) throw "No libraryID defined for api request";
+    if(!(params.libraryType == 'user' || params.libraryType == 'group' || params.libraryType === '')) throw "Unexpected libraryType for api request" + params.libraryType;
+    if((params.libraryType) && !(params.libraryID)) throw "No libraryID defined for api request";
     
     var base = Zotero.config.baseApiUrl;
     var url;
-    url = base + '/' + params.libraryType + 's/' + params.libraryID;
-    if(params.collectionKey){
-        if(params.collectionKey == 'trash'){
-            url += '/items/trash';
-            return url;
+    
+    if(params.libraryType !== ''){
+        url = base + '/' + params.libraryType + 's/' + params.libraryID;
+        if(params.collectionKey){
+            if(params.collectionKey == 'trash'){
+                url += '/items/trash';
+                return url;
+            }
+            else{
+                url += '/collections/' + params.collectionKey;
+            }
         }
-        else{
-            url += '/collections/' + params.collectionKey;
-        }
+    }
+    else{
+        url = base;
     }
     
     switch(params.target){
@@ -489,7 +501,7 @@ Zotero.ajax.apiRequestUrl = function(params){
 Zotero.ajax.apiQueryString = function(passedParams, useConfigKey){
     Z.debug("Zotero.ajax.apiQueryString");
     Z.debug(passedParams);
-    if(useConfigKey === null){
+    if(useConfigKey === null || typeof useConfigKey === 'undefined'){
         useConfigKey = true;
     }
     
@@ -648,11 +660,6 @@ Zotero.Library = function(type, libraryID, libraryUrlIdentifier, apiKey){
     Z.debug(libraryUrlIdentifier, 4);
     this.instance = "Zotero.Library";
     this._apiKey = apiKey || false;
-    this.type = type;
-    this.libraryType = type;
-    this.libraryID = libraryID;
-    this.libraryString = Zotero.utils.libraryString(this.type, this.libraryID);
-    this.libraryUrlIdentifier = libraryUrlIdentifier;
     
     this.libraryBaseWebsiteUrl = Zotero.config.baseWebsiteUrl + '/';
     if(this.libraryType == 'group'){
@@ -660,6 +667,7 @@ Zotero.Library = function(type, libraryID, libraryUrlIdentifier, apiKey){
     }
     this.libraryBaseWebsiteUrl += this.libraryUrlIdentifier + '/items';
     
+    //object holders within this library, whether tied to a specific library or not
     this.items = new Zotero.Items();
     this.items.owningLibrary = this;
     this.itemKeys = [];
@@ -669,9 +677,31 @@ Zotero.Library = function(type, libraryID, libraryUrlIdentifier, apiKey){
     
     this.tags = new Zotero.Tags();
     
+    if(!type){
+        //return early if library not specified
+        return;
+    }
+    //attributes tying instance to a specific Zotero library
+    this.type = type;
+    this.libraryType = type;
+    this.libraryID = libraryID;
+    this.libraryString = Zotero.utils.libraryString(this.type, this.libraryID);
+    this.libraryUrlIdentifier = libraryUrlIdentifier;
+    
+    
+    
     this.cachedTags = this.getCachedTags();
     
     this.dirty = false;
+    
+    try{
+        this.filestorage = new Zotero.Filestorage();
+    }
+    catch(e){
+        Z.debug(e);
+        Z.debug("Error creating filestorage");
+        this.filestorage = false;
+    }
 };
 
 Zotero.Library.prototype.sortableColumns = ['title',
@@ -870,7 +900,7 @@ Zotero.Library.prototype.fetchCollections = function(config){
 
 //make request for item keys and return jquery ajax promise
 Zotero.Library.prototype.fetchItemKeys = function(config){
-    Z.debug("Zotero.Library.loadItemKeys", 3);
+    Z.debug("Zotero.Library.fetchItemKeys", 3);
     var library = this;
     if(typeof config == 'undefined'){
         config = {};
@@ -932,9 +962,11 @@ Zotero.Library.prototype.loadItems = function(config){
     //Build config object that should be displayed next and compare to currently displayed
     var newConfig = J.extend({}, defaultConfig, config);
     newConfig.start = parseInt(newConfig.limit, 10) * (parseInt(newConfig.itemPage, 10) - 1);
-    Z.debug("newConfig");Z.debug(newConfig);
+    //Z.debug("newConfig");Z.debug(newConfig);
     var urlconfig = J.extend({'target':'items', 'libraryType':this.type, 'libraryID':this.libraryID}, newConfig);
     var requestUrl = Zotero.ajax.apiRequestUrl(urlconfig) + Zotero.ajax.apiQueryString(urlconfig);
+    Z.debug("loadItems requestUrl:");
+    Z.debug(requestUrl);
     
     var callback = J.proxy(function(data, textStatus, XMLHttpRequest){
         Z.debug('loadItems proxied callback', 3);
@@ -974,6 +1006,75 @@ Zotero.Library.prototype.loadItems = function(config){
         jqxhr.fail(function(){deferred.reject.apply(null, arguments);}).fail(Zotero.error);
         Zotero.ajax.activeRequests.push(jqxhr);
     }
+    
+    deferred.done(function(itemsArray, feed, library){
+        Z.debug("loadItemsDone about to publish");
+        J.publish('loadItemsDone', [itemsArray, feed, library]);
+    });
+    
+    return deferred;
+};
+
+//added so the request is always completed rather than checking if it should be
+//important for parallel requests that may load more than what we just want to see right now
+Zotero.Library.prototype.loadItemsSimple = function(config){
+    Z.debug("Zotero.Library.loadItems", 3);
+    Z.debug(config);
+    var library = this;
+    if(!config){
+        config = {};
+    }
+
+    var deferred = new J.Deferred();
+    
+    var defaultConfig = {target:'items',
+                         targetModifier: 'top',
+                         itemPage: 1,
+                         limit: 25,
+                         content: 'json',
+                         order: Zotero.config.defaultSortColumn,
+                         sort: Zotero.config.defaultSortOrder
+                     };
+    
+    //Build config object that should be displayed next and compare to currently displayed
+    var newConfig = J.extend({}, defaultConfig, config);
+    newConfig.start = parseInt(newConfig.limit, 10) * (parseInt(newConfig.itemPage, 10) - 1);
+    //Z.debug("newConfig");Z.debug(newConfig);
+    var urlconfig = J.extend({'target':'items', 'libraryType':this.type, 'libraryID':this.libraryID}, newConfig);
+    var requestUrl = Zotero.ajax.apiRequestUrl(urlconfig) + Zotero.ajax.apiQueryString(urlconfig);
+    Z.debug("loadItems requestUrl:");
+    Z.debug(requestUrl);
+    
+    var callback = J.proxy(function(data, textStatus, XMLHttpRequest){
+        Z.debug('loadItems proxied callback', 3);
+        var library = this;
+        var jFeedOb = J(data);
+        var itemfeed = new Zotero.Feed(data);
+        itemfeed.requestConfig = newConfig;
+        var items = library.items;
+        //clear out display items
+        var loadedItemsArray = items.addItemsFromFeed(itemfeed);
+        for (var i = 0; i < loadedItemsArray.length; i++) {
+            loadedItemsArray[i].associateWithLibrary(library);
+        }
+        
+        library.items.displayItemsArray = loadedItemsArray;
+        library.items.displayItemsUrl = requestUrl;
+        library.items.displayItemsFeed = itemfeed;
+        library.dirty = false;
+        deferred.resolve({itemsArray:loadedItemsArray, feed:itemfeed, library:library});
+    }, this);
+    
+    var jqxhr = J.ajax(Zotero.ajax.proxyWrapper(requestUrl, 'GET'),
+        {type: "GET",
+         headers:{},
+         cache:false,
+         error: Zotero.ajax.errorCallback
+        }
+    );
+    jqxhr.done(callback);
+    jqxhr.fail(function(){deferred.reject.apply(null, arguments);}).fail(Zotero.error);
+    Zotero.ajax.activeRequests.push(jqxhr);
     
     deferred.done(function(itemsArray, feed, library){
         Z.debug("loadItemsDone about to publish");
@@ -1413,6 +1514,579 @@ Zotero.Library.prototype.addNote = function(itemKey, note){
     
     return jqxhr;
 };
+
+Zotero.Library.prototype.fetchGlobalItems = function(config){
+    Z.debug("Zotero.Library.fetchGlobalItems", 3);
+    Z.debug(config);
+    var library = this;
+    if(!config){
+        config = {};
+    }
+
+    var deferred = new J.Deferred();
+    
+    var defaultConfig = {target:'items',
+                         itemPage: 1,
+                         limit: 25,
+                         content: 'json'
+                     };
+    
+    //Build config object that should be displayed next and compare to currently displayed
+    var newConfig = J.extend({}, defaultConfig, config);
+    newConfig.start = parseInt(newConfig.limit, 10) * (parseInt(newConfig.itemPage, 10) - 1);
+    //Z.debug("newConfig");Z.debug(newConfig);
+    var urlconfig = J.extend({'target':'items', 'libraryType': ''}, newConfig);
+    var requestUrl = Zotero.ajax.apiRequestUrl(urlconfig) + Zotero.ajax.apiQueryString(urlconfig);
+    Z.debug("fetchGlobalItems requestUrl:");
+    Z.debug(requestUrl);
+    
+    var callback = J.proxy(function(data, textStatus, XMLHttpRequest){
+        Z.debug('loadItems proxied callback', 3);
+        Zotero.temp.globalItemsResponse = data;
+        deferred.resolve(data);
+    }, this);
+    
+    var jqxhr = J.ajax(Zotero.ajax.proxyWrapper(requestUrl, 'GET'),
+        {type: "GET",
+         headers:{},
+         cache:false,
+         dataType:'json',
+         error: Zotero.ajax.errorCallback
+        }
+    );
+    jqxhr.done(callback);
+    jqxhr.fail(function(){deferred.reject.apply(null, arguments);}).fail(Zotero.error);
+    Zotero.ajax.activeRequests.push(jqxhr);
+    
+    deferred.done(function(globalItems){
+        Z.debug("fetchGlobalItemsDone about to publish");
+        J.publish('fetchGlobalItemsDone', globalItems);
+    });
+    
+    return deferred;
+};
+
+Zotero.Library.prototype.fetchGlobalItem = function(globalKey){
+    Z.debug("Zotero.Library.fetchGlobalItem", 3);
+    Z.debug(globalKey);
+    var library = this;
+    
+    var deferred = new J.Deferred();
+    
+    var defaultConfig = {target:'item'
+//                         format: 'json'
+                     };
+    
+    //Build config object that should be displayed next and compare to currently displayed
+    var newConfig = J.extend({}, defaultConfig);
+    //Z.debug("newConfig");Z.debug(newConfig);
+    var urlconfig = J.extend({'target':'item', 'libraryType': '', 'itemKey': globalKey}, newConfig);
+    var requestUrl = Zotero.ajax.apiRequestUrl(urlconfig) + Zotero.ajax.apiQueryString(urlconfig);
+    Z.debug("fetchGlobalItem requestUrl:");
+    Z.debug(requestUrl);
+    
+    var callback = J.proxy(function(data, textStatus, XMLHttpRequest){
+        Z.debug('loadItems proxied callback', 3);
+        Zotero.temp.fetchGlobalItemResponse = data;
+        deferred.resolve(data);
+    }, this);
+    
+    var jqxhr = J.ajax(Zotero.ajax.proxyWrapper(requestUrl, 'GET'),
+        {type: "GET",
+         headers:{},
+         cache:false,
+         dataType:'json',
+         error: Zotero.ajax.errorCallback
+        }
+    );
+    jqxhr.done(callback);
+    jqxhr.fail(function(){deferred.reject.apply(null, arguments);}).fail(Zotero.error);
+    Zotero.ajax.activeRequests.push(jqxhr);
+    
+    deferred.done(function(globalItem){
+        Z.debug("fetchGlobalItemDone about to publish");
+        J.publish('fetchGlobalItemDone', globalItem);
+    });
+    
+    return deferred;
+};
+
+/*METHODS FOR WORKING WITH THE ENTIRE LIBRARY -- NOT FOR GENERAL USE */
+
+Zotero.Library.prototype.fetchItemKeysModified = function(){
+    return this.fetchItemKeys({'order': 'dateModified'});
+};
+
+Zotero.Library.prototype.loadCachedItems = function(){
+    Z.debug("Zotero.Library.loadCachedItems", 3);
+    //test to see if we have items in cache - TODO:expire or force-reload faster than session storage
+    var library = this;
+    var cacheConfig = {libraryType:library.libraryType, libraryID:library.libraryID, target:'allitems'};
+    var allitemsObjects = Zotero.cache.load(cacheConfig);
+    var itemsCount;
+    if(allitemsObjects !== null){
+        Z.debug("Apparently have allItemObjects - loadingDump");
+        //Z.debug(allitemsObjects);
+        library.items.loadDump(allitemsObjects);
+        return allitemsObjects.itemsArray.length;
+    }
+    else{
+        return false;
+    }
+};
+
+Zotero.Library.prototype.saveCachedItems = function(){
+    //test to see if we have items in cache - TODO:expire or force-reload faster than session storage
+    var library = this;
+    var cacheConfig = {libraryType:library.libraryType, libraryID:library.libraryID, target:'allitems'};
+    Zotero.cache.save(cacheConfig, library.items.dump());
+    return;
+};
+
+//Download and save information about every item in the library
+//keys is an array of itemKeys from this library that we need to download
+Zotero.Library.prototype.loadItemsFromKeysParallel = function(keys){
+    Zotero.debug("Zotero.Library.loadItemsFromKeysParallel", 3);
+    var library = this;
+    var keyslices = [];
+    while(keys.length > 0){
+        keyslices.push(keys.splice(0, 50));
+    }
+    
+    var deferred = new J.Deferred();
+    var xhrs = [];
+    J.each(keyslices, function(ind, keyslice){
+        var keystring = keyslice.join(',');
+        xhrs.push(library.loadItemsSimple({'targetModifier':null, 'itemKey':keystring, 'limit':50} ) );
+    });
+    
+    Z.debug("loadItems XHRs to be resolved:");
+    Z.debug(xhrs);
+    J.when.apply(null, xhrs).then(J.proxy(function(){
+        Z.debug("All parallel item requests returned - resolving deferred and publishing loadItemsFromKeysParallelDone", 3);
+        deferred.resolve(true);
+        J.publish('loadItemsFromKeysParallelDone');
+    }, this) );
+    
+    return deferred;
+};
+
+Zotero.Library.prototype.loadCachedCollections = function(){
+    Z.debug("Zotero.Library.loadCachedCollections", 3);
+    //test to see if we have collections in cache - TODO:expire or force-reload faster than session storage
+    var library = this;
+    var cacheConfig = {libraryType:library.libraryType, libraryID:library.libraryID, target:'allcollections'};
+    var allcollectionObjects = Zotero.cache.load(cacheConfig);
+    if(allcollectionObjects !== null){
+        Z.debug("Apparently have allcollectionObjects - loadingDump");
+        library.collections.loadDump(allcollectionObjects);
+        return true;
+    }
+    else{
+        return false;
+    }
+};
+
+//download the itemkey lists for every collection
+Zotero.Library.prototype.loadCollectionMembership = function(collections){
+    Z.debug("Zotero.Library.loadCollectionMembership", 3);
+    var library = this;
+    var deferred = new J.Deferred();
+    var neededCollections = [];
+    for(var i = 0; i < collections.length; i++){
+        if(collections[i].itemKeys === false){
+            neededCollections.push(collections[i]);
+        }
+    }
+    
+    var loadNextCollectionMembers = function(){
+        var col = neededCollections.shift();
+        if(typeof col == 'undefined'){
+            //we're out of collections
+            deferred.resolve();
+            return;
+        }
+        else{
+            var d = col.getMemberItemKeys();
+            d.done(J.proxy(function(){
+                loadNextCollectionMembers();
+            }, this));
+        }
+    };
+    
+    loadNextCollectionMembers();
+    
+    return deferred;
+};
+
+//download templates for every itemType
+Zotero.Library.prototype.loadItemTemplates = function(){
+    
+};
+
+//download possible creatorTypes for every itemType
+Zotero.Library.prototype.loadCreatorTypes = function(){
+    
+};
+
+//take array of itemKeys ordered by modified
+//return array of itemKeys that need to be pulled from server
+Zotero.Library.prototype.findOutdatedItems = function(itemKeys){
+    
+};
+
+//find itemKeys that we don't have at all locally
+Zotero.Library.prototype.findMissingItems = function(itemKeys){
+    var library = this;
+    var missingKeys = [];
+    J.each(itemKeys, function(ind, val){
+        if(!(val in library.items.itemObjects) && val !== ''){
+            missingKeys.push(val);
+        }
+    });
+    return missingKeys;
+};
+
+//take an array of itemKeys ordered by dateModified and fetch the
+//ones that don't match our local copy (or ones we have no copy of)
+Zotero.Library.prototype.loadModifiedItems = function(itemKeys){
+    Z.debug("Zotero.Library.loadModifiedItems", 3);
+    var library = this;
+    var missingKeys = library.findMissingItems(itemKeys);
+    var needCheckingKeys = [];
+    var localEtags = {}; //map of local itemKeys to local item etags
+    var item;
+    var keepChecking = true;
+    var loadModifiedItemsDeferred = new J.Deferred();
+    
+    //remove missingKeys from items to check. We'll get fresh versions of those separately
+    Z.debug("removing missingKeys from list of items we need to check");
+    J.each(itemKeys, function(ind, val){
+        if(J.inArray(val, missingKeys) == -1){
+            needCheckingKeys.push(val);
+            item = library.items.getItem(val);
+            localEtags[val] = item.etag;
+        }
+        else{
+            //dont need to check
+        }
+    });
+    
+    Z.debug("needCheckingKeys has " + needCheckingKeys.length + " keys");
+    Z.debug(localEtags);
+    var mostRecentItemKey = needCheckingKeys.shift();
+    needCheckingSlices = [];
+    while(needCheckingKeys.length > 0){
+        needCheckingSlices.push(needCheckingKeys.splice(0, 50));
+    }
+    
+    var checkNextSlice = function(){
+        Zotero.debug("checkNextSlice", 3);
+        var nextSlice = needCheckingSlices.shift();
+        var keyString = nextSlice.join(',');
+        var nextSliceDeferred = library.loadItems({'targetModifier':null, 'itemKey':keyString, 'limit':50});
+        nextSliceDeferred.done(J.proxy(function(freshItems){
+            J.each(freshItems.itemsArray, function(ind, val){
+                var ikey = val.itemKey;
+                if(localEtags[ikey] == val.etag){
+                    //found a local item that matches so we're done - resolve deferred
+                    Z.debug("Found local item that was up to date - stop checking", 3);
+                    keepChecking = false;
+                    loadModifiedItemsDeferred.resolve(true);
+                    return false;
+                }
+            });
+            if(keepChecking){
+                checkNextSlice();
+            }
+        }, this));
+    };
+    //NOTE: we may need some different functions for fetching items that won't be in
+    //danger of overwriting current ones and making it look like we were already up to date
+    //currently any item fetch puts the item in the library which could also overwrite
+    //local changes
+    //
+    //check the most recently edited item
+    Z.debug("First itemKey to check - " + mostRecentItemKey, 3);
+    var itemDeferred = library.loadItem(mostRecentItemKey);
+    itemDeferred.done(J.proxy(function(fetchedItem){
+        Z.debug("Got first item back");
+        if(fetchedItem.etag == localEtags[fetchedItem.itemKey]){
+            //item is up to date and we don't need to do any more
+            Z.debug("local and remote etags match on first item", 3);
+            J.publish("localItemsUpToDate");
+            loadModifiedItemsDeferred.resolve(true);
+        }
+        else{
+            Z.debug("local and remote etags do not match on first item - pulling down slices", 3);
+            if(needCheckingSlices.length > 0){
+                checkNextSlice();
+            }
+            else{
+                Z.debug("Something wrong. Should need to check for items, but no slices to check");
+            }
+        }
+    }, this) );
+    
+    return loadModifiedItemsDeferred;
+};
+
+
+Zotero.Library.prototype.loadModifiedCollections = function(itemKeys){
+    Z.debug("Zotero.Library.loadModifiedCollections", 3);
+    var library = this;
+    //var missingKeys = library.findMissingCollections(itemKeys);
+};
+
+Zotero.Library.prototype.loadModifiedTags = function(itemKeys){
+    Z.debug("Zotero.Library.loadModifiedTags", 3);
+    var library = this;
+    //var missingKeys = library.findMissingTags(itemKeys);
+};
+
+//publishes: displayedItemsUpdated
+Zotero.Library.prototype.buildItemDisplayView = function(params){
+    Z.debug("Zotero.Library.buildItemDisplayView", 3);
+    Z.debug(params);
+    //start with list of all items if we don't have collectionKey
+    //otherwise get the list of items in that collection
+    var library = this;
+    var itemKeys;
+    if(params.collectionKey){
+        var collection = library.collections.getCollection(params.collectionKey);
+        if(collection === false){
+            Z.error("specified collectionKey - " + params.collectionKey + " - not found in current library.");
+            return false;
+        }
+        if(collection.itemKeys === false){
+            //haven't retrieved itemKeys for that collection, do so then re-run buildItemDisplayView
+            var d = collection.getMemberItemKeys();
+            d.done(J.proxy(library.buildItemDisplayView, this));
+            return false;
+        }
+        else{
+            itemKeys = collection.itemKeys;
+        }
+    }
+    else{
+        itemKeys = library.itemKeys;
+    }
+    //add top level items to displayedItemsArray
+    library.items.displayItemsArray = [];
+    var item;
+    J.each(itemKeys, function(ind, val){
+        item = library.items.getItem(val);
+        if(item && (!item.parentKey)) {
+            library.items.displayItemsArray.push(item);
+        }
+    });
+    Z.debug("Starting with " + library.items.displayItemsArray.length + ' items displayed');
+    //filter displayedItemsArray by selected tags
+    var selectedTags = params.tag || [];
+    if(typeof selectedTags == 'string') selectedTags = [selectedTags];
+    //Z.debug("Selected Tags:");
+    //Z.debug(selectedTags);
+    //TODO: make this not perform horribly on large libraries
+    var tagFilteredArray = J.grep(library.items.displayItemsArray, J.proxy(function(item, index){
+        var itemTags = item.apiObj.tags;
+        //Z.debug(itemTags);
+        var found = false;
+        for(var i = 0; i < selectedTags.length; i++){
+            found = false;
+            for(var j = 0; j < itemTags.length; j++){
+                if(itemTags[j].tag == selectedTags[i]){
+                    found = true;
+                }
+            }
+            if(found === false) return false;
+        }
+        return true;
+    }, this));
+    
+    library.items.displayItemsArray = tagFilteredArray;
+    Z.debug("Filtered by tags");
+    Z.debug("Down to " + library.items.displayItemsArray.length + ' items displayed');
+    //filter displayedItemsArray by search term
+    //(need full text array or to decide what we're actually searching on to implement this locally)
+    //
+    //sort displayedItemsArray by given or configured column
+    Z.debug("Sorting by title");
+    var orderCol = params['order'] || 'title';
+    var sort = params['sort'] || 'asc';
+    
+    library.items.displayItemsArray.sort(J.proxy(function(a, b){
+        var aval = a.get(orderCol);
+        var bval = b.get(orderCol);
+        //if(typeof aval == 'undefined') aval = '';
+        //if(typeof bval == 'undefined') bval = '';
+        
+        //Z.debug("comparing '" + aval + "' to '" + bval +"'");
+        if(typeof aval == 'string'){
+            return aval.localeCompare(bval);
+        }
+        else {
+            return (aval - bval);
+        }
+    }, this));
+    
+    if(sort == 'desc'){
+        library.items.displayItemsArray.reverse();
+    }
+    //
+    //publish event signalling we're done
+    Z.debug("publishing displayedItemsUpdated");
+    J.publish("displayedItemsUpdated");
+};
+
+Zotero.Library.prototype.saveFileOffline = function(item){
+    try{
+    Z.debug("Zotero.Library.saveFileOffline", 3);
+    var library = this;
+    var deferred = new J.Deferred();
+    
+    if(library.filestorage === false){
+        return false;
+    }
+    var enclosureUrl;
+    var mimetype;
+    if(item.links && item.links['enclosure']){
+        enclosureUrl = item.links.enclosure.href;
+        mimetype = item.links.enclosure.type;
+    }
+    else{
+        return false;
+    }
+    
+    var reqUrl = enclosureUrl + Zotero.ajax.apiQueryString({});
+    
+    Z.debug("reqUrl:" + reqUrl, 3);
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', Zotero.ajax.proxyWrapper(reqUrl, 'GET'), true);
+    xhr.responseType = 'blob';
+
+    xhr.onload = function(e) {
+        try{
+        if (this.status == 200) {
+            Z.debug("Success downloading");
+            var blob = this.response;
+            //Zotero.temp.fileDataUrl = Util.fileToObjectURL(blob);
+            //Zotero.temp.fileUrl = Util.fileToObjectURL(blob);
+            library.filestorage.filer.write('/' + item.itemKey, {data:blob, type: mimetype}, J.proxy(function(fileEntry, fileWriter){
+                try{
+                Z.debug("Success writing file");
+                Z.debug("Saved file for item " + item.itemKey + ' for offline use');
+                Z.debug("Saving file object somewhere in Zotero namespace:");
+                library.filestorage.filer.open(fileEntry, J.proxy(function(file){
+                    try{
+                    Z.debug("reading back filesystem stored file into object url");
+                    //we could return an objectUrl here, but I think that would keep it in memory when we don't necessarily need it
+                    //Zotero.temp.fileUrlAfter = Util.fileToObjectURL(file);
+                    deferred.resolve(true);
+                    }
+                    catch(e){
+                        Z.debug("Caught in filer.open");
+                        Z.debug(e);
+                    }
+                }, this) );
+                }
+                catch(e){
+                    Z.debug("Caught in filer.write");
+                    console.log(e);
+                }
+            }, this) );
+        }
+        }
+        catch(e){
+            Z.debug("Caught inside binary xhr onload");
+            console.log(e);
+        }
+    };
+    xhr.send();
+    
+    /*
+    var downloadDeferred = J.get(Zotero.ajax.proxyWrapper(reqUrl, 'GET'), J.proxy(function(data, textStatus, jqXHR){
+        //Z.debug(data);
+        Zotero.temp.fileDataUrl = Util.strToDataURL(data, mimetype);
+        library.filestorage.filer.write('/' + item.itemKey, {data:data, type: mimetype}, J.proxy(function(fileEntry, fileWriter){
+            Z.debug("Success");
+            Z.debug("Saved file for item " + item.itemKey + ' for offline use');
+            Z.debug("Saving file object somewhere in Zotero namespace:");
+            library.filestorage.filer.open(fileEntry, J.proxy(function(file){
+                Zotero.temp.fileUrl = Util.fileToObjectURL(file);
+            }, this) );
+        }, this) );
+    }, this) );
+     */
+        return deferred;
+    }
+    catch(e){
+        Z.debug("Caught in Z.Library.saveFileOffline");
+        console.log(e);
+    }
+};
+
+//save a set of files offline, identified by itemkeys
+Zotero.Library.prototype.saveFileSetOffline = function(itemKeys){
+    Z.debug("Zotero.Library.saveFileSetOffline", 3);
+    var library = this;
+    var ds = [];
+    var deferred = new J.Deferred();
+    var item;
+    var childItemKeys = [];
+    var checkedKeys = {};
+    
+    J.each(itemKeys, function(ind, itemKey){
+        if(checkedKeys.hasOwnProperty(itemKey)){
+            return;
+        }
+        else{
+            checkedKeys[itemKey] = 1;
+        }
+        item = library.items.getItem(itemKey);
+        if(item && item.links && item.links['enclosure']){
+            ds.push(library.saveFileOffline(item));
+        }
+        if(item.numChildren){
+            J.each(item.childItemKeys, function(ind, val){
+                childItemKeys.push(val);
+            });
+        }
+    });
+    
+    J.each(childItemKeys, function(ind, itemKey){
+        if(checkedKeys.hasOwnProperty(itemKey)){
+            return;
+        }
+        else{
+            checkedKeys[itemKey] = 1;
+        }
+        item = library.items.getItem(itemKey);
+        if(item && item.links && item.links['enclosure']){
+            ds.push(library.saveFileOffline(item));
+        }
+    });
+    
+    J.when.apply(null, ds).then(J.proxy(function(){
+        var d = library.filestorage.listOfflineFiles();
+        d.done(J.proxy(function(localItemKeys){
+            deferred.resolve();
+        }, this) );
+    }));
+    
+    return deferred;
+};
+
+Zotero.Library.prototype.saveCollectionFilesOffline = function(collectionKey){
+    Zotero.debug("Zotero.Library.saveCollectionFilesOffline " + collectionKey, 3);
+    var library = this;
+    var collection = library.collections.getCollection(collectionKey);
+    var itemKeys = collection.itemKeys;
+    var d = Zotero.Library.prototype.saveFileSetOffline(itemKeys);
+    return d;
+};
+
+
 Zotero.Entry = function(){
     this.instance = "Zotero.Entry";
 };
@@ -1549,6 +2223,10 @@ Zotero.Collections.prototype.loadDump = function(dump){
 Zotero.Collections.prototype.addCollection = function(collection){
     this.collectionsArray.push(collection);
     this[collection.key] = collection;
+    if(this.owningLibrary){
+        collection.associateWithLibrary(this.owningLibrary);
+    }
+    
     return this;
 };
 
@@ -1663,6 +2341,7 @@ Zotero.Items = function(feed){
     this.displayItemsArray = [];
     this.displayItemsUrl = '';
     this.itemObjects = {};
+    this.unsyncedItemObjects = {};
     
     if(typeof feed != 'undefined'){
         this.addItemsFromFeed(feed);
@@ -1671,7 +2350,7 @@ Zotero.Items = function(feed){
 
 Zotero.Items.prototype.dump = function(){
     var dump = {};
-    dump.instance = "Zotero.Items";
+    dump.instance = "Zotero.Items.dump";
     dump.itemsArray = [];
     J.each(this.itemObjects, function(key, val){
         dump.itemsArray.push(val.dump());
@@ -1680,22 +2359,52 @@ Zotero.Items.prototype.dump = function(){
 };
 
 Zotero.Items.prototype.loadDump = function(dump){
+    Z.debug("-------------------------------Zotero.Items.loadDump", 3);
+    var items = this;
+    var itemKeys = [];
     for (var i = 0; i < dump.itemsArray.length; i++) {
         var item = new Zotero.Item();
         item.loadDump(dump.itemsArray[i]);
         this.addItem(item);
+        itemKeys.push(item.itemKey);
     }
+    
+    if(this.owningLibrary){
+        this.owningLibrary.itemKeys = itemKeys;
+    }
+    
+    //add child itemKeys to parent items to make getChildren work locally
+    Z.debug("Adding childItemKeys to items loaded from dump");
+    var parentItem;
+    J.each(items.itemObjects, function(ind, item){
+        if(item.parentKey){
+            parentItem = items.getItem(item.parentKey);
+            if(parentItem !== false){
+                parentItem.childItemKeys.push(item.itemKey);
+            }
+        }
+    });
     //TODO: load secondary data structures
+    //nothing to do here yet? display items array is separate - populated with itemKey request
     
     return this;
 };
 
 Zotero.Items.prototype.getItem = function(key){
-    Z.debug("Zotero.Items.getItem", 3);
+    //Z.debug("Zotero.Items.getItem", 3);
     if(this.itemObjects.hasOwnProperty(key)){
         return this.itemObjects[key];
     }
     return false;
+};
+
+Zotero.Items.prototype.getItems = function(keys){
+    var items = this;
+    var gotItems = [];
+    for(var i = 0; i < keys.length; i++){
+        gotItems.push(items.getItem(keys[i]));
+    }
+    return gotItems;
 };
 
 Zotero.Items.prototype.loadDataObjects = function(itemsArray){
@@ -1717,6 +2426,9 @@ Zotero.Items.prototype.loadDataObjects = function(itemsArray){
 
 Zotero.Items.prototype.addItem = function(item){
     this.itemObjects[item.itemKey] = item;
+    if(this.owningLibrary){
+        item.associateWithLibrary(this.owningLibrary);
+    }
     return this;
 };
 
@@ -1730,6 +2442,18 @@ Zotero.Items.prototype.addItemsFromFeed = function(feed){
     });
     return itemsAdded;
 };
+
+//return array of itemKeys that we don't have a copy of
+Zotero.Items.prototype.keysNotInItems = function(keys){
+    var notPresent = [];
+    J.each(keys, function(ind, val){
+        if(!this.itemObjects.hasOwnProperty(val)){
+            notPresent.push(val);
+        }
+    });
+    return notPresent;
+};
+
 Zotero.Tags = function(feed){
     //represent collections as array for ordering purposes
     this.displayTagsArray = [];
@@ -1766,6 +2490,9 @@ Zotero.Tags.prototype.loadDump = function(dump){
 Zotero.Tags.prototype.addTag = function(tag){
     this.tagObjects[tag.title] = tag;
     this.tagsArray.push(tag);
+    if(this.owningLibrary){
+        tag.associateWithLibrary(this.owningLibrary);
+    }
 };
 
 Zotero.Tags.prototype.plainTagsList = function(tagsArray){
@@ -1800,7 +2527,6 @@ Zotero.Tags.prototype.updateSecondaryData = function(){
 
 Zotero.Tags.prototype.addTagsFromFeed = function(feed){
     Z.debug('Zotero.Tags.addTagsFromFeed', 3);
-    Z.debug(this);
     var tags = this;
     var tagsAdded = [];
     feed.entries.each(function(index, entry){
@@ -1813,6 +2539,7 @@ Zotero.Tags.prototype.addTagsFromFeed = function(feed){
 Zotero.Collection = function(entryEl){
     this.instance = "Zotero.Collection";
     this.libraryUrlIdentifier = '';
+    this.itemKeys = false;
     if(typeof entryEl != 'undefined'){
         this.parseXmlCollection(entryEl);
     }
@@ -1833,7 +2560,8 @@ Zotero.Collection.prototype.dump = function(){
         'topLevel',
         'websiteCollectionLink',
         'hasChildren',
-        'etag'
+        'etag',
+        'itemKeys'
     ];
     for (var i = 0; i < dataProperties.length; i++) {
         dump[dataProperties[i]] = this[dataProperties[i]];
@@ -1853,7 +2581,8 @@ Zotero.Collection.prototype.loadDump = function(dump){
         'topLevel',
         'websiteCollectionLink',
         'hasChildren',
-        'etag'
+        'etag',
+        'itemKeys'
     ];
     for (var i = 0; i < dataProperties.length; i++) {
         this[dataProperties[i]] = dump[dataProperties[i]];
@@ -1967,6 +2696,36 @@ Zotero.Collection.prototype.addItems = function(itemKeys){
     //J.publish('Collection.addItems', [this.key, itemKeys, jqxhr]);
 };
 
+Zotero.Collection.prototype.getMemberItemKeys = function(){
+    Z.debug('Zotero.Collection.getMemberItemKeys', 3);
+    Z.debug('Current Collection: ' + this.collectionKey, 3);
+    Z.debug(this.itemKeys, 3);
+    var config = {'target':'items', 'libraryType':this.libraryType, 'libraryID':this.libraryID, 'collectionKey':this.collectionKey, 'format':'keys'};
+    var requestUrl = Zotero.ajax.apiRequestUrl(config) + Zotero.ajax.apiQueryString(config);
+    var deferred = new J.Deferred();
+    
+    var jqxhr = J.ajax(Zotero.ajax.proxyWrapper(requestUrl, 'GET'),
+        {type: "GET",
+         processData: false,
+         headers:{},
+         cache:false,
+         error: Zotero.ajax.errorCallback
+        }
+    );
+    
+    jqxhr.done(J.proxy(function(data, textStatus, XMLHttpRequest){
+        Z.debug('getMemberItemKeys proxied callback', 3);
+        var c = this;
+        var result = data;
+        var keys = J.trim(result).split(/[\s]+/);
+        c.itemKeys = keys;
+        deferred.resolve(keys);
+    }, this) );
+    Zotero.ajax.activeRequests.push(jqxhr);
+    
+    return deferred;
+};
+
 Zotero.Collection.prototype.removeItem = function(itemKey){
     var config = {'target':'item', 'libraryType':this.libraryType, 'libraryID':this.libraryID, 'collectionKey':this.collectionKey, 'itemKey':itemKey};
     var requestUrl = Zotero.ajax.apiRequestUrl(config) + Zotero.ajax.apiQueryString(config);
@@ -2033,6 +2792,7 @@ Zotero.Item = function(entryEl){
     this.instance = "Zotero.Item";
     this.apiObj = {};
     this.dataFields = {};
+    this.childItemKeys = [];
     if(typeof entryEl != 'undefined'){
         this.parseXmlItem(entryEl);
     }
@@ -2529,6 +3289,9 @@ Zotero.Item.prototype.getItemTemplate = function (itemType, linkMode) {
     if(itemType == 'attachment' && typeof linkMode == 'undefined'){
         throw "attachment template requested with no linkMode";
     }
+    if(typeof linkMode == "undefined"){
+        linkMode = '';
+    }
 
     var query = Zotero.ajax.apiQueryString({itemType:itemType, linkMode:linkMode});
     var requestUrl = Zotero.config.baseApiUrl + '/items/new' + query;
@@ -2686,6 +3449,28 @@ Zotero.Item.prototype.getCreatorFields = function (locale) {
                 Zotero.cache.save({target:'creatorFields'}, data);
             }
     );
+};
+
+//---Functions to manually add Zotero format data instead of fetching it from the API ---
+//To be used first with cached data for offline, could also maybe be used for custom types
+Zotero.Item.prototype.addItemTypes = function(itemTypes, locale){
+    
+};
+
+Zotero.Item.prototype.addItemFields = function(itemType, itemFields){
+    
+};
+
+Zotero.Item.prototype.addCreatorTypes = function(itemType, creatorTypes){
+    
+};
+
+Zotero.Item.prototype.addCreatorFields = function(itemType, creatorFields){
+    
+};
+
+Zotero.Item.prototype.addItemTemplates = function(templates){
+    
 };
 
 Zotero.Item.prototype.fieldMap = {
@@ -2947,6 +3732,18 @@ Zotero.Item.prototype.itemTypeImageClass = function(){
     }
     else {
         return item.itemType;
+    }
+};
+
+Zotero.Item.prototype.get = function(key){
+    if(key == 'title'){
+        return this.title;
+    }
+    else if(key == 'creatorSummary'){
+        return this.creatorSummary;
+    }
+    else if(key in this.apiObj){
+        return this.apiObj[key];
     }
 };
 Zotero.Tag = function (entry) {
@@ -3523,3 +4320,73 @@ Zotero.file.uploadFile = function(uploadInfo, file){
     //from JS)
 };
 
+Zotero.Filestorage = function(){
+    Z.debug("Zotero.Filestorage", 3);
+    var zfilestorage = this;
+    this.filer = new Filer();
+    this.fileEntries = {};
+    Z.debug("Filer created", 3);
+    this.filer.init({'persistent': true, 'size': 1024*1024*128}, J.proxy(function(fs){
+        Z.debug("Filesystem created");
+        zfilestorage.fs = fs;
+        zfilestorage.listOfflineFiles();
+    }, this)
+    );
+    Z.debug("returning Zotero.Filestorage");
+};
+
+//return an Object URL if we have the file for itemKey saved offline
+//otherwise return false
+Zotero.Filestorage.prototype.getSavedFile = function(itemKey){
+    Zotero.debug("Zotero.Filestorage.getSavedFile", 3);
+    var fstorage = this;
+    var filer = fstorage.filer;
+    var deferred = new J.Deferred();
+    // Pass a path.
+    filer.open(fstorage.fileEntries[itemKey], J.proxy(function(file) {
+        Z.debut("filer.open callback");
+        deferred.resolve(file);
+    }, this), this.handleError);
+    
+    return deferred;
+};
+
+Zotero.Filestorage.prototype.getSavedFileObjectUrl = function(itemKey){
+    Z.debug("Zotero.Filestorage.getSavedFileObjectUrl", 3);
+    var fstorage = this;
+    var filer = this.filer;
+    var objectUrlDeferred = new J.Deferred();
+    
+    filer.open(fstorage.fileEntries[itemKey], J.proxy(function(file) {
+        Z.debug("filer.open callback");
+        objectUrlDeferred.resolve(Util.fileToObjectURL(file));
+    }, this), this.handleError);
+    
+    return objectUrlDeferred;
+};
+
+//return deferred that resolves with array of itemKeys of files available locally
+Zotero.Filestorage.prototype.listOfflineFiles = function(){
+    Z.debug("Zotero.Filestorage.listOfflineFiles");
+    var fstorage = this;
+    var filer = fstorage.filer;
+    var fileListDeferred = new J.Deferred();
+    
+    filer.ls('/', J.proxy(function(entries){
+        Z.debug(entries);
+        Zotero.offlineFilesEntries = entries;
+        var itemKeys = [];
+        J.each(entries, function(ind, entry){
+            fstorage.fileEntries[entry.name] = entry;
+            itemKeys.push(entry.name);
+        });
+        fileListDeferred.resolve(itemKeys);
+    }, this) );
+    
+    return fileListDeferred;
+};
+
+Zotero.Filestorage.prototype.handleError = function(e){
+    Zotero.debug("----------------Filestorage Error encountered", 2);
+    Zotero.debug(e, 2);
+};

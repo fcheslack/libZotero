@@ -56,7 +56,8 @@ $jsfiles = array(
 'User.js',
 'Utils.js',
 'Url.js',
-'File.js'
+'File.js',
+'Filestorage.js'
 );
 
 $fulljs = "";
