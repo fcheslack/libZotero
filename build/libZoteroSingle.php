@@ -227,6 +227,19 @@ class Zotero_Entry
       $this->dateAdded   = $entryNode->getElementsByTagName("published")->item(0)->nodeValue;
       $this->dateUpdated = $entryNode->getElementsByTagName("updated")->item(0)->nodeValue;
       
+      //try to parse author node if it's there
+      try{
+          $author = array();
+          $authorNode = $entryNode->getElementsByTagName('author')->item(0);
+          $author['name'] = $authorNode->getElementsByTagName('name')->item(0)->nodeValue;
+          $author['uri'] = $authorNode->getElementsByTagName('uri')->item(0)->nodeValue;
+          
+          $this->author = $author;
+      }
+      catch(Exception $e){
+          
+      }
+    
       // Get all of the link elements
       foreach($entryNode->getElementsByTagName("link") as $linkNode){
           if($linkNode->getAttribute('rel') == "enclosure"){
@@ -1708,7 +1721,8 @@ class Zotero_Item extends Zotero_Entry
                 }
                 break;
             case "dateModified":
-                return $this->dateModified;
+            case "dateUpdated":
+                return $this->dateUpdated;
                 break;
             case "dateAdded":
                 return $this->dateAdded;

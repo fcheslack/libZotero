@@ -531,7 +531,8 @@ class Zotero_Item extends Zotero_Entry
                 }
                 break;
             case "dateModified":
-                return $this->dateModified;
+            case "dateUpdated":
+                return $this->dateUpdated;
                 break;
             case "dateAdded":
                 return $this->dateAdded;
