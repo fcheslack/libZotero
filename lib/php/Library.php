@@ -337,6 +337,9 @@ class Zotero_Library
             case 'userGroups':
                 $url = $base . '/users/' . $params['userID'] . '/groups';
                 break;
+            case 'groups':
+                $url = $base . '/groups';
+                break;
             case 'trash':
                 $url .= '/items/trash';
                 break;
@@ -1268,7 +1271,32 @@ class Zotero_Library
         if($userID == ''){
             $userID = $this->libraryID;
         }
-        $aparams = array('target'=>'userGroups', 'userID'=>$userID, 'content'=>'json');
+        $aparams = array('target'=>'userGroups', 'userID'=>$userID, 'content'=>'json', 'order'=>'title');
+        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
+        $response = $this->_request($reqUrl, 'GET');
+        if($response->isError()){
+            return false;
+        }
+        
+        $doc = new DOMDocument();
+        $doc->loadXml($response->getBody());
+        $entries = $doc->getElementsByTagName('entry');
+        $groups = array();
+        foreach($entries as $entry){
+            $group = new Zotero_Group($entry);
+            $groups[] = $group;
+        }
+        return $groups;
+    }
+    
+    /**
+     * Get recently created public groups
+     *
+     * @return array $groups
+     */
+    public function fetchRecentGroups(){
+        return array();
+        $aparams = array('target'=>'groups', 'limit'=>'10', 'content'=>'json', 'order'=>'dateAdded', 'sort'=>'desc', 'fq'=>'-GroupType:Private');
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $response = $this->_request($reqUrl, 'GET');
         if($response->isError()){
@@ -1296,8 +1324,8 @@ class Zotero_Library
         if($userID == '' && $this->libraryType == 'user'){
             $userID = $this->libraryID;
         }
-        $aparams = array('target'=>'cv', 'libraryType'=>'user', 'libraryID'=>$userID);
-        $reqUrl = $this->apiRequestUrl($aparams);// . $this->apiQueryString($aparams);
+        $aparams = array('target'=>'cv', 'libraryType'=>'user', 'libraryID'=>$userID, 'linkwrap'=>'1');
+        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         
         $response = $this->_request($reqUrl, 'GET');
         if($response->isError()){

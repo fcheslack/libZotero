@@ -212,6 +212,11 @@ class Zotero_Entry
      */
     public $links = array();
     
+    /**
+     * @var array
+     */
+    public $author = array();
+    
     public $contentArray = array();
     
     /**
@@ -1887,51 +1892,46 @@ class Zotero_Group extends Zotero_Entry
         
         $this->numItems = $entryNode->getElementsByTagNameNS('*', 'numItems')->item(0)->nodeValue;
         
-        /*
-        // Extract the groupID and groupType
-        $groupElements = $entryNode->getElementsByTagName("group");
-        $groupElement = $groupElements->item(0);
-        if(!$groupElement) return;
-        
-        $groupAttributes = $groupElement->attributes;
-        
-        foreach($groupAttributes as $attrName => $attrNode){
-            $this->properties[$attrName] = urldecode($attrNode->value);
-            if($attrName == 'name'){
-                $this->$attrName = $attrNode->value;
+        $contentNodes = $entryNode->getElementsByTagName("content");
+        if($contentNodes->length > 0){
+            $cNode = $contentNodes->item(0);
+            if($cNode->getAttribute('type') == 'application/json'){
+                $jsonObject = json_decode($cNode->nodeValue, true);
+                //parse out relevant values from the json and put them on our object
+                $this->name = $jsonObject['name'];
+                $this->ownerID = $jsonObject['owner'];
+                $this->owner = $this->ownerID;
+                $this->type = $jsonObject['type'];
+                $this->groupType = $this->type;
+                $this->description = urldecode($jsonObject['description']);
+                $this->url = $jsonObject['url'];
+                $this->hasImage = isset($jsonObject['hasImage']) ? $jsonObject['hasImage'] : 0;
+                $this->libraryEnabled = $jsonObject['libraryEnabled'];
+                $this->libraryEditing = $jsonObject['libraryEditing'];
+                $this->memberIDs = isset($jsonObject['members']) ? $jsonObject['members'] : array();
+                $this->members = $this->memberIDs;
+                $this->adminIDs = isset($jsonObject['admins']) ? $jsonObject['admins'] : array();
+                $this->adminIDs[] = $jsonObject['owner'];
+                $this->admins = $this->adminIDs;
             }
-            else{
-                $this->$attrName = urldecode($attrNode->value);
+        }
+        
+        //get link nodes and extract groupID
+        $linkNodes = $entryNode->getElementsByTagName("link");
+        if($linkNodes->length > 0){
+            for($i = 0; $i < $linkNodes->length; $i++){
+                $linkNode = $linkNodes->item($i);
+                if($linkNode->getAttribute('rel') == 'self'){
+                    $selfHref = $linkNode->getAttribute('href');
+                    $matches = array();
+                    preg_match('/^https:\/\/.{3,6}\.zotero\.org\/groups\/([0-9]+)$/', $selfHref, $matches);
+                    if(isset($matches[1])){
+                        $this->groupID = intval($matches[1]);
+                        $this->id = $this->groupID;
+                    }
+                }
             }
         }
-        $this->groupID = $this->properties['id'];
-        
-        $description = $entryNode->getElementsByTagName("description")->item(0);
-        if($description) {
-            $this->properties['description'] = urldecode($description->nodeValue);
-            $this->description = urldecode($description->nodeValue);
-        }
-        
-        $url = $entryNode->getElementsByTagName("url")->item(0);
-        if($url) {
-            $this->properties['url'] = $url->nodeValue;
-            $this->url = $url->nodeValue;
-        }
-        
-        $this->adminIDs = array();
-        $admins = $entryNode->getElementsByTagName("admins")->item(0);
-        if($admins){
-            $this->adminIDs = $admins === null ? array() : explode(" ", $admins->nodeValue);
-        }
-        $this->adminIDs[] = $this->owner;
-        
-        $this->memberIDs = array();
-        $members = $entryNode->getElementsByTagName("members")->item(0);
-        if($members){
-            $this->memberIDs = $members === null ? array() : explode(" ", $members->nodeValue);
-        }
-        */
-        
         
         //initially disallow library access
         $this->userReadable = false;
@@ -2442,6 +2442,9 @@ class Zotero_Library
                 break;
             case 'userGroups':
                 $url = $base . '/users/' . $params['userID'] . '/groups';
+                break;
+            case 'groups':
+                $url = $base . '/groups';
                 break;
             case 'trash':
                 $url .= '/items/trash';
@@ -3374,7 +3377,32 @@ class Zotero_Library
         if($userID == ''){
             $userID = $this->libraryID;
         }
-        $aparams = array('target'=>'userGroups', 'userID'=>$userID, 'content'=>'json');
+        $aparams = array('target'=>'userGroups', 'userID'=>$userID, 'content'=>'json', 'order'=>'title');
+        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
+        $response = $this->_request($reqUrl, 'GET');
+        if($response->isError()){
+            return false;
+        }
+        
+        $doc = new DOMDocument();
+        $doc->loadXml($response->getBody());
+        $entries = $doc->getElementsByTagName('entry');
+        $groups = array();
+        foreach($entries as $entry){
+            $group = new Zotero_Group($entry);
+            $groups[] = $group;
+        }
+        return $groups;
+    }
+    
+    /**
+     * Get recently created public groups
+     *
+     * @return array $groups
+     */
+    public function fetchRecentGroups(){
+        return array();
+        $aparams = array('target'=>'groups', 'limit'=>'10', 'content'=>'json', 'order'=>'dateAdded', 'sort'=>'desc', 'fq'=>'-GroupType:Private');
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $response = $this->_request($reqUrl, 'GET');
         if($response->isError()){
@@ -3402,8 +3430,8 @@ class Zotero_Library
         if($userID == '' && $this->libraryType == 'user'){
             $userID = $this->libraryID;
         }
-        $aparams = array('target'=>'cv', 'libraryType'=>'user', 'libraryID'=>$userID);
-        $reqUrl = $this->apiRequestUrl($aparams);// . $this->apiQueryString($aparams);
+        $aparams = array('target'=>'cv', 'libraryType'=>'user', 'libraryID'=>$userID, 'linkwrap'=>'1');
+        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         
         $response = $this->_request($reqUrl, 'GET');
         if($response->isError()){
