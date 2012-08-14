@@ -15,6 +15,8 @@ function libZoteroDebug($m){
 class Zotero_Library
 {
     const ZOTERO_URI = 'https://api.zotero.org';
+    const ZOTERO_WWW_URI = 'http://www.zotero.org';
+    const ZOTERO_WWW_API_URI = 'http://www.zotero.org/api';
     protected $_apiKey = '';
     protected $_ch = null;
     protected $_followRedirects = true;
@@ -116,7 +118,7 @@ class Zotero_Library
      * @param array $headers headers to set on request
      * @return HTTP_Response
      */
-    public function _request($url, $method="GET", $body=NULL, $headers=array()) {
+    public function _request($url, $method="GET", $body=NULL, $headers=array(), $basicauth=array()) {
         libZoteroDebug( "url being requested: " . $url . "\n\n");
         $ch = curl_init();
         $httpHeaders = array();
@@ -125,6 +127,16 @@ class Zotero_Library
         }
         //disable Expect header
         $httpHeaders[] = 'Expect:';
+        
+        if(!empty($basicauth)){
+            $passString = $basicauth['username'] . ':' . $basicauth['password'];
+            curl_setopt($ch, CURLOPT_USERPWD, $passString);
+            curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
+        }
+        else{
+            $passString = '';
+            curl_setopt($ch, CURLOPT_USERPWD, $passString);
+        }
         
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, true);
@@ -283,7 +295,7 @@ class Zotero_Library
         
         //special case for www based api requests until those methods are mapped for api.zotero
         if($params['target'] == 'user' || $params['target'] == 'cv'){
-            $base = 'https://www.zotero.org/api';
+            $base = Zotero_Library::ZOTERO_WWW_API_URI;
         }
         
         //allow overriding of libraryType and ID in params if they are passed
@@ -406,7 +418,8 @@ class Zotero_Library
                                  'tagType',
                                  'style',
                                  'format',
-                                 'linkMode'
+                                 'linkMode',
+                                 'linkwrap'
                                  );
         //build simple api query parameters object
         if((!isset($passedParams['key'])) && $this->_apiKey){
@@ -1275,6 +1288,8 @@ class Zotero_Library
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $response = $this->_request($reqUrl, 'GET');
         if($response->isError()){
+            echo $response->getStatus();
+            echo $response->getBody();
             return false;
         }
         
@@ -1338,7 +1353,7 @@ class Zotero_Library
         $sections = array();
         foreach($sectionNodes as $sectionNode){
             $sectionTitle = $sectionNode->getAttribute('title');
-            $c = $sectionNode->nodeValue;
+            $c = $doc->saveHTML($sectionNode);// $sectionNode->nodeValue;
             $sections[] = array('title'=> $sectionTitle, 'content'=>$c);
         }
         return $sections;
