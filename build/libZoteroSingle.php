@@ -1864,23 +1864,26 @@ class Zotero_Group extends Zotero_Entry
         if($contentType == 'application/json'){
             $this->apiObject = json_decode($contentNode->nodeValue, true);
             //$this->etag = $contentNode->getAttribute('etag');
+            $this->name = $this->apiObject['name'];
+            $this->ownerID = $this->apiObject['owner'];
+            $this->groupType = $this->apiObject['type'];
+            $this->description = $this->apiObject['description'];
+            $this->url = $this->apiObject['url'];
+            $this->libraryEnabled = $this->apiObject['libraryEnabled'];
+            $this->libraryEditing = $this->apiObject['libraryEditing'];
+            $this->libraryReading = $this->apiObject['libraryReading'];
+            $this->fileEditing = $this->apiObject['fileEditing'];
         }
-        
-        $this->name = $this->apiObject['name'];
-        $this->ownerID = $this->apiObject['owner'];
-        $this->groupType = $this->apiObject['type'];
-        $this->description = $this->apiObject['description'];
-        $this->url = $this->apiObject['url'];
-        $this->libraryEnabled = $this->apiObject['libraryEnabled'];
-        $this->libraryEditing = $this->apiObject['libraryEditing'];
-        $this->libraryReading = $this->apiObject['libraryReading'];
-        $this->fileEditing = $this->apiObject['fileEditing'];
         
         if(!empty($this->apiObject['admins'])){
             $this->adminIDs = $this->apiObject['admins'];
         }
         else {
             $this->adminIDs = array();
+        }
+        
+        if($this->ownerID){
+            $this->adminIDs[] = $this->ownerID;
         }
         
         if(!empty($this->apiObject['members'])){
@@ -1914,20 +1917,75 @@ class Zotero_Group extends Zotero_Entry
                 $this->adminIDs[] = $jsonObject['owner'];
                 $this->admins = $this->adminIDs;
             }
+            elseif($cNode->getAttribute('type') == 'application/xml'){
+                $groupElements = $entryNode->getElementsByTagName("group");
+                $groupElement = $groupElements->item(0);
+                if(!$groupElement) return;
+                
+                $groupAttributes = $groupElement->attributes;
+                $this->properties = array();
+                
+                foreach($groupAttributes as $attrName => $attrNode){
+                    $this->properties[$attrName] = urldecode($attrNode->value);
+                    if($attrName == 'name'){
+                        $this->$attrName = $attrNode->value;
+                    }
+                    else{
+                        $this->$attrName = urldecode($attrNode->value);
+                    }
+                }
+                $this->groupID = $this->properties['id'];
+                
+                $description = $entryNode->getElementsByTagName("description")->item(0);
+                if($description) {
+                    $this->properties['description'] = urldecode($description->nodeValue);
+                    $this->description = urldecode($description->nodeValue);
+                }
+                
+                $url = $entryNode->getElementsByTagName("url")->item(0);
+                if($url) {
+                    $this->properties['url'] = $url->nodeValue;
+                    $this->url = $url->nodeValue;
+                }
+                
+                $this->adminIDs = array();
+                $admins = $entryNode->getElementsByTagName("admins")->item(0);
+                if($admins){
+                    $this->adminIDs = $admins === null ? array() : explode(" ", $admins->nodeValue);
+                }
+                $this->adminIDs[] = $this->owner;
+                
+                $this->memberIDs = array();
+                $members = $entryNode->getElementsByTagName("members")->item(0);
+                if($members){
+                    $this->memberIDs = ($members === null ? array() : explode(" ", $members->nodeValue));
+                }
+                
+                //initially disallow library access
+                $this->userReadable = false;
+                $this->userEditable = false;
+            }
         }
         
-        //get link nodes and extract groupID
-        $linkNodes = $entryNode->getElementsByTagName("link");
-        if($linkNodes->length > 0){
-            for($i = 0; $i < $linkNodes->length; $i++){
-                $linkNode = $linkNodes->item($i);
-                if($linkNode->getAttribute('rel') == 'self'){
-                    $selfHref = $linkNode->getAttribute('href');
-                    $matches = array();
-                    preg_match('/^https:\/\/.{3,6}\.zotero\.org\/groups\/([0-9]+)$/', $selfHref, $matches);
-                    if(isset($matches[1])){
-                        $this->groupID = intval($matches[1]);
-                        $this->id = $this->groupID;
+        //get groupID from zapi:groupID if available
+        if($entryNode->getElementsByTagNameNS('*', 'groupID')->length > 0){
+            $this->groupID = $entryNode->getElementsByTagNameNS('*', 'groupID')->item(0)->nodeValue;
+            $this->id = $this->groupID;
+        }
+        else{
+            //get link nodes and extract groupID
+            $linkNodes = $entryNode->getElementsByTagName("link");
+            if($linkNodes->length > 0){
+                for($i = 0; $i < $linkNodes->length; $i++){
+                    $linkNode = $linkNodes->item($i);
+                    if($linkNode->getAttribute('rel') == 'self'){
+                        $selfHref = $linkNode->getAttribute('href');
+                        $matches = array();
+                        preg_match('/^https:\/\/.{3,6}\.zotero\.org\/groups\/([0-9]+)$/', $selfHref, $matches);
+                        if(isset($matches[1])){
+                            $this->groupID = intval($matches[1]);
+                            $this->id = $this->groupID;
+                        }
                     }
                 }
             }
@@ -1946,11 +2004,41 @@ class Zotero_Group extends Zotero_Entry
     
     public function updateString()
     {
-        $view = new Zend_View();
-        $view->setScriptPath('../library/Zotero/Service/Zotero/views');
-        $view->group = $this;
+        $doc = new DOMDocument();
+        $el = $doc->appendChild(new DOMElement('group'));
+        $el->appendChild(new DOMElement('description', urlencode($this->description)));
+        $el->appendChild(new DOMElement('url', $this->url));
+        if($this->groupID){
+            $el->setAttribute('id', $this->groupID);
+        }
+        $el->setAttribute('owner', $this->ownerID);
+        $el->setAttribute('type', $this->type);
+        $el->setAttribute('name', str_replace('&#039;', '&apos;', htmlspecialchars($this->name, ENT_QUOTES)));
+        $el->setAttribute('libraryEnabled', $this->libraryEnabled);
+        $el->setAttribute('libraryEditing', $this->libraryEditing);
+        $el->setAttribute('libraryReading', $this->libraryReading);
+        $el->setAttribute('fileEditing', $this->fileEditing);
+        $el->setAttribute('hasImage', $this->hasImage);
         
-        return $view->render("group.phtml");
+        return $doc->saveXML($el);
+    }
+    
+    public function propertiesArray()
+    {
+        $properties = array();
+        $properties['owner'] = $this->owner;
+        $properties['type'] = $this->type;
+        $properties['name'] = $this->name;
+        $properties['libraryEnabled'] = $this->libraryEnabled;
+        $properties['libraryEditing'] = $this->libraryEditing;
+        $properties['libraryReading'] = $this->libraryReading;
+        $properties['fileEditing'] = $this->fileEditing;
+        $properties['hasImage'] = $this->hasImage;
+        $properties['disciplines'] = $this->disciplines;
+        $properties['enableComments'] = $this->enableComments;
+        $properties['description'] = $this->description;
+        
+        return $properties;
     }
     
     public function dataObject() {
@@ -2121,6 +2209,8 @@ function libZoteroDebug($m){
 class Zotero_Library
 {
     const ZOTERO_URI = 'https://api.zotero.org';
+    const ZOTERO_WWW_URI = 'http://www.zotero.org';
+    const ZOTERO_WWW_API_URI = 'http://www.zotero.org/api';
     protected $_apiKey = '';
     protected $_ch = null;
     protected $_followRedirects = true;
@@ -2222,7 +2312,7 @@ class Zotero_Library
      * @param array $headers headers to set on request
      * @return HTTP_Response
      */
-    public function _request($url, $method="GET", $body=NULL, $headers=array()) {
+    public function _request($url, $method="GET", $body=NULL, $headers=array(), $basicauth=array()) {
         libZoteroDebug( "url being requested: " . $url . "\n\n");
         $ch = curl_init();
         $httpHeaders = array();
@@ -2231,6 +2321,16 @@ class Zotero_Library
         }
         //disable Expect header
         $httpHeaders[] = 'Expect:';
+        
+        if(!empty($basicauth)){
+            $passString = $basicauth['username'] . ':' . $basicauth['password'];
+            curl_setopt($ch, CURLOPT_USERPWD, $passString);
+            curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
+        }
+        else{
+            $passString = '';
+            curl_setopt($ch, CURLOPT_USERPWD, $passString);
+        }
         
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_HEADER, true);
@@ -2389,7 +2489,7 @@ class Zotero_Library
         
         //special case for www based api requests until those methods are mapped for api.zotero
         if($params['target'] == 'user' || $params['target'] == 'cv'){
-            $base = 'https://www.zotero.org/api';
+            $base = Zotero_Library::ZOTERO_WWW_API_URI;
         }
         
         //allow overriding of libraryType and ID in params if they are passed
@@ -2512,7 +2612,8 @@ class Zotero_Library
                                  'tagType',
                                  'style',
                                  'format',
-                                 'linkMode'
+                                 'linkMode',
+                                 'linkwrap'
                                  );
         //build simple api query parameters object
         if((!isset($passedParams['key'])) && $this->_apiKey){
@@ -3381,6 +3482,8 @@ class Zotero_Library
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $response = $this->_request($reqUrl, 'GET');
         if($response->isError()){
+            echo $response->getStatus();
+            echo $response->getBody();
             return false;
         }
         
@@ -3444,7 +3547,7 @@ class Zotero_Library
         $sections = array();
         foreach($sectionNodes as $sectionNode){
             $sectionTitle = $sectionNode->getAttribute('title');
-            $c = $sectionNode->nodeValue;
+            $c = $doc->saveHTML($sectionNode);// $sectionNode->nodeValue;
             $sections[] = array('title'=> $sectionTitle, 'content'=>$c);
         }
         return $sections;
@@ -3471,6 +3574,10 @@ class Zotero_Library
  */
 class Zotero_Lib_Utils
 {
+    const ZOTERO_URI = 'https://api.zotero.org';
+    const ZOTERO_WWW_URI = 'http://www.zotero.org';
+    const ZOTERO_WWW_API_URI = 'http://www.zotero.org/api';
+    
     public static function wrapLinks($txt, $nofollow=false){
         //extremely ugly wrapping of urls in html
         if($nofollow){
@@ -3495,6 +3602,128 @@ class Zotero_Lib_Utils
     public static function wrapDOIs($txt){
         
     }
+    
+    public static function utilRequest($url, $method="GET", $body=NULL, $headers=array(), $basicauth=array() ) {
+        libZoteroDebug( "url being requested: " . $url . "\n\n");
+        $ch = curl_init();
+        $httpHeaders = array();
+        foreach($headers as $key=>$val){
+            $httpHeaders[] = "$key: $val";
+        }
+        //disable Expect header
+        $httpHeaders[] = 'Expect:';
+        
+        if(!empty($basicauth)){
+            $passString = $basicauth['username'] . ':' . $basicauth['password'];
+            /*
+            echo $passString;
+            curl_setopt($ch, CURLOPT_USERPWD, $passString);
+            curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
+             */
+            $authHeader = 'Basic ' . base64_encode($passString);
+            $httpHeaders[] = "Authorization: {$authHeader}";
+        }
+        else{
+            $passString = '';
+            curl_setopt($ch, CURLOPT_USERPWD, $passString);
+        }
+        
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $httpHeaders);
+        //curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 3);
+        
+        //FOLLOW LOCATION HEADERS
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        
+        $umethod = strtoupper($method);
+        switch($umethod){
+            case "GET":
+                curl_setopt($ch, CURLOPT_HTTPGET, true);
+                break;
+            case "POST":
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+                break;
+            case "PUT":
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+                break;
+            case "DELETE":
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+                break;
+        }
+        
+        $responseBody = curl_exec($ch);
+        $responseInfo = curl_getinfo($ch);
+        
+        $zresponse = libZotero_Http_Response::fromString($responseBody);
+        
+        //Zend Response does not parse out the multiple sets of headers returned when curl automatically follows
+        //a redirect and the new headers are left in the body. Zend_Http_Client gets around this by manually
+        //handling redirects. That may end up being a better solution, but for now we'll just re-read responses
+        //until a non-redirect is read
+        while($zresponse->isRedirect()){
+            $redirectedBody = $zresponse->getBody();
+            $zresponse = libZotero_Http_Response::fromString($redirectedBody);
+        }
+        
+        curl_close($ch);
+        
+        return $zresponse;
+    }
+    
+    public static function apiQueryString($passedParams=array()){
+        $queryParamOptions = array('start',
+                                 'limit',
+                                 'order',
+                                 'sort',
+                                 'content',
+                                 'q',
+                                 'fq',
+                                 'itemType',
+                                 'locale',
+                                 'key',
+                                 'itemKey',
+                                 'tag',
+                                 'tagType',
+                                 'style',
+                                 'format',
+                                 'linkMode',
+                                 'linkwrap'
+                                 );
+        //build simple api query parameters object
+        $queryParams = array();
+        foreach($queryParamOptions as $i=>$val){
+            if(isset($passedParams[$val]) && ($passedParams[$val] != '')) {
+                //check if itemKey belongs in the url or the querystring
+                if($val == 'itemKey' && isset($passedParams['target']) && ($passedParams['target'] != 'items') ) continue;
+                $queryParams[$val] = $passedParams[$val];
+            }
+        }
+        
+        $queryString = '?';
+        $queryParamsArray = array();
+        foreach($queryParams as $index=>$value){
+            if(is_array($value)){
+                foreach($value as $key=>$val){
+                    if(is_string($val) || is_int($val)){
+                        $queryParamsArray[] = urlEncode($index) . '=' . urlencode($val);
+                    }
+                }
+            }
+            elseif(is_string($value) || is_int($value)){
+                $queryParamsArray[] = urlencode($index) . '=' . urlencode($value);
+            }
+        }
+        $queryString .= implode('&', $queryParamsArray);
+        //print "apiQueryString: " . $queryString . "\n";
+        return $queryString;
+    }
+    
 }
 
 

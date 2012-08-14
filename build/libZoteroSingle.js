@@ -50,7 +50,7 @@ var Zotero = {
     
     config: {librarySettings: {},
              baseApiUrl: 'https://api.zotero.org',
-             baseWebsiteUrl: 'http://zotero.org',
+             baseWebsiteUrl: 'https://zotero.org',
              baseFeedUrl: 'https://api.zotero.org',
              proxy: true,
              apiKey: '',
@@ -688,7 +688,8 @@ Zotero.Library = function(type, libraryID, libraryUrlIdentifier, apiKey){
     this.libraryString = Zotero.utils.libraryString(this.type, this.libraryID);
     this.libraryUrlIdentifier = libraryUrlIdentifier;
     
-    
+    //object to hold user aliases for displaying real names
+    this.usernames = {};
     
     this.cachedTags = this.getCachedTags();
     
@@ -1609,6 +1610,25 @@ Zotero.Library.prototype.fetchGlobalItem = function(globalKey){
     });
     
     return deferred;
+};
+
+Zotero.Library.prototype.fetchUserNames = function(userIDs){
+    Z.debug("Zotero.Library.fetchUserNames", 3);
+    var library = this;
+    var reqUrl = Zotero.config.baseWebsiteUrl + '/api/useraliases?userID=' + userIDs.join(',');
+    var jqxhr = J.getJSON(reqUrl, J.proxy(function(data, textStatus, jqXHR){
+        Z.debug("fetchNames returned");
+        Z.debug(JSON.stringify(data));
+        Z.debug("userNames:");
+        Z.debug(this.usernames);
+        J.each(data, function(userID, aliases){
+            Z.debug("userID: " + userID + " alias:");
+            Z.debug(aliases);
+            library.usernames[userID] = aliases;
+        });
+    }, this) );
+    
+    return jqxhr;
 };
 
 /*METHODS FOR WORKING WITH THE ENTIRE LIBRARY -- NOT FOR GENERAL USE */
