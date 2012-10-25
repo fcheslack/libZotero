@@ -520,11 +520,11 @@ class Zotero_Item extends Zotero_Entry
     public function formatItemField($field){
         switch($field){
             case "title":
-                return $this->title;
+                return htmlspecialchars($this->title);
                 break;
             case "creator":
                 if(isset($this->creatorSummary)){
-                    return $this->creatorSummary;
+                    return htmlspecialchars($this->creatorSummary);
                 }
                 else{
                     return '';
@@ -532,14 +532,14 @@ class Zotero_Item extends Zotero_Entry
                 break;
             case "dateModified":
             case "dateUpdated":
-                return $this->dateUpdated;
+                return htmlspecialchars($this->dateUpdated);
                 break;
             case "dateAdded":
-                return $this->dateAdded;
+                return htmlspecialchars($this->dateAdded);
                 break;
             default:
                 if(isset($this->apiObject[$field])){
-                    return $this->apiObject[$field];
+                    return htmlspecialchars($this->apiObject[$field]);
                 }
                 else{
                     return '';

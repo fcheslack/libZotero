@@ -4330,6 +4330,7 @@ Zotero.file.uploadFile = function(uploadInfo, file){
     formData.append('file', file);
     
     var xhr = new XMLHttpRequest();
+    
     xhr.open('POST', uploadInfo.url, true);
     
     xhr.send(formData);

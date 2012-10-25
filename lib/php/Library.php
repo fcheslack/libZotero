@@ -134,8 +134,7 @@ class Zotero_Library
             curl_setopt($ch, CURLOPT_FORBID_REUSE, true);
         }
         else{
-            $passString = '';
-            curl_setopt($ch, CURLOPT_USERPWD, $passString);
+            curl_setopt($ch, CURLOPT_FRESH_CONNECT, true);
         }
         
         curl_setopt($ch, CURLOPT_URL, $url);
