@@ -1293,7 +1293,7 @@ Zotero.Library.prototype.getCachedTags = function(){
 Zotero.Library.prototype.loadAllTags = function(config, checkCached){
     Z.debug("Zotero.Library.loadAllTags", 3);
     if(typeof checkCached == 'undefined'){
-        checkCached = false;
+        checkCached = true; //default to using the cache
     }
     if(!config){
         config = {};
@@ -1321,7 +1321,7 @@ Zotero.Library.prototype.loadAllTags = function(config, checkCached){
     var loadedConfigRequestUrl = tags.loadedRequestUrl; //Zotero.ajax.apiRequestUrl(loadedConfig) + Zotero.ajax.apiQueryString(loadedConfig);
     Z.debug("requestUrl: " + requestUrl, 4);
     Z.debug('loadedConfigRequestUrl: ' + loadedConfigRequestUrl, 4);
-    if(tags.loaded && (loadedConfigRequestUrl == requestUrl) ){
+    if(tags.loaded && (loadedConfigRequestUrl == requestUrl) && checkCached){
         //tags already has the same information we're looking for
         Z.debug("tags already loaded - publishing and resolving deferred", 3);
         deferred.resolve(tags);
@@ -1380,7 +1380,7 @@ Zotero.Library.prototype.loadAllTags = function(config, checkCached){
     //test to see if we have alltags in cache - TODO:expire or force-reload faster than session storage
     var cacheConfig = {libraryType:library.libraryType, libraryID:library.libraryID, target:'alltags'};
     var alltagsObjects = Zotero.cache.load(cacheConfig);
-    if(alltagsObjects !== null){
+    if(alltagsObjects !== null && checkCached){
         library.tags.tagObjects = alltagsObjects;
         J.each(alltagsObjects, function(key, val){
             library.tags.tagsArray.push(val);
