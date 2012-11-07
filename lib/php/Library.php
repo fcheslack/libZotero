@@ -1287,8 +1287,8 @@ class Zotero_Library
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
         $response = $this->_request($reqUrl, 'GET');
         if($response->isError()){
-            echo $response->getStatus();
-            echo $response->getBody();
+            libZoteroDebug( $response->getStatus() );
+            libZoteroDebug( $response->getBody() );
             return false;
         }
         
