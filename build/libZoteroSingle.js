@@ -57,6 +57,7 @@ var Zotero = {
              proxyPath: '/proxyrequest',
              ignoreLoggedInStatus: false,
              storePrefsRemote: true,
+             sessionAuth: false,
              proxy: true,
              apiKey: '',
              ajax: 1,
@@ -180,14 +181,14 @@ var Zotero = {
         },
         
         validate: function(arg, type){
-            Z.debug("Zotero.validate");
+            Z.debug("Zotero.validate", 4);
             if(arg === ''){
                 return null;
             }
             else if(arg === null){
                 return true;
             }
-            Z.debug(arg + " " + type);
+            Z.debug(arg + " " + type, 4);
             var patterns = this.patterns;
             
             if(patterns.hasOwnProperty(type)){
@@ -450,7 +451,7 @@ Zotero.ajax.error = function(event, request, settings, exception){
     //Zotero.ui.jsNotificationMessage("Error requesting " + settings.url, 'error');
     //J("#js-message-list").append("<li>Error requesting " + settings.url + "</li>");
     Z.debug("Exception: " + exception);
-    //Z.exception = exception;h
+    //Z.exception = exception;
 };
 
 Zotero.ajax.errorCallback = function(jqxhr, textStatus, errorThrown){
@@ -487,8 +488,6 @@ Zotero.ajax.apiRequestUrl = function(params){
         }
     });
     
-    Z.debug("******************API REQUEST URL*********************");
-    Z.debug(JSON.stringify(params));
     if(!params.target) throw "No target defined for api request";
     if(!(params.libraryType == 'user' || params.libraryType == 'group' || params.libraryType === '')) throw "Unexpected libraryType for api request " + JSON.stringify(params);
     if((params.libraryType) && !(params.libraryID)) throw "No libraryID defined for api request";
@@ -572,7 +571,11 @@ Zotero.ajax.apiQueryString = function(passedParams, useConfigKey){
     if(passedParams.hasOwnProperty('order') && passedParams['order'] == 'year'){
         passedParams['order'] = 'date';
     }
-    if(useConfigKey && Zotero.config.apiKey){
+    if(useConfigKey && Zotero.config.sessionAuth) {
+        var sessionKey = Zotero.utils.readCookie("zotero_www_session_v2");
+        passedParams['session'] = sessionKey;
+    }
+    else if(useConfigKey && Zotero.config.apiKey){
         passedParams['key'] = Zotero.config.apiKey;
     }
     
@@ -602,7 +605,8 @@ Zotero.ajax.apiQueryString = function(passedParams, useConfigKey){
                              'key',
                              'style',
                              'linkMode',
-                             'linkwrap'
+                             'linkwrap',
+                             'session'
                              ];
     //build simple api query parameters object
     var queryParams = {};
@@ -4095,6 +4099,17 @@ Zotero.utils = {
         }
         
         return date;
+    },
+    
+    readCookie: function(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
     },
     
     compareObs: function(ob1, ob2, checkVars){
