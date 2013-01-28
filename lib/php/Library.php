@@ -202,7 +202,7 @@ class Zotero_Library
                 'responseBody'=>$responseBody,
                 'responseInfo'=>$responseInfo,
             );
-            if($this->_cacheResponses){
+            if($this->_cacheResponses && !($zresponse->isError()) ){
                 apc_store($url, $saveCached, $this->_cachettl);
             }
         }

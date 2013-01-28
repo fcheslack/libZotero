@@ -90,7 +90,7 @@ class Zotero_Feed
             $this->title        = $feed->getElementsByTagName("title")->item(0)->nodeValue;
             $this->id           = $feed->getElementsByTagName("id")->item(0)->nodeValue;
             $this->dateUpdated  = $feed->getElementsByTagName("updated")->item(0)->nodeValue;
-            $this->apiVersion   = $feed->getElementsByTagName("apiVersion")->item(0)->nodeValue;
+            //$this->apiVersion   = $feed->getElementsByTagName("apiVersion")->item(0)->nodeValue;//apiVersion being removed from zotero responses
             $this->totalResults = $feed->getElementsByTagName("totalResults")->item(0)->nodeValue;
             
             // Get all of the link elements
@@ -1675,6 +1675,14 @@ class Zotero_Item extends Zotero_Entry
         }
     }
     
+    public function attachmentIsSnapshot(){
+        if(!isset($this->links['enclosure'])) return false;
+        if(!isset($this->links['enclosure']['text/html'])) return false;
+        $tail = substr($this->links['enclosure']['text/html']['href'], -4);
+        if($tail == "view") return true;
+        return false;
+    }
+    
     public function json(){
         return json_encode($this->apiObject());
     }
@@ -1775,6 +1783,7 @@ class Zotero_Group extends Zotero_Entry
      * @var int
      */
     public $owner;
+    public $ownerID;
     
     /**
      * @var string
@@ -1866,6 +1875,7 @@ class Zotero_Group extends Zotero_Entry
             //$this->etag = $contentNode->getAttribute('etag');
             $this->name = $this->apiObject['name'];
             $this->ownerID = $this->apiObject['owner'];
+            $this->owner = $this->ownerID;
             $this->groupType = $this->apiObject['type'];
             $this->description = $this->apiObject['description'];
             $this->url = $this->apiObject['url'];
@@ -1906,7 +1916,7 @@ class Zotero_Group extends Zotero_Entry
                 $this->owner = $this->ownerID;
                 $this->type = $jsonObject['type'];
                 $this->groupType = $this->type;
-                $this->description = urldecode($jsonObject['description']);
+                $this->description = $jsonObject['description'];
                 $this->url = $jsonObject['url'];
                 $this->hasImage = isset($jsonObject['hasImage']) ? $jsonObject['hasImage'] : 0;
                 $this->libraryEnabled = $jsonObject['libraryEnabled'];
@@ -1938,8 +1948,8 @@ class Zotero_Group extends Zotero_Entry
                 
                 $description = $entryNode->getElementsByTagName("description")->item(0);
                 if($description) {
-                    $this->properties['description'] = urldecode($description->nodeValue);
-                    $this->description = urldecode($description->nodeValue);
+                    $this->properties['description'] = $description->nodeValue;
+                    $this->description = $description->nodeValue;
                 }
                 
                 $url = $entryNode->getElementsByTagName("url")->item(0);
@@ -2006,7 +2016,7 @@ class Zotero_Group extends Zotero_Entry
     {
         $doc = new DOMDocument();
         $el = $doc->appendChild(new DOMElement('group'));
-        $el->appendChild(new DOMElement('description', urlencode($this->description)));
+        $el->appendChild(new DOMElement('description', $this->description));
         $el->appendChild(new DOMElement('url', $this->url));
         if($this->groupID){
             $el->setAttribute('id', $this->groupID);
@@ -2396,7 +2406,7 @@ class Zotero_Library
                 'responseBody'=>$responseBody,
                 'responseInfo'=>$responseInfo,
             );
-            if($this->_cacheResponses){
+            if($this->_cacheResponses && !($zresponse->isError()) ){
                 apc_store($url, $saveCached, $this->_cachettl);
             }
         }
@@ -3599,7 +3609,11 @@ class Zotero_Lib_Utils
     }
     
     public static function wrapDOIs($txt){
-        
+        $matches = array();
+        $doi = preg_match("(10\.[^\s\/]+\/[^\s]+)", $txt, $matches);
+        $m1 = htmlspecialchars($matches[0]);
+        $safetxt = htmlspecialchars($txt);
+        return "<a href=\"http://dx.doi.org/{$matches[0]}\" rel=\"nofollow\">{$safetxt}</a>";
     }
     
     public static function utilRequest($url, $method="GET", $body=NULL, $headers=array(), $basicauth=array() ) {
