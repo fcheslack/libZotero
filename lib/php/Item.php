@@ -343,7 +343,7 @@ class Zotero_Item extends Zotero_Entry
                 $contentString = '';
                 $childNodes = $scnode->childNodes;
                 foreach($childNodes as $childNode){
-                    $contentString .= $bibNode->ownerDocument->saveXML($childNode);
+                    $contentString .= $childNode->ownerDocument->saveXML($childNode);
                 }
                 $this->subContents[$type] = $contentString;
             }
@@ -478,6 +478,14 @@ class Zotero_Item extends Zotero_Entry
         if($hasEnclosure && ($linkMode == 0 || $linkMode == 1)){
             return true;
         }
+    }
+    
+    public function attachmentIsSnapshot(){
+        if(!isset($this->links['enclosure'])) return false;
+        if(!isset($this->links['enclosure']['text/html'])) return false;
+        $tail = substr($this->links['enclosure']['text/html']['href'], -4);
+        if($tail == "view") return true;
+        return false;
     }
     
     public function json(){

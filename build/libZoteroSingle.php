@@ -1538,7 +1538,7 @@ class Zotero_Item extends Zotero_Entry
                 $contentString = '';
                 $childNodes = $scnode->childNodes;
                 foreach($childNodes as $childNode){
-                    $contentString .= $bibNode->ownerDocument->saveXML($childNode);
+                    $contentString .= $childNode->ownerDocument->saveXML($childNode);
                 }
                 $this->subContents[$type] = $contentString;
             }
