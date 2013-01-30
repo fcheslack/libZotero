@@ -61,7 +61,7 @@ class Zotero_Feed
             $this->title        = $feed->getElementsByTagName("title")->item(0)->nodeValue;
             $this->id           = $feed->getElementsByTagName("id")->item(0)->nodeValue;
             $this->dateUpdated  = $feed->getElementsByTagName("updated")->item(0)->nodeValue;
-            $this->apiVersion   = $feed->getElementsByTagName("apiVersion")->item(0)->nodeValue;
+            //$this->apiVersion   = $feed->getElementsByTagName("apiVersion")->item(0)->nodeValue;//apiVersion being removed from zotero responses
             $this->totalResults = $feed->getElementsByTagName("totalResults")->item(0)->nodeValue;
             
             // Get all of the link elements
