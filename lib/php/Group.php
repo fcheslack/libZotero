@@ -26,6 +26,7 @@ class Zotero_Group extends Zotero_Entry
      * @var int
      */
     public $owner;
+    public $ownerID;
     
     /**
      * @var string
@@ -117,6 +118,7 @@ class Zotero_Group extends Zotero_Entry
             //$this->etag = $contentNode->getAttribute('etag');
             $this->name = $this->apiObject['name'];
             $this->ownerID = $this->apiObject['owner'];
+            $this->owner = $this->ownerID;
             $this->groupType = $this->apiObject['type'];
             $this->description = $this->apiObject['description'];
             $this->url = $this->apiObject['url'];
@@ -157,7 +159,7 @@ class Zotero_Group extends Zotero_Entry
                 $this->owner = $this->ownerID;
                 $this->type = $jsonObject['type'];
                 $this->groupType = $this->type;
-                $this->description = urldecode($jsonObject['description']);
+                $this->description = $jsonObject['description'];
                 $this->url = $jsonObject['url'];
                 $this->hasImage = isset($jsonObject['hasImage']) ? $jsonObject['hasImage'] : 0;
                 $this->libraryEnabled = $jsonObject['libraryEnabled'];
@@ -189,8 +191,8 @@ class Zotero_Group extends Zotero_Entry
                 
                 $description = $entryNode->getElementsByTagName("description")->item(0);
                 if($description) {
-                    $this->properties['description'] = urldecode($description->nodeValue);
-                    $this->description = urldecode($description->nodeValue);
+                    $this->properties['description'] = $description->nodeValue;
+                    $this->description = $description->nodeValue;
                 }
                 
                 $url = $entryNode->getElementsByTagName("url")->item(0);
@@ -257,7 +259,7 @@ class Zotero_Group extends Zotero_Entry
     {
         $doc = new DOMDocument();
         $el = $doc->appendChild(new DOMElement('group'));
-        $el->appendChild(new DOMElement('description', urlencode($this->description)));
+        $el->appendChild(new DOMElement('description', $this->description));
         $el->appendChild(new DOMElement('url', $this->url));
         if($this->groupID){
             $el->setAttribute('id', $this->groupID);
