@@ -32,7 +32,11 @@ class Zotero_Lib_Utils
     }
     
     public static function wrapDOIs($txt){
-        
+        $matches = array();
+        $doi = preg_match("(10\.[^\s\/]+\/[^\s]+)", $txt, $matches);
+        $m1 = htmlspecialchars($matches[0]);
+        $safetxt = htmlspecialchars($txt);
+        return "<a href=\"http://dx.doi.org/{$matches[0]}\" rel=\"nofollow\">{$safetxt}</a>";
     }
     
     public static function utilRequest($url, $method="GET", $body=NULL, $headers=array(), $basicauth=array() ) {
