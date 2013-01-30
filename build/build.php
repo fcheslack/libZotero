@@ -49,15 +49,18 @@ $jsfiles = array(
 'Collections.js',
 'Items.js',
 'Tags.js',
+'Searches.js',
 'Collection.js',
 'Item.js',
 'Tag.js',
+'Search.js',
 'Group.js',
 'User.js',
 'Utils.js',
 'Url.js',
 'File.js',
-'Filestorage.js'
+'Filestorage.js',
+'Idb.js'
 );
 
 $fulljs = "";
@@ -70,6 +73,8 @@ foreach($jsfiles as $file){
 file_put_contents('../build/libZoteroSingle.js', $fulljs);
 
 copy('../build/libZoteroSingle.js', '../../zotero/git-trunk/public/static/library/libZotero/libZoteroSingle.js');
+copy('../build/libZoteroSingle.js', '../../www-library/library/libZotero/libZoteroSingle.js');
 copy('../build/libZoteroSingle.php', '../../zotero/git-trunk/library/libZotero/libZoteroSingle.php');
+copy('../build/libZoteroSingle.php', '../../www-library/library/libZotero/libZoteroSingle.php');
 
 ?>
