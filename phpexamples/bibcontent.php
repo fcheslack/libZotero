@@ -18,6 +18,16 @@ $items = $library->fetchItemsTop(array('limit'=>10, 'content'=>'bib,citation,coi
 <body>
     <h2>Bib-Content</h2>
     <?foreach($items as $item):?>
+    <?
+    $doc = new DOMDocument();
+    $doc->loadXml($item->bibContent);
+    $linkNodes = $doc->getElementsByTagName("a");
+    foreach($linkNodes as $node){
+        $node->nodeValue = "Link";
+    }
+    $newBibContent = $doc->saveXML();
+    ?>
+    <p><?=$newBibContent;?></p>
     <p><?=$item->bibContent;?></p>
     <?endforeach;?>
     
