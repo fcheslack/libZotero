@@ -50,6 +50,7 @@ $jsfiles = array(
 'Items.js',
 'Tags.js',
 'Searches.js',
+'Deleted.js',
 'Collection.js',
 'Item.js',
 'Tag.js',

@@ -1285,6 +1285,7 @@ class Zotero_Library
         }
         $aparams = array('target'=>'userGroups', 'userID'=>$userID, 'content'=>'json', 'order'=>'title');
         $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
+        
         $response = $this->_request($reqUrl, 'GET');
         if($response->isError()){
             libZoteroDebug( $response->getStatus() );
