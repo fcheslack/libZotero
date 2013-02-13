@@ -62,7 +62,7 @@ var Zotero = {
              proxy: true,
              apiKey: '',
              ajax: 1,
-             futureApi: true,
+             apiVersion: 2,
              locale: 'en-US',
              cacheStoreType: 'localStorage',
              preloadCachedLibrary: true,
@@ -397,8 +397,8 @@ Zotero.apiRequest = function(url, method, body, headers){
         headers = {};
     }
     
-    if(Zotero.config.futureApi) {
-        headers['The-Future-Is-Now'] = 1;
+    if(Zotero.config.apiVersion){
+        headers['Zotero-API-Version'] = Zotero.config.apiVersion;
     }
     
     var settings = {type: method,
@@ -463,8 +463,8 @@ Zotero.ajaxRequest = function(url, type, options){
         reqOptions.type = type;
     }
     
-    if(Zotero.config.futureApi) {
-        reqOptions.headers['The-Future-Is-Now'] = 1;
+    if(Zotero.config.apiVersion){
+        reqOptions.headers['Zotero-API-Version'] = Zotero.config.apiVersion;
     }
     
     var urlstring;
@@ -916,8 +916,8 @@ Zotero.Library.prototype.ajaxRequest = function(url, type, options){
         reqOptions.type = type;
     }
     
-    if(Zotero.config.futureApi) {
-        reqOptions.headers['The-Future-Is-Now'] = 1;
+    if(Zotero.config.apiVersion){
+        reqOptions.headers['Zotero-API-Version'] = Zotero.config.apiVersion;
     }
     
     var urlstring;
@@ -2706,7 +2706,7 @@ Zotero.Collections.prototype.assignDepths = function(depth, cArray){
         });
     };
     J.each(this.collectionsArray, function(index, collection){
-        //Z.debug("index:" + index + " collectionKey:" + collection.collectionKey,4);
+        Z.debug("index:" + index + " collectionKey:" + collection.collectionKey,4);
         if(collection.topLevel){
             collection.nestingDepth = 1;
             if(collection.hasChildren){
@@ -3395,7 +3395,7 @@ Zotero.Item.prototype.dump = function(){
         'mimeType',
         'translatedMimeType',
         'linkMode',
-        'attachmentDownloadLink'
+        'attachmentDownloadUrl'
     ];
     for (var i = 0; i < dataProperties.length; i++) {
         dump[dataProperties[i]] = this[dataProperties[i]];
@@ -3421,7 +3421,7 @@ Zotero.Item.prototype.loadDump = function(dump){
         'mimeType',
         'translatedMimeType',
         'linkMode',
-        'attachmentDownloadLink'
+        'attachmentDownloadUrl'
     ];
     for (var i = 0; i < dataProperties.length; i++) {
         this[dataProperties[i]] = dump[dataProperties[i]];
@@ -3551,7 +3551,7 @@ Zotero.Item.prototype.parseJsonItemContent = function (cel) {
         item.linkMode = this.dataFields['linkMode'];
     }
     
-    item.attachmentDownloadLink = Zotero.url.attachmentDownloadLink(this);
+    this.attachmentDownloadUrl = Zotero.url.attachmentDownloadUrl(this);
     
     item.synced = true;
 };
