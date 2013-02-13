@@ -1,5 +1,6 @@
 <?php
 define('LIBZOTERO_DEBUG', 0);
+define('ZOTERO_API_VERSION', 2);
 function libZoteroDebug($m){
     if(LIBZOTERO_DEBUG){
         echo $m;
@@ -122,6 +123,9 @@ class Zotero_Library
         libZoteroDebug( "url being requested: " . $url . "\n\n");
         $ch = curl_init();
         $httpHeaders = array();
+        //set api version - allowed to be overridden by passed in value
+        $httpHeaders['Zotero-API-Version'] = ZOTERO_API_VERSION;
+        
         foreach($headers as $key=>$val){
             $httpHeaders[] = "$key: $val";
         }
