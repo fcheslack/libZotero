@@ -17,6 +17,7 @@ Zotero.config = {
     breadcrumbsBase: [],
     apiKey: '',
     ajax: 1,
+    apiVersion: 2,
     CORSallowed: false,
     locale: 'en-US',
     cacheStoreType: 'localStorage',
