@@ -146,7 +146,7 @@ class Zotero_Group extends Zotero_Entry
             $this->memberIDs = array();
         }
         
-        $this->numItems = $entryNode->getElementsByTagNameNS('*', 'numItems')->item(0)->nodeValue;
+        $this->numItems = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'numItems')->item(0)->nodeValue;
         
         $contentNodes = $entryNode->getElementsByTagName("content");
         if($contentNodes->length > 0){
@@ -221,8 +221,8 @@ class Zotero_Group extends Zotero_Entry
         }
         
         //get groupID from zapi:groupID if available
-        if($entryNode->getElementsByTagNameNS('*', 'groupID')->length > 0){
-            $this->groupID = $entryNode->getElementsByTagNameNS('*', 'groupID')->item(0)->nodeValue;
+        if($entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'groupID')->length > 0){
+            $this->groupID = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'groupID')->item(0)->nodeValue;
             $this->id = $this->groupID;
         }
         else{

@@ -37,6 +37,11 @@ class Zotero_Entry
      */
     public $author = array();
     
+    /**
+     * @var int
+     */
+    public $version = 0;
+    
     public $contentArray = array();
     
     /**
@@ -80,11 +85,12 @@ class Zotero_Entry
           }
       }
       
+      $this->version = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'version')->item(0)->nodeValue;
     }
     
     public function getContentType($entryNode){
       $contentNode = $entryNode->getElementsByTagName('content')->item(0);
-      if($contentNode) return $contentNode->getAttribute('type') || $contentNode->getAttribute('zapi:type');
+      if($contentNode) return $contentNode->getAttribute('type') || $contentNode->getAttributeNS('http://zotero.org/ns/api', 'type');
       else return false;
     }
     

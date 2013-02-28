@@ -11,12 +11,22 @@ class Zotero_Item extends Zotero_Entry
     /**
      * @var int
      */
+    public $itemVersion = 0;
+    
+    /**
+     * @var int
+     */
     public $itemKey = '';
 
     /**
      * @var string
      */
     public $itemType = null;
+    
+    /**
+     * @var string
+     */
+    public $year = '';
     
     /**
      * @var string
@@ -41,7 +51,7 @@ class Zotero_Item extends Zotero_Entry
     /**
      * @var string
      */
-    public $parentKey = '';
+    public $parentItemKey = '';
     
     /**
      * @var array
@@ -86,6 +96,8 @@ class Zotero_Item extends Zotero_Entry
     public $subContents = array();
     
     public $apiObject = array();
+    
+    public $pristine = null;
     
     /**
      * @var array
@@ -290,7 +302,7 @@ class Zotero_Item extends Zotero_Entry
         parent::__construct($entryNode);
         
         //check if we have multiple subcontent nodes
-        $subcontentNodes = $entryNode->getElementsByTagNameNS("*", "subcontent");
+        $subcontentNodes = $entryNode->getElementsByTagNameNS("http://zotero.org/ns/api", "subcontent");
         
         //save raw Content node in case we need it
         if($entryNode->getElementsByTagName("content")->length > 0){
@@ -299,35 +311,43 @@ class Zotero_Item extends Zotero_Entry
             $this->content = $d->saveXml($this->contentNode);
         }
         
-        
-        // Extract the itemId and itemType
-        $this->itemKey = $entryNode->getElementsByTagNameNS('*', 'key')->item(0)->nodeValue;
-        $this->itemType = $entryNode->getElementsByTagNameNS('*', 'itemType')->item(0)->nodeValue;
-        
-        // Look for numChildren node
-        $numChildrenNode = $entryNode->getElementsByTagNameNS('*', "numChildren")->item(0);
-        if($numChildrenNode){
-            $this->numChildren = $numChildrenNode->nodeValue;
-        }
-        
+        // Extract the zapi elements: object key, version, itemType, year, numChildren, numTags
+        $this->itemKey = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'key')->item(0)->nodeValue;
+        $this->itemVersion = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'version')->item(0)->nodeValue;
+        $this->itemType = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'itemType')->item(0)->nodeValue;
         // Look for numTags node
-        $numTagsNode = $entryNode->getElementsByTagNameNS('*', "numTags")->item(0);
+        // this may be always present in v2 api
+        $numTagsNode = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', "numTags")->item(0);
         if($numTagsNode){
             $this->numTags = $numTagsNode->nodeValue;
         }
         
-        $creatorSummaryNode = $entryNode->getElementsByTagNameNS('*', "creatorSummary")->item(0);
+        // Look for year node
+        $yearNode = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', "year")->item(0);
+        if($yearNode){
+            $this->year = $yearNode->nodeValue;
+        }
+        
+        // Look for numChildren node
+        $numChildrenNode = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', "numChildren")->item(0);
+        if($numChildrenNode){
+            $this->numChildren = $numChildrenNode->nodeValue;
+        }
+        
+        // Look for creatorSummary node - only present if there are non-empty creators
+        $creatorSummaryNode = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', "creatorSummary")->item(0);
         if($creatorSummaryNode){
             $this->creatorSummary = $creatorSummaryNode->nodeValue;
         }
         
+        // pull out and parse various subcontent nodes, or parse the single content node
         if($subcontentNodes->length > 0){
             for($i = 0; $i < $subcontentNodes->length; $i++){
                 $scnode = $subcontentNodes->item($i);
-                $type = $scnode->getAttribute('zapi:type');
+                $type = $scnode->getAttributeNS('http://zotero.org/ns/api', 'type');
                 if($type == 'application/json' || $type == 'json'){
                     $this->apiObject = json_decode($scnode->nodeValue, true);
-                    $this->etag = $scnode->getAttribute('zapi:etag');
+                    $this->etag = $scnode->getAttributeNS('http://zotero.org/ns/api', 'etag');
                     if(isset($this->apiObject['creators'])){
                         $this->creators = $this->apiObject['creators'];
                     }
@@ -351,11 +371,12 @@ class Zotero_Item extends Zotero_Entry
         else{
             $contentNode = $entryNode->getElementsByTagName('content')->item(0);
             $contentType = $contentNode->getAttribute('type');
-            $zType = $contentNode->getAttribute('zapi:type');
+            $zType = $contentNode->getAttributeNS('http://zotero.org/ns/api', 'type');
             
             if($contentType == 'application/json' || $contentType == 'json' || $zType == 'json'){
+                $this->pristine = $contentNode->nodeValue;
                 $this->apiObject = json_decode($contentNode->nodeValue, true);
-                $this->etag = $contentNode->getAttribute('zapi:etag');
+                
                 if(isset($this->apiObject['creators'])){
                     $this->creators = $this->apiObject['creators'];
                 }
@@ -367,9 +388,14 @@ class Zotero_Item extends Zotero_Entry
                 $bibNode = $contentNode->getElementsByTagName('div')->item(0);
                 $this->bibContent = $bibNode->ownerDocument->saveXML($bibNode);
             }
-            else{
-                //didn't find a content type we deal with
+            
+            $contentString = '';
+            $childNodes = $contentNode->childNodes;
+            foreach($childNodes as $childNode){
+                $contentString .= $childNode->ownerDocument->saveXML($childNode);
             }
+            $this->subContents[$zType] = $contentString;
+            
         }
         
         if(isset($this->links['up'])){
@@ -377,11 +403,11 @@ class Zotero_Item extends Zotero_Entry
             $matches = array();
             preg_match("/items\/([A-Z0-9]{8})/", $parentLink, $matches);
             if(count($matches) == 2){
-                $this->parentKey = $matches[1];
+                $this->parentItemKey = $matches[1];
             }
         }
         else{
-            $this->parentKey = false;
+            $this->parentItemKey = false;
         }
     }
     

@@ -30,6 +30,7 @@ class Zotero_Library
     public $collections = null;
     public $dirty = null;
     public $useLibraryAsContainer = true;
+    public $libraryVersion = 0;
     protected $_lastResponse = null;
     protected $_lastFeed = null;
     protected $_cacheResponses = false;
@@ -47,7 +48,7 @@ class Zotero_Library
      * @param string $cachettl cache time to live in seconds, cache disabled if 0
      * @return Zotero_Library
      */
-    public function __construct($libraryType = null, $libraryID = 'me', $libraryUrlIdentifier = null, $apiKey = null, $baseWebsiteUrl="http://www.zotero.org", $cachettl=0)
+    public function __construct($libraryType = null, $libraryID = null, $libraryUrlIdentifier = null, $apiKey = null, $baseWebsiteUrl="http://www.zotero.org", $cachettl=0)
     {
         $this->_apiKey = $apiKey;
         if (extension_loaded('curl')) {
@@ -124,7 +125,9 @@ class Zotero_Library
         $ch = curl_init();
         $httpHeaders = array();
         //set api version - allowed to be overridden by passed in value
-        $httpHeaders['Zotero-API-Version'] = ZOTERO_API_VERSION;
+        if(!isset($headers['Zotero-API-Version'])){
+            $headers['Zotero-API-Version'] = ZOTERO_API_VERSION;
+        }
         
         foreach($headers as $key=>$val){
             $httpHeaders[] = "$key: $val";

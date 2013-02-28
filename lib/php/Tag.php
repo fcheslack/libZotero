@@ -48,7 +48,7 @@ class Zotero_Tag extends Zotero_Entry
             return;
         }
         
-        $numItems = $entryNode->getElementsByTagNameNS('*', "numItems")->item(0);
+        $numItems = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', "numItems")->item(0);
         if($numItems) {
             $this->numItems = (int)$numItems->nodeValue;
         }

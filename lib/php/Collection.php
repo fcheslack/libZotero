@@ -10,6 +10,11 @@ class Zotero_Collection extends Zotero_Entry
     /**
      * @var int
      */
+    public $collectionVersion = 0;
+    
+    /**
+     * @var int
+     */
     public $collectionKey = null;
     
     public $name = '';
@@ -37,27 +42,35 @@ class Zotero_Collection extends Zotero_Entry
             return;
         }
         parent::__construct($entryNode);
-        // Extract the collectionKey
-        $this->collectionKey = $entryNode->getElementsByTagNameNS('*', 'key')->item(0)->nodeValue;
+        
+        $this->name = $this->title; //collection name is the Entry title
+        
+        //parse zapi tags
+        $this->collectionKey = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'key')->item(0)->nodeValue;
+        $this->collectionVersion = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'version')->item(0)->nodeValue;
         $this->numCollections = $entryNode->getElementsByTagName('numCollections')->item(0)->nodeValue;
         $this->numItems = $entryNode->getElementsByTagName('numItems')->item(0)->nodeValue;
         
         $contentNode = $entryNode->getElementsByTagName('content')->item(0);
-        $contentType = parent::getContentType($entryNode);
-        if($contentType == 'application/json'){
-            $this->contentArray = json_decode($contentNode->nodeValue, true);
-            $this->etag = $contentNode->getAttribute('etag');
-            $this->parentCollectionKey = $this->contentArray['parent'];
-            $this->name = $this->contentArray['name'];
+        if($contentNode){
+            $contentType = $contentNode->getAttribute('type');
+            if($contentType == 'application/json'){
+                $this->pristine = $contentNode->nodeValue;
+                $this->contentArray = json_decode($contentNode->nodeValue, true);
+                $this->parentCollectionKey = $this->contentArray['parentCollection'];
+                $this->name = $this->contentArray['name'];
+            }
+            elseif($contentType == 'xhtml'){
+                //$this->parseXhtmlContent($contentNode);
+            }
         }
-        elseif($contentType == 'xhtml'){
-            //$this->parseXhtmlContent($contentNode);
-        }
-        
     }
     
     public function collectionJson(){
-        return json_encode(array('name'=>$collection->name, 'parent'=>$collection->parentCollectionKey));
+        $newJson = json_decode($this->pristine, true);
+        $newJson['name'] = $this->name;
+        $newJson['parentCollection'] = $this->parentCollectionKey;
+        return json_encode($newJson);
     }
     
     public function dataObject() {
