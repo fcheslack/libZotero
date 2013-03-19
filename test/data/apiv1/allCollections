@@ -1,0 +1,277 @@
+HTTP/1.0 200 OK
+Date: Tue, 05 Mar 2013 19:15:46 GMT
+Server: Apache/2.2.15 (CentOS)
+X-Powered-By: PHP/5.3.8
+Zotero-API-Version: 1
+Connection: close
+Content-Type: application/atom+xml
+
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:zapi="http://zotero.org/ns/api">
+  <title>Zotero / Z public library / Collections</title>
+  <id>http://zotero.org/users/475425/collections?content=json</id>
+  <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections?content=json"/>
+  <link rel="first" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections?content=json"/>
+  <link rel="last" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections?content=json"/>
+  <link rel="alternate" type="text/html" href="https://www.zotero.org/users/475425/collections"/>
+  <zapi:totalResults>15</zapi:totalResults>
+  <zapi:apiVersion>1</zapi:apiVersion>
+  <updated>2011-06-29T14:29:32Z</updated>
+  <entry>
+    <title>R-intro</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/users/475425/collections/A5G9W6AX</id>
+    <published>2011-05-11T21:28:45Z</published>
+    <updated>2011-05-11T21:30:11Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/A5G9W6AX"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/users/475425/collections/A5G9W6AX"/>
+    <zapi:key>A5G9W6AX</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:numCollections>0</zapi:numCollections>
+    <zapi:numItems>0</zapi:numItems>
+    <content type="application/json" zapi:etag="116d93ef915bd4b8b50552169962c7a1" etag="116d93ef915bd4b8b50552169962c7a1">{"collectionKey":"A5G9W6AX","collectionVersion":1,"name":"R-intro","parent":false}</content>
+  </entry>
+  <entry>
+    <title>test collection</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/users/475425/collections/PMJDJ4D8</id>
+    <published>2011-03-08T19:01:10Z</published>
+    <updated>2011-03-08T19:04:19Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/PMJDJ4D8"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/users/475425/collections/PMJDJ4D8"/>
+    <zapi:key>PMJDJ4D8</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:numCollections>0</zapi:numCollections>
+    <zapi:numItems>4</zapi:numItems>
+    <content type="application/json" zapi:etag="f7ab764ee86be1500fad749cf1d9d47e" etag="f7ab764ee86be1500fad749cf1d9d47e">{"collectionKey":"PMJDJ4D8","collectionVersion":1,"name":"test collection","parent":false}</content>
+  </entry>
+  <entry>
+    <title>Sherlock Holmes</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/users/475425/collections/9KH9TNSJ</id>
+    <published>2011-02-02T22:19:00Z</published>
+    <updated>2011-05-11T21:32:57Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/9KH9TNSJ"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/users/475425/collections/9KH9TNSJ"/>
+    <zapi:key>9KH9TNSJ</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:numCollections>0</zapi:numCollections>
+    <zapi:numItems>20</zapi:numItems>
+    <content type="application/json" zapi:etag="31ac49b2473396f22cd3a5258c1788e4" etag="31ac49b2473396f22cd3a5258c1788e4">{"collectionKey":"9KH9TNSJ","collectionVersion":1,"name":"Sherlock Holmes","parent":false}</content>
+  </entry>
+  <entry>
+    <title>sherlock films</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/users/475425/collections/TVPC4XK4</id>
+    <published>2011-02-02T03:49:25Z</published>
+    <updated>2011-02-02T03:49:31Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/TVPC4XK4"/>
+    <link rel="up" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/QM6T3KHX"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/users/475425/collections/TVPC4XK4"/>
+    <zapi:key>TVPC4XK4</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:numCollections>0</zapi:numCollections>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json" zapi:etag="81ecdd4d9066e7792ad42b77df1fd21c" etag="81ecdd4d9066e7792ad42b77df1fd21c">{"collectionKey":"TVPC4XK4","collectionVersion":1,"name":"sherlock films","parent":"QM6T3KHX"}</content>
+  </entry>
+  <entry>
+    <title>Digital Newspaper project</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/users/475425/collections/M7MNCCXU</id>
+    <published>2011-01-31T02:29:00Z</published>
+    <updated>2011-01-31T02:29:00Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/M7MNCCXU"/>
+    <link rel="up" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/N7W92H48"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/users/475425/collections/M7MNCCXU"/>
+    <zapi:key>M7MNCCXU</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:numCollections>0</zapi:numCollections>
+    <zapi:numItems>0</zapi:numItems>
+    <content type="application/json" zapi:etag="362eadf5ca9b9e01fb44ef452840c954" etag="362eadf5ca9b9e01fb44ef452840c954">{"collectionKey":"M7MNCCXU","collectionVersion":1,"name":"Digital Newspaper project","parent":"N7W92H48"}</content>
+  </entry>
+  <entry>
+    <title>UK Library catalogs</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/users/475425/collections/RSFA2BQT</id>
+    <published>2011-01-28T21:35:42Z</published>
+    <updated>2011-01-28T21:38:14Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/RSFA2BQT"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/users/475425/collections/RSFA2BQT"/>
+    <zapi:key>RSFA2BQT</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:numCollections>0</zapi:numCollections>
+    <zapi:numItems>2</zapi:numItems>
+    <content type="application/json" zapi:etag="4e656304906e37be1da9b0439c46d301" etag="4e656304906e37be1da9b0439c46d301">{"collectionKey":"RSFA2BQT","collectionVersion":1,"name":"UK Library catalogs","parent":false}</content>
+  </entry>
+  <entry>
+    <title>Non-English items</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/users/475425/collections/QM6T3KHX</id>
+    <published>2011-01-13T03:36:16Z</published>
+    <updated>2011-04-23T16:42:07Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/QM6T3KHX"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/users/475425/collections/QM6T3KHX"/>
+    <zapi:key>QM6T3KHX</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:numCollections>1</zapi:numCollections>
+    <zapi:numItems>11</zapi:numItems>
+    <content type="application/json" zapi:etag="ddab45088826373953283fc9396ddbb5" etag="ddab45088826373953283fc9396ddbb5">{"collectionKey":"QM6T3KHX","collectionVersion":1,"name":"Non-English items","parent":false}</content>
+  </entry>
+  <entry>
+    <title>Newspapers</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/users/475425/collections/3DKBJE5C</id>
+    <published>2011-01-13T03:26:11Z</published>
+    <updated>2011-03-29T17:48:57Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/3DKBJE5C"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/users/475425/collections/3DKBJE5C"/>
+    <zapi:key>3DKBJE5C</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:numCollections>0</zapi:numCollections>
+    <zapi:numItems>11</zapi:numItems>
+    <content type="application/json" zapi:etag="6aaef6a0dae138ee12e7521f2f039f60" etag="6aaef6a0dae138ee12e7521f2f039f60">{"collectionKey":"3DKBJE5C","collectionVersion":1,"name":"Newspapers","parent":false}</content>
+  </entry>
+  <entry>
+    <title>LoC</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/users/475425/collections/N7W92H48</id>
+    <published>2011-01-13T02:56:55Z</published>
+    <updated>2011-06-29T14:29:32Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/N7W92H48"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/users/475425/collections/N7W92H48"/>
+    <zapi:key>N7W92H48</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:numCollections>1</zapi:numCollections>
+    <zapi:numItems>16</zapi:numItems>
+    <content type="application/json" zapi:etag="d44eddecdcb911ebd20ed6f09cc4146a" etag="d44eddecdcb911ebd20ed6f09cc4146a">{"collectionKey":"N7W92H48","collectionVersion":1,"name":"LoC","parent":false}</content>
+  </entry>
+  <entry>
+    <title>pubmed</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/users/475425/collections/2GUIGKC9</id>
+    <published>2011-01-13T02:39:05Z</published>
+    <updated>2011-04-11T16:38:11Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/2GUIGKC9"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/users/475425/collections/2GUIGKC9"/>
+    <zapi:key>2GUIGKC9</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:numCollections>0</zapi:numCollections>
+    <zapi:numItems>12</zapi:numItems>
+    <content type="application/json" zapi:etag="52a953883ea4440135f08cdecd5602ad" etag="52a953883ea4440135f08cdecd5602ad">{"collectionKey":"2GUIGKC9","collectionVersion":1,"name":"pubmed","parent":false}</content>
+  </entry>
+  <entry>
+    <title>Zotero techy stuff</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/users/475425/collections/ID5R4RZ8</id>
+    <published>2011-01-11T19:29:27Z</published>
+    <updated>2011-01-28T21:43:19Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/ID5R4RZ8"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/users/475425/collections/ID5R4RZ8"/>
+    <zapi:key>ID5R4RZ8</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:numCollections>0</zapi:numCollections>
+    <zapi:numItems>16</zapi:numItems>
+    <content type="application/json" zapi:etag="207e3d55b8448c41dfd119d0031765be" etag="207e3d55b8448c41dfd119d0031765be">{"collectionKey":"ID5R4RZ8","collectionVersion":1,"name":"Zotero techy stuff","parent":false}</content>
+  </entry>
+  <entry>
+    <title>Zotero features</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/users/475425/collections/WI2VHT9X</id>
+    <published>2011-01-11T19:25:59Z</published>
+    <updated>2011-01-28T21:43:26Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/WI2VHT9X"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/users/475425/collections/WI2VHT9X"/>
+    <zapi:key>WI2VHT9X</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:numCollections>0</zapi:numCollections>
+    <zapi:numItems>6</zapi:numItems>
+    <content type="application/json" zapi:etag="b4e9c355a4fb1fd49be4d80bd402ec1f" etag="b4e9c355a4fb1fd49be4d80bd402ec1f">{"collectionKey":"WI2VHT9X","collectionVersion":1,"name":"Zotero features","parent":false}</content>
+  </entry>
+  <entry>
+    <title>US Library Catalogs</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/users/475425/collections/ZXRVVG77</id>
+    <published>2011-01-11T19:22:28Z</published>
+    <updated>2011-01-28T21:35:31Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/ZXRVVG77"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/users/475425/collections/ZXRVVG77"/>
+    <zapi:key>ZXRVVG77</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:numCollections>0</zapi:numCollections>
+    <zapi:numItems>26</zapi:numItems>
+    <content type="application/json" zapi:etag="2ecd1f4acfb18ab3986c50ea90b776a7" etag="2ecd1f4acfb18ab3986c50ea90b776a7">{"collectionKey":"ZXRVVG77","collectionVersion":1,"name":"US Library Catalogs","parent":false}</content>
+  </entry>
+  <entry>
+    <title>Humanities</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/users/475425/collections/9MK5KS97</id>
+    <published>2011-01-11T19:22:05Z</published>
+    <updated>2011-06-29T14:29:32Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/9MK5KS97"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/users/475425/collections/9MK5KS97"/>
+    <zapi:key>9MK5KS97</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:numCollections>0</zapi:numCollections>
+    <zapi:numItems>12</zapi:numItems>
+    <content type="application/json" zapi:etag="a75e06b855b429a8a153448941eac3e8" etag="a75e06b855b429a8a153448941eac3e8">{"collectionKey":"9MK5KS97","collectionVersion":1,"name":"Humanities","parent":false}</content>
+  </entry>
+  <entry>
+    <title>Sciences (miscellaneous)</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/users/475425/collections/BX9965IJ</id>
+    <published>2011-01-11T19:20:39Z</published>
+    <updated>2011-05-16T14:36:41Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/BX9965IJ"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/users/475425/collections/BX9965IJ"/>
+    <zapi:key>BX9965IJ</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:numCollections>0</zapi:numCollections>
+    <zapi:numItems>26</zapi:numItems>
+    <content type="application/json" zapi:etag="85a42611939da3759f8aef3cf771bf9c" etag="85a42611939da3759f8aef3cf771bf9c">{"collectionKey":"BX9965IJ","collectionVersion":1,"name":"Sciences (miscellaneous)","parent":false}</content>
+  </entry>
+</feed>

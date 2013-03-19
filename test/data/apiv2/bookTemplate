@@ -1,0 +1,11 @@
+HTTP/1.0 200 OK
+Date: Mon, 18 Mar 2013 18:30:12 GMT
+Server: Apache/2.2.15 (CentOS)
+X-Powered-By: PHP/5.3.8
+Zotero-API-Version: 2
+Content-Length: 441
+Keep-Alive: timeout=30, max=100
+Connection: keep-alive
+Content-Type: application/json
+
+{"itemType":"book","title":"","creators":[{"creatorType":"author","firstName":"","lastName":""}],"abstractNote":"","series":"","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"","publisher":"","date":"","numPages":"","language":"","ISBN":"","shortTitle":"","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"","callNumber":"","rights":"","extra":"","tags":[],"collections":[],"relations":{}}

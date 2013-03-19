@@ -51,6 +51,19 @@ class Zotero_Entry
     
     public function __construct($entryNode)
     {
+      if(!($entryNode instanceof DOMNode)){
+          if(is_string($entryNode)){
+            $doc = new DOMDocument();
+            $doc->loadXml($entryNode);
+            $entryNodes = $doc->getElementsByTagName("entry");
+            if($entryNodes->length){
+              $entryNode = $entryNodes->item(0);
+            }
+            else {
+              return null;
+            }
+          }
+      }
       $parseFields = array('title', 'id', 'dateAdded', 'dateUpdated', 'author');
       $this->title       = $entryNode->getElementsByTagName("title")->item(0)->nodeValue;
       $this->id          = $entryNode->getElementsByTagName("id")->item(0)->nodeValue;
@@ -84,8 +97,6 @@ class Zotero_Entry
                                           );
           }
       }
-      
-      $this->version = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'version')->item(0)->nodeValue;
     }
     
     public function getContentType($entryNode){
@@ -94,4 +105,9 @@ class Zotero_Entry
       else return false;
     }
     
+    public function associateWithLibrary($library){
+        $this->libraryType = $library->libraryType;
+        $this->libraryID = $library->libraryID;
+        $this->owningLibrary = $library;
+    }
 }

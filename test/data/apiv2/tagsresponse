@@ -1,0 +1,720 @@
+HTTP/1.0 200 OK
+Date: Tue, 12 Mar 2013 17:39:07 GMT
+Server: Apache/2.2.15 (CentOS)
+X-Powered-By: PHP/5.3.8
+Zotero-API-Version: 2
+Last-Modified-Version: 3655
+Connection: close
+Content-Type: application/atom+xml
+
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:zapi="http://zotero.org/ns/api">
+  <title>Zotero / Z public library / Tags</title>
+  <id>http://zotero.org/users/475425/tags?content=json</id>
+  <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags?content=json"/>
+  <link rel="first" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags?content=json"/>
+  <link rel="next" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags?content=json&amp;start=50"/>
+  <link rel="last" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags?content=json&amp;start=150"/>
+  <zapi:totalResults>192</zapi:totalResults>
+  <updated>2011-04-11T16:37:49Z</updated>
+  <entry>
+    <title>Fitzharris, Edward, 1648?-1681 -- Early works to 1800. ; Great Britain -- History -- Charles II, 1660-1685 -- Early works to 1800.</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Fitzharris%2C+Edward%2C+1648%3F-1681+--+Early+works+to+1800.+%3B+Great+Britain+--+History+--+Charles+II%2C+1660-1685+--+Early+works+to+1800.</id>
+    <published>2011-04-11T16:28:58Z</published>
+    <updated>2011-04-11T16:37:49Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Fitzharris%2C+Edward%2C+1648%3F-1681+--+Early+works+to+1800.+%3B+Great+Britain+--+History+--+Charles+II%2C+1660-1685+--+Early+works+to+1800."/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Fitzharris%2C+Edward%2C+1648%3F-1681+--+Early+works+to+1800.+%3B+Great+Britain+--+History+--+Charles+II%2C+1660-1685+--+Early+works+to+1800."/>
+    <zapi:numItems>4</zapi:numItems>
+    <content type="application/json">{"tag":"Fitzharris, Edward, 1648?-1681 -- Early works to 1800. ; Great Britain -- History -- Charles II, 1660-1685 -- Early works to 1800.","type":1}</content>
+  </entry>
+  <entry>
+    <title>New York Times</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/New+York+Times</id>
+    <published>2011-03-29T17:41:41Z</published>
+    <updated>2011-03-29T17:48:57Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/New+York+Times"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/New+York+Times"/>
+    <zapi:numItems>2</zapi:numItems>
+    <content type="application/json">{"tag":"New York Times","type":1}</content>
+  </entry>
+  <entry>
+    <title>Newspapers</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Newspapers</id>
+    <published>2011-03-29T17:41:41Z</published>
+    <updated>2011-03-29T17:48:57Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Newspapers"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Newspapers"/>
+    <zapi:numItems>2</zapi:numItems>
+    <content type="application/json">{"tag":"Newspapers","type":1}</content>
+  </entry>
+  <entry>
+    <title>Computers and the Internet</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Computers+and+the+Internet</id>
+    <published>2011-03-29T17:41:41Z</published>
+    <updated>2011-03-29T17:48:57Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Computers+and+the+Internet"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Computers+and+the+Internet"/>
+    <zapi:numItems>2</zapi:numItems>
+    <content type="application/json">{"tag":"Computers and the Internet","type":1}</content>
+  </entry>
+  <entry>
+    <title>Prices (Fares, Fees and Rates)</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Prices+%28Fares%2C+Fees+and+Rates%29</id>
+    <published>2011-03-29T17:41:41Z</published>
+    <updated>2011-03-29T17:48:57Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Prices+%28Fares%2C+Fees+and+Rates%29"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Prices+%28Fares%2C+Fees+and+Rates%29"/>
+    <zapi:numItems>2</zapi:numItems>
+    <content type="application/json">{"tag":"Prices (Fares, Fees and Rates)","type":1}</content>
+  </entry>
+  <entry>
+    <title>Lee, Robert E</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Lee%2C+Robert+E</id>
+    <published>2011-03-20T17:07:22Z</published>
+    <updated>2011-03-20T17:07:22Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Lee%2C+Robert+E"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Lee%2C+Robert+E"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Lee, Robert E","type":1}</content>
+  </entry>
+  <entry>
+    <title>Robert Edward</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Robert+Edward</id>
+    <published>2011-03-20T17:07:22Z</published>
+    <updated>2011-03-20T17:07:22Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Robert+Edward"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Robert+Edward"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Robert Edward","type":1}</content>
+  </entry>
+  <entry>
+    <title>Confederate States of America</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Confederate+States+of+America</id>
+    <published>2011-03-20T17:07:22Z</published>
+    <updated>2011-03-20T17:07:22Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Confederate+States+of+America"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Confederate+States+of+America"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Confederate States of America","type":1}</content>
+  </entry>
+  <entry>
+    <title>Science fiction films</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Science+fiction+films</id>
+    <published>2011-03-08T19:04:18Z</published>
+    <updated>2011-03-08T19:04:18Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Science+fiction+films"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Science+fiction+films"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Science fiction films","type":1}</content>
+  </entry>
+  <entry>
+    <title>Virgin Islands of the United States</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Virgin+Islands+of+the+United+States</id>
+    <published>2011-03-08T19:03:40Z</published>
+    <updated>2011-03-08T19:03:40Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Virgin+Islands+of+the+United+States"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Virgin+Islands+of+the+United+States"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Virgin Islands of the United States","type":1}</content>
+  </entry>
+  <entry>
+    <title>Puerto Rico</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Puerto+Rico</id>
+    <published>2011-03-08T19:03:40Z</published>
+    <updated>2011-03-08T19:03:40Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Puerto+Rico"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Puerto+Rico"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Puerto Rico","type":1}</content>
+  </entry>
+  <entry>
+    <title>Water resources development</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Water+resources+development</id>
+    <published>2011-03-08T19:03:40Z</published>
+    <updated>2011-03-08T19:03:40Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Water+resources+development"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Water+resources+development"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Water resources development","type":1}</content>
+  </entry>
+  <entry>
+    <title>Orwell, George</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Orwell%2C+George</id>
+    <published>2011-03-08T19:03:34Z</published>
+    <updated>2011-03-08T19:03:34Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Orwell%2C+George"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Orwell%2C+George"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Orwell, George","type":1}</content>
+  </entry>
+  <entry>
+    <title>Nineteen eighty-four</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Nineteen+eighty-four</id>
+    <published>2011-03-08T19:03:34Z</published>
+    <updated>2011-03-08T19:03:34Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Nineteen+eighty-four"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Nineteen+eighty-four"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Nineteen eighty-four","type":1}</content>
+  </entry>
+  <entry>
+    <title>Dystopias</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Dystopias</id>
+    <published>2011-03-08T19:03:30Z</published>
+    <updated>2011-03-08T19:04:18Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Dystopias"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Dystopias"/>
+    <zapi:numItems>2</zapi:numItems>
+    <content type="application/json">{"tag":"Dystopias","type":1}</content>
+  </entry>
+  <entry>
+    <title>Totalitarianism</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Totalitarianism</id>
+    <published>2011-03-08T19:03:30Z</published>
+    <updated>2011-03-08T19:04:18Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Totalitarianism"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Totalitarianism"/>
+    <zapi:numItems>2</zapi:numItems>
+    <content type="application/json">{"tag":"Totalitarianism","type":1}</content>
+  </entry>
+  <entry>
+    <title>editors' letter, individual editors letters, harlot, harlot of the arts, harlot: a revealing look at the arts of persuasion, issue 3</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/editors%27+letter%2C+individual+editors+letters%2C+harlot%2C+harlot+of+the+arts%2C+harlot%3A+a+revealing+look+at+the+arts+of+persuasion%2C+issue+3</id>
+    <published>2011-02-18T19:29:16Z</published>
+    <updated>2011-02-18T19:29:16Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/editors%27+letter%2C+individual+editors+letters%2C+harlot%2C+harlot+of+the+arts%2C+harlot%3A+a+revealing+look+at+the+arts+of+persuasion%2C+issue+3"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/editors%27+letter%2C+individual+editors+letters%2C+harlot%2C+harlot+of+the+arts%2C+harlot%3A+a+revealing+look+at+the+arts+of+persuasion%2C+issue+3"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"editors' letter, individual editors letters, harlot, harlot of the arts, harlot: a revealing look at the arts of persuasion, issue 3","type":1}</content>
+  </entry>
+  <entry>
+    <title>Murderers -- Fiction.</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Murderers+--+Fiction.</id>
+    <published>2011-02-10T17:30:39Z</published>
+    <updated>2011-02-10T17:30:39Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Murderers+--+Fiction."/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Murderers+--+Fiction."/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Murderers -- Fiction.","type":1}</content>
+  </entry>
+  <entry>
+    <title>Cell phones -- Fiction.</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Cell+phones+--+Fiction.</id>
+    <published>2011-02-10T17:30:39Z</published>
+    <updated>2011-02-10T17:30:39Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Cell+phones+--+Fiction."/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Cell+phones+--+Fiction."/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Cell phones -- Fiction.","type":1}</content>
+  </entry>
+  <entry>
+    <title>Murder</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Murder</id>
+    <published>2011-02-02T22:23:56Z</published>
+    <updated>2011-02-02T22:23:56Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Murder"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Murder"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Murder","type":1}</content>
+  </entry>
+  <entry>
+    <title>Holmes, Sherlock (Fictitious character)</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Holmes%2C+Sherlock+%28Fictitious+character%29</id>
+    <published>2011-02-02T22:23:56Z</published>
+    <updated>2011-02-02T22:24:00Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Holmes%2C+Sherlock+%28Fictitious+character%29"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Holmes%2C+Sherlock+%28Fictitious+character%29"/>
+    <zapi:numItems>2</zapi:numItems>
+    <content type="application/json">{"tag":"Holmes, Sherlock (Fictitious character)","type":1}</content>
+  </entry>
+  <entry>
+    <title>Moriarty, Professor (Fictitious character)</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Moriarty%2C+Professor+%28Fictitious+character%29</id>
+    <published>2011-02-02T22:23:56Z</published>
+    <updated>2011-02-02T22:23:56Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Moriarty%2C+Professor+%28Fictitious+character%29"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Moriarty%2C+Professor+%28Fictitious+character%29"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Moriarty, Professor (Fictitious character)","type":1}</content>
+  </entry>
+  <entry>
+    <title>Detective and mystery films</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Detective+and+mystery+films</id>
+    <published>2011-02-02T22:23:56Z</published>
+    <updated>2011-02-02T22:23:56Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Detective+and+mystery+films"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Detective+and+mystery+films"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Detective and mystery films","type":1}</content>
+  </entry>
+  <entry>
+    <title>Doyle, Arthur Conan</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Doyle%2C+Arthur+Conan</id>
+    <published>2011-02-02T22:23:39Z</published>
+    <updated>2011-02-02T22:23:39Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Doyle%2C+Arthur+Conan"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Doyle%2C+Arthur+Conan"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Doyle, Arthur Conan","type":1}</content>
+  </entry>
+  <entry>
+    <title>Cushing, Peter</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Cushing%2C+Peter</id>
+    <published>2011-02-02T22:23:35Z</published>
+    <updated>2011-02-02T22:23:35Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Cushing%2C+Peter"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Cushing%2C+Peter"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Cushing, Peter","type":1}</content>
+  </entry>
+  <entry>
+    <title>Sherlock Holmes films</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Sherlock+Holmes+films</id>
+    <published>2011-02-02T22:23:35Z</published>
+    <updated>2011-02-02T22:23:35Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Sherlock+Holmes+films"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Sherlock+Holmes+films"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Sherlock Holmes films","type":1}</content>
+  </entry>
+  <entry>
+    <title>Detective and mystery stories, American</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Detective+and+mystery+stories%2C+American</id>
+    <published>2011-02-02T22:22:24Z</published>
+    <updated>2011-02-02T22:22:24Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Detective+and+mystery+stories%2C+American"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Detective+and+mystery+stories%2C+American"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Detective and mystery stories, American","type":1}</content>
+  </entry>
+  <entry>
+    <title>Detective and mystery stories, English</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Detective+and+mystery+stories%2C+English</id>
+    <published>2011-02-02T22:22:24Z</published>
+    <updated>2011-02-02T22:24:00Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Detective+and+mystery+stories%2C+English"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Detective+and+mystery+stories%2C+English"/>
+    <zapi:numItems>2</zapi:numItems>
+    <content type="application/json">{"tag":"Detective and mystery stories, English","type":1}</content>
+  </entry>
+  <entry>
+    <title>History and criticism</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/History+and+criticism</id>
+    <published>2011-02-02T22:22:24Z</published>
+    <updated>2011-02-02T22:22:24Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/History+and+criticism"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/History+and+criticism"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"History and criticism","type":1}</content>
+  </entry>
+  <entry>
+    <title>Crime in literature</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Crime+in+literature</id>
+    <published>2011-02-02T22:22:24Z</published>
+    <updated>2011-02-02T22:22:24Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Crime+in+literature"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Crime+in+literature"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Crime in literature","type":1}</content>
+  </entry>
+  <entry>
+    <title>sherlockholmes</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/sherlockholmes</id>
+    <published>2011-02-02T03:24:38Z</published>
+    <updated>2011-02-02T03:24:38Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/sherlockholmes"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/sherlockholmes"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"sherlockholmes","type":1}</content>
+  </entry>
+  <entry>
+    <title>robertdowneyjr</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/robertdowneyjr</id>
+    <published>2011-02-02T03:24:38Z</published>
+    <updated>2011-02-02T03:24:38Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/robertdowneyjr"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/robertdowneyjr"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"robertdowneyjr","type":1}</content>
+  </entry>
+  <entry>
+    <title>judelaw</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/judelaw</id>
+    <published>2011-02-02T03:24:38Z</published>
+    <updated>2011-02-02T03:24:38Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/judelaw"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/judelaw"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"judelaw","type":1}</content>
+  </entry>
+  <entry>
+    <title>Internet resourc</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Internet+resourc</id>
+    <published>2011-01-28T21:41:50Z</published>
+    <updated>2011-01-28T21:41:50Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Internet+resourc"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Internet+resourc"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Internet resourc","type":1}</content>
+  </entry>
+  <entry>
+    <title>Internet resource</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Internet+resource</id>
+    <published>2011-01-28T21:41:42Z</published>
+    <updated>2011-01-28T21:41:42Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Internet+resource"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Internet+resource"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Internet resource","type":1}</content>
+  </entry>
+  <entry>
+    <title>1945-</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/1945-</id>
+    <published>2011-01-28T21:38:03Z</published>
+    <updated>2011-01-28T21:38:03Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/1945-"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/1945-"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"1945-","type":1}</content>
+  </entry>
+  <entry>
+    <title>Communities</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Communities</id>
+    <published>2011-01-28T21:38:03Z</published>
+    <updated>2011-01-28T21:38:03Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Communities"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Communities"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Communities","type":1}</content>
+  </entry>
+  <entry>
+    <title>Great Britain</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Great+Britain</id>
+    <published>2011-01-28T21:38:03Z</published>
+    <updated>2011-01-28T21:38:03Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Great+Britain"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Great+Britain"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Great Britain","type":1}</content>
+  </entry>
+  <entry>
+    <title>Social conditions</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Social+conditions</id>
+    <published>2011-01-28T21:38:03Z</published>
+    <updated>2011-01-28T21:38:03Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Social+conditions"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Social+conditions"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Social conditions","type":1}</content>
+  </entry>
+  <entry>
+    <title>Zotero API</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Zotero+API</id>
+    <published>2011-01-19T00:44:00Z</published>
+    <updated>2011-01-19T00:44:00Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Zotero+API"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Zotero+API"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Zotero API","type":0}</content>
+  </entry>
+  <entry>
+    <title>R&#xED;os, Juli&#xE1;n</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/R%C3%ADos%2C+Juli%C3%A1n</id>
+    <published>2011-01-18T23:22:06Z</published>
+    <updated>2011-01-18T23:22:06Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/R%C3%ADos%2C+Juli%C3%A1n"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/R%C3%ADos%2C+Juli%C3%A1n"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"R\u00edos, Juli\u00e1n","type":1}</content>
+  </entry>
+  <entry>
+    <title>Larva</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Larva</id>
+    <published>2011-01-18T23:22:06Z</published>
+    <updated>2011-01-18T23:22:06Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Larva"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Larva"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Larva","type":1}</content>
+  </entry>
+  <entry>
+    <title>Fantasy films</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Fantasy+films</id>
+    <published>2011-01-18T23:20:37Z</published>
+    <updated>2011-01-18T23:20:37Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Fantasy+films"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Fantasy+films"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Fantasy films","type":1}</content>
+  </entry>
+  <entry>
+    <title>Jones, Indiana (Fictitious character)</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Jones%2C+Indiana+%28Fictitious+character%29</id>
+    <published>2011-01-18T23:20:37Z</published>
+    <updated>2011-01-18T23:20:37Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Jones%2C+Indiana+%28Fictitious+character%29"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Jones%2C+Indiana+%28Fictitious+character%29"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Jones, Indiana (Fictitious character)","type":1}</content>
+  </entry>
+  <entry>
+    <title>Fiction films</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Fiction+films</id>
+    <published>2011-01-18T23:20:37Z</published>
+    <updated>2011-01-18T23:20:37Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Fiction+films"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Fiction+films"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Fiction films","type":1}</content>
+  </entry>
+  <entry>
+    <title>Film sequels</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Film+sequels</id>
+    <published>2011-01-18T23:20:37Z</published>
+    <updated>2011-01-18T23:20:37Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Film+sequels"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Film+sequels"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Film sequels","type":1}</content>
+  </entry>
+  <entry>
+    <title>Antiquities</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Antiquities</id>
+    <published>2011-01-18T23:20:37Z</published>
+    <updated>2011-01-18T23:20:37Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Antiquities"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Antiquities"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Antiquities","type":1}</content>
+  </entry>
+  <entry>
+    <title>Adventure films</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Adventure+films</id>
+    <published>2011-01-18T23:20:37Z</published>
+    <updated>2011-01-18T23:20:37Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Adventure+films"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Adventure+films"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Adventure films","type":1}</content>
+  </entry>
+  <entry>
+    <title>Jones, Rufus Matthew</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Jones%2C+Rufus+Matthew</id>
+    <published>2011-01-18T23:20:30Z</published>
+    <updated>2011-01-18T23:20:30Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Jones%2C+Rufus+Matthew"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Jones%2C+Rufus+Matthew"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Jones, Rufus Matthew","type":1}</content>
+  </entry>
+  <entry>
+    <title>Television music</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/tags/Television+music</id>
+    <published>2011-01-18T23:20:26Z</published>
+    <updated>2011-01-18T23:20:26Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/tags/Television+music"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/tag/Television+music"/>
+    <zapi:numItems>1</zapi:numItems>
+    <content type="application/json">{"tag":"Television music","type":1}</content>
+  </entry>
+</feed>

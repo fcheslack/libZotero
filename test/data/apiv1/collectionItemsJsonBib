@@ -1,0 +1,557 @@
+HTTP/1.0 200 OK
+Date: Tue, 05 Mar 2013 18:26:20 GMT
+Server: Apache/2.2.15 (CentOS)
+X-Powered-By: PHP/5.3.8
+Zotero-API-Version: 1
+Connection: close
+Content-Type: application/atom+xml
+
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:zapi="http://zotero.org/ns/api">
+  <title>Zotero / Z public library / Top-Level Items in Collection &#x2018;Sherlock Holmes&#x2019;</title>
+  <id>http://zotero.org/users/475425/collections/9KH9TNSJ/items?content=bib%2Cjson</id>
+  <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/9KH9TNSJ/items?content=bib%2Cjson"/>
+  <link rel="first" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/9KH9TNSJ/items?content=bib%2Cjson"/>
+  <link rel="last" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/9KH9TNSJ/items?content=bib%2Cjson"/>
+  <link rel="alternate" type="text/html" href="https://www.zotero.org/users/475425/collections/9KH9TNSJ/items"/>
+  <zapi:totalResults>20</zapi:totalResults>
+  <zapi:apiVersion>1</zapi:apiVersion>
+  <updated>2011-02-02T22:26:36Z</updated>
+  <entry>
+    <title>HowStuffWorks "How Earthquakes Work"</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/NM66T6EF</id>
+    <published>2011-02-02T22:26:36Z</published>
+    <updated>2011-02-02T22:26:36Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/NM66T6EF?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/NM66T6EF"/>
+    <zapi:key>NM66T6EF</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>webpage</zapi:itemType>
+    <zapi:year/>
+    <zapi:numChildren>2</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">&#x201C;HowStuffWorks &#x2018;How Earthquakes Work&#x2019;.&#x201D; Accessed February 2, 2011. http://science.howstuffworks.com/nature/natural-disasters/earthquake.htm.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="b0e4895ece6350453e830571e89a0983">{"itemType":"webpage","title":"HowStuffWorks \"How Earthquakes Work\"","creators":[],"abstractNote":"","websiteTitle":"","websiteType":"","date":"","shortTitle":"","url":"http://science.howstuffworks.com/nature/natural-disasters/earthquake.htm","accessDate":"2011-02-02 22:26:36","language":"","rights":"","extra":"","tags":[]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>Sherlock Holmes in Babylon</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/PQKBRC33</id>
+    <published>2011-02-02T22:25:04Z</published>
+    <updated>2011-02-02T22:25:04Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/PQKBRC33?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/PQKBRC33"/>
+    <zapi:key>PQKBRC33</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>journalArticle</zapi:itemType>
+    <zapi:creatorSummary>R. Creighton Buck</zapi:creatorSummary>
+    <zapi:year>1980</zapi:year>
+    <zapi:numChildren>2</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">R. Creighton Buck. &#x201C;Sherlock Holmes in Babylon.&#x201D; <i>The American Mathematical Monthly</i> 87, no. 5 (May 1, 1980): 335&#x2013;345. doi:10.2307/2321200.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="b0e4895ece6350453e830571e89a0983">{"itemType":"journalArticle","title":"Sherlock Holmes in Babylon","creators":[{"creatorType":"author","firstName":"","lastName":"R. Creighton Buck"}],"abstractNote":"","publicationTitle":"The American Mathematical Monthly","volume":"87","issue":"5","pages":"335-345","date":"May 01, 1980","series":"","seriesTitle":"","seriesText":"","journalAbbreviation":"","language":"","DOI":"10.2307/2321200","ISSN":"00029890","shortTitle":"","url":"http://www.jstor.org/stable/2321200","accessDate":"2011-02-02 22:25:04","archive":"","archiveLocation":"","libraryCatalog":"JSTOR","callNumber":"","rights":"","extra":"ArticleType: research-article / Full publication date: May, 1980 / Copyright \u00a9 1980 Mathematical Association of America","tags":[]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>The Annotated Sherlock Holmes: The Four Novels and Fifty-Six Short Stories Complete</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/Z8N84QAJ</id>
+    <published>2011-02-02T22:23:59Z</published>
+    <updated>2011-02-02T22:23:59Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/Z8N84QAJ?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/Z8N84QAJ"/>
+    <zapi:key>Z8N84QAJ</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>Doyle</zapi:creatorSummary>
+    <zapi:year>1992</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>3</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">Doyle, Arthur Conan. <i>The Annotated Sherlock Holmes: The Four Novels and Fifty-Six Short Stories Complete</i>. New York: Wings Books, 1992.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="b0e4895ece6350453e830571e89a0983">{"itemType":"book","title":"The Annotated Sherlock Holmes: The Four Novels and Fifty-Six Short Stories Complete","creators":[{"creatorType":"author","firstName":"Arthur Conan","lastName":"Doyle"},{"creatorType":"contributor","firstName":"William Stuart","lastName":"Baring-Gould"}],"abstractNote":"","series":"","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"New York","publisher":"Wings Books","date":"1992","numPages":"2","language":"","ISBN":"","shortTitle":"The Annotated Sherlock Holmes","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"magik.gmu.edu Library Catalog","callNumber":"PR4620.A5 B3 1992","rights":"","extra":"","tags":[{"tag":"Detective and mystery stories, English","type":1},{"tag":"Fiction","type":1},{"tag":"Holmes, Sherlock (Fictitious character)","type":1}]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>The Adventures of Sherlock Holmes</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/PG5ZCTJT</id>
+    <published>2011-02-02T22:23:55Z</published>
+    <updated>2011-02-02T22:23:55Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/PG5ZCTJT?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/PG5ZCTJT"/>
+    <zapi:key>PG5ZCTJT</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>film</zapi:itemType>
+    <zapi:creatorSummary>Blum et al.</zapi:creatorSummary>
+    <zapi:year>2004</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>5</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry"><i>The Adventures of Sherlock Holmes</i>. MPI Home Video, 2004.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="b0e4895ece6350453e830571e89a0983">{"itemType":"film","title":"The Adventures of Sherlock Holmes","creators":[{"creatorType":"contributor","firstName":"Edwin","lastName":"Blum"},{"creatorType":"contributor","firstName":"William A","lastName":"Drake"},{"creatorType":"contributor","firstName":"Alfred","lastName":"Werker"},{"creatorType":"contributor","firstName":"Basil","lastName":"Rathbone"},{"creatorType":"contributor","firstName":"Nigel","lastName":"Bruce"},{"creatorType":"contributor","firstName":"George","lastName":"Zucco"},{"creatorType":"contributor","firstName":"Ida","lastName":"Lupino"},{"creatorType":"contributor","firstName":"Alan","lastName":"Marshal"},{"creatorType":"contributor","firstName":"William","lastName":"Gillette"},{"creatorType":"contributor","firstName":"Arthur Conan","lastName":"Doyle"},{"creatorType":"contributor","firstName":"Richard","lastName":"Valley"},{"creatorType":"contributor","name":"Twentieth Century-Fox Film Corporation"},{"creatorType":"contributor","name":"King World Productions"},{"creatorType":"contributor","name":"MPI Home Video (Firm)"}],"abstractNote":"","distributor":"MPI Home Video","date":"2004","genre":"","videoRecordingFormat":"","runningTime":"","language":"","shortTitle":"","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"magik.gmu.edu Library Catalog","callNumber":"PN1997","rights":"","extra":"","tags":[{"tag":"Detective and mystery films","type":1},{"tag":"Feature films","type":1},{"tag":"Holmes, Sherlock (Fictitious character)","type":1},{"tag":"Moriarty, Professor (Fictitious character)","type":1},{"tag":"Murder","type":1}]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>The Adventures of Conan Doyle: The Life of the Creator of Sherlock Holmes</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/B2VNV5Q7</id>
+    <published>2011-02-02T22:23:38Z</published>
+    <updated>2011-02-02T22:23:38Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/B2VNV5Q7?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/B2VNV5Q7"/>
+    <zapi:key>B2VNV5Q7</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>Higham</zapi:creatorSummary>
+    <zapi:year>1976</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>2</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">Higham, Charles. <i>The Adventures of Conan Doyle: The Life of the Creator of Sherlock Holmes</i>. 1st ed. New York: Norton, 1976.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="b0e4895ece6350453e830571e89a0983">{"itemType":"book","title":"The Adventures of Conan Doyle: The Life of the Creator of Sherlock Holmes","creators":[{"creatorType":"author","firstName":"Charles","lastName":"Higham"}],"abstractNote":"","series":"","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"1st ed","place":"New York","publisher":"Norton","date":"1976","numPages":"368","language":"","ISBN":"0393075079","shortTitle":"The Adventures of Conan Doyle","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"magik.gmu.edu Library Catalog","callNumber":"PR4623","rights":"","extra":"","tags":[{"tag":"Biography","type":1},{"tag":"Doyle, Arthur Conan","type":1}]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>An Actor, and a Rare One: Peter Cushing as Sherlock Holmes</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/6XDC27WD</id>
+    <published>2011-02-02T22:23:34Z</published>
+    <updated>2011-02-02T22:23:34Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/6XDC27WD?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/6XDC27WD"/>
+    <zapi:key>6XDC27WD</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>Earnshaw</zapi:creatorSummary>
+    <zapi:year>2001</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>2</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">Earnshaw, Tony. <i>An Actor, and a Rare One: Peter Cushing as Sherlock Holmes</i>. Lanham, Md: Scarecrow Press, 2001.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="b0e4895ece6350453e830571e89a0983">{"itemType":"book","title":"An Actor, and a Rare One: Peter Cushing as Sherlock Holmes","creators":[{"creatorType":"author","firstName":"Tony","lastName":"Earnshaw"}],"abstractNote":"","series":"","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"Lanham, Md","publisher":"Scarecrow Press","date":"2001","numPages":"146","language":"","ISBN":"0810838745","shortTitle":"An Actor, and a Rare One","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"magik.gmu.edu Library Catalog","callNumber":"791.43/028/092","rights":"","extra":"","tags":[{"tag":"Cushing, Peter","type":1},{"tag":"Sherlock Holmes films","type":1}]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>Form and Ideology in Crime Fiction</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/ICK5M93W</id>
+    <published>2011-02-02T22:22:23Z</published>
+    <updated>2011-02-02T22:22:23Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/ICK5M93W?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/ICK5M93W"/>
+    <zapi:key>ICK5M93W</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>Knight</zapi:creatorSummary>
+    <zapi:year>1980</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>4</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">Knight, Stephen. <i>Form and Ideology in Crime Fiction</i>. Bloomington: Indiana University Press, 1980.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="b0e4895ece6350453e830571e89a0983">{"itemType":"book","title":"Form and Ideology in Crime Fiction","creators":[{"creatorType":"author","firstName":"Stephen","lastName":"Knight"}],"abstractNote":"","series":"","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"Bloomington","publisher":"Indiana University Press","date":"1980","numPages":"202","language":"","ISBN":"0253143837","shortTitle":"","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"magik.gmu.edu Library Catalog","callNumber":"PS374.D4","rights":"","extra":"","tags":[{"tag":"Crime in literature","type":1},{"tag":"Detective and mystery stories, American","type":1},{"tag":"Detective and mystery stories, English","type":1},{"tag":"History and criticism","type":1}]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>CRCnetBASE - Hematopoietic Stem Cell Transplantation, Stem Cells, and Gene Therapy</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/Z6TE2UMT</id>
+    <published>2011-02-02T15:21:13Z</published>
+    <updated>2011-02-02T15:21:13Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/Z6TE2UMT?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/Z6TE2UMT"/>
+    <zapi:key>Z6TE2UMT</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>webpage</zapi:itemType>
+    <zapi:year/>
+    <zapi:numChildren>1</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">&#x201C;CRCnetBASE - Hematopoietic Stem Cell Transplantation, Stem Cells, and Gene Therapy.&#x201D; Accessed February 2, 2011. http://www.crcnetbase.com/doi/abs/10.1201/9781420005509.ch22?prevSearch=%2528%255Bfulltext%253A%2Bcell%255D%2BAND%2B%255Btitle%253A%2Bcell%255D%2529%2BAND%2B%255BpubType%253A%2B109%255D&amp;searchHistoryKey=.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="5712b4000d0a67b9e3ca895d0cadf478">{"itemType":"webpage","title":"CRCnetBASE - Hematopoietic Stem Cell Transplantation, Stem Cells, and Gene Therapy","creators":[],"abstractNote":"","websiteTitle":"","websiteType":"","date":"","shortTitle":"","url":"http://www.crcnetbase.com/doi/abs/10.1201/9781420005509.ch22?prevSearch=%2528%255Bfulltext%253A%2Bcell%255D%2BAND%2B%255Btitle%253A%2Bcell%255D%2529%2BAND%2B%255BpubType%253A%2B109%255D\u0026searchHistoryKey=","accessDate":"2011-02-02 15:21:13","language":"","rights":"","extra":"","tags":[]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>Sherlock Holmes</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/6MCAN2NC</id>
+    <published>2011-02-02T03:24:37Z</published>
+    <updated>2011-02-02T03:24:37Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/6MCAN2NC?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/6MCAN2NC"/>
+    <zapi:key>6MCAN2NC</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>artwork</zapi:itemType>
+    <zapi:creatorSummary>Fanatico</zapi:creatorSummary>
+    <zapi:year>2008</zapi:year>
+    <zapi:numChildren>1</zapi:numChildren>
+    <zapi:numTags>3</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">Fanatico, Cine. <i>Sherlock Holmes</i>, December 14, 2008. http://www.flickr.com/photos/29745871@N08/3108627911/.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="45a2fa2b94261871de6b6f619a948158">{"itemType":"artwork","title":"Sherlock Holmes","creators":[{"creatorType":"artist","firstName":"Cine","lastName":"Fanatico"}],"abstractNote":"Sherlock Holmes\n\n\u003Ca href=\"http://www.mycine.com.ar/\"\u003Ewww.mycine.com.ar/\u003C/a\u003E","artworkMedium":"","artworkSize":"","date":"2008-12-14","language":"","shortTitle":"","archive":"","archiveLocation":"","libraryCatalog":"Flickr","callNumber":"","url":"http://www.flickr.com/photos/29745871@N08/3108627911/","accessDate":"2011-02-02 03:24:37","rights":"","extra":"","tags":[{"tag":"judelaw","type":1},{"tag":"robertdowneyjr","type":1},{"tag":"sherlockholmes","type":1}]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>Cell recognition during neuronal development</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/GIFZST3I</id>
+    <published>2011-01-28T21:45:45Z</published>
+    <updated>2011-01-28T21:45:45Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/GIFZST3I?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/GIFZST3I"/>
+    <zapi:key>GIFZST3I</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>Goodman and Jim&#xE9;nez</zapi:creatorSummary>
+    <zapi:year>1993</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">Goodman, C., and F. Jim&#xE9;nez. <i>Cell Recognition During Neuronal Development</i>. Instituto Juan March, 1993.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="ecc661abf671960cbb0c4c8525ed6dbf">{"itemType":"book","title":"Cell recognition during neuronal development","creators":[{"creatorType":"author","firstName":"C.","lastName":"Goodman"},{"creatorType":"author","firstName":"F.","lastName":"Jim\u00e9nez"}],"abstractNote":"","series":"","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"","publisher":"Instituto Juan March","date":"08/1993","numPages":"","language":"","ISBN":"978-84-7919-517-5","shortTitle":"","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"Agencia del ISBN","callNumber":"","rights":"","extra":"","tags":[]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>2011: A Jump Start for JIPB</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/CINTCPTB</id>
+    <published>2011-01-28T21:41:41Z</published>
+    <updated>2011-01-28T21:41:41Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/CINTCPTB?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/CINTCPTB"/>
+    <zapi:key>CINTCPTB</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>Liu</zapi:creatorSummary>
+    <zapi:year/>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>1</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">Liu, Chun-Ming. <i>2011: A Jump Start for JIPB</i>, n.d.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="abf104c2bab9d245fa8f75015461c33c">{"itemType":"book","title":"2011: A Jump Start for JIPB","creators":[{"creatorType":"author","firstName":"Chun-Ming","lastName":"Liu"}],"abstractNote":"","series":"","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"","publisher":"","date":"","numPages":"2","language":"","ISBN":"","shortTitle":"2011","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"agricola.nal.usda.gov Library Catalog","callNumber":"","rights":"","extra":"","tags":[{"tag":"Internet resource","type":1}]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>Diagnostic of vacuum subsonic and supersonic plasma flows with enthalpy probe, schlieren and high speed camera methods</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/R39UWNFK</id>
+    <published>2011-01-18T23:28:27Z</published>
+    <updated>2011-01-18T23:28:27Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/R39UWNFK?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/R39UWNFK"/>
+    <zapi:key>R39UWNFK</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>conferencePaper</zapi:itemType>
+    <zapi:creatorSummary>Leveille et al.</zapi:creatorSummary>
+    <zapi:year/>
+    <zapi:numChildren>1</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">Leveille, V., M.I. Boulos, and D. Gravelle. &#x201C;Diagnostic of Vacuum Subsonic and Supersonic Plasma Flows with Enthalpy Probe, Schlieren and High Speed Camera Methods.&#x201D; In <i>IEEE Conference Record - Abstracts. 2002 IEEE International Conference on Plasma Science (Cat. No.02CH37340)</i>, 286. Banff, Alta., Canada. Accessed January 18, 2011. doi:10.1109/PLASMA.2002.1030588.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="5429621e5e730a4150044918da9ff745">{"itemType":"conferencePaper","title":"Diagnostic of vacuum subsonic and supersonic plasma flows with enthalpy probe, schlieren and high speed camera methods","creators":[{"creatorType":"author","firstName":"V.","lastName":"Leveille"},{"creatorType":"author","firstName":"M.I.","lastName":"Boulos"},{"creatorType":"author","firstName":"D.","lastName":"Gravelle"}],"abstractNote":"","date":"","proceedingsTitle":"IEEE Conference Record - Abstracts. 2002 IEEE International Conference on Plasma Science (Cat. No.02CH37340)","conferenceName":"IEEE 29th International Conference on Plasma Sciences","place":"Banff, Alta., Canada","publisher":"","volume":"","pages":"286","series":"","language":"","DOI":"10.1109/PLASMA.2002.1030588","ISBN":"","shortTitle":"","url":"http://ieeexplore.ieee.org/Xplore/login.jsp?url=http%3A%2F%2Fieeexplore.ieee.org%2Fstamp%2Fstamp.jsp%3Ftp%3D%26arnumber%3D1030588\u0026authDecision=-203","accessDate":"2011-01-18 23:28:27","archive":"","archiveLocation":"","libraryCatalog":"CrossRef","callNumber":"","rights":"","extra":"","tags":[]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>Effects of Initial Plasma Properties on Plasma Recovery in Plasma Source Ion Implantation</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/85MTWF4F</id>
+    <published>2011-01-18T23:28:14Z</published>
+    <updated>2011-01-18T23:28:14Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/85MTWF4F?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/85MTWF4F"/>
+    <zapi:key>85MTWF4F</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>conferencePaper</zapi:itemType>
+    <zapi:creatorSummary>Chung et al.</zapi:creatorSummary>
+    <zapi:year>2007</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">Chung, K. J., S. W. Jung, J. M. Choe, G. H. Kim, and Y. S. Hwang. &#x201C;Effects of Initial Plasma Properties on Plasma Recovery in Plasma Source Ion Implantation.&#x201D; In <i>2007 IEEE Pulsed Power Plasma Science Conference</i>, 569&#x2013;569. Albuquerque, NM, USA, 2007. doi:10.1109/PPPS.2007.4345875.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="5429621e5e730a4150044918da9ff745">{"itemType":"conferencePaper","title":"Effects of Initial Plasma Properties on Plasma Recovery in Plasma Source Ion Implantation","creators":[{"creatorType":"author","firstName":"K. J.","lastName":"Chung"},{"creatorType":"author","firstName":"S. W.","lastName":"Jung"},{"creatorType":"author","firstName":"J. M.","lastName":"Choe"},{"creatorType":"author","firstName":"G. H.","lastName":"Kim"},{"creatorType":"author","firstName":"Y. S.","lastName":"Hwang"}],"abstractNote":"","date":"06/2007","proceedingsTitle":"2007 IEEE Pulsed Power Plasma Science Conference","conferenceName":"2007 IEEE Pulsed Power Plasma Science Conference","place":"Albuquerque, NM, USA","publisher":"","volume":"","pages":"569-569","series":"","language":"","DOI":"10.1109/PPPS.2007.4345875","ISBN":"","shortTitle":"","url":"http://ieeexplore.ieee.org/lpdocs/epic03/wrapper.htm?arnumber=4345875","accessDate":"2011-01-18 23:28:14","archive":"","archiveLocation":"","libraryCatalog":"CrossRef","callNumber":"","rights":"","extra":"","tags":[]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>Does sensitization to foods in adults occur always in the gut?</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/3EWF3P9V</id>
+    <published>2011-01-18T20:41:02Z</published>
+    <updated>2011-01-18T20:41:02Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/3EWF3P9V?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/3EWF3P9V"/>
+    <zapi:key>3EWF3P9V</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>journalArticle</zapi:itemType>
+    <zapi:creatorSummary>Asero and Antonicelli</zapi:creatorSummary>
+    <zapi:year>2011</zapi:year>
+    <zapi:numChildren>1</zapi:numChildren>
+    <zapi:numTags>8</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">Asero, Riccardo, and Leonardo Antonicelli. &#x201C;Does Sensitization to Foods in Adults Occur Always in the Gut?&#x201D; <i>International Archives of Allergy and Immunology</i> 154, no. 1 (2011): 6&#x2013;14.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="24ec3fda8fa9b9bcf7e5efd975ddc9a2">{"itemType":"journalArticle","title":"Does sensitization to foods in adults occur always in the gut?","creators":[{"creatorType":"author","firstName":"Riccardo","lastName":"Asero"},{"creatorType":"author","firstName":"Leonardo","lastName":"Antonicelli"}],"abstractNote":"It is widely accepted that, under normal conditions, the contact between allergens and the immune system via the gut results in immune tolerance. Thus, it is rather surprising that normal adults may become sensitized to foods that they have consumed a number of times without any consequence. However, the medical literature is crowded with reports suggesting that sensitization to food allergens may occur outside the intestinal tract in many instances. The present article reviews and discusses current data suggesting, either directly or indirectly, a possible initiation of food allergy in the respiratory tract or in the skin in the light of recent findings about mechanisms of tolerance and sensitization.","publicationTitle":"International archives of allergy and immunology","volume":"154","issue":"1","pages":"6-14","date":"2011","series":"","seriesTitle":"","seriesText":"","journalAbbreviation":"Int Arch Allergy Immunol","language":"","DOI":"","ISSN":"14230097","shortTitle":"","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"BioInfoBank","callNumber":"","rights":"","extra":"PMID: 20664272","tags":[{"tag":"Adult","type":1},{"tag":"Allergens","type":1},{"tag":"Food Hypersensitivity","type":1},{"tag":"Gastrointestinal Tract","type":1},{"tag":"Humans","type":1},{"tag":"Immune Tolerance","type":1},{"tag":"Plants, Edible","type":1},{"tag":"Skin","type":1}]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>Acute Phase T Cell Help in Neutrophil-Mediated Clearance of Helicobacter Pylori</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/2SS8NXZI</id>
+    <published>2011-01-14T18:46:27Z</published>
+    <updated>2011-01-14T18:46:27Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/2SS8NXZI?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/2SS8NXZI"/>
+    <zapi:key>2SS8NXZI</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>manuscript</zapi:itemType>
+    <zapi:creatorSummary>DeLyria</zapi:creatorSummary>
+    <zapi:year>2010</zapi:year>
+    <zapi:numChildren>1</zapi:numChildren>
+    <zapi:numTags>2</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">DeLyria, Elizabeth S. &#x201C;Acute Phase T Cell Help in Neutrophil-Mediated Clearance of Helicobacter Pylori.&#x201D; Cleveland, Ohio, 2010.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="b1f6a893277b248f7b399858b1832f33">{"itemType":"manuscript","title":"Acute Phase T Cell Help in Neutrophil-Mediated Clearance of Helicobacter Pylori","creators":[{"creatorType":"author","firstName":"Elizabeth S","lastName":"DeLyria"}],"abstractNote":"","manuscriptType":"","place":"Cleveland, Ohio","date":"2010","numPages":"118","language":"","shortTitle":"","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"catalog.case.edu Library Catalog","callNumber":"Pathol","rights":"","extra":"","tags":[{"tag":"Helicobacter pylori","type":1},{"tag":"T-Lymphocytes","type":1}]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>Cell Activation and Apoptosis in HIV Infection: Implications for Pathogenesis and Therapy</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/AGTZDBRQ</id>
+    <published>2011-01-14T18:45:08Z</published>
+    <updated>2011-01-14T18:45:08Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/AGTZDBRQ?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/AGTZDBRQ"/>
+    <zapi:key>AGTZDBRQ</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>Andrieu et al.</zapi:creatorSummary>
+    <zapi:year>1995</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>8</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry"><i>Cell Activation and Apoptosis in HIV Infection: Implications for Pathogenesis and Therapy</i>. Advances in Experimental Medicine and Biology v. 374. New York: Plenum Press, 1995.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="a2576b19f92901d8911f1742ac1b5b91">{"itemType":"book","title":"Cell Activation and Apoptosis in HIV Infection: Implications for Pathogenesis and Therapy","creators":[{"creatorType":"contributor","firstName":"Jean-Marie","lastName":"Andrieu"},{"creatorType":"contributor","firstName":"Wei","lastName":"Lu"},{"creatorType":"contributor","name":"International Symposium on Cellular Approaches to the Control of HIV Disease"}],"abstractNote":"","series":"Advances in experimental medicine and biology","seriesNumber":"v. 374","volume":"","numberOfVolumes":"","edition":"","place":"New York","publisher":"Plenum Press","date":"1995","numPages":"245","language":"","ISBN":"0306450631","shortTitle":"Cell Activation and Apoptosis in HIV Infection","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"cat.cisti-icist.nrc-cnrc.gc.ca Library Catalog","callNumber":"R850.A1 A24 v. 374","rights":"","extra":"","tags":[{"tag":"Apoptosis","type":1},{"tag":"Congresses","type":1},{"tag":"HIV infections","type":1},{"tag":"Lymphocyte transformation","type":1},{"tag":"Pathophysiology","type":1},{"tag":"T-Lymphocytes","type":1},{"tag":"immunology","type":1},{"tag":"therapy","type":1}]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>Biostatistics: Experimental Design and Statistical Inference</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/9AIAUW49</id>
+    <published>2011-01-13T03:38:12Z</published>
+    <updated>2011-01-13T03:38:12Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/9AIAUW49?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/9AIAUW49"/>
+    <zapi:key>9AIAUW49</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>Zolman</zapi:creatorSummary>
+    <zapi:year>1993</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>2</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">Zolman, James F. <i>Biostatistics: Experimental Design and Statistical Inference</i>. New York: Oxford University Press, 1993.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="a85c1399cfd2a4f931ddd3aabc456f66">{"itemType":"book","title":"Biostatistics: Experimental Design and Statistical Inference","creators":[{"creatorType":"author","firstName":"James F","lastName":"Zolman"}],"abstractNote":"","series":"","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"New York","publisher":"Oxford University Press","date":"1993","numPages":"343","language":"","ISBN":"0195078101","shortTitle":"Biostatistics","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"cat.cisti-icist.nrc-cnrc.gc.ca Library Catalog","callNumber":"QH323.5 Z86","rights":"","extra":"","tags":[{"tag":"Biometry","type":1},{"tag":"Experimental design","type":1}]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>Electron Microscopy and Analysis 1993: Proceedings of the Institute of Physics Electron Microscopy and Analysis Group Conference, University of Liverpool, 14-17 September1993</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/X42A7DEE</id>
+    <published>2011-01-13T03:37:29Z</published>
+    <updated>2011-01-13T03:37:29Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/X42A7DEE?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/X42A7DEE"/>
+    <zapi:key>X42A7DEE</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>Institute of Physics (Great Britain)</zapi:creatorSummary>
+    <zapi:year>1993</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>5</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">Institute of Physics (Great Britain). <i>Electron Microscopy and Analysis 1993: Proceedings of the Institute of Physics Electron Microscopy and Analysis Group Conference, University of Liverpool, 14-17 September1993</i>. Institute of Physics Conference Series no. 138. Bristol, UK: Institute of Physics Pub, 1993.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="3203928a8399013fa934cbec031a7568">{"itemType":"book","title":"Electron Microscopy and Analysis 1993: Proceedings of the Institute of Physics Electron Microscopy and Analysis Group Conference, University of Liverpool, 14-17 September1993","creators":[{"creatorType":"author","name":"Institute of Physics (Great Britain)"},{"creatorType":"contributor","firstName":"A. J","lastName":"Craven"},{"creatorType":"contributor","name":"Institute of Physics (Great Britain)"},{"creatorType":"contributor","name":"Institute of Physics (Great Britain)"},{"creatorType":"contributor","name":"Institute of Materials (Great Britain)"},{"creatorType":"contributor","name":"Royal Microscopical Society (Great Britain)"},{"creatorType":"contributor","name":"University of Liverpool"}],"abstractNote":"","series":"Institute of Physics conference series","seriesNumber":"no. 138","volume":"","numberOfVolumes":"","edition":"","place":"Bristol, UK","publisher":"Institute of Physics Pub","date":"1993","numPages":"546","language":"","ISBN":"0750303212","shortTitle":"Electron Microscopy and Analysis 1993","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"cat.cisti-icist.nrc-cnrc.gc.ca Library Catalog","callNumber":"QC1 I584 v. 138","rights":"","extra":"","tags":[{"tag":"Analysis","type":1},{"tag":"Congresses","type":1},{"tag":"Electron microscopy","type":1},{"tag":"Materials","type":1},{"tag":"Microscopy","type":1}]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>Biscrolling Nanotube Sheets and Functional Guests into Yarns</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/33TK9NH9</id>
+    <published>2011-01-13T02:50:48Z</published>
+    <updated>2011-01-13T02:50:48Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/33TK9NH9?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/33TK9NH9"/>
+    <zapi:key>33TK9NH9</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>journalArticle</zapi:itemType>
+    <zapi:creatorSummary>Lima et al.</zapi:creatorSummary>
+    <zapi:year>2011</zapi:year>
+    <zapi:numChildren>1</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">Lima, M&#xE1;rcio D., Shaoli Fang, Xavier Lepr&#xF3;, Chihye Lewis, Raquel Ovalle-Robles, Javier Carretero-Gonz&#xE1;lez, Elizabeth Castillo-Mart&#xED;nez, et al. &#x201C;Biscrolling Nanotube Sheets and Functional Guests into Yarns.&#x201D; <i>Science</i> 331, no. 6013 (January 7, 2011): 51 &#x2013;55. doi:10.1126/science.1195912.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="8dedb2754fcc3bd3997ce3a203a29997">{"itemType":"journalArticle","title":"Biscrolling Nanotube Sheets and Functional Guests into Yarns","creators":[{"creatorType":"author","firstName":"M\u00e1rcio D.","lastName":"Lima"},{"creatorType":"author","firstName":"Shaoli","lastName":"Fang"},{"creatorType":"author","firstName":"Xavier","lastName":"Lepr\u00f3"},{"creatorType":"author","firstName":"Chihye","lastName":"Lewis"},{"creatorType":"author","firstName":"Raquel","lastName":"Ovalle-Robles"},{"creatorType":"author","firstName":"Javier","lastName":"Carretero-Gonz\u00e1lez"},{"creatorType":"author","firstName":"Elizabeth","lastName":"Castillo-Mart\u00ednez"},{"creatorType":"author","firstName":"Mikhail E.","lastName":"Kozlov"},{"creatorType":"author","firstName":"Jiyoung","lastName":"Oh"},{"creatorType":"author","firstName":"Neema","lastName":"Rawat"},{"creatorType":"author","firstName":"Carter S.","lastName":"Haines"},{"creatorType":"author","firstName":"Mohammad H.","lastName":"Haque"},{"creatorType":"author","firstName":"Vaishnavi","lastName":"Aare"},{"creatorType":"author","firstName":"Stephanie","lastName":"Stoughton"},{"creatorType":"author","firstName":"Anvar A.","lastName":"Zakhidov"},{"creatorType":"author","firstName":"Ray H.","lastName":"Baughman"}],"abstractNote":"Multifunctional applications of textiles have been limited by the inability to spin important materials into yarns. Generically applicable methods are demonstrated for producing weavable yarns comprising up to 95 weight percent of otherwise unspinnable particulate or nanofiber powders that remain highly functional. Scrolled 50-nanometer-thick carbon nanotube sheets confine these powders in the galleries of irregular scroll sacks whose observed complex structures are related to twist-dependent extension of Archimedean spirals, Fermat spirals, or spiral pairs into scrolls. The strength and electronic connectivity of a small weight fraction of scrolled carbon nanotube sheet enables yarn weaving, sewing, knotting, braiding, and charge collection. This technology is used to make yarns of superconductors, lithium-ion battery materials, graphene ribbons, catalytic nanofibers for fuel cells, and titanium dioxide for photocatalysis.","publicationTitle":"Science","volume":"331","issue":"6013","pages":"51 -55","date":"January 07 , 2011","series":"","seriesTitle":"","seriesText":"","journalAbbreviation":"","language":"","DOI":"10.1126/science.1195912","ISSN":"","shortTitle":"","url":"http://www.sciencemag.org/content/331/6013/51.abstract","accessDate":"2011-01-13 02:50:48","archive":"","archiveLocation":"","libraryCatalog":"Highwire 2.0","callNumber":"","rights":"","extra":"","tags":[]}</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>Front Matter</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/U52JBZ4X</id>
+    <published>2011-01-13T02:32:38Z</published>
+    <updated>2011-01-13T02:32:38Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/U52JBZ4X?content=bib%2Cjson"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/U52JBZ4X"/>
+    <zapi:key>U52JBZ4X</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>journalArticle</zapi:itemType>
+    <zapi:year>2004</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">&#x201C;Front Matter.&#x201D; <i>Crustaceana</i> 77, no. 11 (December 1, 2004). http://www.jstor.org/stable/20107443.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="json" zapi:etag="a17c11b18fecff4686365b893848e752">{"itemType":"journalArticle","title":"Front Matter","creators":[],"abstractNote":"","publicationTitle":"Crustaceana","volume":"77","issue":"11","pages":"","date":"December 01, 2004","series":"","seriesTitle":"","seriesText":"","journalAbbreviation":"","language":"","DOI":"","ISSN":"0011216X","shortTitle":"","url":"http://www.jstor.org/stable/20107443","accessDate":"2011-01-13 02:32:38","archive":"","archiveLocation":"","libraryCatalog":"JSTOR","callNumber":"","rights":"","extra":"ArticleType: misc / Full publication date: Dec., 2004 / Copyright \u00a9 2004 BRILL","tags":[]}</zapi:subcontent>
+    </content>
+  </entry>
+</feed>

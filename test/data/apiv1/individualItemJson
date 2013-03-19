@@ -1,0 +1,31 @@
+HTTP/1.0 200 OK
+Date: Tue, 05 Mar 2013 18:48:37 GMT
+Server: Apache/2.2.15 (CentOS)
+X-Powered-By: PHP/5.3.8
+Zotero-API-Version: 1
+Content-Length: 2549
+Keep-Alive: timeout=30, max=100
+Connection: keep-alive
+Content-Type: application/atom+xml
+
+<?xml version="1.0"?>
+<entry xmlns="http://www.w3.org/2005/Atom" xmlns:zapi="http://zotero.org/ns/api">
+  <title>Electron Microscopy and Analysis 1993: Proceedings of the Institute of Physics Electron Microscopy and Analysis Group Conference, University of Liverpool, 14-17 September1993</title>
+  <author>
+    <name>Z public library</name>
+    <uri>http://zotero.org/z_public_library</uri>
+  </author>
+  <id>http://zotero.org/z_public_library/items/X42A7DEE</id>
+  <published>2011-01-13T03:37:29Z</published>
+  <updated>2011-01-13T03:37:29Z</updated>
+  <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/X42A7DEE?content=json"/>
+  <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/X42A7DEE"/>
+  <zapi:key>X42A7DEE</zapi:key>
+  <zapi:version>1</zapi:version>
+  <zapi:itemType>book</zapi:itemType>
+  <zapi:creatorSummary>Institute of Physics (Great Britain)</zapi:creatorSummary>
+  <zapi:year>1993</zapi:year>
+  <zapi:numChildren>0</zapi:numChildren>
+  <zapi:numTags>5</zapi:numTags>
+  <content zapi:type="json" zapi:etag="3203928a8399013fa934cbec031a7568">{"itemType":"book","title":"Electron Microscopy and Analysis 1993: Proceedings of the Institute of Physics Electron Microscopy and Analysis Group Conference, University of Liverpool, 14-17 September1993","creators":[{"creatorType":"author","name":"Institute of Physics (Great Britain)"},{"creatorType":"contributor","firstName":"A. J","lastName":"Craven"},{"creatorType":"contributor","name":"Institute of Physics (Great Britain)"},{"creatorType":"contributor","name":"Institute of Physics (Great Britain)"},{"creatorType":"contributor","name":"Institute of Materials (Great Britain)"},{"creatorType":"contributor","name":"Royal Microscopical Society (Great Britain)"},{"creatorType":"contributor","name":"University of Liverpool"}],"abstractNote":"","series":"Institute of Physics conference series","seriesNumber":"no. 138","volume":"","numberOfVolumes":"","edition":"","place":"Bristol, UK","publisher":"Institute of Physics Pub","date":"1993","numPages":"546","language":"","ISBN":"0750303212","shortTitle":"Electron Microscopy and Analysis 1993","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"cat.cisti-icist.nrc-cnrc.gc.ca Library Catalog","callNumber":"QC1 I584 v. 138","rights":"","extra":"","tags":[{"tag":"Analysis","type":1},{"tag":"Congresses","type":1},{"tag":"Electron microscopy","type":1},{"tag":"Materials","type":1},{"tag":"Microscopy","type":1}]}</content>
+</entry>

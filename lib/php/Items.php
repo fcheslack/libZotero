@@ -8,6 +8,7 @@
 class Zotero_Items
 {
     public $itemObjects = array();
+    public $owningLibrary;
     
     //get an item from this container of items by itemKey
     public function getItem($itemKey) {
@@ -21,6 +22,9 @@ class Zotero_Items
     public function addItem($item) {
         $itemKey = $item->itemKey;
         $this->itemObjects[$itemKey] = $item;
+        if($this->owningLibrary){
+            $item->associateWithLibrary($this->owningLibrary);
+        }
     }
     
     //add items to this container from a Zotero_Feed object
@@ -68,5 +72,40 @@ class Zotero_Items
             }
         }
         return $children;
+    }
+    
+    public function writeItem($item){
+        if(is_string($item)){
+            $itemKey = $item;
+            $item = $this->items->getItem($itemKey);
+        }
+        $updateItemJson = json_encode($item->writeApiObject());
+        $etag = $item->etag;
+        
+        $aparams = array('target'=>'item', 'itemKey'=>$item->itemKey);
+        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
+        $response = $this->_request($reqUrl, 'PUT', $updateItemJson, array('If-Match'=>$etag));
+        return $response;
+    
+    }
+    
+    public function writeItems($items){
+        
+    }
+    
+    public function deleteItem($item){
+        
+    }
+    
+    public function deleteItems($items){
+        
+    }
+    
+    public function trashItem($item){
+        
+    }
+    
+    public function trashItems($items){
+        
     }
 }

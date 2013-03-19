@@ -55,6 +55,36 @@ class Zotero_Tag extends Zotero_Entry
         
         $tagElements = $entryNode->getElementsByTagName("tag");
         $tagElement = $tagElements->item(0);
+        
+        $contentNode = $entryNode->getElementsByTagName('content')->item(0);
+        if($contentNode){
+            $contentType = $contentNode->getAttribute('type');
+            if($contentType == 'application/json'){
+                $this->pristine = json_decode($contentNode->nodeValue, true);
+                $this->apiObject = json_decode($contentNode->nodeValue, true);
+            }
+            elseif($contentType == 'xhtml'){
+                //$this->parseXhtmlContent($contentNode);
+            }
+        }
+    }
+    
+    public function get($key) {
+        switch($key){
+            case "tag":
+            case "name":
+            case "title":
+                return $this->name;
+        }
+        
+        if(array_key_exists($key, $this->apiObject)){
+            return $this->apiObject[$key];
+        }
+        
+        if(property_exists($this, $key)){
+            return $this->$key;
+        }
+        return null;
     }
     
     public function dataObject() {

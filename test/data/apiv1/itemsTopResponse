@@ -1,0 +1,215 @@
+HTTP/1.0 200 OK
+Date: Thu, 14 Mar 2013 18:19:47 GMT
+Server: Apache/2.2.15 (CentOS)
+X-Powered-By: PHP/5.3.8
+Zotero-API-Version: 1
+Connection: close
+Content-Type: application/atom+xml
+
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:zapi="http://zotero.org/ns/api">
+  <title>Zotero / Z public library / Top-Level Items</title>
+  <id>http://zotero.org/users/475425/items/top?content=json&amp;limit=10</id>
+  <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/top?content=json&amp;limit=10"/>
+  <link rel="first" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/top?content=json&amp;limit=10"/>
+  <link rel="next" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/top?content=json&amp;limit=10&amp;start=10"/>
+  <link rel="last" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/top?content=json&amp;limit=10&amp;start=160"/>
+  <link rel="alternate" type="text/html" href="https://www.zotero.org/users/475425/items/top?limit=10"/>
+  <zapi:totalResults>162</zapi:totalResults>
+  <zapi:apiVersion>1</zapi:apiVersion>
+  <updated>2011-06-28T19:15:37Z</updated>
+  <entry>
+    <title>Zotero | Home</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/KWENT2ZM</id>
+    <published>2011-06-28T19:15:37Z</published>
+    <updated>2011-06-28T19:15:37Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/KWENT2ZM?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/KWENT2ZM"/>
+    <zapi:key>KWENT2ZM</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>webpage</zapi:itemType>
+    <zapi:year/>
+    <zapi:numChildren>1</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content zapi:type="json" zapi:etag="39da0e0ecd629acdb92d0969fbb9bbd8">{"itemType":"webpage","title":"Zotero | Home","creators":[],"abstractNote":"","websiteTitle":"","websiteType":"","date":"","shortTitle":"","url":"http://staging.zotero.net/","accessDate":"2011-06-28 19:15:37","language":"","rights":"","extra":"","tags":[]}</content>
+  </entry>
+  <entry>
+    <title>Sonatine Nr. 3 in c-moll [f&#xFC;r] Klavier : Sontina no. 3 in C-minor [for] piano solo</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/HFPQDBMD</id>
+    <published>2011-05-16T14:36:12Z</published>
+    <updated>2011-05-16T14:36:12Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/HFPQDBMD?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/HFPQDBMD"/>
+    <zapi:key>HFPQDBMD</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>webpage</zapi:itemType>
+    <zapi:creatorSummary>Schroeder</zapi:creatorSummary>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content zapi:type="json" zapi:etag="38f1f048f2ed45d43d26089432925be9">{"itemType":"webpage","title":"Sonatine Nr. 3 in c-moll [f\u00fcr] Klavier : Sontina no. 3 in C-minor [for] piano solo","creators":[{"creatorType":"author","firstName":"Hermann","lastName":"Schroeder"}],"abstractNote":"","websiteTitle":"","websiteType":"","date":"c1972","shortTitle":"Sonatine Nr. 3 in c-moll [f\u00fcr] Klavier","url":"","accessDate":"","language":"","rights":"","extra":"","tags":[]}</content>
+  </entry>
+  <entry>
+    <title>1984</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/J6NP6VJW</id>
+    <published>2011-05-16T14:36:12Z</published>
+    <updated>2011-05-16T14:36:12Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/J6NP6VJW?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/J6NP6VJW"/>
+    <zapi:key>J6NP6VJW</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>Orwell</zapi:creatorSummary>
+    <zapi:year>1984</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content zapi:type="json" zapi:etag="38f1f048f2ed45d43d26089432925be9">{"itemType":"book","title":"1984","creators":[{"creatorType":"author","firstName":"George","lastName":"Orwell"}],"abstractNote":"","series":"","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"","publisher":"Index","date":"1984","numPages":"","language":"","ISBN":"","shortTitle":"","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"","callNumber":"","rights":"","extra":"","tags":[]}</content>
+  </entry>
+  <entry>
+    <title>Hoyts_Dinner_Menu_-_0328112052e6837ea9.pdf</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/3RIEVNTT</id>
+    <published>2011-05-11T21:24:24Z</published>
+    <updated>2011-05-11T21:24:56Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/3RIEVNTT?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/3RIEVNTT"/>
+    <zapi:key>3RIEVNTT</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>attachment</zapi:itemType>
+    <zapi:numTags>0</zapi:numTags>
+    <content zapi:type="json" zapi:etag="bc7fb1a70c534314ff8b82a9343b61c9">{"itemType":"attachment","linkMode":"imported_file","title":"Hoyts_Dinner_Menu_-_0328112052e6837ea9.pdf","accessDate":"","url":"","note":"","contentType":"application/pdf","charset":"","filename":"Hoyts_Dinner_Menu_-_0328112052e6837ea9.pdf","md5":"4cbe298a3e5f3ee3c8a6d462c51f02c4","mtime":1305149064000,"tags":[]}</content>
+  </entry>
+  <entry>
+    <title>The Peloponnesian War and the future of reference, cataloging, and scholarship in research libraries</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/7DTHXBKK</id>
+    <published>2011-04-23T16:44:59Z</published>
+    <updated>2011-04-23T16:44:59Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/7DTHXBKK?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/7DTHXBKK"/>
+    <zapi:key>7DTHXBKK</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>journalArticle</zapi:itemType>
+    <zapi:creatorSummary>Mann</zapi:creatorSummary>
+    <zapi:year>2008</zapi:year>
+    <zapi:numChildren>1</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content zapi:type="json" zapi:etag="28f319f7188569a6f23d8b43d58a4469">{"itemType":"journalArticle","title":"The Peloponnesian War and the future of reference, cataloging, and scholarship in research libraries","creators":[{"creatorType":"author","firstName":"T.","lastName":"Mann"}],"abstractNote":"","publicationTitle":"Journal of Library Metadata","volume":"8","issue":"1","pages":"53\u2013100","date":"2008","series":"","seriesTitle":"","seriesText":"","journalAbbreviation":"","language":"","DOI":"","ISSN":"1938-6389","shortTitle":"","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"Google Scholar","callNumber":"","rights":"","extra":"","tags":[]}</content>
+  </entry>
+  <entry>
+    <title>An answer to a late treasonable pamphlet, entituled, Treason in grain, &amp;c. for which pamphlet Edward Fitz-Harris lies condemned..</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/G2IT8SNK</id>
+    <published>2011-04-11T16:37:49Z</published>
+    <updated>2011-04-11T16:37:49Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/G2IT8SNK?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/G2IT8SNK"/>
+    <zapi:key>G2IT8SNK</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>A. C.</zapi:creatorSummary>
+    <zapi:year>1681</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>1</zapi:numTags>
+    <content zapi:type="json" zapi:etag="df302627553ad01f1b5ba2c561ca0e1b">{"itemType":"book","title":"An answer to a late treasonable pamphlet, entituled, Treason in grain, \u0026c. for which pamphlet Edward Fitz-Harris lies condemned..","creators":[{"creatorType":"author","firstName":"","lastName":"A. C."}],"abstractNote":"","series":"","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"","publisher":"London: : Printed by N.T. next the Cross-Keys in Fetter-lane., 1681..","date":"1681","numPages":"","language":"","ISBN":"","shortTitle":"","url":"http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg\u0026ACTION=ByID\u0026ID=99890767\u0026FILE=../session/1190302085_15129\u0026SEARCHSCREEN=CITATIONS\u0026SEARCHCONFIG=config.cfg\u0026DISPLAY=ALPHA","accessDate":"2011-04-11 16:37:49","archive":"","archiveLocation":"","libraryCatalog":"Early English Books Online","callNumber":"","rights":"","extra":"","tags":[{"tag":"Fitzharris, Edward, 1648?-1681 -- Early works to 1800. ; Great Britain -- History -- Charles II, 1660-1685 -- Early works to 1800.","type":1}]}</content>
+  </entry>
+  <entry>
+    <title>An answer to a late treasonable pamphlet, entituled, Treason in grain, &amp;c. for which pamphlet Edward Fitz-Harris lies condemned..</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/K4U39GFI</id>
+    <published>2011-04-11T16:37:23Z</published>
+    <updated>2011-04-11T16:37:23Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/K4U39GFI?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/K4U39GFI"/>
+    <zapi:key>K4U39GFI</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>A. C.</zapi:creatorSummary>
+    <zapi:year>1681</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>1</zapi:numTags>
+    <content zapi:type="json" zapi:etag="b5ee312e37d943cdb8126ab5b2a5be5c">{"itemType":"book","title":"An answer to a late treasonable pamphlet, entituled, Treason in grain, \u0026c. for which pamphlet Edward Fitz-Harris lies condemned..","creators":[{"creatorType":"author","firstName":"","lastName":"A. C."}],"abstractNote":"","series":"Early English Books Online","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"","publisher":"London: : Printed by N.T. next the Cross-Keys in Fetter-lane., 1681..","date":"1681","numPages":"","language":"","ISBN":"","shortTitle":"","url":"http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg\u0026ACTION=ByID\u0026ID=99890767\u0026FILE=../session/1190302085_15129\u0026SEARCHSCREEN=CITATIONS\u0026SEARCHCONFIG=config.cfg\u0026DISPLAY=ALPHA","accessDate":"2011-04-11 16:37:23","archive":"","archiveLocation":"","libraryCatalog":"Early English Books Online","callNumber":"","rights":"","extra":"","tags":[{"tag":"Fitzharris, Edward, 1648?-1681 -- Early works to 1800. ; Great Britain -- History -- Charles II, 1660-1685 -- Early works to 1800.","type":1}]}</content>
+  </entry>
+  <entry>
+    <title>An answer to a late treasonable pamphlet, entituled, Treason in grain, &amp;c. for which pamphlet Edward Fitz-Harris lies condemned..</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/HGAXPFAT</id>
+    <published>2011-04-11T16:36:59Z</published>
+    <updated>2011-04-11T16:36:59Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/HGAXPFAT?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/HGAXPFAT"/>
+    <zapi:key>HGAXPFAT</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>A. C.</zapi:creatorSummary>
+    <zapi:year>1681</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>1</zapi:numTags>
+    <content zapi:type="json" zapi:etag="087bf92eda65c58eab45084647f16750">{"itemType":"book","title":"An answer to a late treasonable pamphlet, entituled, Treason in grain, \u0026c. for which pamphlet Edward Fitz-Harris lies condemned..","creators":[{"creatorType":"author","firstName":"","lastName":"A. C."}],"abstractNote":"","series":"Early English Books Online","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"","publisher":"London: : Printed by N.T. next the Cross-Keys in Fetter-lane., 1681..","date":"1681","numPages":"","language":"","ISBN":"","shortTitle":"","url":"http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg\u0026ACTION=ByID\u0026ID=99890767\u0026FILE=../session/1190302085_15129\u0026SEARCHSCREEN=CITATIONS\u0026SEARCHCONFIG=config.cfg\u0026DISPLAY=ALPHA","accessDate":"2011-04-11 16:36:59","archive":"","archiveLocation":"","libraryCatalog":"Early English Books Online","callNumber":"","rights":"","extra":"","tags":[{"tag":"Fitzharris, Edward, 1648?-1681 -- Early works to 1800. ; Great Britain -- History -- Charles II, 1660-1685 -- Early works to 1800.","type":1}]}</content>
+  </entry>
+  <entry>
+    <title>An answer to a late treasonable pamphlet, entituled, Treason in grain, &amp;c. for which pamphlet Edward Fitz-Harris lies condemned..</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/KUI94JXQ</id>
+    <published>2011-04-11T16:28:58Z</published>
+    <updated>2011-04-11T16:28:58Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/KUI94JXQ?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/KUI94JXQ"/>
+    <zapi:key>KUI94JXQ</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>A. C.</zapi:creatorSummary>
+    <zapi:year>1681</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>1</zapi:numTags>
+    <content zapi:type="json" zapi:etag="5892af4050cb5d726953e9259b3c05d0">{"itemType":"book","title":"An answer to a late treasonable pamphlet, entituled, Treason in grain, \u0026c. for which pamphlet Edward Fitz-Harris lies condemned..","creators":[{"creatorType":"author","firstName":"","lastName":"A. C."}],"abstractNote":"","series":"Early English Books Online","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"","publisher":"London: : Printed by N.T. next the Cross-Keys in Fetter-lane., 1681..","date":"1681","numPages":"","language":"","ISBN":"","shortTitle":"","url":"http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg\u0026ACTION=ByID\u0026ID=99890767\u0026FILE=../session/1190302085_15129\u0026SEARCHSCREEN=CITATIONS\u0026SEARCHCONFIG=config.cfg\u0026DISPLAY=ALPHA","accessDate":"2011-04-11 16:28:58","archive":"","archiveLocation":"","libraryCatalog":"Early English Books Online","callNumber":"","rights":"","extra":"","tags":[{"tag":"Fitzharris, Edward, 1648?-1681 -- Early works to 1800. ; Great Britain -- History -- Charles II, 1660-1685 -- Early works to 1800.","type":1}]}</content>
+  </entry>
+  <entry>
+    <title>The DOM and JavaScript - MDC Doc Center</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/XPX7KWG3</id>
+    <published>2011-04-10T19:45:41Z</published>
+    <updated>2011-04-10T19:45:41Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/XPX7KWG3?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/XPX7KWG3"/>
+    <zapi:key>XPX7KWG3</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>webpage</zapi:itemType>
+    <zapi:year/>
+    <zapi:numChildren>1</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content zapi:type="json" zapi:etag="95428c6398d0ac2c76c4aec4d17d1880">{"itemType":"webpage","title":"The DOM and JavaScript - MDC Doc Center","creators":[],"abstractNote":"","websiteTitle":"","websiteType":"","date":"","shortTitle":"","url":"https://developer.mozilla.org/en/The_DOM_and_JavaScript","accessDate":"2011-04-10 19:45:41","language":"","rights":"","extra":"","tags":[]}</content>
+  </entry>
+</feed>

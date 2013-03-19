@@ -1,0 +1,11 @@
+HTTP/1.0 200 OK
+Date: Mon, 18 Mar 2013 18:31:50 GMT
+Server: Apache/2.2.15 (CentOS)
+X-Powered-By: PHP/5.3.8
+Zotero-API-Version: 1
+Content-Length: 119
+Keep-Alive: timeout=30, max=100
+Connection: keep-alive
+Content-Type: application/json
+
+[{"field":"firstName","localized":"First"},{"field":"lastName","localized":"Last"},{"field":"name","localized":"Name"}]

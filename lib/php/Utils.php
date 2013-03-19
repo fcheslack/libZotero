@@ -39,6 +39,25 @@ class Zotero_Lib_Utils
         return "<a href=\"http://dx.doi.org/{$matches[0]}\" rel=\"nofollow\">{$safetxt}</a>";
     }
     
+    public static function getFirstEntryNode($body){
+        $doc = new DOMDocument();
+        $doc->loadXml($body);
+        $entryNodes = $doc->getElementsByTagName("entry");
+        if($entryNodes->length){
+            return $entryNodes->item(0);
+        }
+        else {
+            return null;
+        }
+    }
+    
+    public static function getEntryNodes($body){
+        $doc = new DOMDocument();
+        $doc->loadXml($body);
+        $entryNodes = $doc->getElementsByTagName("entry");
+        return $entryNodes;
+    }
+    
     public static function utilRequest($url, $method="GET", $body=NULL, $headers=array(), $basicauth=array() ) {
         libZoteroDebug( "url being requested: " . $url . "\n\n");
         $ch = curl_init();
@@ -166,6 +185,93 @@ class Zotero_Lib_Utils
         return $queryString;
     }
     
+    public static function translateMimeType($mimeType)
+    {
+        switch ($mimeType) {
+            case 'text/html':
+                return 'html';
+            
+            case 'application/pdf':
+            case 'application/x-pdf':
+            case 'application/acrobat':
+            case 'applications/vnd.pdf':
+            case 'text/pdf':
+            case 'text/x-pdf':
+                return 'pdf';
+            
+            case 'image/jpg':
+            case 'image/jpeg':
+                return 'jpg';
+            
+            case 'image/gif':
+                return 'gif';
+            
+            case 'application/msword':
+            case 'application/doc':
+            case 'application/vnd.msword':
+            case 'application/vnd.ms-word':
+            case 'application/winword':
+            case 'application/word':
+            case 'application/x-msw6':
+            case 'application/x-msword':
+                return 'doc';
+            
+            case 'application/vnd.oasis.opendocument.text':
+            case 'application/x-vnd.oasis.opendocument.text':
+                return 'odt';
+            
+            case 'video/flv':
+            case 'video/x-flv':
+                return 'flv';
+            
+            case 'image/tif':
+            case 'image/tiff':
+            case 'image/tif':
+            case 'image/x-tif':
+            case 'image/tiff':
+            case 'image/x-tiff':
+            case 'application/tif':
+            case 'application/x-tif':
+            case 'application/tiff':
+            case 'application/x-tiff':
+                return 'tiff';
+            
+            case 'application/zip':
+            case 'application/x-zip':
+            case 'application/x-zip-compressed':
+            case 'application/x-compress':
+            case 'application/x-compressed':
+            case 'multipart/x-zip':
+                return 'zip';
+                
+            case 'video/quicktime':
+            case 'video/x-quicktime':
+                return 'mov';
+                
+            case 'video/avi':
+            case 'video/msvideo':
+            case 'video/x-msvideo':
+                return 'avi';
+                
+            case 'audio/wav':
+            case 'audio/x-wav':
+            case 'audio/wave':
+                return 'wav';
+                
+            case 'audio/aiff':
+            case 'audio/x-aiff':
+            case 'sound/aiff':
+                return 'aiff';
+            
+            case 'text/plain':
+                return 'plain text';
+            case 'application/rtf':
+                return 'rtf';
+                
+            default:
+                return $mimeType;
+        }
+    }
 }
 
 

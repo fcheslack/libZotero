@@ -1,0 +1,40 @@
+HTTP/1.0 200 OK
+Date: Tue, 05 Mar 2013 19:18:20 GMT
+Server: Apache/2.2.15 (CentOS)
+X-Powered-By: PHP/5.3.8
+Zotero-API-Version: 1
+Content-Length: 2007
+Keep-Alive: timeout=30, max=100
+Connection: keep-alive
+Content-Type: application/atom+xml
+
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:zapi="http://zotero.org/ns/api">
+  <title>Zotero / Z public library / Child Collections of &#x2018;LoC'&#x2019;</title>
+  <id>http://zotero.org/users/475425/collections/N7W92H48/collections?content=json</id>
+  <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/N7W92H48/collections?content=json"/>
+  <link rel="first" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/N7W92H48/collections?content=json"/>
+  <link rel="last" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/N7W92H48/collections?content=json"/>
+  <link rel="alternate" type="text/html" href="https://www.zotero.org/users/475425/collections/N7W92H48/collections"/>
+  <zapi:totalResults>1</zapi:totalResults>
+  <zapi:apiVersion>1</zapi:apiVersion>
+  <updated>2011-01-31T02:29:00Z</updated>
+  <entry>
+    <title>Digital Newspaper project</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/users/475425/collections/M7MNCCXU</id>
+    <published>2011-01-31T02:29:00Z</published>
+    <updated>2011-01-31T02:29:00Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/M7MNCCXU"/>
+    <link rel="up" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/N7W92H48"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/users/475425/collections/M7MNCCXU"/>
+    <zapi:key>M7MNCCXU</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:numCollections>0</zapi:numCollections>
+    <zapi:numItems>0</zapi:numItems>
+    <content type="application/json" zapi:etag="362eadf5ca9b9e01fb44ef452840c954" etag="362eadf5ca9b9e01fb44ef452840c954">{"collectionKey":"M7MNCCXU","collectionVersion":1,"name":"Digital Newspaper project","parent":"N7W92H48"}</content>
+  </entry>
+</feed>

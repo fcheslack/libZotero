@@ -1,0 +1,217 @@
+HTTP/1.0 200 OK
+Date: Thu, 14 Mar 2013 18:20:02 GMT
+Server: Apache/2.2.15 (CentOS)
+X-Powered-By: PHP/5.3.8
+Zotero-API-Version: 1
+Connection: close
+Content-Type: application/atom+xml
+
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:zapi="http://zotero.org/ns/api">
+  <title>Zotero / Z public library / Top-Level Items in Collection &#x2018;LoC&#x2019;</title>
+  <id>http://zotero.org/users/475425/collections/N7W92H48/items/top?content=json&amp;limit=10</id>
+  <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/N7W92H48/items/top?content=json&amp;limit=10"/>
+  <link rel="first" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/N7W92H48/items/top?content=json&amp;limit=10"/>
+  <link rel="next" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/N7W92H48/items/top?content=json&amp;limit=10&amp;start=10"/>
+  <link rel="last" type="application/atom+xml" href="https://api.zotero.org/users/475425/collections/N7W92H48/items/top?content=json&amp;limit=10&amp;start=10"/>
+  <link rel="alternate" type="text/html" href="https://www.zotero.org/users/475425/collections/N7W92H48/items/top?limit=10"/>
+  <zapi:totalResults>16</zapi:totalResults>
+  <zapi:apiVersion>1</zapi:apiVersion>
+  <updated>2011-06-28T19:15:37Z</updated>
+  <entry>
+    <title>Zotero | Home</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/KWENT2ZM</id>
+    <published>2011-06-28T19:15:37Z</published>
+    <updated>2011-06-28T19:15:37Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/KWENT2ZM?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/KWENT2ZM"/>
+    <zapi:key>KWENT2ZM</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>webpage</zapi:itemType>
+    <zapi:year/>
+    <zapi:numChildren>1</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content zapi:type="json" zapi:etag="39da0e0ecd629acdb92d0969fbb9bbd8">{"itemType":"webpage","title":"Zotero | Home","creators":[],"abstractNote":"","websiteTitle":"","websiteType":"","date":"","shortTitle":"","url":"http://staging.zotero.net/","accessDate":"2011-06-28 19:15:37","language":"","rights":"","extra":"","tags":[]}</content>
+  </entry>
+  <entry>
+    <title>Pure Science: Marie Curie and the American Gift</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/GUVBGARB</id>
+    <published>2011-03-07T18:57:48Z</published>
+    <updated>2011-03-07T18:57:48Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/GUVBGARB?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/GUVBGARB"/>
+    <zapi:key>GUVBGARB</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>journalArticle</zapi:itemType>
+    <zapi:creatorSummary>Curie</zapi:creatorSummary>
+    <zapi:year>2001</zapi:year>
+    <zapi:numChildren>1</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content zapi:type="json" zapi:etag="b7d4067297320f1e448b0d70299032c3">{"itemType":"journalArticle","title":"Pure Science: Marie Curie and the American Gift","creators":[{"creatorType":"author","firstName":"Marie","lastName":"Curie"}],"abstractNote":"","publicationTitle":"The Kenyon Review","volume":"23","issue":"2","pages":"94-112","date":"April 01, 2001","series":"New Series","seriesTitle":"","seriesText":"","journalAbbreviation":"","language":"","DOI":"","ISSN":"0163075X","shortTitle":"","url":"http://www.jstor.org/stable/4338209","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"","callNumber":"","rights":"","extra":"ArticleType: research-article / Issue Title: Cultures of Creativity: The Centennial Celebration of the Nobel Prizes / Full publication date: Spring, 2001 / Copyright \u00a9 2001 Kenyon College","tags":[]}</content>
+  </entry>
+  <entry>
+    <title>Pure Science: Marie Curie and the American Gift</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/SAAHZBHT</id>
+    <published>2011-03-07T18:57:25Z</published>
+    <updated>2011-03-07T18:57:25Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/SAAHZBHT?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/SAAHZBHT"/>
+    <zapi:key>SAAHZBHT</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>journalArticle</zapi:itemType>
+    <zapi:creatorSummary>Curie</zapi:creatorSummary>
+    <zapi:year>2001</zapi:year>
+    <zapi:numChildren>1</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content zapi:type="json" zapi:etag="1a7866a477a7cea8985750d009ef4dd3">{"itemType":"journalArticle","title":"Pure Science: Marie Curie and the American Gift","creators":[{"creatorType":"author","firstName":"Marie","lastName":"Curie"}],"abstractNote":"","publicationTitle":"The Kenyon Review","volume":"23","issue":"2","pages":"94-112","date":"April 01, 2001","series":"New Series","seriesTitle":"","seriesText":"","journalAbbreviation":"","language":"","DOI":"","ISSN":"0163075X","shortTitle":"","url":"http://www.jstor.org/stable/4338209","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"","callNumber":"","rights":"","extra":"ArticleType: research-article / Issue Title: Cultures of Creativity: The Centennial Celebration of the Nobel Prizes / Full publication date: Spring, 2001 / Copyright \u00a9 2001 Kenyon College","tags":[]}</content>
+  </entry>
+  <entry>
+    <title>Zatrzymanie I Tymczasowe Aresztowanie a Prawa Cz&#x142;owieka</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/3WED5VVU</id>
+    <published>2011-03-07T18:45:53Z</published>
+    <updated>2011-03-07T18:45:53Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/3WED5VVU?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/3WED5VVU"/>
+    <zapi:key>3WED5VVU</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:year>1992</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content zapi:type="json" zapi:etag="bbf0dbdd2aea417635eba0b1adab1a47">{"itemType":"book","title":"Zatrzymanie I Tymczasowe Aresztowanie a Prawa Cz\u0142owieka","creators":[],"abstractNote":"","series":"Biblioteka Komitetu Helsin\u0301skiego w Polsce","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"Lublin","publisher":"Wydaw. Uniwersytetu Marii Curie-Sk\u0142odowskiej","date":"1992","numPages":"353","language":"","ISBN":"8322705034","shortTitle":"","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"Library of Congress Catalog","callNumber":"ACQUISITION IN PROCESS","rights":"","extra":"","tags":[]}</content>
+  </entry>
+  <entry>
+    <title>Zatrzymanie I Tymczasowe Aresztowanie a Prawa Cz&#x142;owieka</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/TBF6MBTZ</id>
+    <published>2011-03-07T18:45:39Z</published>
+    <updated>2011-03-07T18:45:39Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/TBF6MBTZ?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/TBF6MBTZ"/>
+    <zapi:key>TBF6MBTZ</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:year/>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content zapi:type="json" zapi:etag="bbf0dbdd2aea417635eba0b1adab1a47">{"itemType":"book","title":"Zatrzymanie I Tymczasowe Aresztowanie a Prawa Cz\u0142owieka","creators":[],"abstractNote":"","series":"Biblioteka Komitetu Helsin\u0301skiego w Polsce","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"Lublin","publisher":"Wydaw. Uniwersytetu Marii Curie-Sk\u0142odowskiej","date":"","numPages":"353","language":"","ISBN":"8322705034","shortTitle":"","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"Library of Congress Catalog","callNumber":"ACQUISITION IN PROCESS","rights":"","extra":"","tags":[]}</content>
+  </entry>
+  <entry>
+    <title>Zatrzymanie I Tymczasowe Aresztowanie a Prawa Cz&#x142;owieka</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/N9IZ43KW</id>
+    <published>2011-03-07T18:44:22Z</published>
+    <updated>2011-03-07T18:44:22Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/N9IZ43KW?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/N9IZ43KW"/>
+    <zapi:key>N9IZ43KW</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:year>1992</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content zapi:type="json" zapi:etag="c73d3989a002150da47d3383abc7c748">{"itemType":"book","title":"Zatrzymanie I Tymczasowe Aresztowanie a Prawa Cz\u0142owieka","creators":[],"abstractNote":"","series":"Biblioteka Komitetu Helsin\u0301skiego w Polsce","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"Lublin","publisher":"Wydaw. Uniwersytetu Marii Curie-Sk\u0142odowskiej","date":"1992","numPages":"353","language":"","ISBN":"8322705034","shortTitle":"","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"Library of Congress Catalog","callNumber":"ACQUISITION IN PROCESS","rights":"","extra":"","tags":[]}</content>
+  </entry>
+  <entry>
+    <title>I Hear the People Singing; Selected Poems of Walt Whitman</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/EG7GMVJM</id>
+    <published>2011-01-13T03:04:41Z</published>
+    <updated>2011-01-13T03:04:41Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/EG7GMVJM?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/EG7GMVJM"/>
+    <zapi:key>EG7GMVJM</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>Whitman</zapi:creatorSummary>
+    <zapi:year>1946</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content zapi:type="json" zapi:etag="5b1ffc019e4e466a95ece2f3ac4f5ef1">{"itemType":"book","title":"I Hear the People Singing; Selected Poems of Walt Whitman","creators":[{"creatorType":"author","firstName":"Walt","lastName":"Whitman"}],"abstractNote":"","series":"","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"New York","publisher":"International publishers","date":"1946","numPages":"69","language":"","ISBN":"","shortTitle":"","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"Library of Congress Catalog","callNumber":"PS3203 .H8","rights":"","extra":"","tags":[]}</content>
+  </entry>
+  <entry>
+    <title>Doctor in Buckskin</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/FNNGPXWE</id>
+    <published>2011-01-13T03:04:38Z</published>
+    <updated>2011-01-13T03:04:38Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/FNNGPXWE?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/FNNGPXWE"/>
+    <zapi:key>FNNGPXWE</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>Allen</zapi:creatorSummary>
+    <zapi:year>1951</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>10</zapi:numTags>
+    <content zapi:type="json" zapi:etag="5b1ffc019e4e466a95ece2f3ac4f5ef1">{"itemType":"book","title":"Doctor in Buckskin","creators":[{"creatorType":"author","firstName":"T. D","lastName":"Allen"}],"abstractNote":"","series":"","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"1st ed.","place":"New York","publisher":"Harper","date":"1951","numPages":"277","language":"","ISBN":"","shortTitle":"","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"Library of Congress Catalog","callNumber":"PZ4.A43 Do","rights":"","extra":"","tags":[{"tag":"Biographical fiction","type":1},{"tag":"Christian fiction","type":1},{"tag":"Fiction","type":1},{"tag":"Indians of North America","type":1},{"tag":"Missionaries","type":1},{"tag":"Oregon","type":1},{"tag":"Physicians","type":1},{"tag":"Western stories","type":1},{"tag":"Whitman, Marcus","type":1},{"tag":"Whitman, Narcissa Prentiss","type":1}]}</content>
+  </entry>
+  <entry>
+    <title>Picture Book of Alaska</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/MDFXBX4J</id>
+    <published>2011-01-13T03:04:34Z</published>
+    <updated>2011-01-13T03:04:34Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/MDFXBX4J?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/MDFXBX4J"/>
+    <zapi:key>MDFXBX4J</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>Bailey</zapi:creatorSummary>
+    <zapi:year>1959</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>2</zapi:numTags>
+    <content zapi:type="json" zapi:etag="5b1ffc019e4e466a95ece2f3ac4f5ef1">{"itemType":"book","title":"Picture Book of Alaska","creators":[{"creatorType":"author","firstName":"Bernadine","lastName":"Bailey"}],"abstractNote":"","series":"","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"Chicago","publisher":"A. Whitman","date":"1959","numPages":"","language":"","ISBN":"","shortTitle":"","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"Library of Congress Catalog","callNumber":"F904.3 .B3","rights":"","extra":"","tags":[{"tag":"Alaska","type":1},{"tag":"Juvenile literature","type":1}]}</content>
+  </entry>
+  <entry>
+    <title>Memories of President Lincoln, and Other Lyrics of the War</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/QAZTP63T</id>
+    <published>2011-01-13T03:04:30Z</published>
+    <updated>2011-01-13T03:04:30Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/QAZTP63T?content=json"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/QAZTP63T"/>
+    <zapi:key>QAZTP63T</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>Whitman</zapi:creatorSummary>
+    <zapi:year>1906</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>6</zapi:numTags>
+    <content zapi:type="json" zapi:etag="5b1ffc019e4e466a95ece2f3ac4f5ef1">{"itemType":"book","title":"Memories of President Lincoln, and Other Lyrics of the War","creators":[{"creatorType":"author","firstName":"Walt","lastName":"Whitman"}],"abstractNote":"","series":"","seriesNumber":"","volume":"","numberOfVolumes":"","edition":"","place":"Portland, Me","publisher":"Thomas B. Mosher","date":"1906","numPages":"42","language":"","ISBN":"","shortTitle":"","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"Library of Congress Catalog","callNumber":"PS3203 .M6 1906","rights":"","extra":"","tags":[{"tag":"Civil War, 1861-1865","type":1},{"tag":"History","type":1},{"tag":"Lincoln, Abraham","type":1},{"tag":"Poetry","type":1},{"tag":"Presidents","type":1},{"tag":"United States","type":1}]}</content>
+  </entry>
+</feed>

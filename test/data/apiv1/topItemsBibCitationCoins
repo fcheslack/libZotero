@@ -1,0 +1,321 @@
+HTTP/1.0 200 OK
+Date: Wed, 13 Mar 2013 20:40:59 GMT
+Server: Apache/2.2.15 (CentOS)
+X-Powered-By: PHP/5.3.8
+Zotero-API-Version: 1
+Connection: close
+Content-Type: application/atom+xml
+
+<?xml version="1.0"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:zapi="http://zotero.org/ns/api">
+  <title>Zotero / Z public library / Top-Level Items</title>
+  <id>http://zotero.org/users/475425/items/top?content=bib%2Ccitation%2Ccoins&amp;style=chicago-fullnote-bibliography&amp;linkwrap=1&amp;limit=10</id>
+  <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/top?content=bib%2Ccitation%2Ccoins&amp;style=chicago-fullnote-bibliography&amp;linkwrap=1&amp;limit=10"/>
+  <link rel="first" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/top?content=bib%2Ccitation%2Ccoins&amp;style=chicago-fullnote-bibliography&amp;linkwrap=1&amp;limit=10"/>
+  <link rel="next" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/top?content=bib%2Ccitation%2Ccoins&amp;style=chicago-fullnote-bibliography&amp;linkwrap=1&amp;limit=10&amp;start=10"/>
+  <link rel="last" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/top?content=bib%2Ccitation%2Ccoins&amp;style=chicago-fullnote-bibliography&amp;linkwrap=1&amp;limit=10&amp;start=160"/>
+  <link rel="alternate" type="text/html" href="https://www.zotero.org/users/475425/items/top?style=chicago-fullnote-bibliography&amp;linkwrap=1&amp;limit=10"/>
+  <zapi:totalResults>162</zapi:totalResults>
+  <zapi:apiVersion>1</zapi:apiVersion>
+  <updated>2011-06-28T19:15:37Z</updated>
+  <entry>
+    <title>Zotero | Home</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/KWENT2ZM</id>
+    <published>2011-06-28T19:15:37Z</published>
+    <updated>2011-06-28T19:15:37Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/KWENT2ZM?content=bib%2Ccitation%2Ccoins"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/KWENT2ZM"/>
+    <zapi:key>KWENT2ZM</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>webpage</zapi:itemType>
+    <zapi:year/>
+    <zapi:numChildren>1</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">&#x201C;Zotero | Home.&#x201D; Accessed June 28, 2011. <a href="http://staging.zotero.net/">http://staging.zotero.net/</a>.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="citation">
+        <span xmlns="http://www.w3.org/1999/xhtml">&#x201C;Zotero | Home,&#x201D; accessed June 28, 2011, <a href="http://staging.zotero.net/">http://staging.zotero.net/</a>.</span>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="coins" type="text/html"/>
+    </content>
+  </entry>
+  <entry>
+    <title>Sonatine Nr. 3 in c-moll [f&#xFC;r] Klavier : Sontina no. 3 in C-minor [for] piano solo</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/HFPQDBMD</id>
+    <published>2011-05-16T14:36:12Z</published>
+    <updated>2011-05-16T14:36:12Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/HFPQDBMD?content=bib%2Ccitation%2Ccoins"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/HFPQDBMD"/>
+    <zapi:key>HFPQDBMD</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>webpage</zapi:itemType>
+    <zapi:creatorSummary>Schroeder</zapi:creatorSummary>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">Schroeder, Hermann. &#x201C;Sonatine Nr. 3 in C-moll [f&#xFC;r] Klavier&#x202F;: Sontina No. 3 in C-minor [for] Piano Solo,&#x201D; 1972.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="citation">
+        <span xmlns="http://www.w3.org/1999/xhtml">Hermann Schroeder, &#x201C;Sonatine Nr. 3 in C-moll [f&#xFC;r] Klavier&#x202F;: Sontina No. 3 in C-minor [for] Piano Solo,&#x201D; 1972.</span>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="coins" type="text/html"/>
+    </content>
+  </entry>
+  <entry>
+    <title>1984</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/J6NP6VJW</id>
+    <published>2011-05-16T14:36:12Z</published>
+    <updated>2011-05-16T14:36:12Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/J6NP6VJW?content=bib%2Ccitation%2Ccoins"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/J6NP6VJW"/>
+    <zapi:key>J6NP6VJW</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>Orwell</zapi:creatorSummary>
+    <zapi:year>1984</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">Orwell, George. <i>1984</i>. Index, 1984.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="citation">
+        <span xmlns="http://www.w3.org/1999/xhtml">George Orwell, <i>1984</i> (Index, 1984).</span>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="coins" type="text/html">&lt;span class='Z3988' title='url_ver=Z39.88-2004&amp;amp;ctx_ver=Z39.88-2004&amp;amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;amp;rft.genre=book&amp;amp;rft.btitle=1984&amp;amp;rft.publisher=Index&amp;amp;rft.aufirst=George&amp;amp;rft.aulast=Orwell&amp;amp;rft.au=George%20Orwell&amp;amp;rft.date=1984'&gt;&lt;/span&gt;
+</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>Hoyts_Dinner_Menu_-_0328112052e6837ea9.pdf</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/3RIEVNTT</id>
+    <published>2011-05-11T21:24:24Z</published>
+    <updated>2011-05-11T21:24:56Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/3RIEVNTT?content=bib%2Ccitation%2Ccoins"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/3RIEVNTT"/>
+    <zapi:key>3RIEVNTT</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>attachment</zapi:itemType>
+    <zapi:numTags>0</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">&#x201C;Hoyts_Dinner_Menu_-_0328112052e6837ea9.pdf,&#x201D; n.d.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="citation">
+        <span xmlns="http://www.w3.org/1999/xhtml">&#x201C;Hoyts_Dinner_Menu_-_0328112052e6837ea9.pdf,&#x201D; n.d.</span>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="coins" type="text/html"/>
+    </content>
+  </entry>
+  <entry>
+    <title>The Peloponnesian War and the future of reference, cataloging, and scholarship in research libraries</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/7DTHXBKK</id>
+    <published>2011-04-23T16:44:59Z</published>
+    <updated>2011-04-23T16:44:59Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/7DTHXBKK?content=bib%2Ccitation%2Ccoins"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/7DTHXBKK"/>
+    <zapi:key>7DTHXBKK</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>journalArticle</zapi:itemType>
+    <zapi:creatorSummary>Mann</zapi:creatorSummary>
+    <zapi:year>2008</zapi:year>
+    <zapi:numChildren>1</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">Mann, T. &#x201C;The Peloponnesian War and the Future of Reference, Cataloging, and Scholarship in Research Libraries.&#x201D; <i>Journal of Library Metadata</i> 8, no. 1 (2008): 53&#x2013;100.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="citation">
+        <span xmlns="http://www.w3.org/1999/xhtml">T. Mann, &#x201C;The Peloponnesian War and the Future of Reference, Cataloging, and Scholarship in Research Libraries,&#x201D; <i>Journal of Library Metadata</i> 8, no. 1 (2008): 53&#x2013;100.</span>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="coins" type="text/html">&lt;span class='Z3988' title='url_ver=Z39.88-2004&amp;amp;ctx_ver=Z39.88-2004&amp;amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Ajournal&amp;amp;rft.genre=article&amp;amp;rft.atitle=The%20Peloponnesian%20War%20and%20the%20future%20of%20reference%2C%20cataloging%2C%20and%20scholarship%20in%20research%20libraries&amp;amp;rft.jtitle=Journal%20of%20Library%20Metadata&amp;amp;rft.volume=8&amp;amp;rft.issue=1&amp;amp;rft.aufirst=T.&amp;amp;rft.aulast=Mann&amp;amp;rft.au=T.%20Mann&amp;amp;rft.date=2008&amp;amp;rft.pages=53%E2%80%93100&amp;amp;rft.issn=1938-6389'&gt;&lt;/span&gt;
+</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>An answer to a late treasonable pamphlet, entituled, Treason in grain, &amp;c. for which pamphlet Edward Fitz-Harris lies condemned..</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/G2IT8SNK</id>
+    <published>2011-04-11T16:37:49Z</published>
+    <updated>2011-04-11T16:37:49Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/G2IT8SNK?content=bib%2Ccitation%2Ccoins"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/G2IT8SNK"/>
+    <zapi:key>G2IT8SNK</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>A. C.</zapi:creatorSummary>
+    <zapi:year>1681</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>1</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">A. C. <i>An Answer to a Late Treasonable Pamphlet, Entituled, Treason in Grain, &amp;c. for Which Pamphlet Edward Fitz-Harris Lies Condemned..</i> London:&#x202F;: Printed by N.T. next the Cross-Keys in Fetter-lane., 1681.., 1681. <a href="http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg&amp;ACTION=ByID&amp;ID=99890767&amp;FILE=../session/1190302085_15129&amp;SEARCHSCREEN=CITATIONS&amp;SEARCHCONFIG=config.cfg&amp;DISPLAY=ALPHA">http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg&amp;ACTION=ByID&amp;ID=99890767&amp;FILE=../session/1190302085_15129&amp;SEARCHSCREEN=CITATIONS&amp;SEARCHCONFIG=config.cfg&amp;DISPLAY=ALPHA</a>.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="citation">
+        <span xmlns="http://www.w3.org/1999/xhtml">A. C., <i>An Answer to a Late Treasonable Pamphlet, Entituled, Treason in Grain, &amp;c. for Which Pamphlet Edward Fitz-Harris Lies Condemned..</i> (London:&#x202F;: Printed by N.T. next the Cross-Keys in Fetter-lane., 1681.., 1681), <a href="http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg&amp;ACTION=ByID&amp;ID=99890767&amp;FILE=../session/1190302085_15129&amp;SEARCHSCREEN=CITATIONS&amp;SEARCHCONFIG=config.cfg&amp;DISPLAY=ALPHA">http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg&amp;ACTION=ByID&amp;ID=99890767&amp;FILE=../session/1190302085_15129&amp;SEARCHSCREEN=CITATIONS&amp;SEARCHCONFIG=config.cfg&amp;DISPLAY=ALPHA</a>.</span>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="coins" type="text/html">&lt;span class='Z3988' title='url_ver=Z39.88-2004&amp;amp;ctx_ver=Z39.88-2004&amp;amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;amp;rft.genre=book&amp;amp;rft.btitle=An%20answer%20to%20a%20late%20treasonable%20pamphlet%2C%20entituled%2C%20Treason%20in%20grain%2C%20%26c.%20for%20which%20pamphlet%20Edward%20Fitz-Harris%20lies%20condemned..&amp;amp;rft.publisher=London%3A%20%3A%20Printed%20by%20N.T.%20next%20the%20Cross-Keys%20in%20Fetter-lane.%2C%201681..&amp;amp;rft.aulast=A.%20C.&amp;amp;rft.au=A.%20C.&amp;amp;rft.date=1681'&gt;&lt;/span&gt;
+</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>An answer to a late treasonable pamphlet, entituled, Treason in grain, &amp;c. for which pamphlet Edward Fitz-Harris lies condemned..</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/K4U39GFI</id>
+    <published>2011-04-11T16:37:23Z</published>
+    <updated>2011-04-11T16:37:23Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/K4U39GFI?content=bib%2Ccitation%2Ccoins"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/K4U39GFI"/>
+    <zapi:key>K4U39GFI</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>A. C.</zapi:creatorSummary>
+    <zapi:year>1681</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>1</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">A. C. <i>An Answer to a Late Treasonable Pamphlet, Entituled, Treason in Grain, &amp;c. for Which Pamphlet Edward Fitz-Harris Lies Condemned..</i> Early English Books Online. London:&#x202F;: Printed by N.T. next the Cross-Keys in Fetter-lane., 1681.., 1681. <a href="http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg&amp;ACTION=ByID&amp;ID=99890767&amp;FILE=../session/1190302085_15129&amp;SEARCHSCREEN=CITATIONS&amp;SEARCHCONFIG=config.cfg&amp;DISPLAY=ALPHA">http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg&amp;ACTION=ByID&amp;ID=99890767&amp;FILE=../session/1190302085_15129&amp;SEARCHSCREEN=CITATIONS&amp;SEARCHCONFIG=config.cfg&amp;DISPLAY=ALPHA</a>.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="citation">
+        <span xmlns="http://www.w3.org/1999/xhtml">A. C., <i>An Answer to a Late Treasonable Pamphlet, Entituled, Treason in Grain, &amp;c. for Which Pamphlet Edward Fitz-Harris Lies Condemned..</i>, Early English Books Online (London:&#x202F;: Printed by N.T. next the Cross-Keys in Fetter-lane., 1681.., 1681), <a href="http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg&amp;ACTION=ByID&amp;ID=99890767&amp;FILE=../session/1190302085_15129&amp;SEARCHSCREEN=CITATIONS&amp;SEARCHCONFIG=config.cfg&amp;DISPLAY=ALPHA">http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg&amp;ACTION=ByID&amp;ID=99890767&amp;FILE=../session/1190302085_15129&amp;SEARCHSCREEN=CITATIONS&amp;SEARCHCONFIG=config.cfg&amp;DISPLAY=ALPHA</a>.</span>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="coins" type="text/html">&lt;span class='Z3988' title='url_ver=Z39.88-2004&amp;amp;ctx_ver=Z39.88-2004&amp;amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;amp;rft.genre=book&amp;amp;rft.btitle=An%20answer%20to%20a%20late%20treasonable%20pamphlet%2C%20entituled%2C%20Treason%20in%20grain%2C%20%26c.%20for%20which%20pamphlet%20Edward%20Fitz-Harris%20lies%20condemned..&amp;amp;rft.publisher=London%3A%20%3A%20Printed%20by%20N.T.%20next%20the%20Cross-Keys%20in%20Fetter-lane.%2C%201681..&amp;amp;rft.series=Early%20English%20Books%20Online&amp;amp;rft.aulast=A.%20C.&amp;amp;rft.au=A.%20C.&amp;amp;rft.date=1681'&gt;&lt;/span&gt;
+</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>An answer to a late treasonable pamphlet, entituled, Treason in grain, &amp;c. for which pamphlet Edward Fitz-Harris lies condemned..</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/HGAXPFAT</id>
+    <published>2011-04-11T16:36:59Z</published>
+    <updated>2011-04-11T16:36:59Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/HGAXPFAT?content=bib%2Ccitation%2Ccoins"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/HGAXPFAT"/>
+    <zapi:key>HGAXPFAT</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>A. C.</zapi:creatorSummary>
+    <zapi:year>1681</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>1</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">A. C. <i>An Answer to a Late Treasonable Pamphlet, Entituled, Treason in Grain, &amp;c. for Which Pamphlet Edward Fitz-Harris Lies Condemned..</i> Early English Books Online. London:&#x202F;: Printed by N.T. next the Cross-Keys in Fetter-lane., 1681.., 1681. <a href="http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg&amp;ACTION=ByID&amp;ID=99890767&amp;FILE=../session/1190302085_15129&amp;SEARCHSCREEN=CITATIONS&amp;SEARCHCONFIG=config.cfg&amp;DISPLAY=ALPHA">http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg&amp;ACTION=ByID&amp;ID=99890767&amp;FILE=../session/1190302085_15129&amp;SEARCHSCREEN=CITATIONS&amp;SEARCHCONFIG=config.cfg&amp;DISPLAY=ALPHA</a>.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="citation">
+        <span xmlns="http://www.w3.org/1999/xhtml">A. C., <i>An Answer to a Late Treasonable Pamphlet, Entituled, Treason in Grain, &amp;c. for Which Pamphlet Edward Fitz-Harris Lies Condemned..</i>, Early English Books Online (London:&#x202F;: Printed by N.T. next the Cross-Keys in Fetter-lane., 1681.., 1681), <a href="http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg&amp;ACTION=ByID&amp;ID=99890767&amp;FILE=../session/1190302085_15129&amp;SEARCHSCREEN=CITATIONS&amp;SEARCHCONFIG=config.cfg&amp;DISPLAY=ALPHA">http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg&amp;ACTION=ByID&amp;ID=99890767&amp;FILE=../session/1190302085_15129&amp;SEARCHSCREEN=CITATIONS&amp;SEARCHCONFIG=config.cfg&amp;DISPLAY=ALPHA</a>.</span>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="coins" type="text/html">&lt;span class='Z3988' title='url_ver=Z39.88-2004&amp;amp;ctx_ver=Z39.88-2004&amp;amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;amp;rft.genre=book&amp;amp;rft.btitle=An%20answer%20to%20a%20late%20treasonable%20pamphlet%2C%20entituled%2C%20Treason%20in%20grain%2C%20%26c.%20for%20which%20pamphlet%20Edward%20Fitz-Harris%20lies%20condemned..&amp;amp;rft.publisher=London%3A%20%3A%20Printed%20by%20N.T.%20next%20the%20Cross-Keys%20in%20Fetter-lane.%2C%201681..&amp;amp;rft.series=Early%20English%20Books%20Online&amp;amp;rft.aulast=A.%20C.&amp;amp;rft.au=A.%20C.&amp;amp;rft.date=1681'&gt;&lt;/span&gt;
+</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>An answer to a late treasonable pamphlet, entituled, Treason in grain, &amp;c. for which pamphlet Edward Fitz-Harris lies condemned..</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/KUI94JXQ</id>
+    <published>2011-04-11T16:28:58Z</published>
+    <updated>2011-04-11T16:28:58Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/KUI94JXQ?content=bib%2Ccitation%2Ccoins"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/KUI94JXQ"/>
+    <zapi:key>KUI94JXQ</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>book</zapi:itemType>
+    <zapi:creatorSummary>A. C.</zapi:creatorSummary>
+    <zapi:year>1681</zapi:year>
+    <zapi:numChildren>0</zapi:numChildren>
+    <zapi:numTags>1</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">A. C. <i>An Answer to a Late Treasonable Pamphlet, Entituled, Treason in Grain, &amp;c. for Which Pamphlet Edward Fitz-Harris Lies Condemned..</i> Early English Books Online. London:&#x202F;: Printed by N.T. next the Cross-Keys in Fetter-lane., 1681.., 1681. <a href="http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg&amp;ACTION=ByID&amp;ID=99890767&amp;FILE=../session/1190302085_15129&amp;SEARCHSCREEN=CITATIONS&amp;SEARCHCONFIG=config.cfg&amp;DISPLAY=ALPHA">http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg&amp;ACTION=ByID&amp;ID=99890767&amp;FILE=../session/1190302085_15129&amp;SEARCHSCREEN=CITATIONS&amp;SEARCHCONFIG=config.cfg&amp;DISPLAY=ALPHA</a>.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="citation">
+        <span xmlns="http://www.w3.org/1999/xhtml">A. C., <i>An Answer to a Late Treasonable Pamphlet, Entituled, Treason in Grain, &amp;c. for Which Pamphlet Edward Fitz-Harris Lies Condemned..</i>, Early English Books Online (London:&#x202F;: Printed by N.T. next the Cross-Keys in Fetter-lane., 1681.., 1681), <a href="http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg&amp;ACTION=ByID&amp;ID=99890767&amp;FILE=../session/1190302085_15129&amp;SEARCHSCREEN=CITATIONS&amp;SEARCHCONFIG=config.cfg&amp;DISPLAY=ALPHA">http://eebo.chadwyck.com/search/full_rec?SOURCE=pgimages.cfg&amp;ACTION=ByID&amp;ID=99890767&amp;FILE=../session/1190302085_15129&amp;SEARCHSCREEN=CITATIONS&amp;SEARCHCONFIG=config.cfg&amp;DISPLAY=ALPHA</a>.</span>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="coins" type="text/html">&lt;span class='Z3988' title='url_ver=Z39.88-2004&amp;amp;ctx_ver=Z39.88-2004&amp;amp;rfr_id=info%3Asid%2Fzotero.org%3A2&amp;amp;rft_val_fmt=info%3Aofi%2Ffmt%3Akev%3Amtx%3Abook&amp;amp;rft.genre=book&amp;amp;rft.btitle=An%20answer%20to%20a%20late%20treasonable%20pamphlet%2C%20entituled%2C%20Treason%20in%20grain%2C%20%26c.%20for%20which%20pamphlet%20Edward%20Fitz-Harris%20lies%20condemned..&amp;amp;rft.publisher=London%3A%20%3A%20Printed%20by%20N.T.%20next%20the%20Cross-Keys%20in%20Fetter-lane.%2C%201681..&amp;amp;rft.series=Early%20English%20Books%20Online&amp;amp;rft.aulast=A.%20C.&amp;amp;rft.au=A.%20C.&amp;amp;rft.date=1681'&gt;&lt;/span&gt;
+</zapi:subcontent>
+    </content>
+  </entry>
+  <entry>
+    <title>The DOM and JavaScript - MDC Doc Center</title>
+    <author>
+      <name>Z public library</name>
+      <uri>http://zotero.org/z_public_library</uri>
+    </author>
+    <id>http://zotero.org/z_public_library/items/XPX7KWG3</id>
+    <published>2011-04-10T19:45:41Z</published>
+    <updated>2011-04-10T19:45:41Z</updated>
+    <link rel="self" type="application/atom+xml" href="https://api.zotero.org/users/475425/items/XPX7KWG3?content=bib%2Ccitation%2Ccoins"/>
+    <link rel="alternate" type="text/html" href="http://zotero.org/z_public_library/items/XPX7KWG3"/>
+    <zapi:key>XPX7KWG3</zapi:key>
+    <zapi:version>1</zapi:version>
+    <zapi:itemType>webpage</zapi:itemType>
+    <zapi:year/>
+    <zapi:numChildren>1</zapi:numChildren>
+    <zapi:numTags>0</zapi:numTags>
+    <content type="application/xml">
+      <zapi:subcontent zapi:type="bib">
+        <div xmlns="http://www.w3.org/1999/xhtml" class="csl-bib-body" style="line-height: 1.35; padding-left: 2em; text-indent:-2em;">
+  <div class="csl-entry">&#x201C;The DOM and JavaScript - MDC Doc Center.&#x201D; Accessed April 10, 2011. <a href="https://developer.mozilla.org/en/The_DOM_and_JavaScript">https://developer.mozilla.org/en/The_DOM_and_JavaScript</a>.</div>
+</div>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="citation">
+        <span xmlns="http://www.w3.org/1999/xhtml">&#x201C;The DOM and JavaScript - MDC Doc Center,&#x201D; accessed April 10, 2011, <a href="https://developer.mozilla.org/en/The_DOM_and_JavaScript">https://developer.mozilla.org/en/The_DOM_and_JavaScript</a>.</span>
+      </zapi:subcontent>
+      <zapi:subcontent zapi:type="coins" type="text/html"/>
+    </content>
+  </entry>
+</feed>
