@@ -39,11 +39,6 @@ class Zotero_Group extends Zotero_Entry
     public $name;
     
     /**
-     * @var bool
-     */
-    public $libraryEnabled;
-    
-    /**
      * @var string
      */
     public $libraryEditing;
@@ -122,7 +117,6 @@ class Zotero_Group extends Zotero_Entry
             $this->groupType = $this->apiObject['type'];
             $this->description = $this->apiObject['description'];
             $this->url = $this->apiObject['url'];
-            $this->libraryEnabled = $this->apiObject['libraryEnabled'];
             $this->libraryEditing = $this->apiObject['libraryEditing'];
             $this->libraryReading = $this->apiObject['libraryReading'];
             $this->fileEditing = $this->apiObject['fileEditing'];
@@ -162,7 +156,6 @@ class Zotero_Group extends Zotero_Entry
                 $this->description = $jsonObject['description'];
                 $this->url = $jsonObject['url'];
                 $this->hasImage = isset($jsonObject['hasImage']) ? $jsonObject['hasImage'] : 0;
-                $this->libraryEnabled = $jsonObject['libraryEnabled'];
                 $this->libraryEditing = $jsonObject['libraryEditing'];
                 $this->memberIDs = isset($jsonObject['members']) ? $jsonObject['members'] : array();
                 $this->members = $this->memberIDs;
@@ -267,7 +260,6 @@ class Zotero_Group extends Zotero_Entry
         $el->setAttribute('owner', $this->ownerID);
         $el->setAttribute('type', $this->type);
         $el->setAttribute('name', $this->name);// str_replace('&#039;', '&apos;', htmlspecialchars($this->name, ENT_QUOTES)));
-        $el->setAttribute('libraryEnabled', $this->libraryEnabled);
         $el->setAttribute('libraryEditing', $this->libraryEditing);
         $el->setAttribute('libraryReading', $this->libraryReading);
         $el->setAttribute('fileEditing', $this->fileEditing);
@@ -282,7 +274,6 @@ class Zotero_Group extends Zotero_Entry
         $properties['owner'] = $this->owner;
         $properties['type'] = $this->type;
         $properties['name'] = $this->name;
-        $properties['libraryEnabled'] = $this->libraryEnabled;
         $properties['libraryEditing'] = $this->libraryEditing;
         $properties['libraryReading'] = $this->libraryReading;
         $properties['fileEditing'] = $this->fileEditing;
@@ -310,7 +301,6 @@ class Zotero_Group extends Zotero_Entry
         $jsonItem->adminIDs = $this->adminIDs;
         $jsonItem->type = $this->type;
         $jsonItem->name = $this->name;
-        $jsonItem->libraryEnabled = $this->libraryEnabled;
         $jsonItem->libraryEditing = $this->libraryEditing;
         $jsonItem->libraryReading = $this->libraryReading;
         $jsonItem->hasImage = $this->hadImage;
