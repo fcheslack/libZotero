@@ -10,6 +10,70 @@ class Zotero_Lib_Utils
     const ZOTERO_WWW_URI = 'http://www.zotero.org';
     const ZOTERO_WWW_API_URI = 'http://www.zotero.org/api';
     
+    public static function randomString($len=0, $chars=null) {
+        if ($chars === null) {
+            $chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        }
+        if ($len==0) {
+            $len = 8;
+        }
+        $randomstring = '';
+        for ($i = 0; $i < $len; $i++) {
+            $rnum = rand(0, strlen($chars) - 1);
+            $randomstring .= $chars[$rnum];
+        }
+        return $randomstring;
+    }
+    
+    public function getKey() {
+        $baseString = "23456789ABCDEFGHIJKMNPQRSTUVWXZ";
+        return Zotero_Lib_Utils::randomString(8, $baseString);
+    }
+    
+    //update items appropriately based on response to multi-write request
+    //for success:
+    //  update objectKey if item doesn't have one yet (newly created item)
+    //  update itemVersion to response's Last-Modified-Version header
+    //  mark as synced
+    //for unchanged:
+    //  don't need to do anything? itemVersion should remain the same?
+    //  mark as synced if not already?
+    //for failed:
+    //  do something. flag as error? display some message to user?
+    public static function updateObjectsFromWriteResponse($itemsArray, $response){
+        $data = json_decode($response->getRawBody(), true);
+        if($response->getStatus() == 200){
+            $newLastModifiedVersion = $response->getHeader("Last-Modified-Version");
+            if(isset($data['success'])){
+                foreach($data['success'] as $ind=>$key){
+                    $i = intval($ind);
+                    $item = $itemsArray[$i];
+                    
+                    $itemKey = $item->get('itemKey');
+                    if($itemKey != '' && $itemKey != $key){
+                        throw new Exception("Item key mismatch in multi-write request");
+                    }
+                    if($itemKey == ''){
+                        $item->set('itemKey', $key);
+                    }
+                    $item->set('itemVersion', $newLastModifiedVersion);
+                    $item->synced = true;
+                    $item->writeFailure = false;
+                }
+            }
+            if(isset($data['failed'])){
+                foreach($data['failed'] as $ind=>$val){
+                    $i = intval($ind);
+                    $item = $itemsArray[$i];
+                    $item->writeFailure = $val;
+                }
+            }
+        }
+        elseif($response->getStatus() == 204){
+            $itemsArray[0]->synced = true;
+        }
+    }
+    
     public static function wrapLinks($txt, $nofollow=false){
         //extremely ugly wrapping of urls in html
         if($nofollow){

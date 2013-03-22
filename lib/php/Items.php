@@ -75,22 +75,49 @@ class Zotero_Items
     }
     
     public function writeItem($item){
-        if(is_string($item)){
-            $itemKey = $item;
-            $item = $this->items->getItem($itemKey);
-        }
-        $updateItemJson = json_encode($item->writeApiObject());
-        $etag = $item->etag;
-        
-        $aparams = array('target'=>'item', 'itemKey'=>$item->itemKey);
-        $reqUrl = $this->apiRequestUrl($aparams) . $this->apiQueryString($aparams);
-        $response = $this->_request($reqUrl, 'PUT', $updateItemJson, array('If-Match'=>$etag));
-        return $response;
-    
+        return $this->writeItems(array($item));
     }
     
+    //accept an array of `Zotero_Item`s
     public function writeItems($items){
+        $returnItems = array();
+        $writeItems = array();
         
+        foreach($items as $item){
+            $itemKey = $item->get('itemKey');
+            if($itemKey == ""){
+                $newItemKey = Zotero_Lib_Utils::getKey();
+                $item->set('itemKey', $newItemKey);
+                $item->set('itemVersion', 0);
+            }
+            $writeItems[] = $item;
+            
+            //add separate note items if this item has any
+            $itemNotes = $item->get('notes');
+            if($itemNotes && (count($itemNotes) > 0) ){
+                foreach($itemNotes as $note){
+                    $note->set('parentItem', $item->get('itemKey'));
+                    $note->set('itemKey', Zotero_Lib_Utils::getKey());
+                    $note->set('itemVersion', 0);
+                    $writeItems[] = $note;
+                }
+            }
+        }
+        
+        $config = array('target'=>'items', 'libraryType'=>$this->owningLibrary->libraryType, 'libraryID'=>$this->owningLibrary->libraryID, 'content'=>'json');
+        $requestUrl = $this->owningLibrary->apiRequestString($config);
+        $writeArray = array();
+        foreach($writeItems as $item){
+            $writeArray[] = $item->writeApiObject();
+        }
+        $requestData = json_encode(array('items'=>$writeArray));
+        
+        $writeResponse = $this->owningLibrary->_request($requestUrl, 'POST', $requestData, array('Content-Type'=> 'application/json'));
+        if($writeResponse->isError()){
+            return false;
+        }
+        Zotero_Lib_Utils::UpdateObjectsFromWriteResponse($writeItems, $writeResponse);
+        return $writeItems;
     }
     
     public function deleteItem($item){

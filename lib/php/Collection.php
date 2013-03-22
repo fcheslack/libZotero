@@ -94,10 +94,12 @@ class Zotero_Collection extends Zotero_Entry
     }
     
     public function collectionJson(){
-        $newJson = json_decode($this->pristine, true);
-        $newJson['name'] = $this->name;
-        $newJson['parentCollection'] = $this->parentCollectionKey;
-        return json_encode($newJson);
+        return json_encode($this->writeApiObject());
+    }
+    
+    public function writeApiObject() {
+        $updateItem = array_merge($this->pristine, $this->apiObject);
+        return $updateItem;
     }
     
     public function dataObject() {

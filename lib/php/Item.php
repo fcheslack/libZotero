@@ -17,7 +17,12 @@ class Zotero_Item extends Zotero_Entry
      * @var int
      */
     public $itemKey = '';
-
+    
+    /**
+     * @var Zotero_Library
+     */
+    public $owningLibrary = null;
+    
     /**
      * @var string
      */
@@ -85,6 +90,8 @@ class Zotero_Item extends Zotero_Entry
     
     public $parsedJson = null;
     public $etag = '';
+    
+    public $writeFailure = null;
     
     /**
      * @var string content node of response useful if formatted bib request and we need to use the raw content
@@ -604,11 +611,83 @@ class Zotero_Item extends Zotero_Entry
     }
     
     public function addToCollection($collection){
+        if(is_string($collection)){
+            $collectionKey = $collection;
+        }
+        else {
+            $collectionKey = $collection->get('collectionKey');
+        }
         
+        $memberCollectionKeys = $this->get('collections');
+        if(!is_array($memberCollectionKeys)){
+            $memberCollectionKeys = array($collectionKey);
+            $this->set('collections', $memberCollectionKeys);
+        }
+        else {
+            if(!in_array($collectionKey, $memberCollectionKeys)) {
+                $memberCollectionKeys[] = $collectionKey;
+                $this->set('collections', $memberCollectionKeys);
+            }
+        }
     }
     
     public function removeFromCollection($collection){
+        if(is_string($collection)){
+            $collectionKey = $collection;
+        }
+        else {
+            $collectionKey = $collection->get('collectionKey');
+        }
         
+        $memberCollectionKeys = $this->get('collections');
+        if(!is_array($memberCollectionKeys)){
+            $memberCollectionKeys = array($collectionKey);
+            $this->set('collections', $memberCollectionKeys);
+        }
+        else {
+            $ind = array_search($collectionKey, $memberCollectionKeys);
+            if($ind !== false){
+                array_splice($memberCollectionKeys, $ind, 1);
+                $this->set('collections', $memberCollectionKeys);
+            }
+        }
+    }
+    
+    public function addTag($newtagname, $type=null){
+        $itemTags = $this->get('tags');
+        //assumes we'll get an array
+        foreach($itemTags as $tag){
+            if(is_string($tag) && $tag == $newtagname){
+                return;
+            }
+            elseif(is_array($tag) && isset($tag['tag']) && $tag['tag'] == $newtagname) {
+                return;
+            }
+        }
+        if($type !== null){
+            $itemTags[] = array('tag'=>$newtagname, 'type'=>$type);
+        }
+        else {
+            $itemTags[] = $newtagname;
+        }
+        $this->set('tags', $itemTags);
+    }
+    
+    public function removeTag($rmtagname){
+        $itemTags = $this->get('tags');
+        //assumes we'll get an array
+        foreach($itemTags as $ind=>$tag){
+            if( (is_string($tag) && $tag == $rmtagname) ||
+                (is_array($tag) && isset($tag['tag']) && $tag['tag'] == $rmtagname) ){
+                array_splice($itemTags, $ind, 1);
+                $this->set('tags', $itemTags);
+                return;
+            }
+        }
+    }
+    
+    public function addNote($noteItem){
+        $this->notes[] = $noteItem;
     }
     
     public function uploadFile(){
@@ -621,11 +700,29 @@ class Zotero_Item extends Zotero_Entry
     
     public function writeApiObject(){
         $updateItem = array_merge($this->pristine, $this->apiObject);
+        if(empty($updateItem['creators'])){
+            return $updateItem;
+        }
+        
+        $newCreators = array();
+        foreach($updateItem['creators'] as $creator){
+            if(empty($creator['name']) && empty($creator['firstName']) && empty($creator['lastName'])){
+                continue;
+            }
+            else {
+                $newCreators[] = $creator;
+            }
+        }
+        $updateItem['creators'] = $newCreators;
         return $updateItem;
     }
     
     public function writePatch(){
         
+    }
+    
+    public function save() {
+        return $this->owningLibrary->items->writeItems(array($this));
     }
     
     public function getChildren(){
@@ -634,8 +731,8 @@ class Zotero_Item extends Zotero_Entry
             return array();
         }
         
-        $config = array('target'=>'children', 'libraryType'=>$this->libraryType, 'libraryID'=>$this->libraryID, 'itemKey'=>$this->itemKey, 'content'=>'json');
-        $requestUrl = $this->owningLibrary->apiRequestUrl($config) . $this->owningLibrary->apiQueryString($config);
+        $config = array('target'=>'children', 'libraryType'=>$this->owningLibrary->libraryType, 'libraryID'=>$this->owningLibrary->libraryID, 'itemKey'=>$this->itemKey, 'content'=>'json');
+        $requestUrl = $this->owningLibrary->apiRequestString($config);
         
         $response = $this->owningLibrary->_request($requestUrl, 'GET');
         
