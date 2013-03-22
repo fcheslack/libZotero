@@ -7,7 +7,6 @@ class Zotero_FeedTest extends PHPUnit_Framework_TestCase
     public function testParsing()
     {
         $collectionsJsonAtomString = file_get_contents("../data/collectionsjson.atom");
-        $itemsJsonAtomString = file_get_contents("../data/itemsjson.atom");
         $tagsJsonAtomString = file_get_contents("../data/tagsjson.atom");
         
         $doc = new DOMDocument();
@@ -25,22 +24,6 @@ class Zotero_FeedTest extends PHPUnit_Framework_TestCase
         
         $this->assertEquals($collectionfeed->dateUpdated, "2011-06-29T14:29:32Z" );
         
-        
-        
-        $doc = new DOMDocument();
-        $doc->loadXml($itemsJsonAtomString);
-        $itemfeed = new Zotero_Feed($doc);
-        
-        //test that feed was parsed properly - 8 assertions
-        $this->assertEquals($itemfeed->title, "Zotero / fcheslack / Items in Collection ‘Pervasive Computing’", "Test feed title");
-        $this->assertEquals($itemfeed->id, "http://zotero.org/users/10150/collections/WDDWB8WT/items?content=json", "test feed id");
-        $this->assertEquals($itemfeed->totalResults, 33, "test total results - 33");
-        $this->assertEquals($itemfeed->apiVersion, null, "test apiVersion of feed");
-        //deepEqual(itemfeed.links, );
-        //$this->assertEquals($itemfeed->lastPageStart, '', "test lastPageStart is empty");
-        //$this->assertEquals($itemfeed->lastPage, 1, 'test lastPage is 1');
-        //$this->assertEquals($itemfeed->currentPage, 1, 'test currentPage is 1');
-        $this->assertEquals($itemfeed->dateUpdated, "2013-01-20T01:41:47Z", 'compare parsed updated string' );
         
         
         $doc = new DOMDocument();

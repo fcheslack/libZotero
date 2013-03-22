@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <?php
 //load credentials and library info from our config file
-require_once '../config.php';
+require_once './config.php';
 //load the zotero php library
 require_once '../build/libZoteroSingle.php';
 

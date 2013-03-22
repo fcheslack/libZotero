@@ -6,7 +6,7 @@ require_once '../build/libZoteroSingle.php';
 $library = new Zotero_Library($libraryType, $libraryID, $librarySlug, $apiKey);
 
 //fetch subcollections of a collection
-$collections = $library->fetchCollections(array('collectionKey'=>''));
+$collections = $library->fetchCollections(array('collectionKey'=>'', 'content'=>'json'));
 
 $collectionKey = '';
 if(count($collections)){

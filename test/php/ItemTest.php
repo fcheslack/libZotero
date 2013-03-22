@@ -48,5 +48,53 @@ EOD;
         $this->assertEquals($item->apiObject['deleted'], 1, 'deleted should be set on item apiObject');
         
     }
+    
+    public function testCollectionAndTags()
+    {
+        $templateJsonString = <<<'EOD'
+{"itemType":"journalArticle","title":"","creators":[{"creatorType":"author","firstName":"","lastName":""}],"abstractNote":"","publicationTitle":"","volume":"","issue":"","pages":"","date":"","series":"","seriesTitle":"","seriesText":"","journalAbbreviation":"","language":"","DOI":"","ISSN":"","shortTitle":"","url":"","accessDate":"","archive":"","archiveLocation":"","libraryCatalog":"","callNumber":"","rights":"","extra":"","tags":[],"collections":[],"relations":{}}
+EOD;
+        
+        $templateArray = json_decode($templateJsonString, true);
+        $item = new Zotero_Item();
+        $item->initItemFromTemplate($templateArray);
+        
+        $item->addToCollection("ASDF1234");
+        $item->addToCollection("FDSA4321");
+        
+        $item->addTag("Green");
+        $item->addTag("purple", 1);
+        $item->addTag("Red");
+        
+        $itemCollections = $item->get('collections');
+        $this->assertEquals(count($itemCollections), 2, 'right number of collections');
+        $this->assertEquals($itemCollections[0], "ASDF1234", "first col match");
+        $this->assertEquals($itemCollections[1], "FDSA4321", "Second col match");
+        
+        $itemTags = $item->get('tags');
+        $this->assertEquals(count($itemTags), 3);
+        $this->assertEquals($itemTags[0], "Green");
+        $this->assertEquals($itemTags[1]['tag'], "purple");
+        $this->assertEquals($itemTags[1]['type'], 1);
+        $this->assertEquals($itemTags[2], "Red");
+        
+        //test removal
+        $item->removeFromCollection('OIUSDGAS');
+        $item->removeFromCollection("ASDF1234");
+        
+        $item->removeTag("Red");
+        $item->removeTag("Green");
+        
+        
+        $itemCollections = $item->get('collections');
+        $this->assertEquals(count($itemCollections), 1, 'right number of collections');
+        $this->assertEquals($itemCollections[0], "FDSA4321", "first col match");
+        
+        $itemTags = $item->get('tags');
+        $this->assertEquals(count($itemTags), 1);
+        $this->assertEquals($itemTags[0]['tag'], "purple");
+        $this->assertEquals($itemTags[0]['type'], 1);
+        
+    }
 }
 ?>
