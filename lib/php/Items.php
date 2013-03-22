@@ -129,10 +129,14 @@ class Zotero_Items
     }
     
     public function trashItem($item){
-        
+        $item->trashItem();
+        return $item->save();
     }
     
     public function trashItems($items){
-        
+        foreach($items as $item){
+            $item->trashItem();
+        }
+        return $this->writeItems($items);
     }
 }

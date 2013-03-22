@@ -51,9 +51,7 @@ class Zotero_Library
     public function __construct($libraryType = null, $libraryID = null, $libraryUrlIdentifier = null, $apiKey = null, $baseWebsiteUrl="http://www.zotero.org", $cachettl=0)
     {
         $this->_apiKey = $apiKey;
-        if (extension_loaded('curl')) {
-            //$this->_ch = curl_init();
-        } else {
+        if (!extension_loaded('curl')) {
             throw new Exception("You need cURL");
         }
         
@@ -192,8 +190,6 @@ class Zotero_Library
         if(!$gotCached){
             $responseBody = curl_exec($ch);
             $responseInfo = curl_getinfo($ch);
-            //libZoteroDebug( "{$method} url:" . $url . "\n");
-            //libZoteroDebug( "%%%%%" . $responseBody . "%%%%%\n\n");
             $zresponse = libZotero_Http_Response::fromString($responseBody);
             
             //Zend Response does not parse out the multiple sets of headers returned when curl automatically follows
@@ -391,7 +387,6 @@ class Zotero_Library
                     break;
             }
         }
-        //print "apiRequestUrl: " . $url . "\n";
         return $url;
     }
     
@@ -458,7 +453,6 @@ class Zotero_Library
             }
         }
         $queryString .= implode('&', $queryParamsArray);
-        //print "apiQueryString: " . $queryString . "\n";
         return $queryString;
     }
     
@@ -639,7 +633,6 @@ class Zotero_Library
         $fetchedItems = array();
         $aparams = array_merge(array('target'=>'items', 'content'=>'json'), array('key'=>$this->_apiKey), $params);
         $reqUrl = $this->apiRequestString($aparams);
-        libZoteroDebug( "\n" );
         libZoteroDebug( $reqUrl . "\n" );
         
         $response = $this->_request($reqUrl);
@@ -1015,8 +1008,8 @@ class Zotero_Library
      * @return Zotero_Response
      */
     public function trashItem($item){
-        $item->set('deleted', 1);
-        $this->writeUpdatedItem($item);
+        $item->trashItem();
+        return $item->save();
     }
     
     /**

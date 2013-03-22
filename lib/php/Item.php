@@ -311,14 +311,6 @@ class Zotero_Item extends Zotero_Entry
         //check if we have multiple subcontent nodes
         $subcontentNodes = $entryNode->getElementsByTagNameNS("http://zotero.org/ns/api", "subcontent");
         
-        //save raw Content node in case we need it
-        /*
-        if($entryNode->getElementsByTagName("content")->length > 0){
-            $d = $entryNode->ownerDocument;
-            $this->contentNode = $entryNode->getElementsByTagName("content")->item(0);
-            $this->content = $d->saveXml($this->contentNode);
-        }
-        */
         // Extract the zapi elements: object key, version, itemType, year, numChildren, numTags
         $this->itemKey = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'key')->item(0)->nodeValue;
         $this->itemVersion = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'version')->item(0)->nodeValue;
@@ -359,21 +351,6 @@ class Zotero_Item extends Zotero_Entry
             $contentNode = $entryNode->getElementsByTagName('content')->item(0);
             $this->parseContentNode($contentNode);
         }
-        
-        //don't parse 'up' link, just depend on parentItem in json
-        /*
-        if(isset($this->links['up'])){
-            $parentLink = $this->links['up']['application/atom+xml']['href'];
-            $matches = array();
-            preg_match("/items\/([A-Z0-9]{8})/", $parentLink, $matches);
-            if(count($matches) == 2){
-                $this->parentItemKey = $matches[1];
-            }
-        }
-        else{
-            $this->parentItemKey = false;
-        }
-        */
         
         if($library !== null){
             $this->associateWithLibrary($library);
@@ -541,40 +518,7 @@ class Zotero_Item extends Zotero_Entry
     public function json(){
         return json_encode($this->apiObject());
     }
-    /*
-    public function fullItemJSON(){
-        return json_encode($this->fullItemArray());
-    }
     
-    public function fullItemArray(){
-        $jsonItem = array();
-        
-        //inherited from Entry
-        $jsonItem['title'] = $this->title;
-        $jsonItem['dateAdded'] = $this->dateAdded;
-        $jsonItem['dateUpdated'] = $this->dateUpdated;
-        $jsonItem['id'] = $this->id;
-        
-        $jsonItem['links'] = $this->links;
-        
-        //Item specific vars
-        $jsonItem['itemKey'] = $this->itemKey;
-        $jsonItem['itemType'] = $this->itemType;
-        $jsonItem['creatorSummary'] = $this->creatorSummary;
-        $jsonItem['numChildren'] = $this->numChildren;
-        $jsonItem['numTags'] = $this->numTags;
-        
-        $jsonItem['creators'] = $this->creators;
-        $jsonItem['createdByUserID'] = $this->createdByUserID;
-        $jsonItem['lastModifiedByUserID'] = $this->lastModifiedByUserID;
-        $jsonItem['note'] = $this->note;
-        $jsonItem['linkMode'] = $this->linkMode;
-        $jsonItem['mimeType'] = $this->mimeType;
-        
-        $jsonItem['apiObject'] = $this->apiObject;
-        return $jsonItem;
-    }
-    */
     public function formatItemField($field){
         switch($field){
             case "title":
@@ -719,6 +663,14 @@ class Zotero_Item extends Zotero_Entry
     
     public function writePatch(){
         
+    }
+    
+    public function trashItem(){
+        $this->set('deleted', 1);
+    }
+    
+    public function untrashItem(){
+        $this->set('deleted', 0);
     }
     
     public function save() {
