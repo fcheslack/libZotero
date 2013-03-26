@@ -30,3 +30,8 @@ class Entry(object):
         if(contentNode):
             self.contentType = contentNode.getAttribute('type')
             self.contentZType = contentNode.getAttribute('zapi:type')
+
+    def associateWithLibrary(self, library):
+        self.libraryType = library.libraryType
+        self.libraryID = library.libraryID
+        self.owningLibrary = library

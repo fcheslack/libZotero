@@ -1,5 +1,6 @@
 import logging
 from item import *
+from zotero import getKey, responseIsError, updateObjectsFromWriteResponse
 
 
 class Items(object):
@@ -54,3 +55,52 @@ class Items(object):
     def replaceItem(self, item):
         itemKey = item.itemKey
         self.itemObjects[itemKey] = item
+
+    def writeItems(self, items):
+        writeItems = []
+
+        for item in items:
+            itemKey = item.get('itemKey')
+            if itemKey == '':
+                newItemKey = getKey()
+                item.set('itemKey', newItemKey)
+                item.set('itemVersion', 0)
+            writeItems.append(item)
+
+            #add separate note items if this item has any
+            itemNotes = item.get('notes')
+            if itemNotes and len(itemNotes) > 0:
+                for note in itemNotes:
+                    note.set('parentItem', item.get('itemKey'))
+                    note.set('itemKey', getKey())
+                    note.set('itemVersion', 0)
+                    writeItems.append(note)
+
+        aparams = {'target': 'items', 'content': 'json'}
+        reqUrl = self.owningLibrary.apiRequestString(aparams)
+
+        writeArray = []
+        for item in writeItems:
+            writeArray.append(item.writeApiObject())
+        requestData = json.dumps({'items': writeArray})
+
+        writeResponse = self.owningLibrary._request(reqUrl, 'POST', requestData, {'Content-Type': 'application/json'})
+        if responseIsError(writeResponse):
+            return False
+        updateObjectsFromWriteResponse(writeItems, writeResponse)
+        return writeItems
+
+    def deleteItem(self, item):
+        pass
+
+    def deleteItems(self, items):
+        pass
+
+    def trashItem(self, item):
+        item.trashItem()
+        return item.save()
+
+    def trashItems(self, items):
+        for item in items:
+            item.trashItem()
+        return self.writeItems(items)

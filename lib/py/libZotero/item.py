@@ -2,7 +2,9 @@ import logging
 import xml.dom.minidom
 import re
 import json
+from copy import deepcopy
 from entry import *
+from zotero import responseIsError
 
 
 class Item(Entry):
@@ -184,7 +186,7 @@ class Item(Entry):
         "podcaster"      : "Podcaster"
         }
 
-    def __init__(self, entryNode=None):
+    def __init__(self, entryNode=None, library=None):
         self.itemKey = ''
         self.itemType = None
         self.creatorSummary = ''
@@ -211,8 +213,9 @@ class Item(Entry):
         self.content = None
         self.bibContent = None
         self.subContents = {}
-        self.apiObject = {}
-
+        self.apiObject = {'itemType': None, 'tags': [], 'collections': [], 'relations': []}
+        self.pristine = {}
+        self.owningLibrary = library
         if entryNode == None:
             return
         elif isinstance(entryNode, basestring):
@@ -220,7 +223,7 @@ class Item(Entry):
             entryNode = doc.getElementsByTagName("entry").item(0)
         super(Item, self).__init__(entryNode)
         #check if we have multiple subcontent nodes
-        subcontentNodes = entryNode.getElementsByTagNameNS("*", "subcontent")
+        subcontentNodes = entryNode.getElementsByTagNameNS("http://zotero.org/ns/api", "subcontent")
 
         #save raw Content node in case we need it
         if entryNode.getElementsByTagName("content").length > 0:
@@ -228,61 +231,38 @@ class Item(Entry):
             self.contentNode = entryNode.getElementsByTagName("content").item(0)
             self.content = d.toxml()
         # Extract the itemId and itemType
-        self.itemKey = entryNode.getElementsByTagNameNS('*', 'key').item(0).childNodes.item(0).nodeValue
-        self.itemType = entryNode.getElementsByTagNameNS('*', 'itemType').item(0).childNodes.item(0).nodeValue
-
-        # Look for numChildren node
-        numChildrenNode = entryNode.getElementsByTagNameNS('*', "numChildren").item(0)
-        if numChildrenNode:
-            self.numChildren = numChildrenNode.childNodes.item(0).nodeValue
+        self.itemKey = entryNode.getElementsByTagNameNS('http://zotero.org/ns/api', 'key').item(0).childNodes.item(0).nodeValue
+        self.itemVersion = entryNode.getElementsByTagNameNS('http://zotero.org/ns/api', 'version').item(0).childNodes.item(0).nodeValue
+        self.itemType = entryNode.getElementsByTagNameNS('http://zotero.org/ns/api', 'itemType').item(0).childNodes.item(0).nodeValue
 
         # Look for numTags node
-        numTagsNode = entryNode.getElementsByTagNameNS('*', "numTags").item(0)
+        numTagsNode = entryNode.getElementsByTagNameNS('http://zotero.org/ns/api', "numTags").item(0)
         if numTagsNode:
             self.numTags = numTagsNode.childNodes.item(0).nodeValue
 
-        creatorSummaryNode = entryNode.getElementsByTagNameNS('*', "creatorSummary").item(0)
+        # Look for year node
+        yearNode = entryNode.getElementsByTagNameNS('http://zotero.org/ns/api', "year").item(0)
+        if yearNode:
+            self.year = yearNode.childNodes.item(0).nodeValue
+
+        # Look for numChildren node
+        numChildrenNode = entryNode.getElementsByTagNameNS('http://zotero.org/ns/api', "numChildren").item(0)
+        if numChildrenNode:
+            self.numChildren = numChildrenNode.childNodes.item(0).nodeValue
+
+        # Look for creatorSummary node
+        creatorSummaryNode = entryNode.getElementsByTagNameNS('http://zotero.org/ns/api', "creatorSummary").item(0)
         if creatorSummaryNode:
             self.creatorSummary = creatorSummaryNode.childNodes.item(0).nodeValue
 
+        #parse each subcontent node or the single content node
         if subcontentNodes.length > 0:
             for scnode in subcontentNodes:
-                sctype = scnode.getAttribute('zapi:type')
-                if (sctype == 'application/json') or (sctype == 'json'):
-                    self.apiObject = json.loads(scnode.childNodes.item(0).nodeValue)
-                    self.etag = scnode.getAttribute('zapi:etag')
-                    if 'creators' in self.apiObject:
-                        self.creators = self.apiObject['creators']
-                    else:
-                        self.creators = []
-                elif sctype == 'bib':
-                    bibNode = scnode.getElementsByTagName('div').item(0)
-                    self.bibContent = bibNode.toxml()
-
-                contentString = ''
-                childNodes = scnode.childNodes
-                for childNode in childNodes:
-                    contentString += childNode.toxml()
-                self.subContents[sctype] = contentString
+                self.parseContentNode(scnode)
         else:
             contentNode = entryNode.getElementsByTagName('content').item(0)
-            contentType = contentNode.getAttribute('type')
-            zcType = contentNode.getAttribute('zapi:type')
-
-            if (contentType == 'application/json') or (contentType == 'json') or (zcType == 'json'):
-                self.apiObject = json.loads(contentNode.childNodes.item(0).nodeValue)
-                self.etag = contentNode.getAttribute('zapi:etag')
-                if 'creators' in self.apiObject:
-                    self.creators = self.apiObject['creators']
-                else:
-                    self.creators = []
-            elif (contentType == 'bib') or (zcType == 'bib'):
-                bibNode = contentNode.getElementsByTagName('div').item(0)
-                self.bibContent = bibNode.ownerDocument.saveXML(bibNode)
-            else:
-                #didn't find a content type we deal with
-                pass
-
+            self.parseContentNode(contentNode)
+        """
         if 'up' in self.links:
             parentLink = self.links['up']['href']
             matches = re.findall("/items\/([A-Z0-9]{8})/", parentLink)
@@ -290,18 +270,57 @@ class Item(Entry):
                 self.parentKey = matches[0]
         else:
             self.parentKey = False
+        """
+
+    def parseContentNode(self, contentNode):
+        contentType = contentNode.getAttribute('type')
+        if (contentType == 'application/json') or (contentType == 'json'):
+            self.pristine = json.loads(contentNode.childNodes.item(0).nodeValue)
+            self.apiObject = json.loads(contentNode.childNodes.item(0).nodeValue)
+            if 'creators' in self.apiObject:
+                self.creators = self.apiObject['creators']
+            else:
+                self.creators = []
+
+            self.itemVersion = self.apiObject['itemVersion'] if self.apiObject['itemVersion'] else 0
+            self.parentItemKey = self.apiObject['parentItem'] if self.apiObject['parentItem'] else False
+
+            if self.itemType == 'attachment':
+                self.mimeType = self.apiObject['contentType']
+                #TODO:translate mimetype
+            if 'linkMode' in self.apiObject:
+                self.linkMode = self.apiObject['linkMode']
+            self.synced = true
+        elif (contentType == 'bib'):
+            bibNode = contentNode.getElementsByTagName('div').item(0)
+            self.bibContent = bibNode.ownerDocument.saveXML(bibNode)
+
+        contentString = ''
+        childNodes = contentNode.childNodes
+        for childNode in childNodes:
+            contentString += childNode.toxml()
+        self.subContents[contentType] = contentString
+
+    def initItemFromTemplate(self, template):
+        self.itemVersion = 0
+        self.itemType = template['itemType']
+        self.itemKey = ''
+        self.pristine = deepcopy(template)
+        self.apiObject = deepcopy(template)
 
     def get(self, key):
-        if key == 'tags':
-            if 'tags' in self.apiObject:
-                return self.apiObject['tags']
-            else:
-                return []
-        elif key == 'creators':
-            if 'creators' in self.apiObject:
-                return self.apiObject['creators']
-            else:
-                return []
+        if key == 'itemKey' or key == 'key':
+            return self.itemKey
+        elif key == 'itemVersion' or key == 'version':
+            return self.itemVersion
+        elif key == 'title':
+            return self.title
+        elif key == 'creatorSummary':
+            return self.creatorSummary
+        elif key == 'year':
+            return self.year
+        elif key == 'parentItem' or key == 'parentItemKey':
+            return self.parentItemKey
         else:
             if key in self.apiObject:
                 return self.apiObject[key]
@@ -311,22 +330,53 @@ class Item(Entry):
                 return None
 
     def set(self, key, val):
-        self.apiObject[key] = val
+        if key == "itemKey" or key == 'key':
+            self.itemKey = val
+            self.apiObject['itemKey'] = val
+        elif key == "itemVersion" or key == 'version':
+            self.itemVersion = val
+            self.apiObject['itemVersion'] = val
+        elif key == "title":
+            self.title = val
+        elif key == "itemType":
+            self.itemType = val
+            #TODO:translate fields
+        elif key == "linkMode":
+            #TODO:something here probably
+            pass
+        elif key == 'deleted':
+            self.apiObject['deleted'] = val
+        elif key == 'parentItem' or key == 'parentKey' or key == 'parentItemKey':
+            if val == '':
+                val = False
+            self.parentItemKey = val
+            self.apiObject['parentItem'] = val
 
-    def updateItemObject(self):
-        updateItem = self.apiObject
-        if 'notes' in updateItem:
-            del updateItem['notes']
+        if key in self.apiObject:
+            self.apiObject[key] = val
+        if key in dir(self):
+            self.__setattr__(key, val)
+
+    def addCreator(self, creator):
+        self.creators.append(creator)
+        self.apiObject['creators'].append(creator)
+
+    def writeApiObject(self):
+        updateItem = dict(self.pristine.items() + self.apiObject.items())
+        if len(updateItem['creators']) == 0:
+            return updateItem
+
         newCreators = []
-        #ignore empty creators, keep actual ones
         for creator in updateItem['creators']:
-            if 'creatorType' in creator:
-                if ('name' not in creator) and ('firstName' not in creator) and ('lastName' not in creator):
-                    continue
-                else:
-                    newCreators.append(creator)
+            if creator.get('name', '') == '' and creator.get('firstName', '') == '' and creator.get('lastName', '') == '':
+                continue
+            else:
+                newCreators.append(creator)
         updateItem['creators'] = newCreators
         return updateItem
+
+    def updateItemObject(self):
+        return self.writeApiObject()
 
     def newItemObject(self):
         newItem = self.apiObject
@@ -341,6 +391,83 @@ class Item(Entry):
         newItem['creators'] = newCreators
         return newItem
 
+    def addToCollection(self, collection):
+        if isinstance(collection, basestring):
+            collectionKey = collection
+        else:
+            collectionKey = collection.get('collectionKey')
+
+        curCollections = self.get('collections')
+        if collectionKey not in curCollections:
+            curCollections.append(collectionKey)
+        self.set('collections', curCollections)
+
+    def removeFromCollection(self, collection):
+        if isinstance(collection, basestring):
+            collectionKey = collection
+        else:
+            collectionKey = collection.get('collectionKey')
+
+        curCollections = self.get('collections')
+        if collectionKey in curCollections:
+            curCollections.remove(collectionKey)
+            self.set('collections', curCollections)
+
+    def addTag(self, newtagname, type=None):
+        itemTags = self.get('tags')
+        #assumes we'll get an array
+        for tag in itemTags:
+            if isinstance(tag, basestring) and tag == newtagname:
+                return
+            elif 'tag' in tag and tag['tag'] == newtagname:
+                return
+
+        if type != None:
+            itemTags.append({'tag': newtagname, 'type': type})
+        else:
+            itemTags.append(newtagname)
+        self.set('tags', itemTags)
+
+    def removeTag(self, rmtagname):
+        itemTags = self.get('tags')
+        #assumes we'll get an array
+        for tag in itemTags[:]:
+            if (isinstance(tag, basestring) and tag == rmtagname) or (isinstance(tag, dict) and 'tag' in tag and tag['tag'] == rmtagname):
+                del itemTags[itemTags.index(tag)]
+                self.set('tags', itemTags)
+                return
+
+    def addNote(self, note):
+        self.notes.append(note)
+        return
+
+    def trashItem(self):
+        self.set('deleted', 1)
+
+    def untrashItem(self):
+        self.set('deleted', 0)
+
+    def save(self):
+        self.owningLibrary.items.writeItems([self])
+
+    def getChildren(self):
+        #short circuit if has item has no children
+        if self.numChildren == 0 or self.parentItemKey != false:
+            return []
+
+        config = {'target': 'children', 'libraryType': self.owningLibrary.libraryType, 'libraryID': self.owningLibrary.libraryID, 'itemKey': self.itemKey, 'content': 'json'}
+        requestUrl = self.owningLibrary.apiRequestString(config)
+
+        response = self.owningLibrary._request(requestUrl, 'GET')
+
+        #load response into item objects
+        fetchedItems = []
+        if responseIsError(response):
+            return False
+
+        feed = zotero.Feed(response.text)
+        fetchedItems = self.owningLibrary.items.addItemsFromFeed(feed)
+        return fetchedItems
+
     def compareItem(self, item):
         pass
-        

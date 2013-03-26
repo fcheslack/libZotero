@@ -4,9 +4,56 @@ import urlparse
 #import requests
 import json
 import xml.dom.minidom
+from random import randint
 import logging
 import pickle
 import zotero
+
+
+def randomString(length=0, chars=None):
+    if chars == None:
+        chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
+    if length == 0:
+        length = 8
+    randomstring = ''
+    for i in range(length):
+        rnum = randint(0, len(chars) - 1)
+        randomstring += chars[rnum]
+    return randomstring
+
+
+def getKey():
+    baseString = "23456789ABCDEFGHIJKMNPQRSTUVWXZ"
+    return randomString(8, baseString)
+
+
+def updateObjectsFromWriteResponse(objsArray, response):
+    data = json.loads(response.text)
+    if(response.status_code == 200):
+        newLastModifiedVersion = response.headers["Last-Modified-Version"]
+        if 'success' in data:
+            for ind in data['success'].keys():
+                key = data['success'][ind]
+                i = int(ind)
+                obj = objsArray[i]
+
+                objKey = obj.get('key')
+                if objKey != '' and objKey != key:
+                    raise zotero.ZoteroApiError("Item key mismatch in multi-write request")
+                if objKey == '':
+                    obj.set('key', key)
+                obj.set('version', newLastModifiedVersion)
+                obj.synced = True
+                obj.writeFailure = False
+
+        if 'failed' in data:
+            for ind in data['failed'].keys():
+                val = data['failed'][ind]
+                i = int(ind)
+                obj = objsArray[i]
+                obj.writeFailure = val
+    elif response.status_code == 204:
+        objsArray[0].synced = True
 
 
 def apiRequestUrl(params={}, base=None):
@@ -47,7 +94,7 @@ def apiRequestUrl(params={}, base=None):
     elif params['target'] == 'collections':
         url += '/collections'
     elif params['target'] == 'collection':
-        pass
+        pass  # already added above because collectionKey would have to be set
     elif params['target'] == 'tags':
         url += '/tags'
     elif params['target'] == 'children':
@@ -62,6 +109,8 @@ def apiRequestUrl(params={}, base=None):
         url += '/items/trash'
     elif params['target'] == 'cv':
         url += '/cv'
+    elif params['target'] == 'deleted':
+        url += '/deleted'
     if 'targetModifier' in params:
         if params['targetModifier'] == 'top':
             url += '/top'
@@ -110,7 +159,7 @@ def apiQueryString(passedParams={}):
     #build simple api query parameters object
     logging.info(passedParams)
     queryParams = []
-    for val in queryParamOptions:
+    for val in sorted(queryParamOptions):
         if (val in passedParams) and (passedParams[val] != ''):
             if (val == 'itemKey') and ('target' in passedParams) and (passedParams['target'] != 'items'):
                 #itemKey belongs in url, not querystring
@@ -121,12 +170,19 @@ def apiQueryString(passedParams={}):
     return '?' + urllib.urlencode(queryParams)
 
 
+def apiRequestString(params):
+    return apiRequestUrl(params) + apiQueryString(params)
+
+
 def zrequest(url, method='GET', body=None, headers={}):
     """Make a request to the Zotero API and return the response object."""
     opener = urllib2.build_opener(urllib2.HTTPHandler)
     req = urllib2.Request(url, body)
     for key, val in headers.items():
         req.add_header(key, val)
+    #add Zotero api version header if not explicitly set by arguments
+    if 'Zotero-API-Version' not in headers.items():
+        req.add_header('Zotero-API-Version', 2)
     req.get_method = lambda: method
     r = None
     try:
@@ -138,6 +194,11 @@ def zrequest(url, method='GET', body=None, headers={}):
         return r
 
 
+def responseIsError(response):
+    """Check if a response object is an error or not"""
+    return response.status_code >= 400
+
+
 def getTemplateItem(itemType, linkMode=None):
     """Return a template for a Zotero API item of a particular type."""
     newItem = zotero.Item()
@@ -145,14 +206,13 @@ def getTemplateItem(itemType, linkMode=None):
     if linkMode != None:
         aparams['linkMode'] = linkMode
 
-    reqUrl = apiRequestUrl(aparams) + apiQueryString(aparams)
+    reqUrl = apiRequestString(aparams)
     response = zrequest(reqUrl)
     if response.status_code != 200:
         raise zotero.ZoteroApiError("Error getting template item")
     itemTemplate = json.loads(response.text)
     newItem.apiObject = itemTemplate
     return newItem
-
 
 
 def loadLibrary(picklestring):
@@ -176,7 +236,9 @@ class Library(object):
         self.libraryUrlIdentifier = libraryUrlIdentifier
         self.libraryBaseWebsiteUrl = baseWebsiteUrl
         self.items = zotero.Items()
+        self.items.owningLibrary = self
         self.collections = zotero.Collections()
+        self.collections.owningLibrary = self
         self.dirty = False
         self.useLibraryAsContainer = True
         self._lastResponse = None
@@ -217,6 +279,9 @@ class Library(object):
             passedParams['key'] = self._apiKey
         return apiQueryString(passedParams)
 
+    def apiRequestString(self, params={}):
+        return self.apiRequestUrl(params) + self.apiQueryString(params)
+
     def _request(self, url, method='GET', body=None, headers={}):
         """Make a request to the Zotero API and return the response object."""
         logging.debug("zotero.Library._request")
@@ -239,7 +304,7 @@ class Library(object):
         """Fetch a set of collections."""
         aparams = {'target': 'collections', 'content': 'json', 'limit': 100}
         aparams.update(params)
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
+        reqUrl = self.apiRequestString(aparams)
         response = self._request(reqUrl)
         if response.status_code != 200:
             raise zotero.ZoteroApiError("Error fetching collections")
@@ -268,7 +333,7 @@ class Library(object):
         fetchedItems = []
         aparams = {'target': 'items', 'content': 'json', 'key': self._apiKey}
         aparams.update(params)
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
+        reqUrl = self.apiRequestString(aparams)
         logging.info(reqUrl)
         response = self._request(reqUrl)
         if(response.status_code != 200):
@@ -287,7 +352,7 @@ class Library(object):
         fetchedKeys = []
         aparams = {'target': 'items', 'format': 'keys'}
         aparams.update(params)
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
+        reqUrl = self.apiRequestString(aparams)
         response = self._request(reqUrl)
         if response.status_code != 200:
             raise zotero.ZoteroApiError("Error fetching item keys" + str(response.status_code))
@@ -300,7 +365,7 @@ class Library(object):
         fetchedItems = []
         aparams = {'target': 'trash', 'content': 'json'}
         aparams.update(params)
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
+        reqUrl = self.apiRequestString(aparams)
         response = self._request(reqUrl)
         if response.status_code != 200:
             raise zotero.ZoteroApiError("Error fetching items" + str(response.status_code))
@@ -337,7 +402,7 @@ class Library(object):
     def fetchItem(self, itemKey):
         """Fetch a single item."""
         aparams = {'target': 'item', 'content': 'json', 'itemKey': itemKey}
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
+        reqUrl = self.apiRequestString(aparams)
 
         response = self._request(reqUrl, 'GET')
         if response.status_code != 200:
@@ -356,7 +421,7 @@ class Library(object):
         aparams = {'target': 'item', 'content': 'bib', 'itemKey': itemKey}
         if style != None:
             aparams['style'] = style
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
+        reqUrl = self.apiRequestString(aparams)
 
         response = self._request(reqUrl, 'GET')
         if response.status_code != 200:
@@ -373,17 +438,13 @@ class Library(object):
     def itemDownloadLink(self, itemKey):
         """Get the link to download an attached item file."""
         aparams = {'target': 'item', 'itemKey': itemKey, 'targetModifier': 'file'}
-        return self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
+        return self.apiRequestString(aparams)
 
     def writeUpdatedItem(self, item):
         """Attempt to write a modified item back to the server."""
-        updateItemJson = json.dumps(item.updateItemObject())
-        etag = item.etag
-
-        aparams = {'target': 'item', 'itemKey': item.itemKey}
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
-        response = self._request(reqUrl, 'PUT', updateItemJson, {'If-Match': etag})
-        return response
+        if item.owningLibrary == None:
+            item.associateWithLibrary(self)
+        return self.items.writeItem(item)
 
     def uploadNewAttachedFile(self, item, filedata, fileinfo):
         """Create an attachment item as a child of the passed item and upload
@@ -392,7 +453,7 @@ class Library(object):
         #get upload authorization
         #post file or patch
         uaparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.itemKey}
-        reqUrl = self.apiRequestUrl(uaparams) + self.apiQueryString(uaparams)
+        reqUrl = self.apiRequestString(uaparams)
         uaPostData = urllib.urlencode(fileinfo)
         uploadAuthResponse = zrequest(reqUrl, 'POST', uaPostData, {'If-None-Match': '*'})
         if uploadAuthResponse.status_code != 200:
@@ -414,7 +475,7 @@ class Library(object):
         if uploadResponse.status_code != 201:
             raise zotero.ZoteroApiError("Error uploading attachment file")
         ucparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.itemKey}
-        ucReqUrl = self.apiRequestUrl(ucparams) + self.apiQueryString(ucparams)
+        ucReqUrl = self.apiRequestString(ucparams)
         registerUploadBody = uaPostData = urllib.urlencode({'upload': upAuthOb['uploadKey']})
         ucResponse = zrequest(ucReqUrl, 'POST', registerUploadBody, {'Content-Type': 'application/x-www-form-urlencoded',
                                                                      'If-None-Match': '*'})
@@ -428,7 +489,7 @@ class Library(object):
         #get upload authorization
         #post file or patch
         uaparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.itemKey}
-        reqUrl = self.apiRequestUrl(uaparams) + self.apiQueryString(uaparams)
+        reqUrl = self.apiRequestString(uaparams)
         uaPostData = urllib.urlencode(fileinfo)
         uploadAuthResponse = zrequest(reqUrl, 'POST', uaPostData, {'If-Match': item.get('md5')})
         if uploadAuthResponse.status_code != 200:
@@ -442,7 +503,7 @@ class Library(object):
             #file already exists with this hash
             return None
         upparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.itemKey, 'upload': upAuthOb['uploadKey'], 'algorithm': algorithm}
-        uploadUrl = self.apiRequestUrl(upparams) + self.apiQueryString(upparams)
+        uploadUrl = self.apiRequestString(upparams)
         logging.info(upAuthOb)
         #uploadBody = bytearray(upAuthOb['prefix'].encode())
         #uploadBody.extend(patchdata)
@@ -479,7 +540,18 @@ class Library(object):
 
     def getTemplateItem(self, itemType, linkMode=None):
         """Return a template for a Zotero API item of a particular type."""
-        return getTemplateItem(itemType, linkMode)
+        newItem = zotero.Item()
+        aparams = {'target': 'itemTemplate', 'itemType': itemType}
+        if linkMode != None:
+            aparams['linkMode'] = linkMode
+
+        reqUrl = self.apiRequestString(aparams)
+        response = self._request(reqUrl)
+        if response.status_code != 200:
+            raise zotero.ZoteroApiError("Error getting template item")
+        itemTemplate = json.loads(response.text)
+        newItem.apiObject = itemTemplate
+        return newItem
 
     def createItem(self, item):
         """Create a new item on the server."""
@@ -501,7 +573,7 @@ class Library(object):
             aparams['itemKey'] = item.parentKey
             aparams['target'] = 'item'
             aparams['targetModifier'] = 'children'
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
+        reqUrl = self.apiRequestString(aparams)
         response = self._request(reqUrl, 'POST', createItemJson)
         logging.info('createItemResponse')
         logging.info(response)
@@ -511,7 +583,7 @@ class Library(object):
         """Add note items as children of parentItem."""
         logging.info(noteItem)
         aparams = {'target': 'children', 'itemKey': parentItem.itemKey}
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
+        reqUrl = self.apiRequestString(aparams)
         if isinstance(noteItem, zotero.Item):
             noteJson = json.dumps({'items': [noteItem.newItemObject()]})
         else:
@@ -525,94 +597,57 @@ class Library(object):
 
     def createCollection(self, name, parent=None):
         """Create a new collection on the server."""
-        collection = zotero.Collection()
-        collection.name = name
-        collection.parentCollectionKey = parent
-        json = collection.collectionJson()
-
-        aparams = {'target': 'collections'}
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
-        response = self._request(reqUrl, 'POST', json)
-        return response
-        pass
+        collection = zotero.Collection(library=self)
+        collection.set('name', name)
+        collection.set('parentCollectionKey', parent)
+        return self.collections.writeCollection(collection)
 
     def removeCollection(self, collection):
         """Remove an existing collection from the server."""
         aparams = {'target': 'collection', 'collectionKey': collection.collectionKey}
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
-        response = self._request(reqUrl, 'DELETE', None, {'If-Match': collection.etag})
+        reqUrl = self.apiRequestString(aparams)
+        response = self._request(reqUrl, 'DELETE', None, {'If-Unmodified-Since-Version': collection.get('collectionVersion')})
         return response
         pass
 
     def addItemsToCollection(self, collection, items):
         """Add specified items to the specified collection."""
-        aparams = {'target': 'items', 'collectionKey': collection.collectionKey}
-        itemKeysString = ''
         for item in items:
-            itemKeysString += item.itemKey
-        itemKeysString = itemKeysString.strip()
-
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
-        response = self._request(reqUrl, 'POST', itemKeysString)
-        return response
-        pass
+            item.addToCollection(collection)
+        updatedItems = self.items.writeItems(items)
+        return updatedItems
 
     def removeItemFromCollection(self, collection, item):
         """Remove item from collection."""
-        aparams = {'target': 'items', 'collectionKey': collection.collectionKey}
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
-        response = self._request(reqUrl, 'DELETE', None, {'If-Match': collection.etag})
-        return response
+        item.removeFromCollection(collection)
+        return self.items.writeItems([item])
 
     def removeItemsFromCollection(self, collection, items):
         """Remove multiple items from the specified collection."""
-        removedItemKeys = []
         for item in items:
-            response = self.removeItemFromCollection(collection, item)
-            if response.status_code == 204:
-                removedItemKeys.append(item.itemKey)
-        return removedItemKeys
-        pass
+            item.removeFromCollection(collection)
+        return self.items.writeItems(items)
 
     def writeUpdatedCollection(self, collection):
         """Submit a modified collection to be saved on the server."""
-        json = collection.collectionJson()
-
-        aparams = {'target': 'collection', 'collectionKey': collection.collectionKey}
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
-        response = self._request(reqUrl, 'PUT', json, {'If-Match': collection.etag})
-        return response
-        pass
+        return self.collections.writeCollection(collection)
 
     def deleteItem(self, item):
         """Permanently delete an existing item."""
         aparams = {'target': 'item', 'itemKey': item.itemKey}
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
-        response = self._request(reqUrl, 'DELETE', None, {'If-Match': item.etag})
+        reqUrl = self.apiRequestString(aparams)
+        response = self._request(reqUrl, 'DELETE', None, {'If-Unmodified-Since-Version': item.get('itemVersion')})
         return response
         pass
 
     def trashItem(self, item):
         """Mark an existing item for deletion, adding it to the trash metacollection."""
         item.set('deleted', 1)
-        self.writeUpdatedItem(item)
-        pass
+        return self.items.writeItems([item])
 
     def fetchItemChildren(self, item):
         """Fetch child items of the specified item."""
-        aparams = {'target': 'children', 'itemKey': item.itemKey, 'content': 'json'}
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
-        response = self._request(reqUrl, 'GET')
-
-        #load response into item objects
-        fetchedItems = []
-        if response.status_code != 200:
-            return False
-        feed = zotero.Feed(response.text)
-        self._lastFeed = feed
-        fetchedItems = self.items.addItemsFromFeed(feed)
-        return fetchedItems
-        pass
+        return item.getChildren()
 
     def getItemTypes(self):
         """Get the list of possible Zotero item types."""
@@ -658,7 +693,7 @@ class Library(object):
         """Fetch all tags, even over multiple requests, present in the library."""
         aparams = {'target': 'tags', 'content': 'json', 'limit': 50}
         aparams.update(params)
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
+        reqUrl = self.apiRequestString(aparams)
         while True:
             response = self._request(reqUrl, 'GET')
             if response.status_code != 200:
@@ -687,7 +722,7 @@ class Library(object):
         """Make a single request to get a set of tags."""
         aparams = {'target': 'tags', 'content': 'json', 'limit': 50}
         aparams.update(params)
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
+        reqUrl = self.apiRequestString(aparams)
 
         response = self._request(reqUrl, 'GET')
         if response.status_code != 200:
@@ -710,7 +745,7 @@ class Library(object):
                 return False
             key = self._apiKey
 
-        reqUrl = self.apiRequestUrl({'target': 'key', 'apiKey': key, 'userID': userID})
+        reqUrl = self.apiRequestString({'target': 'key', 'apiKey': key, 'userID': userID})
         response = self._request(reqUrl, 'GET')
         if response.status_code != 200:
             return False
@@ -748,7 +783,7 @@ class Library(object):
         if not userID:
             userID = self.libraryID
         aparams = {'target': 'userGroups', 'userID': userID, 'content': 'json'}
-        reqUrl = self.apiRequestUrl(aparams) + self.apiQueryString(aparams)
+        reqUrl = self.apiRequestString(aparams)
         response = self._request(reqUrl, 'GET')
         if response.status_code != 200:
             return False
@@ -760,14 +795,13 @@ class Library(object):
             group = zotero.Group(entry)
             groups.append(group)
         return groups
-        pass
 
     def getCV(self, userID):
         """Get a user's C.V."""
         if userID == '' and self.libraryType == 'user':
             userID = self.libraryID
         aparams = {'target': 'cv', 'libraryType': 'user', 'libraryID': userID}
-        reqUrl = self.apiRequestUrl(aparams)
+        reqUrl = self.apiRequestString(aparams)
 
         response = self._request(reqUrl, 'GET')
         if response.status_code != 200:

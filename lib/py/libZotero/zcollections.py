@@ -1,5 +1,6 @@
 import logging
 from collection import *
+from zotero import getKey, responseIsError, updateObjectsFromWriteResponse
 
 
 class Collections(object):
@@ -53,6 +54,33 @@ class Collections(object):
             addedCollections.append(collection)
 
         return addedCollections
+
+    def writeCollection(self, collection):
+        cols = self.writeCollections([collection])
+        if cols == False:
+            return False
+        return cols[0]
+
+    def writeCollections(self, collections):
+        collectionsArray = []
+        for collection in collections:
+            collectionKey = collection.get('collectionKey')
+            if collectionKey == '' or collectionKey == None:
+                newCollectionKey = getKey()
+                collection.set('collectionKey', newCollectionKey)
+                collection.set('collectionVersion', 0)
+            collectionsArray.append(collection.writeApiObject())
+
+        jsonString = json.dumps({'collections': collectionsArray})
+
+        aparams = {'target': 'collections', 'content': 'json'}
+        reqUrl = self.owningLibrary.apiRequestString(aparams)
+        response = self.owningLibrary._request(reqUrl, 'POST', jsonString)
+        updateObjectsFromWriteResponse(collections, response)
+        if responseIsError(response):
+            return False
+
+        return collections
 
     def nestCollections(self):
         pass
