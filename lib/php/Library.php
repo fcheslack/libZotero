@@ -754,7 +754,7 @@ class Zotero_Library
         if($item->owningLibrary == null) {
             $item->associateWithLibrary($this);
         }
-        return $this->items->writeItems($item);
+        return $this->items->writeItem($item);
     }
     
     public function uploadNewAttachedFile($item, $fileContents, $fileinfo=array()){
@@ -899,18 +899,7 @@ class Zotero_Library
         $collection = new Zotero_Collection(null, $this);
         $collection->set('name', $name);
         $collection->set('parentCollectionKey', $parent);
-        $json = $collection->collectionJson();
-        
-        $aparams = array('target'=>'collections');
-        $reqUrl = $this->apiRequestString($aparams);
-        $response = $this->_request($reqUrl, 'POST', $json);
-        if(!$response->isError()){
-            $newLastModifiedVersion = $response->getHeader("Last-Modified-Version");
-            $collection->set('collectionVersion', $newLastModifiedVersion);
-            $collection->writeFailure = false;
-        }
-        
-        return $collection;
+        return $this->collections->writeCollection($collection);
     }
     
     /**
@@ -975,17 +964,7 @@ class Zotero_Library
      * @return Zotero_Response
      */
     public function writeUpdatedCollection($collection){
-        $aparams = array('target'=>'collection', 'collectionKey'=>$collection->get('collectionKey'));
-        $reqUrl = $this->apiRequestString($aparams);
-        $json = json_encode($collection->writeApiObject());
-        $response = $this->_request($reqUrl, 'PUT', $json);
-        if(!$response->isError()){
-            $newLastModifiedVersion = $response->getHeader("Last-Modified-Version");
-            $collection->set('collectionVersion', $newLastModifiedVersion);
-            $collection->writeFailure = false;
-        }
-        
-        return $collection;
+        return $this->collections->writeUpdatedCollection($collection);
     }
     
     /**

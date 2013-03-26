@@ -93,5 +93,66 @@ class Zotero_Collections
         
         return json_encode($collections);
     }
+    
+    public function writeCollection($collection){
+        $cols = $this->writeCollections(array($collection));
+        if($cols === false){
+            return false;
+        }
+        return $cols[0];
+    }
+    
+    public function writeCollections($collections){
+        $writeCollections = array();
+        
+        foreach($collections as $collection){
+            $collectionKey = $collection->get('collectionKey');
+            if($collectionKey == ""){
+                $newCollectionKey = Zotero_Lib_Utils::getKey();
+                $collection->set('collectionKey', $newCollectionKey);
+                $collection->set('collectionVersion', 0);
+            }
+            $writeCollections[] = $collection;
+        }
+        
+        $config = array('target'=>'collections', 'libraryType'=>$this->owningLibrary->libraryType, 'libraryID'=>$this->owningLibrary->libraryID, 'content'=>'json');
+        $requestUrl = $this->owningLibrary->apiRequestString($config);
+        $writeArray = array();
+        foreach($writeCollections as $collection){
+            $writeArray[] = $collection->writeApiObject();
+        }
+        $requestData = json_encode(array('collections'=>$writeArray));
+        $writeResponse = $this->owningLibrary->_request($requestUrl, 'POST', $requestData, array('Content-Type'=> 'application/json'));
+        if($writeResponse->isError()){
+            return false;
+        }
+        Zotero_Lib_Utils::UpdateObjectsFromWriteResponse($writeCollections, $writeResponse);
+        return $writeCollections;
+    }
+    
+    public function writeUpdatedCollection($collection){
+        if($this->writeCollections(array($collection)) === false){
+            return false;
+        }
+        return $collection;
+        /*
+        $aparams = array('target'=>'collection', 'collectionKey'=>$collection->get('collectionKey'));
+        $reqUrl = $this->owningLibrary->apiRequestString($aparams);
+        $json = json_encode($collection->writeApiObject());
+        $response = $this->owningLibrary->_request($reqUrl, 'PUT', $json);
+        if(!$response->isError()){
+            $newLastModifiedVersion = $response->getHeader("Last-Modified-Version");
+            $collection->set('collectionVersion', $newLastModifiedVersion);
+            $collection->writeFailure = false;
+        }
+        else {
+            $collection->writeFailure = array('key'=>$collection->get('collectionKey'), 
+                                              'code'=>$response->getStatus(),
+                                              'message'=>$response->getBody());
+        }
+        
+        return $collection;
+        */
+    }
 }
 

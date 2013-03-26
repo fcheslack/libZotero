@@ -80,7 +80,6 @@ class Zotero_Items
     
     //accept an array of `Zotero_Item`s
     public function writeItems($items){
-        $returnItems = array();
         $writeItems = array();
         
         foreach($items as $item){

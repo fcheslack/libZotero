@@ -34,6 +34,10 @@ class Zotero_Collection extends Zotero_Entry
      */
     public $parentCollectionKey = false;
     
+    public $apiObject = array();
+    
+    public $pristine = array();
+    
     public $childKeys = array();
     
     public function __construct($entryNode, $library=null)
@@ -81,6 +85,9 @@ class Zotero_Collection extends Zotero_Entry
             case 'parentCollection':
             case 'parentCollectionKey':
                 return $this->parentCollectionKey;
+            case 'collectionVersion':
+            case 'version':
+                return $this->collectionVersion;
         }
         
         if(array_key_exists($key, $this->apiObject)){
@@ -91,6 +98,39 @@ class Zotero_Collection extends Zotero_Entry
             return $this->$key;
         }
         return null;
+    }
+    
+    public function set($key, $val){
+        switch($key){
+            case 'title':
+            case 'name':
+                $this->name = $val;
+                $this->apiObject['name'] = $val;
+                break;
+            case 'collectionKey':
+            case 'key':
+                $this->collectionKey = $val;
+                $this->apiObject['collectionKey'] = $val;
+                break;
+            case 'parentCollection':
+            case 'parentCollectionKey':
+                $this->parentCollectionKey = $val;
+                $this->apiObject['parentCollection'] = $val;
+                break;
+            case 'collectionVersion':
+            case 'version':
+                $this->collectionVersion = $val;
+                $this->apiObject['collectionVersion'] = $val;
+                break;
+        }
+        
+        if(array_key_exists($key, $this->apiObject)){
+            $this->apiObject[$key] = $val;
+        }
+        
+        if(property_exists($this, $key)){
+            $this->$key = $val;
+        }
     }
     
     public function collectionJson(){

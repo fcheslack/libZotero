@@ -102,7 +102,7 @@ class Zotero_Item extends Zotero_Entry
     
     public $subContents = array();
     
-    public $apiObject = array();
+    public $apiObject = array('itemType'=>null, 'tags'=>array(), 'collections'=>array(), 'relations'=>array());
     
     public $pristine = null;
     
@@ -405,6 +405,12 @@ class Zotero_Item extends Zotero_Entry
     
     public function get($key){
         switch($key){
+            case 'key':
+            case 'itemKey':
+                return $this->itemKey;
+            case 'itemVersion':
+            case 'version':
+                return $this->itemVersion;
             case 'title':
                 return $this->title;
             case 'creatorSummary':
@@ -432,10 +438,12 @@ class Zotero_Item extends Zotero_Entry
         
         switch($key){
             case "itemKey":
+            case "key":
                 $this->itemKey = $val;
                 $this->apiObject['itemKey'] = $val;
                 break;
             case "itemVersion":
+            case "version":
                 $this->itemVersion = $val;
                 $this->apiObject["itemVersion"] = $val;
                 break;
@@ -447,6 +455,7 @@ class Zotero_Item extends Zotero_Entry
                 //TODO: translate api object to new item type
                 break;
             case "linkMode":
+                //TODO: something here?
                 break;
             case "deleted":
                 $this->apiObject["deleted"] = $val;

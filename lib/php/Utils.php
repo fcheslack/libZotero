@@ -25,7 +25,7 @@ class Zotero_Lib_Utils
         return $randomstring;
     }
     
-    public function getKey() {
+    public static function getKey() {
         $baseString = "23456789ABCDEFGHIJKMNPQRSTUVWXZ";
         return Zotero_Lib_Utils::randomString(8, $baseString);
     }
@@ -40,37 +40,37 @@ class Zotero_Lib_Utils
     //  mark as synced if not already?
     //for failed:
     //  do something. flag as error? display some message to user?
-    public static function updateObjectsFromWriteResponse($itemsArray, $response){
+    public static function updateObjectsFromWriteResponse($objectsArray, $response){
         $data = json_decode($response->getRawBody(), true);
         if($response->getStatus() == 200){
             $newLastModifiedVersion = $response->getHeader("Last-Modified-Version");
             if(isset($data['success'])){
                 foreach($data['success'] as $ind=>$key){
                     $i = intval($ind);
-                    $item = $itemsArray[$i];
+                    $object = $objectsArray[$i];
                     
-                    $itemKey = $item->get('itemKey');
-                    if($itemKey != '' && $itemKey != $key){
+                    $objectKey = $object->get('key');
+                    if($objectKey != '' && $objectKey != $key){
                         throw new Exception("Item key mismatch in multi-write request");
                     }
-                    if($itemKey == ''){
-                        $item->set('itemKey', $key);
+                    if($objectKey == ''){
+                        $object->set('key', $key);
                     }
-                    $item->set('itemVersion', $newLastModifiedVersion);
-                    $item->synced = true;
-                    $item->writeFailure = false;
+                    $object->set('version', $newLastModifiedVersion);
+                    $object->synced = true;
+                    $object->writeFailure = false;
                 }
             }
             if(isset($data['failed'])){
                 foreach($data['failed'] as $ind=>$val){
                     $i = intval($ind);
-                    $item = $itemsArray[$i];
-                    $item->writeFailure = $val;
+                    $object = $objectsArray[$i];
+                    $object->writeFailure = $val;
                 }
             }
         }
         elseif($response->getStatus() == 204){
-            $itemsArray[0]->synced = true;
+            $objectsArray[0]->synced = true;
         }
     }
     
