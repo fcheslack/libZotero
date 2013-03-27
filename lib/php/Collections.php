@@ -154,5 +154,95 @@ class Zotero_Collections
         return $collection;
         */
     }
+    
+    /**
+     * Load all collections in the library into the collections container
+     *
+     * @param array $params list of parameters limiting the request
+     * @return null
+     */
+    public function fetchAllCollections($params = array()){
+        $aparams = array_merge(array('target'=>'collections', 'content'=>'json', 'limit'=>100), $params);
+        $reqUrl = $this->owningLibrary->apiRequestString($aparams);
+        do{
+            $response = $this->owningLibrary->_request($reqUrl);
+            if($response->isError()){
+                throw new Exception("Error fetching collections");
+            }
+            
+            $feed = new Zotero_Feed($response->getRawBody());
+            $this->addCollectionsFromFeed($feed);
+            
+            if(isset($feed->links['next'])){
+                $nextUrl = $feed->links['next']['href'];
+                $parsedNextUrl = parse_url($nextUrl);
+                $parsedNextUrl['query'] = $this->owningLibrary->apiQueryString($this->parseQueryString($parsedNextUrl['query']) );
+                $reqUrl = $parsedNextUrl['scheme'] . '://' . $parsedNextUrl['host'] . $parsedNextUrl['path'] . $parsedNextUrl['query'];
+            }
+            else{
+                $reqUrl = false;
+            }
+        } while($reqUrl);
+        
+        $this->loaded = true;
+        return $this->orderedArray;
+    }
+    
+    /**
+     * Load 1 request worth of collections in the library into the collections container
+     *
+     * @param array $params list of parameters limiting the request
+     * @return null
+     */
+    public function fetchCollections($params = array()){
+        $aparams = array_merge(array('target'=>'collections', 'content'=>'json', 'limit'=>100), $params);
+        $reqUrl = $this->owningLibrary->apiRequestString($aparams);
+        $response = $this->owningLibrary->_request($reqUrl);
+        if($response->isError()){
+            return false;
+            throw new Exception("Error fetching collections");
+        }
+        
+        $feed = new Zotero_Feed($response->getRawBody());
+        $this->owningLibrary->_lastFeed = $feed;
+        $addedCollections = $this->addCollectionsFromFeed($feed);
+        
+        if(isset($feed->links['next'])){
+            $nextUrl = $feed->links['next']['href'];
+            $parsedNextUrl = parse_url($nextUrl);
+            $parsedNextUrl['query'] = $this->apiQueryString($this->parseQueryString($parsedNextUrl['query']) );
+            $reqUrl = $parsedNextUrl['scheme'] . '://' . $parsedNextUrl['host'] . $parsedNextUrl['path'] . $parsedNextUrl['query'];
+        }
+        else{
+            $reqUrl = false;
+        }
+        return $addedCollections;
+    }
+    
+    /**
+     * Load a single collection by collectionKey
+     *
+     * @param string $collectionKey
+     * @return Zotero_Collection
+     */
+    public function fetchCollection($collectionKey){
+        $aparams = array('target'=>'collection', 'content'=>'json', 'collectionKey'=>$collectionKey);
+        $reqUrl = $this->owningLibrary->apiRequestString($aparams);
+        
+        $response = $this->owningLibrary->_request($reqUrl, 'GET');
+        if($response->isError()){
+            return false;
+            throw new Exception("Error fetching collection");
+        }
+        
+        $entry = Zotero_Lib_Utils::getFirstEntryNode($response->getRawBody());
+        if($entry == null){
+            return false;
+        }
+        $collection = new Zotero_Collection($entry, $this);
+        $this->addCollection($collection);
+        return $collection;
+    }
+    
 }
 

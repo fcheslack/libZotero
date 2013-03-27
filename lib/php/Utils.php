@@ -74,6 +74,30 @@ class Zotero_Lib_Utils
         }
     }
     
+    public static function parseKey($keynode){
+        $key = array();
+        $keyPerms = array("library"=>"0", "notes"=>"0", "write"=>"0", 'groups'=>array());
+        
+        $accessEls = $keyNode->getElementsByTagName('access');
+        foreach($accessEls as $access){
+            if($libraryAccess = $access->getAttribute("library")){
+                $keyPerms['library'] = $libraryAccess;
+            }
+            if($notesAccess = $access->getAttribute("notes")){
+                $keyPerms['notes'] = $notesAccess;
+            }
+            if($groupAccess = $access->getAttribute("group")){
+                $groupPermission = $access->getAttribute("write") == '1' ? 'write' : 'read';
+                $keyPerms['groups'][$groupAccess] = $groupPermission;
+            }
+            elseif($writeAccess = $access->getAttribute("write")) {
+                $keyPerms['write'] = $writeAccess;
+            }
+            
+        }
+        return $keyPerms;
+    }
+    
     public static function wrapLinks($txt, $nofollow=false){
         //extremely ugly wrapping of urls in html
         if($nofollow){

@@ -484,30 +484,7 @@ class Zotero_Library
      * @return null
      */
     public function fetchAllCollections($params = array()){
-        //return $this->collections->fetchAllCollections($params);
-        $aparams = array_merge(array('target'=>'collections', 'content'=>'json', 'limit'=>100), array('key'=>$this->_apiKey), $params);
-        $reqUrl = $this->apiRequestString($aparams);
-        do{
-            $response = $this->_request($reqUrl);
-            if($response->isError()){
-                throw new Exception("Error fetching collections");
-            }
-            
-            $feed = new Zotero_Feed($response->getRawBody());
-            $this->collections->addCollectionsFromFeed($feed);
-            
-            if(isset($feed->links['next'])){
-                $nextUrl = $feed->links['next']['href'];
-                $parsedNextUrl = parse_url($nextUrl);
-                $parsedNextUrl['query'] = $this->apiQueryString(array_merge(array('key'=>$this->_apiKey), $this->parseQueryString($parsedNextUrl['query']) ) );
-                $reqUrl = $parsedNextUrl['scheme'] . '://' . $parsedNextUrl['host'] . $parsedNextUrl['path'] . $parsedNextUrl['query'];
-            }
-            else{
-                $reqUrl = false;
-            }
-        } while($reqUrl);
-        
-        $this->collections->loaded = true;
+        return $this->collections->fetchAllCollections($params);
     }
     
     /**
@@ -517,28 +494,7 @@ class Zotero_Library
      * @return null
      */
     public function fetchCollections($params = array()){
-        $aparams = array_merge(array('target'=>'collections', 'content'=>'json', 'limit'=>100), array('key'=>$this->_apiKey), $params);
-        $reqUrl = $this->apiRequestString($aparams);
-        $response = $this->_request($reqUrl);
-        if($response->isError()){
-            return false;
-            throw new Exception("Error fetching collections");
-        }
-        
-        $feed = new Zotero_Feed($response->getRawBody());
-        $this->_lastFeed = $feed;
-        $addedCollections = $this->collections->addCollectionsFromFeed($feed);
-        
-        if(isset($feed->links['next'])){
-            $nextUrl = $feed->links['next']['href'];
-            $parsedNextUrl = parse_url($nextUrl);
-            $parsedNextUrl['query'] = $this->apiQueryString(array_merge(array('key'=>$this->_apiKey), $this->parseQueryString($parsedNextUrl['query']) ) );
-            $reqUrl = $parsedNextUrl['scheme'] . '://' . $parsedNextUrl['host'] . $parsedNextUrl['path'] . $parsedNextUrl['query'];
-        }
-        else{
-            $reqUrl = false;
-        }
-        return $addedCollections;
+        return $this->collections->fetchCollections($params);
     }
     
     /**
@@ -548,22 +504,7 @@ class Zotero_Library
      * @return Zotero_Collection
      */
     public function fetchCollection($collectionKey){
-        $aparams = array('target'=>'collection', 'content'=>'json', 'collectionKey'=>$collectionKey);
-        $reqUrl = $this->apiRequestString($aparams);
-        
-        $response = $this->_request($reqUrl, 'GET');
-        if($response->isError()){
-            return false;
-            throw new Exception("Error fetching collection");
-        }
-        
-        $entry = Zotero_Lib_Utils::getFirstEntryNode($response->getRawBody());
-        if($entry == null){
-            return false;
-        }
-        $collection = new Zotero_Collection($entry, $this);
-        $this->collections->addCollection($collection);
-        return $collection;
+        return $this->collections->fetchCollection($collectionKey);
     }
     
     /**
@@ -1186,27 +1127,7 @@ class Zotero_Library
      * @return array $keyPermissions
      */
     public function parseKey($keyNode){
-        $key = array();
-        $keyPerms = array("library"=>"0", "notes"=>"0", "write"=>"0", 'groups'=>array());
-        
-        $accessEls = $keyNode->getElementsByTagName('access');
-        foreach($accessEls as $access){
-            if($libraryAccess = $access->getAttribute("library")){
-                $keyPerms['library'] = $libraryAccess;
-            }
-            if($notesAccess = $access->getAttribute("notes")){
-                $keyPerms['notes'] = $notesAccess;
-            }
-            if($groupAccess = $access->getAttribute("group")){
-                $groupPermission = $access->getAttribute("write") == '1' ? 'write' : 'read';
-                $keyPerms['groups'][$groupAccess] = $groupPermission;
-            }
-            elseif($writeAccess = $access->getAttribute("write")) {
-                $keyPerms['write'] = $writeAccess;
-            }
-            
-        }
-        return $keyPerms;
+        return Zotero_Lib_Utils::parseKey($keyNode);
     }
     
     
