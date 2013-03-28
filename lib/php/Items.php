@@ -9,6 +9,7 @@ class Zotero_Items
 {
     public $itemObjects = array();
     public $owningLibrary;
+    public $itemsVersion = 0;
     
     //get an item from this container of items by itemKey
     public function getItem($itemKey) {
@@ -119,14 +120,6 @@ class Zotero_Items
         return $writeItems;
     }
     
-    public function deleteItem($item){
-        
-    }
-    
-    public function deleteItems($items){
-        
-    }
-    
     public function trashItem($item){
         $item->trashItem();
         return $item->save();
@@ -137,5 +130,40 @@ class Zotero_Items
             $item->trashItem();
         }
         return $this->writeItems($items);
+    }
+    
+    public function deleteItem($item){
+        $aparams = array('target'=>'item', 'itemKey'=>$item->itemKey);
+        $reqUrl = $this->owningLibrary->apiRequestString($aparams);
+        $response = $this->owningLibrary->_request($reqUrl, 'DELETE', null, array('If-Unmodified-Since-Version'=>$item->itemVersion));
+        return $response;
+    }
+    
+    //delete multiple items
+    //modified version we submit to the api falls back from explicit argument, to $items->itemsVersion
+    //if set and non-zero, to the max itemVersion of items passed for deletion
+    public function deleteItems($items, $version=null){
+        $itemKeys = array();
+        $latestItemVersion = 0;
+        foreach($items as $item){
+            array_push($itemKeys, $item->get('itemKey'));
+            $v = $item->get('version');
+            if($v > $latestItemVersion){
+                $latestItemVersion = $v;
+            }
+        }
+        if($version === null){
+            if($this->itemsVersion !== 0){
+                $version = $this->itemsVersion;
+            }
+            else {
+                $version = $latestItemVersion;
+            }
+        }
+        
+        $aparams = array('target'=>'items', 'itemKey'=>$itemKeys);
+        $reqUrl = $this->owningLibrary->apiRequestString($aparams);
+        $response = $this->owningLibrary->_request($reqUrl, 'DELETE', null, array('If-Unmodified-Since-Version'=>$version));
+        return $response;
     }
 }

@@ -915,10 +915,11 @@ class Zotero_Library
      * @return Zotero_Response
      */
     public function deleteItem($item){
-        $aparams = array('target'=>'item', 'itemKey'=>$item->itemKey);
-        $reqUrl = $this->apiRequestString($aparams);
-        $response = $this->_request($reqUrl, 'DELETE', null, array('If-Unmodified-Since-Version'=>$item->itemVersion));
-        return $response;
+        $this->items->deleteItem($item);
+    }
+    
+    public function deleteItems($items, $version=null){
+        $this->items->deleteItems($items, $version);
     }
     
     /**
@@ -928,8 +929,7 @@ class Zotero_Library
      * @return Zotero_Response
      */
     public function trashItem($item){
-        $item->trashItem();
-        return $item->save();
+        return $item->trashItem();
     }
     
     /**
