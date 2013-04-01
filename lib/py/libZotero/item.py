@@ -192,6 +192,7 @@ class Item(Entry):
         self.creatorSummary = ''
         self.numChildren = 0
         self.numTags = 0
+        self.year = ""
         self.childKeys = []
         self.parentKey = ''
         self.creators = []
@@ -243,7 +244,8 @@ class Item(Entry):
         # Look for year node
         yearNode = entryNode.getElementsByTagNameNS('http://zotero.org/ns/api', "year").item(0)
         if yearNode:
-            self.year = yearNode.childNodes.item(0).nodeValue
+            if yearNode.childNodes.item(0):
+                self.year = yearNode.childNodes.item(0).nodeValue
 
         # Look for numChildren node
         numChildrenNode = entryNode.getElementsByTagNameNS('http://zotero.org/ns/api', "numChildren").item(0)
@@ -363,6 +365,8 @@ class Item(Entry):
 
     def writeApiObject(self):
         updateItem = dict(self.pristine.items() + self.apiObject.items())
+        if 'creators' not in updateItem:
+            return updateItem
         if len(updateItem['creators']) == 0:
             return updateItem
 

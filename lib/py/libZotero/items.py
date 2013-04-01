@@ -56,6 +56,10 @@ class Items(object):
         itemKey = item.itemKey
         self.itemObjects[itemKey] = item
 
+    def writeItem(self, item):
+        written = self.writeItems([item])
+        return written[0]
+
     def writeItems(self, items):
         writeItems = []
 

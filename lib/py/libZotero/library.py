@@ -556,15 +556,9 @@ class Library(object):
     def createItem(self, item):
         """Create a new item on the server."""
         logging.info("createItem")
+        writtenItems = self.items.writeItems([item])
+        return writtenItems[0]
         createItemObject = item.newItemObject()
-        #unset variables the api won't accept
-        #del createItemObject['mimeType']
-        #del createItemObject['charset']
-        #del createItemObject['contentType']
-        #del createItemObject['filename']
-        #del createItemObject['md5']
-        #del createItemObject['mtime']
-        #del createItemObject['zip']
 
         createItemJson = json.dumps({'items': [createItemObject]})
         aparams = {'target': 'items'}
@@ -581,7 +575,11 @@ class Library(object):
 
     def addNotes(self, parentItem, noteItem):
         """Add note items as children of parentItem."""
+
         logging.info(noteItem)
+        noteItem.set('parentItem', parentItem.get('itemKey'))
+        writtenItems = self.items.writeItems([noteItem])
+        return writtenItems[0]
         aparams = {'target': 'children', 'itemKey': parentItem.itemKey}
         reqUrl = self.apiRequestString(aparams)
         if isinstance(noteItem, zotero.Item):

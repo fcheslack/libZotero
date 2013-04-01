@@ -17,7 +17,6 @@ class Cache(object):
         expiration = time.time() + lifetime
         self.store[key] = value
         self.expirations[key] = expiration
-        print("value stored in cache - " + key)
         logging.info("value stored in cache - " + key)
         #increment opCount and possibly garbage collect
         self.opCount += 1

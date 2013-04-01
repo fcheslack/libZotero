@@ -18,7 +18,6 @@ class Feed(object):
         self.title = feedEl.getElementsByTagName('title').item(0).childNodes.item(0).nodeValue
         self.id = feedEl.getElementsByTagName("id").item(0).childNodes.item(0).nodeValue
         self.dateUpdated = feedEl.getElementsByTagName("updated").item(0).childNodes.item(0).nodeValue
-        self.apiVersion = feedEl.getElementsByTagName("zapi:apiVersion").item(0).childNodes.item(0).nodeValue
         self.totalResults = feedEl.getElementsByTagName("zapi:totalResults").item(0).childNodes.item(0).nodeValue
         #grab links of the feed element (and not all the entries)
         self.links = {}

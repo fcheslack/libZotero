@@ -13,3 +13,6 @@ libZotero/response.py
 libZotero/tag.py
 libZotero/zcollections.py
 libZotero/zotero.py
+test/test_item.py
+test/test_library.py
+test/test_liveapi.py
