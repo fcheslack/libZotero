@@ -18,16 +18,16 @@ newItem.set('abstractNote', 'Created using a zotero php library and the write ap
 # if the creation went okay it will have a writeFailure property set to False
 createdItem = zlib.createItem(newItem)
 if createdItem.writeFailure != False:
-    print(createdItem.writeFailure.code)
-    print(createdItem.writeFailure.message)
+    print(createdItem.writeFailure['code'])
+    print(createdItem.writeFailure['message'])
     sys.exit(1)
 
 #add child note
 newNoteItem = zlib.getTemplateItem('note')
 addedNote = zlib.addNotes(createdItem, newNoteItem)
 if addedNote.writeFailure != False:
-    print(addedNote.writeFailure.code)
-    print(addedNote.writeFailure.message)
+    print(addedNote.writeFailure['code'])
+    print(addedNote.writeFailure['message'])
     sys.exit(1)
 print("added child note")
 
@@ -35,8 +35,8 @@ createdItem.set('date', '2011')
 updatedItem = zlib.writeUpdatedItem(createdItem)
 if updatedItem.writeFailure != False:
     print("Error updating item")
-    print(updatedItem.writeFailure.code)
-    print(updatedItem.writeFailure.message)
+    print(updatedItem.writeFailure['code'])
+    print(updatedItem.writeFailure['message'])
     sys.exit(1)
 
 #try to get the items we just created separately to make sure the api has them

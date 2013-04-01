@@ -48,35 +48,22 @@ print(finfo)
 #create a new item of type book
 newItem = zotero.getTemplateItem(args.type)
 newItem.set('title', args.title)
-createItemResponse = zlib.createItem(newItem)
-print(createItemResponse)
-if createItemResponse.status_code != 201:
-    print(createItemResponse.status_code)
-    print(createItemResponse.text)
+createdItem = zlib.createItem(newItem)
+if createdItem.writeFailure != False:
+    print(createdItem.writeFailure['code'])
+    print(createdItem.writeFailure['message'])
     sys.exit(1)
-else:
-    #load the item into the library so it is included and has the itemKey and etag
-    #and anything else the api populates that we didn't set in our item
-    createItemFeed = zotero.Feed(createItemResponse.text)
-    createdItems = zlib.items.addItemsFromFeed(createItemFeed)
-    createdItem = createdItems[0]
-    print("Item created")
-    print("created Item key: " + createdItem.get('itemKey'))
-    logging.info(createdItem)
-existingItem = zotero.Item(createItemResponse.text)
 
 #add child attachment
 #create attachment item
 logging.info("Calling createAttachmentItem")
-attachmentItemResponse = zlib.createAttachmentItem(createdItem, {'filename': finfo['filename']})
-if attachmentItemResponse.status_code != 201:
-    print(attachmentItemResponse.status_code)
-    print(attachmentItemResponse.text)
+attachmentItem = zlib.createAttachmentItem(createdItem, {'filename': finfo['filename']})
+if attachmentItem.writeFailure != False:
+    print(attachmentItem.writeFailure)
+    print(attachmentItem.writeFailure['code'])
+    print(attachmentItem.writeFailure['message'])
     sys.exit(1)
 
-attachmentItemsFeed = zotero.Feed(attachmentItemResponse.text)
-attachmentItems = zlib.items.addItemsFromFeed(attachmentItemsFeed)
-attachmentItem = attachmentItems[0]
 print("created attachment Item Key: " + attachmentItem.get('itemKey'))
 
 #upload attachment file
