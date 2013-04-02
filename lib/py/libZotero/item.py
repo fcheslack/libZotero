@@ -276,6 +276,10 @@ class Item(Entry):
 
     def parseContentNode(self, contentNode):
         contentType = contentNode.getAttribute('type')
+        zcontentType = contentNode.getAttributeNS('http://zotero.org/ns/api', 'type')
+
+        if contentType == "" and zcontentType != "":
+            contentType = zcontentType
         if (contentType == 'application/json') or (contentType == 'json'):
             self.pristine = json.loads(contentNode.childNodes.item(0).nodeValue)
             self.apiObject = json.loads(contentNode.childNodes.item(0).nodeValue)
@@ -284,18 +288,18 @@ class Item(Entry):
             else:
                 self.creators = []
 
-            self.itemVersion = self.apiObject['itemVersion'] if self.apiObject['itemVersion'] else 0
-            self.parentItemKey = self.apiObject['parentItem'] if self.apiObject['parentItem'] else False
+            self.itemVersion = self.apiObject['itemVersion'] if 'itemVersion' in self.apiObject else 0
+            self.parentItemKey = self.apiObject['parentItem'] if 'parentItem' in self.apiObject else False
 
             if self.itemType == 'attachment':
                 self.mimeType = self.apiObject['contentType']
                 #TODO:translate mimetype
             if 'linkMode' in self.apiObject:
                 self.linkMode = self.apiObject['linkMode']
-            self.synced = true
+            self.synced = True
         elif (contentType == 'bib'):
             bibNode = contentNode.getElementsByTagName('div').item(0)
-            self.bibContent = bibNode.ownerDocument.saveXML(bibNode)
+            self.bibContent = bibNode.toxml()  # ownerDocument.saveXML(bibNode)
 
         contentString = ''
         childNodes = contentNode.childNodes

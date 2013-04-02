@@ -399,9 +399,10 @@ class Library(object):
 
         return fetchedItems
 
-    def fetchItem(self, itemKey):
+    def fetchItem(self, itemKey, params={}):
         """Fetch a single item."""
         aparams = {'target': 'item', 'content': 'json', 'itemKey': itemKey}
+        aparams.update(params)
         reqUrl = self.apiRequestString(aparams)
 
         response = self._request(reqUrl, 'GET')
@@ -557,7 +558,9 @@ class Library(object):
         """Create a new item on the server."""
         logging.info("createItem")
         writtenItems = self.items.writeItems([item])
-        return writtenItems[0]
+        if writtenItems != False:
+            return writtenItems[0]
+        return False
         createItemObject = item.newItemObject()
 
         createItemJson = json.dumps({'items': [createItemObject]})
