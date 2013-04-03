@@ -532,7 +532,7 @@ class Library(object):
         adata.update(attachmentInfo)
         logging.info("createAttachmentItem: " + str(adata))
         templateItem = self.getTemplateItem('attachment', adata['attachmentType'])
-        templateItem.parentKey = parentItem.itemKey
+        templateItem.set('parentItem', parentItem.itemKey)
         templateItem.set('title', adata['filename'])
         templateItem.set('contentType', adata['contentType'])
         #create child item
@@ -561,20 +561,6 @@ class Library(object):
         if writtenItems != False:
             return writtenItems[0]
         return False
-        createItemObject = item.newItemObject()
-
-        createItemJson = json.dumps({'items': [createItemObject]})
-        aparams = {'target': 'items'}
-        #alter if item is a child
-        if item.parentKey:
-            aparams['itemKey'] = item.parentKey
-            aparams['target'] = 'item'
-            aparams['targetModifier'] = 'children'
-        reqUrl = self.apiRequestString(aparams)
-        response = self._request(reqUrl, 'POST', createItemJson)
-        logging.info('createItemResponse')
-        logging.info(response)
-        return response
 
     def addNotes(self, parentItem, noteItem):
         """Add note items as children of parentItem."""
@@ -639,7 +625,6 @@ class Library(object):
         reqUrl = self.apiRequestString(aparams)
         response = self._request(reqUrl, 'DELETE', None, {'If-Unmodified-Since-Version': item.get('itemVersion')})
         return response
-        pass
 
     def trashItem(self, item):
         """Mark an existing item for deletion, adding it to the trash metacollection."""
@@ -754,7 +739,6 @@ class Library(object):
         keyNode = doc.getElementsByTagName('key').item(0)
         keyPerms = self.parseKey(keyNode)
         return keyPerms
-        pass
 
     def parseKey(self, keyNode):
         """Parse the api key xml returned by the Zotero API."""
@@ -777,7 +761,6 @@ class Library(object):
             elif writeAccess:
                 keyPerms['write'] = writeAccess
         return keyPerms
-        pass
 
     def fetchGroups(self, userID):
         """Fetch the set of groups a user is a member of."""
@@ -816,7 +799,6 @@ class Library(object):
             c = sectionNode.nodeValue
             sections.append({'title':  sectionTitle, 'content': c})
         return sections
-        pass
 
     def saveLibrary(self):
         """Return pickled self for storage"""

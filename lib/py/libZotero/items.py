@@ -90,6 +90,8 @@ class Items(object):
 
         writeResponse = self.owningLibrary._request(reqUrl, 'POST', requestData, {'Content-Type': 'application/json'})
         if responseIsError(writeResponse):
+            logging.info('writeItems Error')
+            logging.info(writeResponse.status_code)
             return False
         updateObjectsFromWriteResponse(writeItems, writeResponse)
         return writeItems
