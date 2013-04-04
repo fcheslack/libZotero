@@ -86,14 +86,24 @@ class Items(object):
         writeArray = []
         for item in writeItems:
             writeArray.append(item.writeApiObject())
-        requestData = json.dumps({'items': writeArray})
 
-        writeResponse = self.owningLibrary._request(reqUrl, 'POST', requestData, {'Content-Type': 'application/json'})
-        if responseIsError(writeResponse):
-            logging.info('writeItems Error')
-            logging.info(writeResponse.status_code)
-            return False
-        updateObjectsFromWriteResponse(writeItems, writeResponse)
+        chunks = [writeItems[i:i + 50] for i in range(0, len(writeItems), 50)]
+        for chunk in chunks:
+            writeArray = []
+            for item in chunk:
+                writeArray.append(item.writeApiObject())
+            requestData = json.dumps({'items': writeArray})
+
+            writeResponse = self.owningLibrary._request(reqUrl, 'POST', requestData, {'Content-Type': 'application/json'})
+            if responseIsError(writeResponse):
+                logging.info('writeItems Error')
+                logging.info(writeResponse.status_code)
+                #entire request failed but we get no per-item write failure messages
+                #so update all items with writeFailure manually
+                for item in chunk:
+                    item.writeFailure = {'code': writeResponse.status_code, 'message': writeResponse.text}
+            else:
+                updateObjectsFromWriteResponse(chunk, writeResponse)
         return writeItems
 
     def deleteItem(self, item):
