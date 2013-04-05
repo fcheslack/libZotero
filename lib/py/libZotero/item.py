@@ -198,7 +198,7 @@ class Item(Entry):
         self.creators = []
         self.createdByUserID = None
         self.lastModifiedByUserID = None
-        self.note = None
+        self.notes = []
         """
         @var int Represents the relationship of the child to the parent.
         0:file, 1:file, 2:snapshot, 3:web-link
@@ -447,6 +447,9 @@ class Item(Entry):
 
     def addNote(self, note):
         self.notes.append(note)
+        parentItemKey = self.get('itemKey')
+        if parentItemKey != None:
+            note.set('parentItem', parentItemKey)
         return
 
     def trashItem(self):

@@ -76,7 +76,7 @@ class Zotero_Item extends Zotero_Entry
     /**
      * @var string
      */
-    public $note = null;
+    public $notes = array();
     
     /**
      * @var int Represents the relationship of the child to the parent. 0:file, 1:file, 2:snapshot, 3:web-link
