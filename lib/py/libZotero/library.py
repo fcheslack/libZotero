@@ -320,7 +320,6 @@ class Library(object):
             parsedNextUrl = urlparse.urlparse(nextUrl)
             parsedNextQuery = urlparse.parse_qs(parsedNextUrl.query)
             parsedNextQuery = self.apiQueryString(parsedNextQuery.update({'key': self._apiKey}))
-            #parsedNextUrl['query'] = self.apiQueryString(array_merge({'key': self._apiKey}, self.parseQueryString(parsedNextUrl['query']) ) )
             reqUrl = parsedNextUrl['scheme'] + '://' + parsedNextUrl['host'] + parsedNextUrl['path'] + parsedNextQuery
         else:
             reqUrl = False
@@ -486,7 +485,6 @@ class Library(object):
         if ucResponse.status_code != 204:
             raise zotero.ZoteroApiError("Error confirming upload to Zotero API - " + ucResponse.text)
         return True
-        pass
 
     def uploadAttachedFilePatch(self, item, patchdata, fileinfo, algorithm='bsdiff'):
         """Upload a patch for an attached file already present on the server."""
@@ -568,23 +566,10 @@ class Library(object):
 
     def addNotes(self, parentItem, noteItem):
         """Add note items as children of parentItem."""
-
         logging.info(noteItem)
         noteItem.set('parentItem', parentItem.get('itemKey'))
         writtenItems = self.items.writeItems([noteItem])
         return writtenItems[0]
-        aparams = {'target': 'children', 'itemKey': parentItem.itemKey}
-        reqUrl = self.apiRequestString(aparams)
-        if isinstance(noteItem, zotero.Item):
-            noteJson = json.dumps({'items': [noteItem.newItemObject()]})
-        else:
-            notesArray = []
-            for nitem in noteItem:
-                notesArray.append(nitem.newItemObject())
-            noteJson = json.dumps({'items': notesArray})
-
-        response = self._request(reqUrl, 'POST', noteJson)
-        return response
 
     def createCollection(self, name, parent=None):
         """Create a new collection on the server."""
@@ -599,7 +584,6 @@ class Library(object):
         reqUrl = self.apiRequestString(aparams)
         response = self._request(reqUrl, 'DELETE', None, {'If-Unmodified-Since-Version': collection.get('collectionVersion')})
         return response
-        pass
 
     def addItemsToCollection(self, collection, items):
         """Add specified items to the specified collection."""
@@ -625,14 +609,11 @@ class Library(object):
 
     def deleteItem(self, item):
         """Permanently delete an existing item."""
-        aparams = {'target': 'item', 'itemKey': item.itemKey}
-        reqUrl = self.apiRequestString(aparams)
-        response = self._request(reqUrl, 'DELETE', None, {'If-Unmodified-Since-Version': item.get('itemVersion')})
-        return response
+        return self.items.deleteItem(item)
 
     def trashItem(self, item):
         """Mark an existing item for deletion, adding it to the trash metacollection."""
-        item.set('deleted', 1)
+        item.trashItem()
         return self.items.writeItems([item])
 
     def fetchItemChildren(self, item):
@@ -647,7 +628,6 @@ class Library(object):
             raise zotero.ZoteroApiError("failed to fetch itemTypes")
         itemTypes = json.loads(response.getBody())
         return itemTypes
-        pass
 
     def getItemFields(self, itemType):
         """Get the list of possible item fields for a particular Zotero item type."""
@@ -657,7 +637,6 @@ class Library(object):
             raise zotero.ZoteroApiError("failed to fetch itemFields")
         itemFields = json.loads(response.getBody())
         return itemFields
-        pass
 
     def getCreatorTypes(self, itemType):
         """Get the list of possible creator types for a particular Zotero item type."""
@@ -667,7 +646,6 @@ class Library(object):
             raise zotero.ZoteroApiError("failed to fetch creatorTypes")
         creatorTypes = json.loads(response.getBody())
         return creatorTypes
-        pass
 
     def getCreatorFields(self, creatorType):
         """Get the list of creator fields and translations for a particular creator type."""
@@ -677,7 +655,6 @@ class Library(object):
             raise zotero.ZoteroApiError("failed to fetch creatorFields")
         creatorFields = json.loads(response.getBody())
         return creatorFields
-        pass
 
     def fetchAllTags(self, params):
         """Fetch all tags, even over multiple requests, present in the library."""
@@ -701,12 +678,10 @@ class Library(object):
                 parsedNextUrl = urlparse.urlparse(nextUrl)
                 parsedNextQuery = urlparse.parse_qs(parsedNextUrl.query)
                 parsedNextQuery = self.apiQueryString(parsedNextQuery.update({'key': self._apiKey}))
-                #parsedNextUrl['query'] = self.apiQueryString(array_merge({'key': self._apiKey}, self.parseQueryString(parsedNextUrl['query']) ) )
                 reqUrl = parsedNextUrl['scheme'] + '://' + parsedNextUrl['host'] + parsedNextUrl['path'] + parsedNextQuery
             else:
                 break
         return tags
-        pass
 
     def fetchTags(self, params):
         """Make a single request to get a set of tags."""
@@ -724,7 +699,6 @@ class Library(object):
             tag = zotero.Tag(entry)
             tags.append(tag)
         return tags
-        pass
 
     def getKeyPermissions(self, userID, key):
         """Get information about the permissions a particular key has."""
