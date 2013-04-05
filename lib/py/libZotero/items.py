@@ -6,6 +6,8 @@ from zotero import getKey, responseIsError, updateObjectsFromWriteResponse
 class Items(object):
     def __init__(self):
         self.itemObjects = {}
+        self.itemsVersion = 0
+        self.owningLibrary = None
 
     def __len__(self):
         return len(self.itemObjects)
@@ -107,10 +109,35 @@ class Items(object):
         return writeItems
 
     def deleteItem(self, item):
-        pass
+        """Permanently delete an existing item."""
+        aparams = {'target': 'item', 'itemKey': item.itemKey}
+        reqUrl = self.owningLibrary.apiRequestString(aparams)
+        response = self.owningLibrary_request(reqUrl, 'DELETE', None, {'If-Unmodified-Since-Version': item.get('itemVersion')})
+        return response
 
-    def deleteItems(self, items):
-        pass
+    def deleteItems(self, items, version=None):
+        """Permanently delete up to 50 existing items."""
+        if len(items) > 50:
+            raise "Cannot delete more than 50 items at once."
+        itemKeys = []
+        latestItemVersion = 0
+        for item in items:
+            itemKeys.append(item.get('itemKey'))
+            v = item.get('itemVersion')
+            if v > latestItemVersion:
+                latestItemVersion = v
+
+        if version == None:
+            if self.itemsVersion != 0:
+                version = self.itemsVersion
+            else:
+                version = latestItemVersion
+
+        itemKeyString = ",".join(itemKeys)
+        aparams = {'target': 'items', 'itemKey': itemKeyString}
+        reqUrl = self.owningLibrary.apiRequestString(aparams)
+        response = self.owningLibrary._request(reqUrl, 'DELETE', None, {'If-Unmodified-Since-Version': version})
+        return response
 
     def trashItem(self, item):
         item.trashItem()
