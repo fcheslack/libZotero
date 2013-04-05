@@ -165,7 +165,10 @@ def apiQueryString(passedParams={}):
                 #itemKey belongs in url, not querystring
                 pass
             else:
-                queryParams.append((val, passedParams[val]))
+                if val == 'itemKey' and not isinstance(val, basestring):
+                    queryParams.append((val, ",".join(passedParams[val])))
+                else:
+                    queryParams.append((val, passedParams[val]))
     #print(queryParams)
     return '?' + urllib.urlencode(queryParams)
 
@@ -211,7 +214,7 @@ def getTemplateItem(itemType, linkMode=None):
     if response.status_code != 200:
         raise zotero.ZoteroApiError("Error getting template item")
     itemTemplate = json.loads(response.text)
-    newItem.apiObject = itemTemplate
+    newItem.initItemFromTemplate(itemTemplate)
     return newItem
 
 
@@ -551,7 +554,8 @@ class Library(object):
         if response.status_code != 200:
             raise zotero.ZoteroApiError("Error getting template item")
         itemTemplate = json.loads(response.text)
-        newItem.apiObject = itemTemplate
+        newItem.initItemFromTemplate(itemTemplate)
+        newItem.owningLibrary = self
         return newItem
 
     def createItem(self, item):
