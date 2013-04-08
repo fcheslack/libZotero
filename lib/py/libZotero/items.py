@@ -85,10 +85,6 @@ class Items(object):
         aparams = {'target': 'items', 'content': 'json'}
         reqUrl = self.owningLibrary.apiRequestString(aparams)
 
-        writeArray = []
-        for item in writeItems:
-            writeArray.append(item.writeApiObject())
-
         chunks = [writeItems[i:i + 50] for i in range(0, len(writeItems), 50)]
         for chunk in chunks:
             writeArray = []
