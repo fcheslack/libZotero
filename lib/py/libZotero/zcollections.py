@@ -9,6 +9,8 @@ class Collections(object):
         self.collectionObjects = {}
         self.dirty = False
         self.loaded = False
+        self.owningLibrary = None
+        self.collectionsVersion = 0
 
     def __len__(self):
         return len(self.collectionObjects)
@@ -71,14 +73,26 @@ class Collections(object):
                 collection.set('collectionVersion', 0)
             collectionsArray.append(collection.writeApiObject())
 
-        jsonString = json.dumps({'collections': collectionsArray})
-
         aparams = {'target': 'collections', 'content': 'json'}
         reqUrl = self.owningLibrary.apiRequestString(aparams)
-        response = self.owningLibrary._request(reqUrl, 'POST', jsonString)
-        updateObjectsFromWriteResponse(collections, response)
-        if responseIsError(response):
-            return False
+
+        chunks = [collectionsArray[i:i + 50] for i in range(0, len(collectionsArray), 50)]
+        for chunk in chunks:
+            writeArray = []
+            for collection in chunk:
+                writeArray.append(collection.writeApiObject())
+            requestData = json.dumps({'collections': writeArray})
+
+            writeResponse = self.owningLibrary._request(reqUrl, 'POST', requestData, {'Content-Type': 'application/json'})
+            if responseIsError(writeResponse):
+                logging.info('writeCollections Error')
+                logging.info(writeResponse.status_code)
+                #entire request failed but we get no per-item write failure messages
+                #so update all items with writeFailure manually
+                for collection in chunk:
+                    collection.writeFailure = {'code': writeResponse.status_code, 'message': writeResponse.text}
+            else:
+                updateObjectsFromWriteResponse(chunk, writeResponse)
 
         return collections
 
