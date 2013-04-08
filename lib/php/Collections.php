@@ -117,42 +117,31 @@ class Zotero_Collections
         
         $config = array('target'=>'collections', 'libraryType'=>$this->owningLibrary->libraryType, 'libraryID'=>$this->owningLibrary->libraryID, 'content'=>'json');
         $requestUrl = $this->owningLibrary->apiRequestString($config);
-        $writeArray = array();
-        foreach($writeCollections as $collection){
-            $writeArray[] = $collection->writeApiObject();
+        
+        $chunks = array_chunk($writeCollections, 50);
+        foreach($chunks as $chunk){
+            $writeArray = array();
+            foreach($chunk as $collection){
+                $writeArray[] = $collection->writeApiObject();
+            }
+            $requestData = json_encode(array('collections'=>$writeArray));
+            
+            $writeResponse = $this->owningLibrary->_request($requestUrl, 'POST', $requestData, array('Content-Type'=> 'application/json'));
+            if($writeResponse->isError()){
+                foreach($chunk as $collection){
+                    $collection->writeFailure = array('code'=>$writeResponse->getStatus(), 'message'=>$writeResponse->getBody());
+                }
+            }
+            else {
+                Zotero_Lib_Utils::UpdateObjectsFromWriteResponse($chunk, $writeResponse);
+            }
         }
-        $requestData = json_encode(array('collections'=>$writeArray));
-        $writeResponse = $this->owningLibrary->_request($requestUrl, 'POST', $requestData, array('Content-Type'=> 'application/json'));
-        if($writeResponse->isError()){
-            return false;
-        }
-        Zotero_Lib_Utils::UpdateObjectsFromWriteResponse($writeCollections, $writeResponse);
         return $writeCollections;
     }
     
     public function writeUpdatedCollection($collection){
-        if($this->writeCollections(array($collection)) === false){
-            return false;
-        }
+        $this->writeCollections(array($collection));
         return $collection;
-        /*
-        $aparams = array('target'=>'collection', 'collectionKey'=>$collection->get('collectionKey'));
-        $reqUrl = $this->owningLibrary->apiRequestString($aparams);
-        $json = json_encode($collection->writeApiObject());
-        $response = $this->owningLibrary->_request($reqUrl, 'PUT', $json);
-        if(!$response->isError()){
-            $newLastModifiedVersion = $response->getHeader("Last-Modified-Version");
-            $collection->set('collectionVersion', $newLastModifiedVersion);
-            $collection->writeFailure = false;
-        }
-        else {
-            $collection->writeFailure = array('key'=>$collection->get('collectionKey'), 
-                                              'code'=>$response->getStatus(),
-                                              'message'=>$response->getBody());
-        }
-        
-        return $collection;
-        */
     }
     
     /**
