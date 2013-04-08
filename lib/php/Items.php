@@ -106,17 +106,24 @@ class Zotero_Items
         
         $config = array('target'=>'items', 'libraryType'=>$this->owningLibrary->libraryType, 'libraryID'=>$this->owningLibrary->libraryID, 'content'=>'json');
         $requestUrl = $this->owningLibrary->apiRequestString($config);
-        $writeArray = array();
-        foreach($writeItems as $item){
-            $writeArray[] = $item->writeApiObject();
+        $chunks = array_chunk($writeItems, 50);
+        foreach($chunks as $chunk){
+            $writeArray = array();
+            foreach($chunk as $item){
+                $writeArray[] = $item->writeApiObject();
+            }
+            $requestData = json_encode(array('items'=>$writeArray));
+            
+            $writeResponse = $this->owningLibrary->_request($requestUrl, 'POST', $requestData, array('Content-Type'=> 'application/json'));
+            if($writeResponse->isError()){
+                foreach($chunk as $item){
+                    $item->writeFailure = array('code'=>$writeResponse->getStatus(), 'message'=>$writeResponse->getBody());
+                }
+            }
+            else {
+                Zotero_Lib_Utils::UpdateObjectsFromWriteResponse($chunk, $writeResponse);
+            }
         }
-        $requestData = json_encode(array('items'=>$writeArray));
-        
-        $writeResponse = $this->owningLibrary->_request($requestUrl, 'POST', $requestData, array('Content-Type'=> 'application/json'));
-        if($writeResponse->isError()){
-            return false;
-        }
-        Zotero_Lib_Utils::UpdateObjectsFromWriteResponse($writeItems, $writeResponse);
         return $writeItems;
     }
     
@@ -143,6 +150,9 @@ class Zotero_Items
     //modified version we submit to the api falls back from explicit argument, to $items->itemsVersion
     //if set and non-zero, to the max itemVersion of items passed for deletion
     public function deleteItems($items, $version=null){
+        if(count($items) > 50){
+            throw new Exception("Too many items to delete");
+        }
         $itemKeys = array();
         $latestItemVersion = 0;
         foreach($items as $item){
