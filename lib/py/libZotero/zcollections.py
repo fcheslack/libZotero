@@ -71,7 +71,7 @@ class Collections(object):
                 newCollectionKey = getKey()
                 collection.set('collectionKey', newCollectionKey)
                 collection.set('collectionVersion', 0)
-            collectionsArray.append(collection.writeApiObject())
+            collectionsArray.append(collection)
 
         aparams = {'target': 'collections', 'content': 'json'}
         reqUrl = self.owningLibrary.apiRequestString(aparams)
