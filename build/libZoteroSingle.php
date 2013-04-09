@@ -569,42 +569,31 @@ class Zotero_Collections
         
         $config = array('target'=>'collections', 'libraryType'=>$this->owningLibrary->libraryType, 'libraryID'=>$this->owningLibrary->libraryID, 'content'=>'json');
         $requestUrl = $this->owningLibrary->apiRequestString($config);
-        $writeArray = array();
-        foreach($writeCollections as $collection){
-            $writeArray[] = $collection->writeApiObject();
+        
+        $chunks = array_chunk($writeCollections, 50);
+        foreach($chunks as $chunk){
+            $writeArray = array();
+            foreach($chunk as $collection){
+                $writeArray[] = $collection->writeApiObject();
+            }
+            $requestData = json_encode(array('collections'=>$writeArray));
+            
+            $writeResponse = $this->owningLibrary->_request($requestUrl, 'POST', $requestData, array('Content-Type'=> 'application/json'));
+            if($writeResponse->isError()){
+                foreach($chunk as $collection){
+                    $collection->writeFailure = array('code'=>$writeResponse->getStatus(), 'message'=>$writeResponse->getBody());
+                }
+            }
+            else {
+                Zotero_Lib_Utils::UpdateObjectsFromWriteResponse($chunk, $writeResponse);
+            }
         }
-        $requestData = json_encode(array('collections'=>$writeArray));
-        $writeResponse = $this->owningLibrary->_request($requestUrl, 'POST', $requestData, array('Content-Type'=> 'application/json'));
-        if($writeResponse->isError()){
-            return false;
-        }
-        Zotero_Lib_Utils::UpdateObjectsFromWriteResponse($writeCollections, $writeResponse);
         return $writeCollections;
     }
     
     public function writeUpdatedCollection($collection){
-        if($this->writeCollections(array($collection)) === false){
-            return false;
-        }
+        $this->writeCollections(array($collection));
         return $collection;
-        /*
-        $aparams = array('target'=>'collection', 'collectionKey'=>$collection->get('collectionKey'));
-        $reqUrl = $this->owningLibrary->apiRequestString($aparams);
-        $json = json_encode($collection->writeApiObject());
-        $response = $this->owningLibrary->_request($reqUrl, 'PUT', $json);
-        if(!$response->isError()){
-            $newLastModifiedVersion = $response->getHeader("Last-Modified-Version");
-            $collection->set('collectionVersion', $newLastModifiedVersion);
-            $collection->writeFailure = false;
-        }
-        else {
-            $collection->writeFailure = array('key'=>$collection->get('collectionKey'), 
-                                              'code'=>$response->getStatus(),
-                                              'message'=>$response->getBody());
-        }
-        
-        return $collection;
-        */
     }
     
     /**
@@ -806,17 +795,24 @@ class Zotero_Items
         
         $config = array('target'=>'items', 'libraryType'=>$this->owningLibrary->libraryType, 'libraryID'=>$this->owningLibrary->libraryID, 'content'=>'json');
         $requestUrl = $this->owningLibrary->apiRequestString($config);
-        $writeArray = array();
-        foreach($writeItems as $item){
-            $writeArray[] = $item->writeApiObject();
+        $chunks = array_chunk($writeItems, 50);
+        foreach($chunks as $chunk){
+            $writeArray = array();
+            foreach($chunk as $item){
+                $writeArray[] = $item->writeApiObject();
+            }
+            $requestData = json_encode(array('items'=>$writeArray));
+            
+            $writeResponse = $this->owningLibrary->_request($requestUrl, 'POST', $requestData, array('Content-Type'=> 'application/json'));
+            if($writeResponse->isError()){
+                foreach($chunk as $item){
+                    $item->writeFailure = array('code'=>$writeResponse->getStatus(), 'message'=>$writeResponse->getBody());
+                }
+            }
+            else {
+                Zotero_Lib_Utils::UpdateObjectsFromWriteResponse($chunk, $writeResponse);
+            }
         }
-        $requestData = json_encode(array('items'=>$writeArray));
-        
-        $writeResponse = $this->owningLibrary->_request($requestUrl, 'POST', $requestData, array('Content-Type'=> 'application/json'));
-        if($writeResponse->isError()){
-            return false;
-        }
-        Zotero_Lib_Utils::UpdateObjectsFromWriteResponse($writeItems, $writeResponse);
         return $writeItems;
     }
     
@@ -843,6 +839,9 @@ class Zotero_Items
     //modified version we submit to the api falls back from explicit argument, to $items->itemsVersion
     //if set and non-zero, to the max itemVersion of items passed for deletion
     public function deleteItems($items, $version=null){
+        if(count($items) > 50){
+            throw new Exception("Too many items to delete");
+        }
         $itemKeys = array();
         $latestItemVersion = 0;
         foreach($items as $item){
@@ -1623,7 +1622,7 @@ class Zotero_Item extends Zotero_Entry
     /**
      * @var string
      */
-    public $note = null;
+    public $notes = array();
     
     /**
      * @var int Represents the relationship of the child to the parent. 0:file, 1:file, 2:snapshot, 3:web-link
@@ -2517,7 +2516,7 @@ class Zotero_Group extends Zotero_Entry
         }
         $el->setAttribute('owner', $this->ownerID);
         $el->setAttribute('type', $this->type);
-        $el->setAttribute('name', $this->name);// str_replace('&#039;', '&apos;', htmlspecialchars($this->name, ENT_QUOTES)));
+        $el->setAttribute('name', $this->name);
         $el->setAttribute('libraryEditing', $this->libraryEditing);
         $el->setAttribute('libraryReading', $this->libraryReading);
         $el->setAttribute('fileEditing', $this->fileEditing);
