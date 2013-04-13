@@ -90,7 +90,7 @@ class Collections(object):
                 #entire request failed but we get no per-item write failure messages
                 #so update all items with writeFailure manually
                 for collection in chunk:
-                    collection.writeFailure = {'code': writeResponse.status_code, 'message': writeResponse.text}
+                    collection.writeFailure = {'key': collection.get('key'), 'code': writeResponse.status_code, 'message': writeResponse.text}
             else:
                 updateObjectsFromWriteResponse(chunk, writeResponse)
 

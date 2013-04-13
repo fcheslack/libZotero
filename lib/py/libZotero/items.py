@@ -42,7 +42,7 @@ class Items(object):
             return None
 
     def addItem(self, item):
-        itemKey = item.itemKey
+        itemKey = item.get('itemKey')
         self.itemObjects[itemKey] = item
         return item
 
@@ -55,7 +55,7 @@ class Items(object):
         return addedItems
 
     def replaceItem(self, item):
-        itemKey = item.itemKey
+        itemKey = item.get('itemKey')
         self.itemObjects[itemKey] = item
 
     def writeItem(self, item):
@@ -99,14 +99,14 @@ class Items(object):
                 #entire request failed but we get no per-item write failure messages
                 #so update all items with writeFailure manually
                 for item in chunk:
-                    item.writeFailure = {'code': writeResponse.status_code, 'message': writeResponse.text}
+                    item.writeFailure = {'key': item.get('itemKey'), 'code': writeResponse.status_code, 'message': writeResponse.text}
             else:
                 updateObjectsFromWriteResponse(chunk, writeResponse)
         return writeItems
 
     def deleteItem(self, item):
         """Permanently delete an existing item."""
-        aparams = {'target': 'item', 'itemKey': item.itemKey}
+        aparams = {'target': 'item', 'itemKey': item.get('itemKey')}
         reqUrl = self.owningLibrary.apiRequestString(aparams)
         response = self.owningLibrary_request(reqUrl, 'DELETE', None, {'If-Unmodified-Since-Version': item.get('itemVersion')})
         return response
