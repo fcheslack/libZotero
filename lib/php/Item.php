@@ -621,7 +621,7 @@ class Zotero_Item extends Zotero_Entry
             $itemTags[] = array('tag'=>$newtagname, 'type'=>$type);
         }
         else {
-            $itemTags[] = $newtagname;
+            $itemTags[] = array('tag'=>$newtagname);
         }
         $this->set('tags', $itemTags);
     }
