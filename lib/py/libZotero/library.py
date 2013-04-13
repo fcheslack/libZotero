@@ -455,7 +455,7 @@ class Library(object):
         """
         #get upload authorization
         #post file or patch
-        uaparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.itemKey}
+        uaparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.get('itemKey')}
         reqUrl = self.apiRequestString(uaparams)
         uaPostData = urllib.urlencode(fileinfo)
         uploadAuthResponse = zrequest(reqUrl, 'POST', uaPostData, {'If-None-Match': '*'})
@@ -477,7 +477,7 @@ class Library(object):
         uploadResponse = zrequest(upAuthOb['url'], 'POST', uploadBody, {'Content-Type': upAuthOb['contentType']})
         if uploadResponse.status_code != 201:
             raise zotero.ZoteroApiError("Error uploading attachment file")
-        ucparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.itemKey}
+        ucparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.get('itemKey')}
         ucReqUrl = self.apiRequestString(ucparams)
         registerUploadBody = uaPostData = urllib.urlencode({'upload': upAuthOb['uploadKey']})
         ucResponse = zrequest(ucReqUrl, 'POST', registerUploadBody, {'Content-Type': 'application/x-www-form-urlencoded',
@@ -490,7 +490,7 @@ class Library(object):
         """Upload a patch for an attached file already present on the server."""
         #get upload authorization
         #post file or patch
-        uaparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.itemKey}
+        uaparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.get('itemKey')}
         reqUrl = self.apiRequestString(uaparams)
         uaPostData = urllib.urlencode(fileinfo)
         uploadAuthResponse = zrequest(reqUrl, 'POST', uaPostData, {'If-Match': item.get('md5')})
@@ -504,7 +504,7 @@ class Library(object):
         if 'exists' in upAuthOb and upAuthOb['exists'] == 1:
             #file already exists with this hash
             return None
-        upparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.itemKey, 'upload': upAuthOb['uploadKey'], 'algorithm': algorithm}
+        upparams = {'target': 'item', 'targetModifier': 'file', 'itemKey': item.get('itemKey'), 'upload': upAuthOb['uploadKey'], 'algorithm': algorithm}
         uploadUrl = self.apiRequestString(upparams)
         logging.info(upAuthOb)
         #uploadBody = bytearray(upAuthOb['prefix'].encode())
@@ -533,7 +533,7 @@ class Library(object):
         adata.update(attachmentInfo)
         logging.info("createAttachmentItem: " + str(adata))
         templateItem = self.getTemplateItem('attachment', adata['attachmentType'])
-        templateItem.set('parentItem', parentItem.itemKey)
+        templateItem.set('parentItem', parentItem.get("itemKey"))
         templateItem.set('title', adata['filename'])
         templateItem.set('contentType', adata['contentType'])
         #create child item
