@@ -357,6 +357,12 @@ class Item(Entry):
                 val = False
             self.parentItemKey = val
             self.apiObject['parentItem'] = val
+        elif key == "dateAdded":
+            self.apiObject['dateAdded'] = val
+            self.dateAdded = val
+        elif key == "dateModified":
+            self.apiObject['dateModified'] = val
+            self.dateModified = val
 
         if key in self.apiObject:
             self.apiObject[key] = val
@@ -433,7 +439,7 @@ class Item(Entry):
         if type != None:
             itemTags.append({'tag': newtagname, 'type': type})
         else:
-            itemTags.append(newtagname)
+            itemTags.append({'tag': newtagname})
         self.set('tags', itemTags)
 
     def removeTag(self, rmtagname):
