@@ -429,6 +429,7 @@ class Zotero_Item extends Zotero_Entry
         if(property_exists($this, $key)){
             return $this->$key;
         }
+        return null;
     }
     
     public function set($key, $val){
@@ -707,5 +708,9 @@ class Zotero_Item extends Zotero_Entry
         $feed = new Zotero_Feed($response->getRawBody());
         $fetchedItems = $this->owningLibrary->items->addItemsFromFeed($feed);
         return $fetchedItems;
+    }
+    
+    public function getCSLItem(){
+        return Zotero_Cite::convertItem($this);
     }
 }

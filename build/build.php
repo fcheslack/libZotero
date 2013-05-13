@@ -13,6 +13,7 @@ $files = array(
 "Collections.php",
 "Items.php",
 "Response.php",
+"Cite.php",
 "Item.php",
 "Group.php",
 "Tag.php",
@@ -49,10 +50,12 @@ $jsfiles = array(
 'Collections.js',
 'Items.js',
 'Tags.js',
+'Groups.js',
 'Searches.js',
 'Deleted.js',
 'Collection.js',
 'Item.js',
+'ItemMaps.js',
 'Tag.js',
 'Search.js',
 'Group.js',
@@ -61,7 +64,13 @@ $jsfiles = array(
 'Url.js',
 'File.js',
 'Filestorage.js',
-'Idb.js'
+'Idb.js',
+//sets of functions with similar purposes that should probably be combined and clarified
+'CollectionFunctions.js',
+'ItemFunctions.js',
+'TagFunctions.js',
+'OfflineLibrary.js',
+'LibraryCache.js'
 );
 
 $fulljs = "";
@@ -74,8 +83,8 @@ foreach($jsfiles as $file){
 file_put_contents('../build/libZoteroSingle.js', $fulljs);
 
 copy('../build/libZoteroSingle.js', '../../zotero/git-trunk/public/static/library/libZotero/libZoteroSingle.js');
-copy('../build/libZoteroSingle.js', '../../www-library/library/libZotero/libZoteroSingle.js');
+copy('../build/libZoteroSingle.js', '../../web-library/library/libZotero/libZoteroSingle.js');
 copy('../build/libZoteroSingle.php', '../../zotero/git-trunk/library/libZotero/libZoteroSingle.php');
-copy('../build/libZoteroSingle.php', '../../www-library/library/libZotero/libZoteroSingle.php');
+copy('../build/libZoteroSingle.php', '../../web-library/library/libZotero/libZoteroSingle.php');
 
 ?>

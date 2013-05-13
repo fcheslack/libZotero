@@ -98,6 +98,14 @@ class Zotero_Lib_Utils
         return $keyPerms;
     }
     
+    public static function libraryString($type, $libraryID){
+        $lstring = '';
+        if($type == 'user') $lstring = 'u';
+        elseif($type == 'group') $lstring = 'g';
+        $lstring += $libraryID;
+        return $lstring;
+    }
+    
     public static function wrapLinks($txt, $nofollow=false){
         //extremely ugly wrapping of urls in html
         if($nofollow){
