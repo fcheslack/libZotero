@@ -49,7 +49,9 @@ d[12],6,1700485571),e=j(e,b,a,c,d[3],10,-1894986606),c=j(c,e,b,a,d[10],15,-10515
 (f.charCodeAt(b+1)<<8)+(f.charCodeAt(b+2)<<16)+(f.charCodeAt(b+3)<<24);return d}function o(f){var d=f.length,b=[1732584193,-271733879,-1732584194,271733878],a,c,e;for(a=64;a<=d;a+=64)l(b,n(f.substring(a-64,a)));f=f.substring(a-64);c=f.length;e=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];for(a=0;a<c;a+=1)e[a>>2]|=f.charCodeAt(a)<<(a%4<<3);e[a>>2]|=128<<(a%4<<3);if(55<a){l(b,e);for(a=0;16>a;a+=1)e[a]=0}e[14]=8*d;l(b,e);return b}function m(f){var d;for(d=0;d<f.length;d+=1){for(var b=f,a=d,c=f[d],e="",g=void 0,
 g=0;4>g;g+=1)e+=q[c>>8*g+4&15]+q[c>>8*g&15];b[a]=e}return f.join("")}var k=function(f,d){return f+d&4294967295},q="0,1,2,3,4,5,6,7,8,9,a,b,c,d,e,f".split(",");"5d41402abc4b2a76b9719d911017c592"!==m(o("hello"))&&(k=function(f,d){var b=(f&65535)+(d&65535);return(f>>16)+(d>>16)+(b>>16)<<16|b&65535});var p=function(){this.append=function(f){/[\u0080-\uFFFF]/.test(f)&&(f=unescape(encodeURIComponent(f)));this.appendBinary(f);return this};this.appendBinary=function(f){var d=64-this._buff.length,b=this._buff+
 f.substr(0,d),a;this._length+=f.length;if(64<=b.length){l(this._state,n(b));for(a=f.length-64;d<=a;)b=f.substr(d,64),l(this._state,n(b)),d+=64;this._buff=f.substr(d,64)}else this._buff=b;return this};this.end=function(f){var d=this._buff,b=d.length,a=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],c;for(c=0;c<b;c+=1)a[c>>2]|=d.charCodeAt(c)<<(c%4<<3);a[c>>2]|=128<<(c%4<<3);if(55<c){l(this._state,a);for(c=0;16>c;c+=1)a[c]=0}a[14]=8*this._length;l(this._state,a);f=f?this._state:m(this._state);this.reset();return f};
-this.reset=function(){this._buff="";this._length=0;this._state=[1732584193,-271733879,-1732584194,271733878];return this};this.destroy=function(){delete this._state;delete this._buff;delete this._length};this.reset()};p.hash=function(f,d){/[\u0080-\uFFFF]/.test(f)&&(f=unescape(encodeURIComponent(f)));var b=o(f);return d?b:m(b)};p.hashBinary=function(f,d){var b=o(f);return d?b:m(b)};return p}();'use strict';
+this.reset=function(){this._buff="";this._length=0;this._state=[1732584193,-271733879,-1732584194,271733878];return this};this.destroy=function(){delete this._state;delete this._buff;delete this._length};this.reset()};p.hash=function(f,d){/[\u0080-\uFFFF]/.test(f)&&(f=unescape(encodeURIComponent(f)));var b=o(f);return d?b:m(b)};p.hashBinary=function(f,d){var b=o(f);return d?b:m(b)};return p}();/*! IndexedDBShim - v0.1.2 - 2013-07-11 */
+"use strict";var idbModules={};(function(e){function t(e,t,n,o){n.target=t,"function"==typeof t[e]&&t[e].apply(t,[n]),"function"==typeof o&&o()}function n(t,n,o){var i=new DOMException.constructor(0,n);throw i.name=t,i.message=n,e.DEBUG&&(console.log(t,n,o,i),console.trace&&console.trace()),i}var o=function(){this.length=0,this._items=[],Object.defineProperty&&Object.defineProperty(this,"_items",{enumerable:!1})};if(o.prototype={contains:function(e){return-1!==this._items.indexOf(e)},item:function(e){return this._items[e]},indexOf:function(e){return this._items.indexOf(e)},push:function(e){this._items.push(e),this.length+=1;for(var t=0;this._items.length>t;t++)this[t]=this._items[t]},splice:function(){this._items.splice.apply(this._items,arguments),this.length=this._items.length;for(var e in this)e===parseInt(e,10)+""&&delete this[e];for(e=0;this._items.length>e;e++)this[e]=this._items[e]}},Object.defineProperty)for(var i in{indexOf:!1,push:!1,splice:!1})Object.defineProperty(o.prototype,i,{enumerable:!1});e.util={throwDOMException:n,callback:t,quote:function(e){return"'"+e+"'"},StringList:o}})(idbModules),function(idbModules){var Sca=function(){return{decycle:function(object,callback){function checkForCompletion(){0===queuedObjects.length&&returnCallback(derezObj)}function readBlobAsDataURL(e,t){var n=new FileReader;n.onloadend=function(e){var n=e.target.result,o="blob";updateEncodedBlob(n,t,o)},n.readAsDataURL(e)}function updateEncodedBlob(dataURL,path,blobtype){var encoded=queuedObjects.indexOf(path);path=path.replace("$","derezObj"),eval(path+'.$enc="'+dataURL+'"'),eval(path+'.$type="'+blobtype+'"'),queuedObjects.splice(encoded,1),checkForCompletion()}function derez(e,t){var n,o,i;if(!("object"!=typeof e||null===e||e instanceof Boolean||e instanceof Date||e instanceof Number||e instanceof RegExp||e instanceof Blob||e instanceof String)){for(n=0;objects.length>n;n+=1)if(objects[n]===e)return{$ref:paths[n]};if(objects.push(e),paths.push(t),"[object Array]"===Object.prototype.toString.apply(e))for(i=[],n=0;e.length>n;n+=1)i[n]=derez(e[n],t+"["+n+"]");else{i={};for(o in e)Object.prototype.hasOwnProperty.call(e,o)&&(i[o]=derez(e[o],t+"["+JSON.stringify(o)+"]"))}return i}return e instanceof Blob?(queuedObjects.push(t),readBlobAsDataURL(e,t)):e instanceof Boolean?e={$type:"bool",$enc:""+e}:e instanceof Date?e={$type:"date",$enc:e.getTime()}:e instanceof Number?e={$type:"num",$enc:""+e}:e instanceof RegExp&&(e={$type:"regex",$enc:""+e}),e}var objects=[],paths=[],queuedObjects=[],returnCallback=callback,derezObj=derez(object,"$");checkForCompletion()},retrocycle:function retrocycle($){function dataURLToBlob(e){var t,n,o,i=";base64,";if(-1===e.indexOf(i))return n=e.split(","),t=n[0].split(":")[1],o=n[1],new Blob([o],{type:t});n=e.split(i),t=n[0].split(":")[1],o=window.atob(n[1]);for(var r=o.length,a=new Uint8Array(r),s=0;r>s;++s)a[s]=o.charCodeAt(s);return new Blob([a.buffer],{type:t})}function rez(value){var i,item,name,path;if(value&&"object"==typeof value)if("[object Array]"===Object.prototype.toString.apply(value))for(i=0;value.length>i;i+=1)item=value[i],item&&"object"==typeof item&&(path=item.$ref,value[i]="string"==typeof path&&px.test(path)?eval(path):rez(item));else if(void 0!==value.$type)switch(value.$type){case"blob":case"file":value=dataURLToBlob(value.$enc);break;case"bool":value=Boolean("true"===value.$enc);break;case"date":value=new Date(value.$enc);break;case"num":value=Number(value.$enc);break;case"regex":value=eval(value.$enc)}else for(name in value)"object"==typeof value[name]&&(item=value[name],item&&(path=item.$ref,value[name]="string"==typeof path&&px.test(path)?eval(path):rez(item)));return value}var px=/^\$(?:\[(?:\d+|\"(?:[^\\\"\u0000-\u001f]|\\([\\\"\/bfnrt]|u[0-9a-zA-Z]{4}))*\")\])*$/;return rez($),$},encode:function(e,t){function n(e){t(JSON.stringify(e))}this.decycle(e,n)},decode:function(e){return this.retrocycle(JSON.parse(e))}}}();idbModules.Sca=Sca}(idbModules),function(e){var t=["","number","string","boolean","object","undefined"],n=function(){return{encode:function(e){return t.indexOf(typeof e)+"-"+JSON.stringify(e)},decode:function(e){return e===void 0?void 0:JSON.parse(e.substring(2))}}},o={number:n("number"),"boolean":n(),object:n(),string:{encode:function(e){return t.indexOf("string")+"-"+e},decode:function(e){return""+e.substring(2)}},undefined:{encode:function(){return t.indexOf("undefined")+"-undefined"},decode:function(){return void 0}}},i=function(){return{encode:function(e){return o[typeof e].encode(e)},decode:function(e){return o[t[e.substring(0,1)]].decode(e)}}}();e.Key=i}(idbModules),function(e){var t=function(e,t){return{type:e,debug:t,bubbles:!1,cancelable:!1,eventPhase:0,timeStamp:new Date}};e.Event=t}(idbModules),function(e){var t=function(){this.onsuccess=this.onerror=this.result=this.error=this.source=this.transaction=null,this.readyState="pending"},n=function(){this.onblocked=this.onupgradeneeded=null};n.prototype=t,e.IDBRequest=t,e.IDBOpenRequest=n}(idbModules),function(e,t){var n=function(e,t,n,o){this.lower=e,this.upper=t,this.lowerOpen=n,this.upperOpen=o};n.only=function(e){return new n(e,e,!0,!0)},n.lowerBound=function(e,o){return new n(e,t,o,t)},n.upperBound=function(e){return new n(t,e,t,open)},n.bound=function(e,t,o,i){return new n(e,t,o,i)},e.IDBKeyRange=n}(idbModules),function(e,t){function n(n,o,i,r,a,s){this.__range=n,this.source=this.__idbObjectStore=i,this.__req=r,this.key=t,this.direction=o,this.__keyColumnName=a,this.__valueColumnName=s,this.source.transaction.__active||e.util.throwDOMException("TransactionInactiveError - The transaction this IDBObjectStore belongs to is not active."),this.__offset=-1,this.__lastKeyContinued=t,this["continue"]()}n.prototype.__find=function(n,o,i,r){var a=this,s=["SELECT * FROM ",e.util.quote(a.__idbObjectStore.name)],u=[];s.push("WHERE ",a.__keyColumnName," NOT NULL"),a.__range&&(a.__range.lower||a.__range.upper)&&(s.push("AND"),a.__range.lower&&(s.push(a.__keyColumnName+(a.__range.lowerOpen?" >":" >= ")+" ?"),u.push(e.Key.encode(a.__range.lower))),a.__range.lower&&a.__range.upper&&s.push("AND"),a.__range.upper&&(s.push(a.__keyColumnName+(a.__range.upperOpen?" < ":" <= ")+" ?"),u.push(e.Key.encode(a.__range.upper)))),n!==t&&(a.__lastKeyContinued=n,a.__offset=0),a.__lastKeyContinued!==t&&(s.push("AND "+a.__keyColumnName+" >= ?"),u.push(e.Key.encode(a.__lastKeyContinued))),s.push("ORDER BY ",a.__keyColumnName),s.push("LIMIT 1 OFFSET "+a.__offset),e.DEBUG&&console.log(s.join(" "),u),o.executeSql(s.join(" "),u,function(n,o){if(1===o.rows.length){var r=e.Key.decode(o.rows.item(0)[a.__keyColumnName]),s="value"===a.__valueColumnName?e.Sca.decode(o.rows.item(0)[a.__valueColumnName]):e.Key.decode(o.rows.item(0)[a.__valueColumnName]);i(r,s)}else e.DEBUG&&console.log("Reached end of cursors"),i(t,t)},function(t,n){e.DEBUG&&console.log("Could not execute Cursor.continue"),r(n)})},n.prototype["continue"]=function(e){var n=this;this.__idbObjectStore.transaction.__addToTransactionQueue(function(o,i,r,a){n.__offset++,n.__find(e,o,function(e,o){n.key=e,n.value=o,r(n.key!==t?n:t,n.__req)},function(e){a(e)})})},n.prototype.advance=function(n){0>=n&&e.util.throwDOMException("Type Error - Count is invalid - 0 or negative",n);var o=this;this.__idbObjectStore.transaction.__addToTransactionQueue(function(e,i,r,a){o.__offset+=n,o.__find(t,e,function(e,n){o.key=e,o.value=n,r(o.key!==t?o:t,o.__req)},function(e){a(e)})})},n.prototype.update=function(n){var o=this,i=this.__idbObjectStore.transaction.__createRequest(function(){});return e.Sca.encode(n,function(n){this.__idbObjectStore.__pushToQueue(i,function(i,r,a,s){o.__find(t,i,function(t){var r="UPDATE "+e.util.quote(o.__idbObjectStore.name)+" SET value = ? WHERE key = ?";e.DEBUG&&console.log(r,n,t),i.executeSql(r,[e.Sca.encode(n),e.Key.encode(t)],function(e,n){1===n.rowsAffected?a(t):s("No rowns with key found"+t)},function(e,t){s(t)})},function(e){s(e)})})}),i},n.prototype["delete"]=function(){var n=this;return this.__idbObjectStore.transaction.__addToTransactionQueue(function(o,i,r,a){n.__find(t,o,function(i){var s="DELETE FROM  "+e.util.quote(n.__idbObjectStore.name)+" WHERE key = ?";e.DEBUG&&console.log(s,i),o.executeSql(s,[e.Key.encode(i)],function(e,n){1===n.rowsAffected?r(t):a("No rowns with key found"+i)},function(e,t){a(t)})},function(e){a(e)})})},e.IDBCursor=n}(idbModules),function(idbModules,undefined){function IDBIndex(e,t){this.indexName=this.name=e,this.__idbObjectStore=this.objectStore=this.source=t;var n=t.__storeProps&&t.__storeProps.indexList;n&&(n=JSON.parse(n)),this.keyPath=n&&n[e]&&n[e].keyPath||e,["multiEntry","unique"].forEach(function(t){this[t]=!!(n&&n[e]&&n[e].optionalParams&&n[e].optionalParams[t])},this)}IDBIndex.prototype.__createIndex=function(indexName,keyPath,optionalParameters){var me=this,transaction=me.__idbObjectStore.transaction;transaction.__addToTransactionQueue(function(tx,args,success,failure){me.__idbObjectStore.__getStoreProps(tx,function(){function error(){idbModules.util.throwDOMException(0,"Could not create new index",arguments)}2!==transaction.mode&&idbModules.util.throwDOMException(0,"Invalid State error, not a version transaction",me.transaction);var idxList=JSON.parse(me.__idbObjectStore.__storeProps.indexList);idxList[indexName]!==undefined&&idbModules.util.throwDOMException(0,"Index already exists on store",idxList);var columnName=indexName;idxList[indexName]={columnName:columnName,keyPath:keyPath,optionalParams:optionalParameters},me.__idbObjectStore.__storeProps.indexList=JSON.stringify(idxList);var sql=["ALTER TABLE",idbModules.util.quote(me.__idbObjectStore.name),"ADD",columnName,"BLOB"].join(" ");idbModules.DEBUG&&console.log(sql),tx.executeSql(sql,[],function(tx,data){tx.executeSql("SELECT * FROM "+idbModules.util.quote(me.__idbObjectStore.name),[],function(tx,data){(function initIndexForRow(i){if(data.rows.length>i)try{var value=idbModules.Sca.decode(data.rows.item(i).value),indexKey=eval("value['"+keyPath+"']");tx.executeSql("UPDATE "+idbModules.util.quote(me.__idbObjectStore.name)+" set "+columnName+" = ? where key = ?",[idbModules.Key.encode(indexKey),data.rows.item(i).key],function(){initIndexForRow(i+1)},error)}catch(e){initIndexForRow(i+1)}else idbModules.DEBUG&&console.log("Updating the indexes in table",me.__idbObjectStore.__storeProps),tx.executeSql("UPDATE __sys__ set indexList = ? where name = ?",[me.__idbObjectStore.__storeProps.indexList,me.__idbObjectStore.name],function(){me.__idbObjectStore.__setReadyState("createIndex",!0),success(me)},error)})(0)},error)},error)},"createObjectStore")})},IDBIndex.prototype.openCursor=function(e,t){var n=new idbModules.IDBRequest;return new idbModules.IDBCursor(e,t,this.source,n,this.indexName,"value"),n},IDBIndex.prototype.openKeyCursor=function(e,t){var n=new idbModules.IDBRequest;return new idbModules.IDBCursor(e,t,this.source,n,this.indexName,"key"),n},IDBIndex.prototype.__fetchIndexData=function(e,t){var n=this;return n.__idbObjectStore.transaction.__addToTransactionQueue(function(o,i,r,a){var s=["SELECT * FROM ",idbModules.util.quote(n.__idbObjectStore.name)," WHERE",n.indexName,"NOT NULL"],u=[];e!==undefined&&(s.push("AND",n.indexName," = ?"),u.push(idbModules.Key.encode(e))),idbModules.DEBUG&&console.log("Trying to fetch data for Index",s.join(" "),u),o.executeSql(s.join(" "),u,function(e,n){var o;o="count"==typeof t?n.rows.length:0===n.rows.length?undefined:"key"===t?idbModules.Key.decode(n.rows.item(0).key):idbModules.Sca.decode(n.rows.item(0).value),r(o)},a)})},IDBIndex.prototype.get=function(e){return this.__fetchIndexData(e,"value")},IDBIndex.prototype.getKey=function(e){return this.__fetchIndexData(e,"key")},IDBIndex.prototype.count=function(e){return this.__fetchIndexData(e,"count")},idbModules.IDBIndex=IDBIndex}(idbModules),function(idbModules){var IDBObjectStore=function(e,t,n){this.name=e,this.transaction=t,this.__ready={},this.__setReadyState("createObjectStore",n===void 0?!0:n),this.indexNames=new idbModules.util.StringList};IDBObjectStore.prototype.__setReadyState=function(e,t){this.__ready[e]=t},IDBObjectStore.prototype.__waitForReady=function(e,t){var n=!0;if(t!==void 0)n=this.__ready[t]===void 0?!0:this.__ready[t];else for(var o in this.__ready)this.__ready[o]||(n=!1);if(n)e();else{idbModules.DEBUG&&console.log("Waiting for to be ready",t);var i=this;window.setTimeout(function(){i.__waitForReady(e,t)},100)}},IDBObjectStore.prototype.__getStoreProps=function(e,t,n){var o=this;this.__waitForReady(function(){o.__storeProps?(idbModules.DEBUG&&console.log("Store properties - cached",o.__storeProps),t(o.__storeProps)):e.executeSql("SELECT * FROM __sys__ where name = ?",[o.name],function(e,n){1!==n.rows.length?t():(o.__storeProps={name:n.rows.item(0).name,indexList:n.rows.item(0).indexList,autoInc:n.rows.item(0).autoInc,keyPath:n.rows.item(0).keyPath},idbModules.DEBUG&&console.log("Store properties",o.__storeProps),t(o.__storeProps))},function(){t()})},n)},IDBObjectStore.prototype.__deriveKey=function(tx,value,key,callback){function getNextAutoIncKey(){tx.executeSql("SELECT * FROM sqlite_sequence where name like ?",[me.name],function(e,t){1!==t.rows.length?callback(0):callback(t.rows.item(0).seq)},function(e,t){idbModules.util.throwDOMException(0,"Data Error - Could not get the auto increment value for key",t)})}var me=this;me.__getStoreProps(tx,function(props){if(props||idbModules.util.throwDOMException(0,"Data Error - Could not locate defination for this table",props),props.keyPath)if(key!==void 0&&idbModules.util.throwDOMException(0,"Data Error - The object store uses in-line keys and the key parameter was provided",props),value)try{var primaryKey=eval("value['"+props.keyPath+"']");primaryKey?callback(primaryKey):"true"===props.autoInc?getNextAutoIncKey():idbModules.util.throwDOMException(0,"Data Error - Could not eval key from keyPath")}catch(e){idbModules.util.throwDOMException(0,"Data Error - Could not eval key from keyPath",e)}else idbModules.util.throwDOMException(0,"Data Error - KeyPath was specified, but value was not");else key!==void 0?callback(key):"false"===props.autoInc?idbModules.util.throwDOMException(0,"Data Error - The object store uses out-of-line keys and has no key generator and the key parameter was not provided. ",props):getNextAutoIncKey()})},IDBObjectStore.prototype.__insertData=function(tx,value,primaryKey,success,error){var paramMap={};primaryKey!==void 0&&(paramMap.key=idbModules.Key.encode(primaryKey));var indexes=JSON.parse(this.__storeProps.indexList);for(var key in indexes)try{paramMap[indexes[key].columnName]=idbModules.Key.encode(eval("value['"+indexes[key].keyPath+"']"))}catch(e){error(e)}var sqlStart=["INSERT INTO ",idbModules.util.quote(this.name),"("],sqlEnd=[" VALUES ("],sqlValues=[];for(key in paramMap)sqlStart.push(key+","),sqlEnd.push("?,"),sqlValues.push(paramMap[key]);sqlStart.push("value )"),sqlEnd.push("?)"),sqlValues.push(value);var sql=sqlStart.join(" ")+sqlEnd.join(" ");idbModules.DEBUG&&console.log("SQL for adding",sql,sqlValues),tx.executeSql(sql,sqlValues,function(){success(primaryKey)},function(e,t){error(t)})},IDBObjectStore.prototype.add=function(e,t){var n=this,o=n.transaction.__createRequest(function(){});return idbModules.Sca.encode(e,function(i){n.transaction.__pushToQueue(o,function(o,r,a,s){n.__deriveKey(o,e,t,function(e){n.__insertData(o,i,e,a,s)})})}),o},IDBObjectStore.prototype.put=function(e,t){var n=this,o=n.transaction.__createRequest(function(){});return idbModules.Sca.encode(e,function(i){n.transaction.__pushToQueue(o,function(o,r,a,s){n.__deriveKey(o,e,t,function(e){var t="DELETE FROM "+idbModules.util.quote(n.name)+" where key = ?";o.executeSql(t,[idbModules.Key.encode(e)],function(t,o){idbModules.DEBUG&&console.log("Did the row with the",e,"exist? ",o.rowsAffected),n.__insertData(t,i,e,a,s)},function(e,t){s(t)})})})}),o},IDBObjectStore.prototype.get=function(e){var t=this;return t.transaction.__addToTransactionQueue(function(n,o,i,r){t.__waitForReady(function(){var o=idbModules.Key.encode(e);idbModules.DEBUG&&console.log("Fetching",t.name,o),n.executeSql("SELECT * FROM "+idbModules.util.quote(t.name)+" where key = ?",[o],function(e,t){idbModules.DEBUG&&console.log("Fetched data",t);try{if(0===t.rows.length)return i();i(idbModules.Sca.decode(t.rows.item(0).value))}catch(n){idbModules.DEBUG&&console.log(n),i(void 0)}},function(e,t){r(t)})})})},IDBObjectStore.prototype["delete"]=function(e){var t=this;return t.transaction.__addToTransactionQueue(function(n,o,i,r){t.__waitForReady(function(){var o=idbModules.Key.encode(e);idbModules.DEBUG&&console.log("Fetching",t.name,o),n.executeSql("DELETE FROM "+idbModules.util.quote(t.name)+" where key = ?",[o],function(e,t){idbModules.DEBUG&&console.log("Deleted from database",t.rowsAffected),i()},function(e,t){r(t)})})})},IDBObjectStore.prototype.clear=function(){var e=this;return e.transaction.__addToTransactionQueue(function(t,n,o,i){e.__waitForReady(function(){t.executeSql("DELETE FROM "+idbModules.util.quote(e.name),[],function(e,t){idbModules.DEBUG&&console.log("Cleared all records from database",t.rowsAffected),o()},function(e,t){i(t)})})})},IDBObjectStore.prototype.count=function(e){var t=this;return t.transaction.__addToTransactionQueue(function(n,o,i,r){t.__waitForReady(function(){var o="SELECT * FROM "+idbModules.util.quote(t.name)+(e!==void 0?" WHERE key = ?":""),a=[];e!==void 0&&a.push(idbModules.Key.encode(e)),n.executeSql(o,a,function(e,t){i(t.rows.length)},function(e,t){r(t)})})})},IDBObjectStore.prototype.openCursor=function(e,t){var n=new idbModules.IDBRequest;return new idbModules.IDBCursor(e,t,this,n,"key","value"),n},IDBObjectStore.prototype.index=function(e){var t=new idbModules.IDBIndex(e,this);return t},IDBObjectStore.prototype.createIndex=function(e,t,n){var o=this;n=n||{},o.__setReadyState("createIndex",!1);var i=new idbModules.IDBIndex(e,o);return o.__waitForReady(function(){i.__createIndex(e,t,n)},"createObjectStore"),o.indexNames.push(e),i},IDBObjectStore.prototype.deleteIndex=function(e){var t=new idbModules.IDBIndex(e,this,!1);return t.__deleteIndex(e),t},idbModules.IDBObjectStore=IDBObjectStore}(idbModules),function(e){var t=0,n=1,o=2,i=function(o,i,r){if("number"==typeof i)this.mode=i,2!==i&&e.DEBUG&&console.log("Mode should be a string, but was specified as ",i);else if("string"==typeof i)switch(i){case"readwrite":this.mode=n;break;case"readonly":this.mode=t;break;default:this.mode=t}this.storeNames="string"==typeof o?[o]:o;for(var a=0;this.storeNames.length>a;a++)r.objectStoreNames.contains(this.storeNames[a])||e.util.throwDOMException(0,"The operation failed because the requested database object could not be found. For example, an object store did not exist but was being opened.",this.storeNames[a]);this.__active=!0,this.__running=!1,this.__requests=[],this.__aborted=!1,this.db=r,this.error=null,this.onabort=this.onerror=this.oncomplete=null};i.prototype.__executeRequests=function(){if(this.__running&&this.mode!==o)return e.DEBUG&&console.log("Looks like the request set is already running",this.mode),void 0;this.__running=!0;var t=this;window.setTimeout(function(){2===t.mode||t.__active||e.util.throwDOMException(0,"A request was placed against a transaction which is currently not active, or which is finished",t.__active),t.db.__db.transaction(function(n){function o(t,n){n&&(a.req=n),a.req.readyState="done",a.req.result=t,delete a.req.error;var o=e.Event("success");e.util.callback("onsuccess",a.req,o),s++,r()}function i(){a.req.readyState="done",a.req.error="DOMError";var t=e.Event("error",arguments);e.util.callback("onerror",a.req,t),s++,r()}function r(){return s>=t.__requests.length?(t.__active=!1,t.__requests=[],void 0):(a=t.__requests[s],a.op(n,a.args,o,i),void 0)}t.__tx=n;var a=null,s=0;try{r()}catch(u){e.DEBUG&&console.log("An exception occured in transaction",arguments),"function"==typeof t.onerror&&t.onerror()}},function(){e.DEBUG&&console.log("An error in transaction",arguments),"function"==typeof t.onerror&&t.onerror()},function(){e.DEBUG&&console.log("Transaction completed",arguments),"function"==typeof t.oncomplete&&t.oncomplete()})},1)},i.prototype.__addToTransactionQueue=function(t,n){this.__active||this.mode===o||e.util.throwDOMException(0,"A request was placed against a transaction which is currently not active, or which is finished.",this.__mode);var i=this.__createRequest();return this.__pushToQueue(i,t,n),i},i.prototype.__createRequest=function(){var t=new e.IDBRequest;return t.source=this.db,t},i.prototype.__pushToQueue=function(e,t,n){this.__requests.push({op:t,args:n,req:e}),this.__executeRequests()},i.prototype.objectStore=function(t){return new e.IDBObjectStore(t,this)},i.prototype.abort=function(){!this.__active&&e.util.throwDOMException(0,"A request was placed against a transaction which is currently not active, or which is finished",this.__active)},i.prototype.READ_ONLY=0,i.prototype.READ_WRITE=1,i.prototype.VERSION_CHANGE=2,e.IDBTransaction=i}(idbModules),function(e){var t=function(t,n,o,i){this.__db=t,this.version=o,this.__storeProperties=i,this.objectStoreNames=new e.util.StringList;for(var r=0;i.rows.length>r;r++)this.objectStoreNames.push(i.rows.item(r).name);this.name=n,this.onabort=this.onerror=this.onversionchange=null};t.prototype.createObjectStore=function(t,n){var o=this;n=n||{},n.keyPath=n.keyPath||null;var i=new e.IDBObjectStore(t,o.__versionTransaction,!1),r=o.__versionTransaction;return r.__addToTransactionQueue(function(r,a,s){function u(){e.util.throwDOMException(0,"Could not create new object store",arguments)}o.__versionTransaction||e.util.throwDOMException(0,"Invalid State error",o.transaction);var c=["CREATE TABLE",e.util.quote(t),"(key BLOB",n.autoIncrement?", inc INTEGER PRIMARY KEY AUTOINCREMENT":"PRIMARY KEY",", value BLOB)"].join(" ");e.DEBUG&&console.log(c),r.executeSql(c,[],function(e){e.executeSql("INSERT INTO __sys__ VALUES (?,?,?,?)",[t,n.keyPath,n.autoIncrement?!0:!1,"{}"],function(){i.__setReadyState("createObjectStore",!0),s(i)},u)},u)}),o.objectStoreNames.push(t),i},t.prototype.deleteObjectStore=function(t){var n=function(){e.util.throwDOMException(0,"Could not delete ObjectStore",arguments)},o=this;!o.objectStoreNames.contains(t)&&n("Object Store does not exist"),o.objectStoreNames.splice(o.objectStoreNames.indexOf(t),1);var i=o.__versionTransaction;i.__addToTransactionQueue(function(){o.__versionTransaction||e.util.throwDOMException(0,"Invalid State error",o.transaction),o.__db.transaction(function(o){o.executeSql("SELECT * FROM __sys__ where name = ?",[t],function(o,i){i.rows.length>0&&o.executeSql("DROP TABLE "+e.util.quote(t),[],function(){o.executeSql("DELETE FROM __sys__ WHERE name = ?",[t],function(){},n)},n)})})})},t.prototype.close=function(){},t.prototype.transaction=function(t,n){var o=new e.IDBTransaction(t,n||1,this);return o},e.IDBDatabase=t}(idbModules),function(e){var t=4194304;if(window.openDatabase){var n=window.openDatabase("__sysdb__",1,"System Database",t);n.transaction(function(t){t.executeSql("SELECT * FROM dbVersions",[],function(){},function(){n.transaction(function(t){t.executeSql("CREATE TABLE IF NOT EXISTS dbVersions (name VARCHAR(255), version INT);",[],function(){},function(){e.util.throwDOMException("Could not create table __sysdb__ to save DB versions")})})})},function(){e.DEBUG&&console.log("Error in sysdb transaction - when selecting from dbVersions",arguments)});var o={open:function(o,i){function r(){if(!u){var t=e.Event("error",arguments);s.readyState="done",s.error="DOMError",e.util.callback("onerror",s,t),u=!0}}function a(a){var u=window.openDatabase(o,1,o,t);s.readyState="done",i===void 0&&(i=a||1),(0>=i||a>i)&&e.util.throwDOMException(0,"An attempt was made to open a database using a lower version than the existing version.",i),u.transaction(function(t){t.executeSql("CREATE TABLE IF NOT EXISTS __sys__ (name VARCHAR(255), keyPath VARCHAR(255), autoInc BOOLEAN, indexList BLOB)",[],function(){t.executeSql("SELECT * FROM __sys__",[],function(t,c){var d=e.Event("success");s.source=s.result=new e.IDBDatabase(u,o,i,c),i>a?n.transaction(function(t){t.executeSql("UPDATE dbVersions set version = ? where name = ?",[i,o],function(){var t=e.Event("upgradeneeded");t.oldVersion=a,t.newVersion=i,s.transaction=s.result.__versionTransaction=new e.IDBTransaction([],2,s.source),e.util.callback("onupgradeneeded",s,t,function(){var t=e.Event("success");e.util.callback("onsuccess",s,t)})},r)},r):e.util.callback("onsuccess",s,d)},r)},r)},r)}var s=new e.IDBOpenRequest,u=!1;return n.transaction(function(e){e.executeSql("SELECT * FROM dbVersions where name = ?",[o],function(e,t){0===t.rows.length?e.executeSql("INSERT INTO dbVersions VALUES (?,?)",[o,i||1],function(){a(0)},r):a(t.rows.item(0).version)},r)},r),s},deleteDatabase:function(o){function i(t){if(!s){a.readyState="done",a.error="DOMError";var n=e.Event("error");n.message=t,n.debug=arguments,e.util.callback("onerror",a,n),s=!0}}function r(){n.transaction(function(t){t.executeSql("DELETE FROM dbVersions where name = ? ",[o],function(){a.result=void 0;var t=e.Event("success");t.newVersion=null,t.oldVersion=u,e.util.callback("onsuccess",a,t)},i)},i)}var a=new e.IDBOpenRequest,s=!1,u=null;return n.transaction(function(n){n.executeSql("SELECT * FROM dbVersions where name = ?",[o],function(n,s){if(0===s.rows.length){a.result=void 0;var c=e.Event("success");return c.newVersion=null,c.oldVersion=u,e.util.callback("onsuccess",a,c),void 0}u=s.rows.item(0).version;var d=window.openDatabase(o,1,o,t);d.transaction(function(t){t.executeSql("SELECT * FROM __sys__",[],function(t,n){var o=n.rows;(function a(n){n>=o.length?t.executeSql("DROP TABLE __sys__",[],function(){r()},i):t.executeSql("DROP TABLE "+e.util.quote(o.item(n).name),[],function(){a(n+1)},function(){a(n+1)})})(0)},function(){r()})},i)})},i),a},cmp:function(t,n){return e.Key.encode(t)>e.Key.encode(n)?1:t===n?0:-1}};e.shimIndexedDB=o}}(idbModules),function(e,t){e.openDatabase!==void 0&&(e.shimIndexedDB=t.shimIndexedDB,e.shimIndexedDB&&(e.shimIndexedDB.__useShim=function(){e.indexedDB=t.shimIndexedDB,e.IDBDatabase=t.IDBDatabase,e.IDBTransaction=t.IDBTransaction,e.IDBCursor=t.IDBCursor,e.IDBKeyRange=t.IDBKeyRange},e.shimIndexedDB.__debug=function(e){t.DEBUG=e})),e.indexedDB=e.indexedDB||e.webkitIndexedDB||e.mozIndexedDB||e.oIndexedDB||e.msIndexedDB,e.indexedDB===void 0&&e.openDatabase!==void 0?e.shimIndexedDB.__useShim():(e.IDBDatabase=e.IDBDatabase||e.webkitIDBDatabase,e.IDBTransaction=e.IDBTransaction||e.webkitIDBTransaction,e.IDBCursor=e.IDBCursor||e.webkitIDBCursor,e.IDBKeyRange=e.IDBKeyRange||e.webkitIDBKeyRange,e.IDBTransaction||(e.IDBTransaction={}),e.IDBTransaction.READ_ONLY=e.IDBTransaction.READ_ONLY||"readonly",e.IDBTransaction.READ_WRITE=e.IDBTransaction.READ_WRITE||"readwrite")}(window,idbModules);
+//@ sourceMappingURL=http://nparashuram.com/IndexedDBShim/dist/IndexedDBShim.min.map'use strict';
 var J = jQuery.noConflict();
 
 var Zotero = {
@@ -368,42 +370,6 @@ Zotero.Cache.prototype.clear = function(){
     }
 };
 
-Zotero.PrefManager = function(store){
-    this.store = store;
-};
-
-Zotero.PrefManager.prototype.setPref = function(key, val){
-    var prefs = this.store["userpreferences"];
-    if(typeof prefs === "undefined"){
-        prefs = {};
-    }
-    prefs[key] = val;
-    this.store["userpreferences"] = prefs;
-};
-
-Zotero.PrefManager.prototype.setPrefs = function(prefs){
-    if(typeof(prefs) != "object") {
-        throw "Preferences must be an object";
-    }
-    this.store["userpreferences"] = prefs;
-};
-
-Zotero.PrefManager.prototype.getPrefs = function(){
-    var prefs = this.store["userpreferences"];
-    if(typeof prefs === "undefined") {
-        return {};
-    }
-    return prefs;
-};
-
-Zotero.PrefManager.prototype.getPref = function(key){
-    var prefs = this.store["userpreferences"];
-    if(typeof prefs === "undefined"){
-        return null;
-    }
-    return prefs["key"];
-};
-
 //make a request to the Zotero api and get back a deferred
 Zotero.apiRequest = function(url, method, body, headers){
     Z.debug("Zotero.apiRequest ==== " + url, 4);
@@ -435,7 +401,7 @@ Zotero.error = function(e){
     Z.debug("====================Zotero Error", 1);
     Z.debug(e, 1);
 };
-
+/*
 Zotero.saveLibrary = function(library){
     var dump = {};
     dump.libraryType = library.libraryType;
@@ -467,7 +433,7 @@ Zotero.loadLibrary = function(params){
     
     return library;
 };
-
+*/
 Zotero.ajaxRequest = function(url, type, options){
     Z.debug("Zotero.ajaxRequest ==== " + url, 2);
     var defaultOptions = {
@@ -600,6 +566,9 @@ Zotero.ajax.apiRequestUrl = function(params){
             break;
         case 'userGroups':
             url = base + '/users/' + params.libraryID + '/groups';
+            break;
+        case 'settings':
+            url += '/settings/' + (params.settingsKey || '');
             break;
         default:
             return false;
@@ -855,17 +824,55 @@ Zotero.Library = function(type, libraryID, libraryUrlIdentifier, apiKey){
     library.libraryString = Zotero.utils.libraryString(library.libraryType, library.libraryID);
     library.libraryUrlIdentifier = libraryUrlIdentifier;
     
+    //initialize preferences object
+    library.preferences = new Zotero.Preferences(Zotero.store, library.libraryString);
+    
     //object to hold user aliases for displaying real names
     library.usernames = {};
     
+    //initialize indexedDB if we're supposed to use it
+    if(Zotero.config.useIndexedDB === true){
+        var idbLibrary = new Zotero.Idb.Library(library.libraryString);
+        idbLibrary.owningLibrary = this;
+        library.idbLibrary = idbLibrary;
+        var idbInitD = idbLibrary.init();
+        idbInitD.done(J.proxy(function(){
+            if(Zotero.config.preloadCachedLibrary === true){
+                var cacheLoadD = library.loadIndexedDBCache();
+                cacheLoadD.done(J.proxy(function(){
+                    //TODO: any stuff that needs to execute only after cache is loaded
+                    //possibly fire new events to cause display to refresh after load
+                    Z.debug("Library.items.itemsVersion: " + library.items.itemsVersion, 3);
+                    Z.debug("Library.collections.collectionsVersion: " + library.collections.collectionsVersion, 3);
+                    Z.debug("Library.tags.tagsVersion: " + library.tags.tagsVersion, 3);
+
+                    Z.debug("Triggering cachedDataLoaded");
+                    Zotero.ui.eventful.trigger('cachedDataLoaded');
+                    Zotero.prefs.log_level = 3;
+                }, this));
+            }
+            else {
+                //trigger cachedDataLoaded since we are done with that step
+                Zotero.ui.eventful.trigger('cachedDataLoaded');
+            }
+        }, this));
+    }
+    
     if(Zotero.config.preloadCachedLibrary === true){
         Zotero.prefs.log_level = 5;
-        library.loadCachedItems();
-        library.loadCachedCollections();
-        library.loadCachedTags();
-        Z.debug("Library.items.itemsVersion: " + library.items.itemsVersion, 3);
-        Z.debug("Library.collections.collectionsVersion: " + library.collections.collectionsVersion, 3);
-        Z.debug("Library.tags.tagsVersion: " + library.tags.tagsVersion, 3);
+        if(Zotero.config.useIndexedDB === true){
+            //noop
+        }
+        else {
+            /*
+            library.loadCachedItems();
+            library.loadCachedCollections();
+            library.loadCachedTags();
+            Z.debug("Library.items.itemsVersion: " + library.items.itemsVersion, 3);
+            Z.debug("Library.collections.collectionsVersion: " + library.collections.collectionsVersion, 3);
+            Z.debug("Library.tags.tagsVersion: " + library.tags.tagsVersion, 3);
+            */
+        }
         Zotero.prefs.log_level = 3;
     }
     
@@ -1056,22 +1063,27 @@ Zotero.Library.prototype.loadUpdatedItems = function(){
             Z.debug(displayParams);
             library.buildItemDisplayView(displayParams);
             //save updated items to the cache
-            library.saveCachedItems();
+            //library.saveCachedItems();
+            //save updated items to IDB
+            if(Zotero.config.useIndexedDB){
+                var saveItemsD = library.idbLibrary.updateItems();
+            }
+            
             d.resolve();
         }, this ) );
     }, this ) );
 };
 
 Zotero.Library.prototype.loadUpdatedCollections = function(){
-    Z.debug("Zotero.Library.loadUpdatedCollections", 3);
+    Z.debug("Zotero.Library.loadUpdatedCollections", 1);
     var library = this;
     var d = new J.Deferred();
     //we need modified collectionKeys regardless, so load them
     var collectionVersionsDeferred = library.updatedVersions("collections", library.collections.collectionsVersion);
     collectionVersionsDeferred.done(J.proxy(function(data, textStatus, keysjqxhr){
-        Z.debug("collectionVersionsDeferred finished", 3);
+        Z.debug("collectionVersionsDeferred finished", 1);
         var updatedVersion = keysjqxhr.getResponseHeader("Last-Modified-Version");
-        Z.debug("2 Collections Last-Modified-Version: " + updatedVersion, 3);
+        Z.debug("2 Collections Last-Modified-Version: " + updatedVersion, 1);
         Zotero.utils.updateSyncState(library.collections.syncState, updatedVersion);
         
         var collectionVersions = data;
@@ -1081,6 +1093,7 @@ Zotero.Library.prototype.loadUpdatedCollections = function(){
             collectionKeys.push(key);
         });
         if(collectionKeys.length === 0){
+            Z.debug("No collectionKeys need updating. resolving");
             d.resolve();
         }
         else {
@@ -1091,34 +1104,51 @@ Zotero.Library.prototype.loadUpdatedCollections = function(){
                 
                 var displayParams = Zotero.nav.getUrlVars();
                 //save updated collections to cache
-                Z.debug("loadUpdatedCollections complete - saving collections to cache before resolving", 3);
-                Z.debug("collectionsVersion: " + library.collections.collectionsVersion, 3);
-                library.saveCachedCollections();
+                Z.debug("loadUpdatedCollections complete - saving collections to cache before resolving", 1);
+                Z.debug("collectionsVersion: " + library.collections.collectionsVersion, 1);
+                //library.saveCachedCollections();
+                //save updated collections to IDB
+                if(Zotero.config.useIndexedDB){
+                    var saveCollectionsD = library.idbLibrary.updateCollections();
+                }
                 //TODO: Display collections from here?
                 d.resolve();
             }, this ) );
         }
     }, this ) );
     
+    collectionVersionsDeferred.fail(J.proxy(function(){
+        Z.debug("collectionVersions failed. rejecting deferred.", 1);
+        d.reject();
+    }, this) );
+    
     return d;
 };
 
 Zotero.Library.prototype.loadUpdatedTags = function(){
-    Z.debug("Zotero.Library.loadUpdatedTags", 3);
+    Z.debug("Zotero.Library.loadUpdatedTags", 1);
     var library = this;
     Z.debug("tagsVersion: " + library.tags.tagsVersion, 3);
     loadAllTagsJqxhr = library.loadAllTags({newer:library.tags.tagsVersion}, false);
     
     var callback = J.proxy(function(){
-        if(library.deleted.deletedData.tags.length > 0 ){
+        if(library.deleted.deletedData.tags && library.deleted.deletedData.tags.length > 0 ){
             library.tags.removeTags(library.deleted.deletedData.tags);
         }
+        
+        //library.saveCachedTags();
+        //save updated collections to IDB
+        if(Zotero.config.useIndexedDB){
+            Z.debug("saving updated tags to IDB");
+            var saveTagsD = library.idbLibrary.updateTags();
+        }
+        
     }, this);
     
     var deletedJqxhr = library.getDeleted(library.libraryVersion);
-    deletedJqxhr.done(callback);
+    //deletedJqxhr.done(callback);
     
-    return J.when(loadAllTagsJqxhr, deletedJqxhr);
+    return J.when(loadAllTagsJqxhr, deletedJqxhr).then(callback);
 };
 
 Zotero.Library.prototype.getDeleted = function(version) {
@@ -1208,7 +1238,7 @@ Zotero.Library.prototype.loadFullBib = function(itemKeys, style){
 
 //load bib for a single item from the API
 Zotero.Library.prototype.loadItemBib = function(itemKey, style) {
-    Z.debug("Zotero.Library.loadItem", 3);
+    Z.debug("Zotero.Library.loadItemBib", 3);
     var library = this;
     var deferred = new J.Deferred();
     var urlconfig = {'target':'item', 'libraryType':library.libraryType, 'libraryID':library.libraryID, 'itemKey':itemKey, 'content':'bib'};
@@ -1236,6 +1266,42 @@ Zotero.Library.prototype.loadItemBib = function(itemKey, style) {
     
     deferred.done(function(item){
         J.publish('loadItemBibDone', [item]);
+    });
+    
+    return deferred;
+};
+
+//load library settings from Zotero API and return a deferred that gets resolved with
+//the Zotero.Preferences object for this library
+Zotero.Library.prototype.loadSettings = function() {
+    Z.debug("Zotero.Library.loadSettings", 3);
+    var library = this;
+    var deferred = new J.Deferred();
+    var urlconfig = {'target':'settings', 'libraryType':library.libraryType, 'libraryID':library.libraryID};
+    var requestUrl = Zotero.ajax.apiRequestString(urlconfig);
+    
+    var callback = J.proxy(function(data, textStatus, XMLHttpRequest){
+        var resultObject;
+        if(typeof data == 'string'){
+            resultObject = JSON.parse(data);
+        }
+        eles {
+            resultObject = data;
+        }
+        
+        library.preferences.setPrefs(resultObject);
+        deferred.resolve(library.preferences);
+    }, this);
+    
+    var jqxhr = library.ajaxRequest(requestUrl);
+    
+    jqxhr.done(callback);
+    jqxhr.fail(function(){deferred.reject.apply(null, arguments);}).fail(Zotero.error);
+    
+    Zotero.ajax.activeRequests.push(jqxhr);
+    
+    deferred.done(function(item){
+        Zotero.ui.eventful.trigger('settingsLoaded');
     });
     
     return deferred;
@@ -1307,7 +1373,7 @@ Zotero.Library.prototype.pullUpdated = function(){
         var updatedCollectionsD = library.loadCollectionsFromKeysParallel(collectionKeys);
     }, this) );
     
-    //pull all the collections we need to update
+    //pull all the items we need to update
     updatedItemVersionsD.done(J.proxy(function(data, textStatus, XMLHttpRequest){
         var itemVersions;
         if(typeof data == "string"){
@@ -1360,7 +1426,7 @@ Zotero.Library.prototype.loadItemsFromKeysParallel = function(keys){
 
 //keys is an array of collectionKeys from this library that we need to download
 Zotero.Library.prototype.loadCollectionsFromKeysParallel = function(keys){
-    Zotero.debug("Zotero.Library.loadCollectionsFromKeysParallel", 3);
+    Zotero.debug("Zotero.Library.loadCollectionsFromKeysParallel", 1);
     var library = this;
     var d = library.loadFromKeysParallel(keys, "collections");
     return d;
@@ -1375,7 +1441,7 @@ Zotero.Library.prototype.loadSeachesFromKeysParallel = function(keys){
 };
 
 Zotero.Library.prototype.loadFromKeysParallel = function(keys, objectType){
-    Zotero.debug("Zotero.Library.loadFromKeysParallel", 3);
+    Zotero.debug("Zotero.Library.loadFromKeysParallel", 1);
     if(!objectType) objectType = 'items';
     var library = this;
     var keyslices = [];
@@ -1402,8 +1468,8 @@ Zotero.Library.prototype.loadFromKeysParallel = function(keys, objectType){
         xhrs.push(xhr );
     });
     
-    J.when(xhrs).then(J.proxy(function(){
-        Z.debug("All parallel requests returned - resolving deferred", 3);
+    J.when.apply(this, xhrs).then(J.proxy(function(){
+        Z.debug("All parallel requests returned - resolving deferred", 1);
         deferred.resolve(true);
     }, this) );
     
@@ -1533,8 +1599,8 @@ Zotero.Library.prototype.buildItemDisplayView = function(params){
     }
     //
     //publish event signalling we're done
-    Z.debug("publishing displayedItemsUpdated");
-    J.publish("displayedItemsUpdated");
+    Z.debug("triggering publishing displayedItemsUpdated", 3);
+    Zotero.trigger("displayedItemsUpdated", library);
 };
 
 
@@ -1666,14 +1732,15 @@ Zotero.Collections.prototype.loadDump = function(dump){
     
     for (var i = 0; i < dump.collectionsArray.length; i++) {
         var collection = new Zotero.Collection();
+        //Z.debug("loading collection dump: " + dump.collectionsArray[i].title + " " + dump.collectionsArray[i].collectionKey);
         collection.loadDump(dump.collectionsArray[i]);
-        this.addCollection(collection);
+        collections.addCollection(collection);
     }
     
     //populate the secondary data structures
-    this.collectionsArray.sort(this.sortByTitleCompare);
+    collections.collectionsArray.sort(collections.sortByTitleCompare);
     //Nest collections as entries of parent collections
-    J.each(this.collectionsArray, function(index, obj) {
+    J.each(collections.collectionsArray, function(index, obj) {
         if(obj.instance === "Zotero.Collection"){
             if(obj.nestCollection(collections.collectionObjects)){
                 Z.debug(obj.collectionKey + ":" + obj.title + " nested in parent.", 4);
@@ -1710,10 +1777,10 @@ Zotero.Collections.prototype.addCollectionsFromFeed = function(feed){
 };
 
 Zotero.Collections.prototype.sortByTitleCompare = function(a, b){
-    if(a.title.toLowerCase() == b.title.toLowerCase()){
+    if(a.get('title').toLowerCase() == b.get('title').toLowerCase()){
         return 0;
     }
-    if(a.title.toLowerCase() < b.title.toLowerCase()){
+    if(a.get('title').toLowerCase() < b.get('title').toLowerCase()){
         return -1;
     }
     return 1;
@@ -2405,64 +2472,51 @@ Zotero.Collection.prototype.updateCollectionKey = function(collectionKey){
 
 Zotero.Collection.prototype.dump = function(){
     Zotero.debug("Zotero.Collection.dump", 4);
-    var dump = this.dumpEntry();
-    var dataProperties = [
-        'collectionVersion',
-        'collectionKey',
-        'synced',
+    var collection = this;
+    var dump = collection.dumpEntry();
+    var dumpProperties = [
+        'apiObj',
         'pristine',
+        'collectionKey',
+        'collectionVersion',
+        'synced',
         'numItems',
         'numCollections',
-        'name',
-        'parentCollection',
-        'relations',
         'topLevel',
         'websiteCollectionLink',
         'hasChildren',
-        'itemKeys'
+        'itemKeys',
     ];
-    for (var i = 0; i < dataProperties.length; i++) {
-        dump[dataProperties[i]] = this[dataProperties[i]];
+
+    for (var i = 0; i < dumpProperties.length; i++) {
+        dump[dumpProperties[i]] = collection[dumpProperties[i]];
     }
     return dump;
 };
 
 Zotero.Collection.prototype.loadDump = function(dump){
     Zotero.debug("Zotero.Collection.loaddump", 4);
-    this.loadDumpEntry(dump);
-    var dataProperties = [
-        'collectionVersion',
-        'collectionKey',
-        'synced',
+    var collection = this;
+    collection.loadDumpEntry(dump);
+    var dumpProperties = [
+        'apiObj',
         'pristine',
+        'collectionKey',
+        'collectionVersion',
+        'synced',
         'numItems',
         'numCollections',
-        'name',
-        'parentCollection',
-        'relations',
         'topLevel',
         'websiteCollectionLink',
         'hasChildren',
-        'itemKeys'
+        'itemKeys',
     ];
-    for (var i = 0; i < dataProperties.length; i++) {
-        this[dataProperties[i]] = dump[dataProperties[i]];
+    for (var i = 0; i < dumpProperties.length; i++) {
+        collection[dumpProperties[i]] = dump[dumpProperties[i]];
     }
-    return this;
-};
 
-Zotero.Collection.prototype.loadObject = function(ob){
-    this.collectionKey = ob.collectionKey;
-    this.dateAdded = ob.dateAdded;
-    this.dateModified = ob.dateUpdated;
-    this['links'] = ob['links'];
-    this['title'] = ob['title'];
-    this['name'] = ob['title'];
-    this.parentCollectionKey = ob.parentCollectionKey;
-    this.parent = ob.parentCollectionKey;
-    this.childKeys = ob.childKeys;
-    this.topLevel = true;
-    
+    collection.initSecondaryData();
+    return collection;
 };
 
 Zotero.Collection.prototype.parseXmlCollection = function(cel) {
@@ -2485,26 +2539,32 @@ Zotero.Collection.prototype.parseXmlCollection = function(cel) {
     this.topLevel = true;
     var collection = this;
     
-    this.websiteCollectionLink = Zotero.config.baseWebsiteUrl + '/' + this.libraryUrlIdentifier + '/items/collection/' + this.collectionKey;
-    this.hasChildren = (this.numCollections) ? true : false;
-    
     //parse the JSON content block
     var contentEl = cel.find('content').first(); //possibly we should test to make sure it is application/json or zotero json
     if(contentEl){
         this.pristine = JSON.parse(cel.find('content').first().text());
         this.apiObj = JSON.parse(cel.find('content').first().text());
-        this['name'] = this.apiObj['name'];
-        this['parentCollection'] = this.apiObj['parentCollection'];
-        if(this['parentCollection']){
-            this.topLevel = false;
-        }
-        this.collectionKey = this.apiObj.collectionKey;
-        this.collectionVersion = this.apiObj.collectionVersion;
-        this.name = this.apiObj.name;
-        this.relations = this.apiObj.relations;
         
         this.synced = true;
     }
+    this.initSecondaryData();
+};
+
+Zotero.Collection.prototype.initSecondaryData = function() {
+    var collection = this;
+
+    collection['name'] = collection.apiObj['name'];
+    collection['parentCollection'] = collection.apiObj['parentCollection'];
+    if(collection['parentCollection']){
+        collection.topLevel = false;
+    }
+    collection.collectionKey = collection.apiObj.collectionKey;
+    collection.collectionVersion = collection.apiObj.collectionVersion;
+    collection.relations = collection.apiObj.relations;
+    
+    collection.websiteCollectionLink = Zotero.config.baseWebsiteUrl + '/' + collection.libraryUrlIdentifier + '/items/collection/' + collection.collectionKey;
+    collection.hasChildren = (collection.numCollections) ? true : false;
+    
 };
 
 Zotero.Collection.prototype.nestCollection = function(collectionList) {
@@ -2714,6 +2774,7 @@ Zotero.Item = function(entryEl){
     this.itemContentTypes = [];
     this.itemContentBlocks = {};
     this.notes = [];
+    this.tagstrings = [];
     if(typeof entryEl != 'undefined'){
         this.parseXmlItem(entryEl);
     }
@@ -2724,82 +2785,47 @@ Zotero.Item.prototype = new Zotero.Entry();
 Zotero.Item.prototype.dump = function(){
     var item = this;
     var dump = item.dumpEntry();
-    var dataProperties = [
-        'itemVersion',
-        'itemKey',
-        'synced',
+    var dumpProperties = [
+        'apiObj',
         'pristine',
-        'itemType',
+        'itemKey',
+        'itemVersion',
+        'synced',
         'creatorSummary',
         'year',
-        'numChildren',
-        'numTags',
         'parentItemKey',
-        'apiObj',
-        'mimeType',
-        'translatedMimeType',
-        'linkMode',
-        'attachmentDownloadUrl'
+        'numChildren'
     ];
-    for (var i = 0; i < dataProperties.length; i++) {
-        dump[dataProperties[i]] = item[dataProperties[i]];
+    for (var i = 0; i < dumpProperties.length; i++) {
+        dump[dumpProperties[i]] = item[dumpProperties[i]];
     }
+    //add tagstrings to dump for indexedDB searching purposes
+    dump['tagstrings'] = item.tagstrings;
     return dump;
 };
 
 Zotero.Item.prototype.loadDump = function(dump){
     var item = this;
     item.loadDumpEntry(dump);
-    var dataProperties = [
-        'itemVersion',
-        'itemKey',
-        'synced',
+    var dumpProperties = [
+        'apiObj',
         'pristine',
-        'itemType',
+        'itemKey',
+        'itemVersion',
+        'synced',
         'creatorSummary',
         'year',
-        'numChildren',
-        'numTags',
         'parentItemKey',
-        'apiObj',
-        'mimeType',
-        'translatedMimeType',
-        'linkMode',
-        'attachmentDownloadUrl'
+        'numChildren'
     ];
-    for (var i = 0; i < dataProperties.length; i++) {
-        item[dataProperties[i]] = dump[dataProperties[i]];
+    for (var i = 0; i < dumpProperties.length; i++) {
+        item[dumpProperties[i]] = dump[dumpProperties[i]];
     }
     //TODO: load secondary data structures
-    
-    return item;
-};
+    item.numTags = item.apiObj.tags.length;
+    item.initSecondaryData();
 
-Zotero.Item.prototype.loadObject = function(ob) {
-    var item = this;
-    Z.debug('Zotero.Item.loadObject', 3);
-    if(typeof(ob) === 'string'){
-        ob = JSON.parse(ob);
-    }
-    item.title = ob.title;
-    item.itemKey = ob.itemKey;
-    item.pristine = ob.pristine;
-    item.itemType = ob.itemType;
-    item.creatorSummary = ob.creatorSummary;
-    item.numChildren = ob.numChildren;
-    item.numTags = ob.numTags;
-    item.creators = ob.creators;
-    item.createdByUserID = ob.createdByUserID;
-    item.lastModifiedByUserID = ob.lastModifiedByUserID;
-    item.note = ob.note;
-    item.linkMode = ob.linkMode;
-    item.mimeType = ob.mimeType;
-    item.links = ob.links;
-    item.apiObj = ob.apiObj;
-    item.dateAdded = ob.dateAdded;
-    item.published = item.dateAdded;
-    item.dateModified = ob.dateModified;
-    item.updated = item.dateModified;
+    return item;
 };
 
 Zotero.Item.prototype.parseXmlItem = function (iel) {
@@ -2871,8 +2897,21 @@ Zotero.Item.prototype.parseXmlItemContent = function (cel) {
 
 Zotero.Item.prototype.parseJsonItemContent = function (cel) {
     var item = this;
-    item.apiObj = JSON.parse(cel.text());
-    item.pristine = JSON.parse(cel.text());
+    if(typeof cel === "string"){
+        item.apiObj = JSON.parse(cel);
+        item.pristine = JSON.parse(cel);
+    }
+    else {
+        item.apiObj = JSON.parse(cel.text());
+        item.pristine = JSON.parse(cel.text());
+    }
+    
+    item.initSecondaryData();
+};
+
+//populate property values derived from json content
+Zotero.Item.prototype.initSecondaryData = function(){
+    var item = this;
     
     item.itemVersion = item.apiObj.itemVersion;
     item.parentItemKey = item.apiObj.parentItem;
@@ -2890,6 +2929,12 @@ Zotero.Item.prototype.parseJsonItemContent = function (cel) {
     item.attachmentDownloadUrl = Zotero.url.attachmentDownloadUrl(item);
     
     item.synced = true;
+
+    var tagstrings = [];
+    for (i = 0; i < item.apiObj.tags.length; i++) {
+        tagstrings.push(item.apiObj.tags[i].tag);
+    }
+    item.tagstrings = tagstrings;
 };
 
 Zotero.Item.prototype.initEmpty = function(itemType, linkMode){
@@ -3545,10 +3590,12 @@ Zotero.Item.prototype.cslItem = function(){
             zoteroItem.get("pages") &&
             zoteroItem.citePaperJournalArticleURL);
     
-    cslItem = {
-        'id': zoteroItem.owningLibrary.libraryID + "/" + zoteroItem.get("itemKey"),
-        'type': cslType
-    };
+    cslItem = {'type': cslType};
+    if(zoteroItem.owningLibrary){
+        cslItem['id'] = zoteroItem.owningLibrary.libraryID + "/" + zoteroItem.get("itemKey");
+    } else {
+        cslItem['id'] = Zotero.utils.getKey();
+    }
     
     // get all text variables (there must be a better way)
     // TODO: does citeproc-js permit short forms?
@@ -3943,27 +3990,42 @@ Zotero.Tag = function (entry) {
 Zotero.Tag.prototype = new Zotero.Entry();
 
 Zotero.Tag.prototype.dump = function(){
-    var dump = this.dumpEntry();
-    var dataProperties = [
+    var tag = this;
+    var dump = tag.dumpEntry();
+    var dumpProperties = [
         'numItems',
-        'urlencodedtag'
+        'urlencodedtag',
+        'tagVersion',
+        'tagType',
+        'tag',
     ];
-    for (var i = 0; i < dataProperties.length; i++) {
-        dump[dataProperties[i]] = this[dataProperties[i]];
+    for (var i = 0; i < dumpProperties.length; i++) {
+        dump[dumpProperties[i]] = tag[dumpProperties[i]];
     }
     return dump;
 };
 
 Zotero.Tag.prototype.loadDump = function(dump){
-    this.loadDumpEntry(dump);
-    var dataProperties = [
+    var tag = this;
+    tag.loadDumpEntry(dump);
+    var dumpProperties = [
         'numItems',
-        'urlencodedtag'
+        'urlencodedtag',
+        'tagVersion',
+        'tagType',
+        'tag',
     ];
-    for (var i = 0; i < dataProperties.length; i++) {
-        this[dataProperties[i]] = dump[dataProperties[i]];
+    
+    for (var i = 0; i < dumpProperties.length; i++) {
+        tag[dumpProperties[i]] = dump[dumpProperties[i]];
     }
-    return this;
+    
+    tag.initSecondaryData();
+    return tag;
+};
+
+Zotero.Tag.prototype.initSecondaryData = function(){
+    
 };
 
 Zotero.Tag.prototype.loadObject = function(ob){
@@ -4578,7 +4640,75 @@ Zotero.utils = {
             default:
                 return mimeType;
         }
+    },
+
+    /**
+     * Get the permissions a key has for a library
+     * if no key is passed use the currently set key for the library
+     *
+     * @param int|string $userID
+     * @param string $key
+     * @return array $keyPermissions
+     */
+    getKeyPermissions: function(userID, key) {
+        //TODO: convert php to JS
+        /*
+        if(userID === null){
+            userID = $this->libraryID;
+        }
+        if($key == false){
+            if($this->_apiKey == '') {
+                false;
+            }
+            $key = $this->_apiKey;
+        }
+        
+        $reqUrl = $this->apiRequestUrl(array('target'=>'key', 'apiKey'=>$key, 'userID'=>$userID));
+        $response = $this->_request($reqUrl, 'GET');
+        if($response->isError()){
+            return false;
+        }
+        $body = $response->getBody();
+        $doc = new DOMDocument();
+        $doc->loadXml($body);
+        $keyNode = $doc->getElementsByTagName('key')->item(0);
+        $keyPerms = $this->parseKey($keyNode);
+        return $keyPerms;
+        */
+    },
+    
+    /**
+     * Parse a key response into an array
+     *
+     * @param $keyNode DOMNode from key response
+     * @return array $keyPermissions
+     */
+    parseKey: function(keynode){
+        /*var key = array();
+        var keyPerms = ["library":"0", "notes":"0", "write":"0", 'groups':[]);*/
+        //TODO: convert php to JS
+        /*
+        var accessEls = keyNode->getElementsByTagName('access');
+        foreach($accessEls as $access){
+            if($libraryAccess = $access->getAttribute("library")){
+                $keyPerms['library'] = $libraryAccess;
+            }
+            if($notesAccess = $access->getAttribute("notes")){
+                $keyPerms['notes'] = $notesAccess;
+            }
+            if($groupAccess = $access->getAttribute("group")){
+                $groupPermission = $access->getAttribute("write") == '1' ? 'write' : 'read';
+                $keyPerms['groups'][$groupAccess] = $groupPermission;
+            }
+            elseif($writeAccess = $access->getAttribute("write")) {
+                $keyPerms['write'] = $writeAccess;
+            }
+            
+        }
+        */
+        return keyPerms;
     }
+    
 };
 Zotero.url.itemHref = function(item){
     var href = '';
@@ -4829,29 +4959,91 @@ Zotero.Filestorage.prototype.handleError = function(e){
     Zotero.debug("----------------Filestorage Error encountered", 2);
     Zotero.debug(e, 2);
 };
-Zotero.Idb = function(){
-    var indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB;
+Zotero.Idb = {};
+
+//Initialize an indexedDB for the specified library user or group + id
+//returns a jQuery Deferred that is resolved with a Zotero.Idb.Library instance when successful
+//and rejected onerror
+Zotero.Idb.Library = function(libraryString){
+    Z.debug("Zotero.Idb.Library", 3);
+    Z.debug("Initializing Zotero IDB", 3);
+    this.libraryString = libraryString;
+    this.owningLibrary = null;
+};
+
+Zotero.Idb.Library.prototype.init = function(){
+    var idbLibrary = this;
+    var IDBinitD = new J.Deferred();
+    //Don't bother with the prefixed names because they should all be irrelevant by now
+    //window.indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB;
+    var indexedDB = window.indexedDB;
     this.indexedDB = indexedDB;
+    
+    // may need references to some window.IDB* objects:
+    //window.IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction || window.msIDBTransaction;
+    //window.IDBKeyRange = window.IDBKeyRange || window.webkitIDBKeyRange || window.msIDBKeyRange;
+    
     // Now we can open our database
-    var request = indexedDB.open("Zotero");
-    request.onerror = function(e){
+    Z.debug("requesting indexedDb from browser", 3);
+    var db;
+    var request = indexedDB.open("Zotero_" + idbLibrary.libraryString, 2);
+    request.onerror = J.proxy(function(e){
         Zotero.debug("ERROR OPENING INDEXED DB", 1);
-    };
-    request.onupgradeneeded = function(event){
+        IDBinitD.reject();
+    }, this);
+    
+    var upgradeCallback = J.proxy(function(event){
+        Z.debug("Zotero.Idb onupgradeneeded or onsuccess", 3);
         var db = event.target.result;
-        Zotero.Idb.db = db;
-        // Create an objectStore to hold information about our customers. We're
-        // going to use "ssn" as our key path because it's guaranteed to be
-        // unique.
-        var itemStore = db.createObjectStore("items", { keyPath: "itemKey" });
-        var collectionStore = db.createObjectStore("collections", { keyPath: "itemKey" });
-        var tagStore = db.createObjectStore("tags", { keyPath: "itemKey" });
+        this.db = db;
         
-        // Create an index to search customers by name. We may have duplicates
-        // so we can't use a unique index.
-        itemStore.createIndex("itemKey", "itemKey", { unique: false });
-        itemStore.createIndex("itemType", "itemType", { unique: false });
-        itemStore.createIndex("parentKey", "parentKey", { unique: false });
+        //delete old versions of object stores
+        Z.debug("Existing object store names:", 3);
+        Z.debug(JSON.stringify(db.objectStoreNames), 3);
+        Z.debug("Deleting old object stores", 3);
+        if(db.objectStoreNames["items"]){
+            db.deleteObjectStore("items");
+        }
+        if(db.objectStoreNames["tags"]){
+            db.deleteObjectStore("tags");
+        }
+        if(db.objectStoreNames["collections"]){
+            db.deleteObjectStore("collections");
+        }
+        Z.debug("Existing object store names:", 3);
+        Z.debug(JSON.stringify(db.objectStoreNames), 3);
+        
+        // Create object stores to hold items, collections, and tags.
+        // IDB keys are just the zotero object keys
+        var itemStore = db.createObjectStore("items", { keyPath: "itemKey" });
+        var collectionStore = db.createObjectStore("collections", { keyPath: "collectionKey" });
+        var tagStore = db.createObjectStore("tags", { keyPath: "title" });
+        
+        Z.debug("itemStore index names:", 3);
+        Z.debug(JSON.stringify(itemStore.indexNames), 3);
+        Z.debug("collectionStore index names:", 3);
+        Z.debug(JSON.stringify(collectionStore.indexNames), 3);
+        Z.debug("tagStore index names:", 3);
+        Z.debug(JSON.stringify(tagStore.indexNames), 3);
+        
+        // Create index to search/sort items by each attribute
+        J.each(Zotero.Item.prototype.fieldMap, function(key, val){
+            Z.debug("Creating index on " + key, 3);
+            itemStore.createIndex(key, "apiObj." + key, { unique: false });
+        });
+        
+        //itemKey index was created above with all other item fields
+        //itemStore.createIndex("itemKey", "itemKey", { unique: false });
+        
+        //create multiEntry indices on item collectionKeys and tags
+        itemStore.createIndex("collectionKeys", "apiObj.collections", {unique: false, multiEntry:true});
+        //index on extra tagstrings array since tags are objects and we can't index them directly
+        itemStore.createIndex("itemTagStrings", "tagstrings", {unique: false, multiEntry:true});
+        //example filter for tag: Zotero.Idb.filterItems("itemTagStrings", "Unread");
+        //example filter collection: Zotero.Idb.filterItems("collectionKeys", "<collectionKey>");
+        
+        //itemStore.createIndex("itemType", "itemType", { unique: false });
+        itemStore.createIndex("parentItemKey", "parentItemKey", { unique: false });
         itemStore.createIndex("libraryKey", "libraryKey", { unique: false });
         
         collectionStore.createIndex("name", "name", { unique: false });
@@ -4864,21 +5056,63 @@ Zotero.Idb = function(){
         tagStore.createIndex("title", "title", { unique: false });
         tagStore.createIndex("libraryKey", "libraryKey", { unique: false });
         
-        //Zotero.Idb.itemStore = itemStore;
-        //Zotero.Idb.collectionStore = collectionStore;
-        //Zotero.Idb.tagStore = tagStore;
-        
-        /*
-        // Store values in the newly created objectStore.
-        for (var i in customerData) {
-            objectStore.add(customerData[i]);
-        }
-         */
-    };
+    }, this);
+    
+    request.onupgradeneeded = upgradeCallback;
+    
+    request.onsuccess = J.proxy(function(){
+        Z.debug("IDB success", 3);
+        this.db = request.result;
+        IDBinitD.resolve(this);
+    }, this);
+    
+    return IDBinitD;
 };
 
-Zotero.Idb.addItems = function(items){
-    var transaction = Zotero.Idb.db.transaction(["items"], IDBTransaction.READ_WRITE);
+Zotero.Idb.Library.prototype.deleteDB = function(){
+    var idbLibrary = this;
+    idbLibrary.db.close();
+    var deleteRequest = idbLibrary.indexedDB.deleteDatabase(idbLibrary.libraryString);
+    deleteRequest.onerror = function(){
+        Z.debug("Error deleting indexedDB");
+    }
+    deleteRequest.onsuccess = function(){
+        Z.debug("Successfully deleted indexedDB");
+    }
+    return deleteRequest;
+};
+
+/**
+* @param {string} store_name
+* @param {string} mode either "readonly" or "readwrite"
+*/
+Zotero.Idb.Library.prototype.getObjectStore = function (store_name, mode) {
+    var idbLibrary = this;
+    var tx = idbLibrary.db.transaction(store_name, mode);
+    return tx.objectStore(store_name);
+};
+
+Zotero.Idb.Library.prototype.clearObjectStore = function (store_name) {
+    var idbLibrary = this;
+    var store = getObjectStore(store_name, 'readwrite');
+    var req = store.clear();
+    req.onsuccess = function(evt) {
+        Z.debug("Store cleared");
+    };
+    req.onerror = function (evt) {
+        Z.debug("clearObjectStore:", evt.target.errorCode);
+    };
+    //TODO: make this return a deferred that we resolve, or return the req?
+    return req;
+};
+
+/**
+* Add array of items to indexedDB
+* @param {array} items
+*/
+Zotero.Idb.Library.prototype.addItems = function(items){
+    var idbLibrary = this;
+    var transaction = idbLibrary.db.transaction(["items"], "readwrite");
     
     transaction.oncomplete = function(event){
         Zotero.debug("Add Items transaction completed.", 3);
@@ -4894,20 +5128,103 @@ Zotero.Idb.addItems = function(items){
         Zotero.debug("Added Item " + event.target.result, 4);
     };
     for (var i in items) {
-        var request = itemStore.add(items[i]);
+        var request = itemStore.add(items[i].dump());
         request.onsuccess = reqSuccess;
     }
 };
 
-Zotero.Idb.getItem = function(itemKey, callback){
-    Zotero.Idb.db.transaction("items").objectStore("items").get(itemKey).onsuccess = function(event) {
-        callback(null, event.target.result);
+/**
+* Update/add array of items to indexedDB
+* @param {array} items
+*/
+Zotero.Idb.Library.prototype.updateItems = function(items){
+    Z.debug("Zotero.Idb.Library.updateItems");
+    var idbLibrary = this;
+    var deferred = new J.Deferred();
+    if(!items){
+        items = idbLibrary.owningLibrary.items.itemsArray;
+    }
+    
+    var transaction = idbLibrary.db.transaction(["items"], "readwrite");
+    
+    transaction.oncomplete = function(event){
+        Zotero.debug("Update Items transaction completed.", 3);
     };
+    
+    transaction.onerror = function(event){
+        Zotero.debug("Update Items transaction failed.", 1);
+        
+    };
+    
+    var itemStore = transaction.objectStore("items");
+    var reqSuccess = function(event){
+        Zotero.debug("Added/Updated Item " + event.target.result, 4);
+    };
+    for (var i in items) {
+        var request = itemStore.put(items[i].dump());
+        request.onsuccess = reqSuccess;
+        deferred.resolve(true);
+    }
+    
+    return deferred;
 };
 
-Zotero.Idb.getAllItems = function(callback){
+/**
+* Remove array of items to indexedDB. Just references itemKey and does no other checks that items match
+* @param {array} items
+*/
+Zotero.Idb.Library.prototype.removeItems = function(items){
+    var idbLibrary = this;
+    var deferred = new J.Deferred();
+    
+    var transaction = idbLibrary.db.transaction(["items"], "readwrite");
+    
+    transaction.oncomplete = function(event){
+        Zotero.debug("Remove Items transaction completed.", 3);
+    };
+    
+    transaction.onerror = function(event){
+        Zotero.debug("Remove Items transaction failed.", 1);
+        
+    };
+    
+    var itemStore = transaction.objectStore("items");
+    var reqSuccess = function(event){
+        Zotero.debug("Removed Item " + event.target.result, 4);
+    };
+    for (var i in items) {
+        var request = itemStore.delete(items[i].itemKey);
+        request.onsuccess = reqSuccess;
+        deferred.resolve(true);
+    }
+    
+    return deferred;
+};
+
+/**
+* Get item from indexedDB that has given itemKey
+* @param {string} itemKey
+*/
+Zotero.Idb.Library.prototype.getItem = function(itemKey){
+    var idbLibrary = this;
+    var deferred = new J.Deferred();
+    var success = J.proxy(function(event){
+        deferred.resolve(event.target.result);
+    }, this);
+    idbLibrary.db.transaction("items").objectStore(["items"], "readonly").get(itemKey).onsuccess = success;
+    return deferred;
+};
+
+/**
+* Get all the items in this indexedDB
+* @param {array} items
+*/
+Zotero.Idb.Library.prototype.getAllItems = function(){
+    var idbLibrary = this;
+    var deferred = new J.Deferred();
+    
     var items = [];
-    var objectStore = Zotero.Idb.db.transaction('items').objectStore('items');
+    var objectStore = idbLibrary.db.transaction(['items'], "readonly").objectStore('items');
     
     objectStore.openCursor().onsuccess = function(event) {
         var cursor = event.target.result;
@@ -4916,13 +5233,302 @@ Zotero.Idb.getAllItems = function(callback){
             cursor.continue();
         }
         else {
-            callback(null, items);
+            deferred.resolve(items);
         }
     };
+    
+    return deferred;
+};
+
+Zotero.Idb.Library.prototype.getOrderedItemKeys = function(field, order){
+    var idbLibrary = this;
+    Z.debug("Zotero.Idb.getOrderedItemKeys", 3);
+    var deferred = new J.Deferred();
+    var itemKeys = [];
+    var objectStore = idbLibrary.db.transaction(['items'], 'readonly').objectStore('items');
+    var index = objectStore.index(field);
+    if(!index){
+        throw "Index for requested field '" + field + "'' not found";
+    }
+    
+    var cursorDirection = "next";
+    if(order == "desc"){
+        cursorDirection = "prev";
+    }
+    
+    var cursorRequest = index.openKeyCursor(null, cursorDirection);
+    cursorRequest.onsuccess = J.proxy(function(event) {
+        var itemKeys = [];
+        var cursor = event.target.result;
+        if (cursor) {
+            Z.debug(cursor.key);
+            Z.debug(cursor.primaryKey);
+            itemKeys.push(cursor.primaryKey);
+            cursor.continue();
+        }
+        else {
+            Z.debug("No more cursor: done. Resolving deferred.", 3);
+            deferred.resolve(itemKeys);
+        }
+    }, this);
+    
+    cursorRequest.onfailure = J.proxy(function(event){
+        deferred.reject();
+    }, this);
+    
+    return deferred;
+};
+
+//filter the items in indexedDB by value in field
+Zotero.Idb.Library.prototype.filterItems = function(field, value){
+    var idbLibrary = this;
+    Z.debug("Zotero.Idb.filterItems", 3);
+    var deferred = new J.Deferred();
+    var itemKeys = [];
+    var objectStore = idbLibrary.db.transaction(['items'], 'readonly').objectStore('items');
+    var index = objectStore.index(field);
+    if(!index){
+        throw "Index for requested field '" + field + "'' not found";
+    }
+    
+    var cursorDirection = "next";
+    /*if(order == "desc"){
+        cursorDirection = "prev";
+    }*/
+    
+    var range = IDBKeyRange.only(value);
+    var cursorRequest = index.openKeyCursor(range, cursorDirection);
+    cursorRequest.onsuccess = J.proxy(function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+            Z.debug(cursor.key);
+            Z.debug(cursor.primaryKey);
+            itemKeys.push(cursor.primaryKey);
+            cursor.continue();
+        }
+        else {
+            Z.debug("No more cursor: done. Resolving deferred.", 3);
+            deferred.resolve(itemKeys);
+        }
+    }, this);
+    
+    cursorRequest.onfailure = J.proxy(function(event){
+        deferred.reject();
+    }, this);
+    
+    return deferred;
+};
+
+Zotero.Idb.Library.prototype.addCollections = function(collections){
+    var idbLibrary = this;
+    var deferred = new J.Deferred();
+    
+    var transaction = idbLibrary.db.transaction(["collections"], 'readwrite');
+    
+    transaction.oncomplete = function(event){
+        Zotero.debug("Add Collections transaction completed.", 3);
+        deferred.resolve();
+    };
+    
+    transaction.onerror = function(event){
+        Zotero.debug("Add Collections transaction failed.", 1);
+        deferred.reject();
+    };
+    
+    var collectionStore = transaction.objectStore("collections");
+    var reqSuccess = function(event){
+        Zotero.debug("Added Collection " + event.target.result, 4);
+    };
+    for (var i in collections) {
+        var request = collectionStore.add(collections[i].dump());
+        request.onsuccess = reqSuccess;
+    }
+    return deferred;
+};
+
+Zotero.Idb.Library.prototype.updateCollections = function(collections){
+    Z.debug("Zotero.Idb.Library.updateCollections");
+    var idbLibrary = this;
+    var deferred = new J.Deferred();
+    
+    if(!collections){
+        collections = idbLibrary.owningLibrary.collections.collectionsArray;
+    }
+    
+    var transaction = idbLibrary.db.transaction(["collections"], 'readwrite');
+    
+    transaction.oncomplete = function(event){
+        Zotero.debug("Update Collections transaction completed.", 3);
+        deferred.resolve();
+    };
+    
+    transaction.onerror = function(event){
+        Zotero.debug("Update Collections transaction failed.", 1);
+        deferred.reject();
+    };
+    
+    var collectionStore = transaction.objectStore("collections");
+    var reqSuccess = function(event){
+        Zotero.debug("Updated Collection " + event.target.result, 4);
+    };
+    for (var i in collections) {
+        var request = collectionStore.put(collections[i].dump());
+        request.onsuccess = reqSuccess;
+    }
+    return deferred;
+};
+
+Zotero.Idb.Library.prototype.removeCollections = function(collections){
+    var idbLibrary = this;
+    var deferred = new J.Deferred();
+    
+    var transaction = idbLibrary.db.transaction(["collections"], 'readwrite');
+    
+    transaction.oncomplete = function(event){
+        Zotero.debug("Remove Collections transaction completed.", 3);
+        deferred.resolve();
+    };
+    
+    transaction.onerror = function(event){
+        Zotero.debug("Add Collections transaction failed.", 1);
+        deferred.reject();
+    };
+    
+    var collectionStore = transaction.objectStore("collections");
+    var reqSuccess = function(event){
+        Zotero.debug("Removed Collection " + event.target.result, 4);
+    };
+    for (var i in collections) {
+        var request = collectionStore.delete(collections[i].collectionKey);
+        request.onsuccess = reqSuccess;
+    }
+    return deferred;
+};
+
+Zotero.Idb.Library.prototype.getAllCollections = function(){
+    var idbLibrary = this;
+    var deferred = new J.Deferred();
+    
+    var collections = [];
+    var objectStore = idbLibrary.db.transaction('collections').objectStore('collections');
+    
+    objectStore.openCursor().onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+            collections.push(cursor.value);
+            cursor.continue();
+        }
+        else {
+            deferred.resolve(collections);
+        }
+    };
+    
+    return deferred;
+};
+
+Zotero.Idb.Library.prototype.addTags = function(tags){
+    var idbLibrary = this;
+    var deferred = new J.Deferred();
+    
+    var transaction = idbLibrary.db.transaction(["tags"], "readwrite");
+    
+    transaction.oncomplete = function(event){
+        Zotero.debug("Add Tags transaction completed.", 3);
+        deferred.resolve();
+    };
+    
+    transaction.onerror = function(event){
+        Zotero.debug("Add Tags transaction failed.", 1);
+        deferred.reject();
+    };
+    
+    var tagStore = transaction.objectStore("tags");
+    var reqSuccess = function(event){
+        Zotero.debug("Added Tag " + event.target.result, 4);
+    };
+    for (var i in tags) {
+        var request = tagStore.add(tags[i].dump());
+        request.onsuccess = reqSuccess;
+    }
+    return deferred;
+};
+
+Zotero.Idb.Library.prototype.updateTags = function(tags){
+    Z.debug("Zotero.Idb.Library.updateTags");
+    var idbLibrary = this;
+    var deferred = new J.Deferred();
+    
+    if(!tags){
+        tags = idbLibrary.owningLibrary.tags.tagsArray;
+    }
+    
+    var transaction = idbLibrary.db.transaction(["tags"], "readwrite");
+    
+    transaction.oncomplete = function(event){
+        Zotero.debug("Update Tags transaction completed.", 3);
+        deferred.resolve();
+    };
+    
+    transaction.onerror = function(event){
+        Zotero.debug("Update Tags transaction failed.", 1);
+        deferred.reject();
+    };
+    
+    var tagStore = transaction.objectStore("tags");
+    var reqSuccess = function(event){
+        Zotero.debug("Updated Tag " + event.target.result, 4);
+    };
+    for (var i in tags) {
+        var request = tagStore.put(tags[i].dump());
+        request.onsuccess = reqSuccess;
+    }
+    return deferred;
+};
+
+Zotero.Idb.Library.prototype.getAllTags = function(){
+    var idbLibrary = this;
+    var deferred = new J.Deferred();
+    
+    var tags = [];
+    var objectStore = idbLibrary.db.transaction(["tags"], "readonly").objectStore('tags');
+    var index = objectStore.index("title");
+    
+    index.openCursor().onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+            tags.push(cursor.value);
+            cursor.continue();
+        }
+        else {
+            deferred.resolve(tags);
+        }
+    };
+    
+    return deferred;
 };
 
 
+//intersect two arrays of strings as an AND condition on index results
+Zotero.Idb.Library.prototype.intersect = function(ar1, ar2){
+    var idbLibrary = this;
+    var result = [];
+    for(var i = 0; i < ar1.length; i++){
+        if(ar2.indexOf(ar1[i]) !== -1){
+            result.push(ar1[i]);
+        }
+    }
+    return result;
+};
 
+//intersect an array of arrays of strings as an AND condition on index results
+Zotero.Idb.Library.prototype.intersectAll = function(arrs) {
+    var idbLibrary = this;
+    var result = arrs[0];
+    for(var i = 0; i < arrs.length - 1; i++){
+        result = idbLibrary.intersect(result, arrs[i+1]);
+    }
+    return result;
+};
 //load a set of collections, following next links until the entire load is complete
 Zotero.Library.prototype.loadCollections = function(config){
     Z.debug("Zotero.Library.loadCollections", 3);
@@ -4969,7 +5575,7 @@ Zotero.Library.prototype.loadCollections = function(config){
             J.each(collections.collectionsArray, function(index, obj) {
                 if(obj.instance === "Zotero.Collection"){
                     if(obj.nestCollection(collections.collectionObjects)){
-                        Z.debug(obj.collectionKey + ":" + obj.title + " nested in parent.", 3);
+                        //Z.debug(obj.collectionKey + ":" + obj.title + " nested in parent.", 3);
                     }
                 }
             });
@@ -4983,7 +5589,7 @@ Zotero.Library.prototype.loadCollections = function(config){
             //save collections to cache before resolving
             Z.debug("collections all loaded - saving to cache before resolving deferred", 3);
             Z.debug("collectionsVersion: " + library.collections.collectionsVersion, 3);
-            library.saveCachedCollections();
+            //library.saveCachedCollections();
             Zotero.trigger("collectionsChanged", library);
             deferred.resolve(collections);
         }
@@ -5033,7 +5639,7 @@ Zotero.Library.prototype.fetchCollections = function(config){
 //added so the request is always completed rather than checking if it should be
 //important for parallel requests that may load more than what we just want to see right now
 Zotero.Library.prototype.loadCollectionsSimple = function(config){
-    Z.debug("Zotero.Library.loadCollections", 3);
+    Z.debug("Zotero.Library.loadCollections", 1);
     Z.debug(config);
     var library = this;
     if(!config){
@@ -5052,7 +5658,7 @@ Zotero.Library.prototype.loadCollectionsSimple = function(config){
     var requestUrl = Zotero.ajax.apiRequestString(urlconfig);
     
     var callback = J.proxy(function(data, textStatus, xhr){
-        Z.debug('loadCollections proxied callback', 3);
+        Z.debug('loadCollectionsSimple proxied callback', 1);
         var collectionsfeed = new Zotero.Feed(data, xhr);
         collectionsfeed.requestConfig = urlconfig;
         //clear out display items
@@ -5060,7 +5666,8 @@ Zotero.Library.prototype.loadCollectionsSimple = function(config){
         for (var i = 0; i < collectionsAdded.length; i++) {
             collectionsAdded[i].associateWithLibrary(library);
         }
-        Zotero.trigger("collectionsChanged", library);
+        deferred.resolve(collectionsAdded);
+        //Zotero.trigger("collectionsChanged", library);
     }, this);
     
     var jqxhr = library.ajaxRequest(requestUrl);
@@ -5506,29 +6113,6 @@ Zotero.Library.prototype.loadTags = function(config){
     return deferred;
 };
 
-Zotero.Library.prototype.loadCachedTags = function(){
-    //test to see if we have tagss in cache - TODO:expire or force-reload faster than session storage
-    var library = this;
-    var cacheConfig = {libraryType:this.libraryType, libraryID:this.libraryID, target:'alltags'};
-    var tagsDump = Zotero.cache.load(cacheConfig);
-    if(tagsDump !== null){
-        Z.debug("Tags dump present in cache - loading", 3);
-        library.tags.loadDump(tagsDump);
-        library.tags.loaded = true;
-        Zotero.trigger("tagsChanged", library);
-        return true;
-    }
-    else{
-        return false;
-    }
-};
-
-Zotero.Library.prototype.saveCachedTags = function(){
-    var library = this;
-    var cacheConfig = {libraryType:library.libraryType, libraryID:library.libraryID, target:'alltags'};
-    Zotero.cache.save(cacheConfig, library.tags.dump());
-    return;
-};
 
 Zotero.Library.prototype.loadAllTags = function(config, checkCached){
     Z.debug("Zotero.Library.loadAllTags", 3);
@@ -5546,7 +6130,7 @@ Zotero.Library.prototype.loadAllTags = function(config, checkCached){
     //make the first action for finished loading be to save tags to cache
     deferred.done(J.proxy(function(){
         Zotero.debug("loadAllTags deferred resolved - saving to cache.", 3);
-        library.saveCachedTags();
+        //library.saveCachedTags();
     }, this));
     
     var defaultConfig = {target:'tags',
@@ -5620,6 +6204,11 @@ Zotero.Library.prototype.loadAllTags = function(config, checkCached){
             tags.loadedConfig = config;
             tags.loadedRequestUrl = requestUrl;
             
+            //update all tags with tagsVersion
+            for (var i = 0; i < library.tags.tagsArray.length; i++) {
+                tags.tagsArray[i].tagVersion = tags.tagsVersion;
+            }
+
             Zotero.trigger("tagsChanged", library);
             deferred.resolve(tags);
         }
@@ -5793,11 +6382,113 @@ Zotero.Library.prototype.saveCollectionFilesOffline = function(collectionKey){
     return d;
 };
 
+//load objects from indexedDB
+Zotero.Library.prototype.loadIndexedDBCache = function(){
+    Zotero.debug("Zotero.Library.loadIndexedDBCache", 3);
+    
+    var library = this;
+    var cacheLoadD = new J.Deferred();
+    
+    var itemsD = library.idbLibrary.getAllItems();
+    var collectionsD = library.idbLibrary.getAllCollections();
+    var tagsD = library.idbLibrary.getAllTags();
+    
+    itemsD.done(J.proxy(function(itemsArray){
+        Z.debug("loadIndexedDBCache itemsD done", 3);
+        //create itemsDump from array of item objects
+        var latestVersion = 0;
+        var dump = {};
+        dump.instance = "Zotero.Items.dump";
+        dump.itemsVersion = 0;
+        dump.itemsArray = itemsArray;
+        for(var i = 0; i < itemsArray.length; i++){
+            if(itemsArray[i].itemVersion > latestVersion){
+                latestVersion = itemsArray[i].itemVersion;
+            }
+        }
+        dump.itemsVersion = latestVersion;
+        library.items.loadDump(dump);
+
+        //TODO: add itemsVersion as last version in any of these items?
+        //or store it somewhere else for indexedDB cache purposes
+        library.items.loaded = true;
+    }, this) );
+    
+    collectionsD.done(J.proxy(function(collectionsArray){
+        Z.debug("loadIndexedDBCache collectionsD done", 3);
+        //create collectionsDump from array of collection objects
+        var latestVersion = 0;
+        var dump = {};
+        dump.instance = "Zotero.Collections.dump";
+        dump.collectionsVersion = 0;
+        dump.collectionsArray = collectionsArray;
+        for(var i = 0; i < collectionsArray.length; i++){
+            if(collectionsArray[i].collectionVersion > latestVersion){
+                latestVersion = collectionsArray[i].collectionVersion;
+            }
+        }
+        dump.collectionsVersion = latestVersion;
+        library.collections.loadDump(dump);
+
+        //TODO: add collectionsVersion as last version in any of these items?
+        //or store it somewhere else for indexedDB cache purposes
+        library.collections.loaded = true;
+    }, this));
+    
+    tagsD.done(J.proxy(function(tagsArray){
+        //create tagsDump from array of tag objects
+        var latestVersion = 0;
+        var dump = {};
+        dump.instance = "Zotero.Collections.dump";
+        dump.tagsVersion = 0;
+        dump.tagsArray = tagsArray;
+        for(var i = 0; i < tagsArray.length; i++){
+            if(tagsArray[i].tagVersion > latestVersion){
+                latestVersion = tagsArray[i].tagVersion;
+            }
+        }
+        dump.tagsVersion = latestVersion;
+        library.tags.loadDump(dump);
+
+        //TODO: add tagsVersion as last version in any of these items?
+        //or store it somewhere else for indexedDB cache purposes
+        library.tags.loaded = true;
+    }, this));
+    
+    
+    //resolve the overall deferred when all the child deferreds are finished
+    J.when.apply(this, [itemsD, collectionsD, tagsD]).then(J.proxy(function(){
+        
+        cacheLoadD.resolve(library);
+    }, this) );
+    
+    return cacheLoadD;
+};
+
+Zotero.Library.prototype.saveIndexedDB = function(){
+    var library = this;
+    
+    var idbSaveD = new J.Deferred();
+    
+    var saveItemsD = library.idbLibrary.updateItems(library.items.itemsArray);
+    var saveCollectionsD = library.idbLibrary.updateCollections(library.collections.collectionsArray);
+    var saveTagsD = library.idbLibrary.updateTags(library.tags.tagsArray);
+
+    //resolve the overall deferred when all the child deferreds are finished
+    J.when.apply(this, [saveItemsD, saveCollectionsD, saveTagsD]).then(J.proxy(function(){
+        Z.debug("saveIndexedDB complete", 1);
+        idbSaveD.resolve(library);
+    }, this) );
+    
+    return idbSaveD;
+};
+
 //load items we currently have saved in the cache back into this library instance
 Zotero.Library.prototype.loadCachedItems = function(){
     Zotero.debug("Zotero.Library.loadCachedItems", 3);
     //test to see if we have items in cache - TODO:expire or force-reload faster than session storage
     var library = this;
+    
     var cacheConfig = {libraryType:library.libraryType, libraryID:library.libraryID, target:'allitems'};
     var itemsDump = Zotero.cache.load(cacheConfig);
     if(itemsDump !== null){
@@ -5846,3 +6537,84 @@ Zotero.Library.prototype.saveCachedCollections = function(){
     return;
 };
 
+Zotero.Library.prototype.loadCachedTags = function(){
+    //test to see if we have tagss in cache - TODO:expire or force-reload faster than session storage
+    var library = this;
+    var cacheConfig = {libraryType:this.libraryType, libraryID:this.libraryID, target:'alltags'};
+    var tagsDump = Zotero.cache.load(cacheConfig);
+    if(tagsDump !== null){
+        Z.debug("Tags dump present in cache - loading", 3);
+        library.tags.loadDump(tagsDump);
+        library.tags.loaded = true;
+        Zotero.trigger("tagsChanged", library);
+        return true;
+    }
+    else{
+        return false;
+    }
+};
+
+Zotero.Library.prototype.saveCachedTags = function(){
+    var library = this;
+    var cacheConfig = {libraryType:library.libraryType, libraryID:library.libraryID, target:'alltags'};
+    Zotero.cache.save(cacheConfig, library.tags.dump());
+    return;
+};
+Zotero.Preferences = function(store, idString) {
+    this.store = store;
+    this.idString = idString;
+    this.preferencesObject = {};
+    this.defaults = {};
+    this.load();
+};
+
+Zotero.Preferences.prototype.setPref = function(key, value) {
+    var preferences = this;
+    preferences.preferencesObject[key] = value;
+    preferences.persist();
+};
+
+Zotero.Preferences.prototype.setPrefs = function(newPrefs) {
+    var preferences = this;
+    if(typeof(newPrefs) != "object") {
+        throw "Preferences must be an object";
+    }
+    preferences.preferencesObject = newPrefs;
+    preferences.persist();
+};
+
+Zotero.Preferences.prototype.getPref = function(key){
+    var preferences = this;
+    if(preferences.preferencesObject[key]){
+        return preferences.preferencesObject[key];
+    }
+    else if(preferences.defaults[key]){
+        return preferences.defaults[key];
+    }
+    else {
+        return null;
+    }
+};
+
+Zotero.Preferences.prototype.getPrefs = function(){
+    var preferences = this;
+    return preferences.preferencesObject;
+};
+
+Zotero.Preferences.prototype.persist = function(){
+    var preferences = this;
+    var storageString = 'preferences_' + preferences.idString;
+    preferences.store[storageString] = JSON.stringify(preferences.preferencesObject);
+};
+
+Zotero.Preferences.prototype.load = function(){
+    var preferences = this;
+    var storageString = 'preferences_' + preferences.idString;
+    var storageObjectString = preferences.store[storageString];
+    if(!storageObjectString){
+        preferences.preferencesObject = {};
+    }
+    else {
+        preferences.preferencesObject = JSON.parse(storageObjectString);
+    }
+};

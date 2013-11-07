@@ -42,6 +42,7 @@ $jsfiles = array(
 'jquery.ba-bbq.min.js',
 //'WebToolKit.MD5.js',
 'spark-md5.min.js',
+'IndexedDBShim.min.js',
 'Base.js',
 'Ajax.js',
 'Feed.js',
@@ -70,7 +71,8 @@ $jsfiles = array(
 'ItemFunctions.js',
 'TagFunctions.js',
 'OfflineLibrary.js',
-'LibraryCache.js'
+'LibraryCache.js',
+'Preferences.js',
 );
 
 $fulljs = "";
