@@ -511,7 +511,6 @@ class Library(object):
         #uploadBody.extend(patchdata)
         #uploadBody.extend(bytearray(upAuthOb['suffix'].encode()))
         uploadBody = bytearray(patchdata)
-        logging.info(uploadBody)
         logging.info(upAuthOb['contentType'])
         uploadResponse = zrequest(uploadUrl, 'PATCH', uploadBody, {'Content-Type': upAuthOb['contentType'],
                                                                    'If-Match': item.get('md5')})

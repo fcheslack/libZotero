@@ -363,6 +363,8 @@ class Item(Entry):
         elif key == "dateModified":
             self.apiObject['dateModified'] = val
             self.dateModified = val
+        elif key == "path":
+            self.path = val
 
         if key in self.apiObject:
             self.apiObject[key] = val
