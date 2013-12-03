@@ -11,7 +11,7 @@ import argparse
 sys.path.append('../lib/py')
 from libZotero import zotero
 
-zotero.ZOTERO_URI = 'https://api.zotero.org'
+zotero.ZOTERO_URI = 'https://apidev.zotero.org'
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -50,6 +50,7 @@ newItem = zotero.getTemplateItem(args.type)
 newItem.set('title', args.title)
 createdItem = zlib.createItem(newItem)
 if createdItem.writeFailure != False:
+    print("Created item has non-false writeFailure")
     print(createdItem.writeFailure['code'])
     print(createdItem.writeFailure['message'])
     sys.exit(1)
