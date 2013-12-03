@@ -1,3 +1,30 @@
+# libZotero PHP #
+
+This is the PHP implementation of libZotero.
+
+### Installation ###
+A single file concatenation of the libZotero php code is available in the build directory.
+ - Place the libZoteroSingle.php file somewhere in your php path
+ - include or require_once libZoteroSingle.php in scripts
+
+### Example Usage ###
+
+Examples of using libZotero.php are available in the phpexamples directory at the root of the repository.
+
+Each Zotero library (user or group) you want to interact with must have a library object instantiated.
+
+    $library = new Zotero_Library(<'user'|'group'>, <libraryID>, '', <apiKey>);
+
+This is the object you'll use to start all interactions. Other objects, such as items and collections, from this Zotero library will be associated with this library object.
+
+In cases where a function allows you to pass in parameters, they are passed through when building a url. These will mostly be used to make requests more specific by passing URL parameters as documented at http://www.zotero.org/support/dev/server_api/v2/read_requests#url_parameters
+
+For example, to get a list of recent items:
+
+    $recentItems = $library->fetchItems(array('limit'=>10, 'collectionKey'=>$collectionKey, 'order'=>'dateAdded', 'sort'=>'desc'));
+
+
+
 /*
  * To test:
  *  - $collections = $library->fetchCollections(array('collectionKey'=>'', 'content'=>'json'));
@@ -53,13 +80,12 @@ addItemsFromFeed
 replaceItem
 addChildKeys
 getPreloadedChildren
-TODO:
 writeItem
 writeItems
-deleteItem
-deleteItems
 trashItem
 trashItems
+deleteItem
+deleteItems
 
 
 Zotero_Item:
