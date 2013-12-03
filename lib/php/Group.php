@@ -259,7 +259,7 @@ class Zotero_Group extends Zotero_Entry
         }
         $el->setAttribute('owner', $this->ownerID);
         $el->setAttribute('type', $this->type);
-        $el->setAttribute('name', $this->name);// str_replace('&#039;', '&apos;', htmlspecialchars($this->name, ENT_QUOTES)));
+        $el->setAttribute('name', $this->name);
         $el->setAttribute('libraryEditing', $this->libraryEditing);
         $el->setAttribute('libraryReading', $this->libraryReading);
         $el->setAttribute('fileEditing', $this->fileEditing);
