@@ -17,7 +17,7 @@ $files = array(
 "Item.php",
 "Group.php",
 "Tag.php",
-"User.php",
+//"User.php",
 "Creator.php",
 "Library.php",
 "Utils.php"
@@ -83,10 +83,5 @@ foreach($jsfiles as $file){
 }
 
 file_put_contents('../build/libZoteroSingle.js', $fulljs);
-
-copy('../build/libZoteroSingle.js', '../../zotero/git-trunk/public/static/library/libZotero/libZoteroSingle.js');
-copy('../build/libZoteroSingle.js', '../../web-library/library/libZotero/libZoteroSingle.js');
-copy('../build/libZoteroSingle.php', '../../zotero/git-trunk/library/libZotero/libZoteroSingle.php');
-copy('../build/libZoteroSingle.php', '../../web-library/library/libZotero/libZoteroSingle.php');
 
 ?>
