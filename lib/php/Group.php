@@ -252,7 +252,8 @@ class Zotero_Group extends Zotero_Entry
     {
         $doc = new DOMDocument();
         $el = $doc->appendChild(new DOMElement('group'));
-        $el->appendChild(new DOMElement('description', $this->description));
+        $descriptionString = htmlspecialchars($this->description, ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+        $el->appendChild(new DOMElement('description', $descriptionString));
         $el->appendChild(new DOMElement('url', $this->url));
         if($this->groupID){
             $el->setAttribute('id', $this->groupID);
