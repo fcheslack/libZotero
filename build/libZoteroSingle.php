@@ -2689,7 +2689,8 @@ class Zotero_Group extends Zotero_Entry
     {
         $doc = new DOMDocument();
         $el = $doc->appendChild(new DOMElement('group'));
-        $el->appendChild(new DOMElement('description', $this->description));
+        $descriptionString = htmlspecialchars($this->description, ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
+        $el->appendChild(new DOMElement('description', $descriptionString));
         $el->appendChild(new DOMElement('url', $this->url));
         if($this->groupID){
             $el->setAttribute('id', $this->groupID);
@@ -2852,26 +2853,6 @@ class Zotero_Tag extends Zotero_Entry
 }
 
 
- /**
-  * Representation of a Zotero User
-  * 
-  * @package libZotero
-  * @see        Zotero_Entry
-  */
-class Zotero_Userentry extends Zotero_Entry
-{
-    /**
-     * @var int
-     */
-    public $userID;
-
-    public function __construct($entryNode)
-    {
-        parent::__construct($entryNode);
-        
-    }
-}
-
 
  /**
   * Representation of a Zotero Item Creator
@@ -2919,9 +2900,9 @@ function libZoteroDebug($m){
  */
 class Zotero_Library
 {
-    const ZOTERO_URI = 'https://api.zotero.org';
+    const ZOTERO_URI = 'https://apidev.zotero.org';
     const ZOTERO_WWW_URI = 'http://www.zotero.org';
-    const ZOTERO_WWW_API_URI = 'http://www.zotero.org/api';
+    const ZOTERO_WWW_API_URI = 'http://test.zotero.net/api';
     public $_apiKey = '';
     protected $_ch = null;
     protected $_followRedirects = true;
@@ -4138,9 +4119,9 @@ class Zotero_Library
  */
 class Zotero_Lib_Utils
 {
-    const ZOTERO_URI = 'https://api.zotero.org';
+    const ZOTERO_URI = 'https://apidev.zotero.org';
     const ZOTERO_WWW_URI = 'http://www.zotero.org';
-    const ZOTERO_WWW_API_URI = 'http://www.zotero.org/api';
+    const ZOTERO_WWW_API_URI = 'http://test.zotero.net/api';
     
     public static function randomString($len=0, $chars=null) {
         if ($chars === null) {

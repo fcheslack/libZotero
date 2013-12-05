@@ -85,9 +85,9 @@ var Zotero = {
     localizations: {},
     
     config: {librarySettings: {},
-             baseApiUrl: 'https://api.zotero.org',
-             baseWebsiteUrl: 'https://zotero.org',
-             baseFeedUrl: 'https://api.zotero.org',
+             baseApiUrl: 'https://apidev.zotero.org',
+             baseWebsiteUrl: 'https://test.zotero.net',
+             baseFeedUrl: 'https://apidev.zotero.org',
              baseZoteroWebsiteUrl: 'https://www.zotero.org',
              baseDownloadUrl: 'https://www.zotero.org',
              directDownloads: true,
@@ -2124,6 +2124,7 @@ Zotero.Items.prototype.deleteItem = function(itemKey){
 
 Zotero.Items.prototype.deleteItems = function(deleteItems){
     var items = this;
+    //var deleteItemsDeferred = new J.Deferred();
     var deleteKeys = [];
     var i;
     for(i = 0; i < deleteItems.length; i++){
@@ -2195,7 +2196,6 @@ Zotero.Items.prototype.findItems = function(config){
 
 //accept an array of 'Zotero.Item's
 Zotero.Items.prototype.writeItems = function(itemsArray){
-    //TODO: split into chunks of 50
     var items = this;
     var library = items.owningLibrary;
     var writeItemsDeferred = new J.Deferred();
@@ -3591,7 +3591,7 @@ Zotero.Item.prototype.removeFromCollection = function(collectionKey){
     if(index != -1){
         item.apiObj.collections.splice(index, 1);
     }
-    return item;
+    return;
 };
 
 Zotero.Item.prototype.uploadChildAttachment = function(childItem, fileInfo, fileblob, progressCallback){
@@ -6736,8 +6736,10 @@ Zotero.Preferences = function(store, idString) {
         debug_level: 3, //lower level is higher priority
         debug_log: true,
         debug_mock: false,
-        library_listShowFields: ['title', 'creator', 'dateModified'],
+        listDisplayedFields: ['title', 'creator', 'dateModified'],
         itemsPerPage: 25,
+        order: 'title',
+        title: 'asc'
     };
     this.load();
 };
