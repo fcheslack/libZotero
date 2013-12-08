@@ -296,6 +296,15 @@ class Library(object):
         if(r != None):
             self._lastResponse = r
             return r
+        # check to see if zotero previously told us to back off
+        try:
+            lastBackoff = self._lastResponse.backoff
+        except AttributeError:
+            pass
+        else:
+            logging.info("sleeping for %s seconds because Zotero previously requested that backoff value" % lastBackoff)
+            sleep(lastBackoff)
+        # make the request from the zotero server
         r = zrequest(url, method, body, headers)
         if self._cacheResponses and (method.upper() == 'GET'):
             self._cache.cache_store(url, r)
