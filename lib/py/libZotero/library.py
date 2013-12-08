@@ -9,7 +9,6 @@ import logging
 import pickle
 import zotero
 
-
 def randomString(length=0, chars=None):
     if chars == None:
         chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
@@ -437,6 +436,32 @@ class Library(object):
             item = zotero.Item(feed.entries[0])
             self.items.addItem(item)
             return item
+
+    def fetchItemExport(self, itemKey, format='rdf_bibliontology'):
+        """ Fetch an export format of an item. """
+
+        formats = [
+            'bibtex',
+            'bookmarks',
+            'coins',
+            'csljson',
+            'mods',
+            'refer',
+            'rdf_bibliontology',
+            'rdf_dc',
+            'rdf_zotero',
+            'ris',
+            'tei',
+            'wikipedia' ]
+        if format not in formats:
+            logging.warning ("format '%s' is not in libZotero's list of known export formats" % format)
+        aparams = {'target':'item', 'itemKey':itemKey, 'format':format}
+        reqUrl = self.apiRequestString(aparams)
+        response = self._request(reqUrl, 'GET')
+        if response.status_code != 200:
+            raise zotero.ZoteroApiError("Error fetching export format='%s' for itemKey='%s'" % (format, itemKey))
+        return response.text
+
 
     def itemDownloadLink(self, itemKey):
         """Get the link to download an attached item file."""
