@@ -228,7 +228,8 @@ class Library(object):
                  libraryUrlIdentifier,
                  apiKey,
                  baseWebsiteUrl="http://www.zotero.org",
-                 cachettl=300):
+                 cachettl=300,
+                 userAgent="libZotero"):
         self.ZOTERO_URI = 'https://api.zotero.org'
         self._apiKey = apiKey
         self._followRedirects = True
@@ -252,6 +253,7 @@ class Library(object):
             self._cacheResponses = True
         else:
             self._cacheResponses = False
+        self.userAgent = userAgent
 
     def libraryString(self, ltype, libraryID):
         """Return a string that uniquely identifies a library for use as a cache key."""
@@ -305,6 +307,10 @@ class Library(object):
             logging.info("sleeping for %s seconds because Zotero previously requested that backoff value" % lastBackoff)
             sleep(lastBackoff)
         # make the request from the zotero server
+        try:
+            headers['User-agent'] = self.userAgent
+        except AttributeError:
+            pass
         r = zrequest(url, method, body, headers)
         if self._cacheResponses and (method.upper() == 'GET'):
             self._cache.cache_store(url, r)
@@ -462,6 +468,7 @@ class Library(object):
             'ris',
             'tei',
             'wikipedia' ]
+        logging.debug("requesting format %s for item %s" % (format, itemKey))
         if format not in formats:
             logging.warning ("format '%s' is not in libZotero's list of known export formats" % format)
         aparams = {'target':'item', 'itemKey':itemKey, 'format':format}
