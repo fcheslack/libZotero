@@ -49,7 +49,7 @@ class Items(object):
     def addItemsFromFeed(self, feed):
         addedItems = []
         for entry in feed.entries:
-            item = Item(entry)
+            item = Item(entry,self.owningLibrary)
             self.addItem(item)
             addedItems.append(item)
         return addedItems

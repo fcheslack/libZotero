@@ -5,7 +5,7 @@ import json
 from copy import deepcopy
 from entry import *
 from zotero import responseIsError
-
+import zotero
 
 class Item(Entry):
     fieldMap = {
@@ -471,7 +471,7 @@ class Item(Entry):
 
     def getChildren(self):
         #short circuit if has item has no children
-        if self.numChildren == 0 or self.parentItemKey != false:
+        if self.numChildren == 0 or self.parentItemKey != False:
             return []
 
         config = {'target': 'children', 'libraryType': self.owningLibrary.libraryType, 'libraryID': self.owningLibrary.libraryID, 'itemKey': self.itemKey, 'content': 'json'}
