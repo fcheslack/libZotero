@@ -64,7 +64,7 @@ $jsfiles = array(
 'Utils.js',
 'Url.js',
 'File.js',
-'Filestorage.js',
+//'Filestorage.js',
 'Idb.js',
 //sets of functions with similar purposes that should probably be combined and clarified
 'CollectionFunctions.js',
