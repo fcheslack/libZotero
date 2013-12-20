@@ -1,10 +1,10 @@
 asyncTest( "Fetch Groups", function(){
     expect( 1 );
     
-    Zotero.config.apiKey = "NfMdcSUC2gbiapHfCf4ComvP";
-    var library = new Zotero.Library('user', 10150, 'fcheslack', 'NfMdcSUC2gbiapHfCf4ComvP');
+    Zotero.config.apiKey = "";
+    var library = new Zotero.Library('user', 0, '', '');
     
-    var d = library.groups.fetchUserGroups(10150);
+    var d = library.groups.fetchUserGroups(0);
     
     d.done(J.proxy(function(){
         ok(library.groups.groupsArray.length > 0, "non-empty groups array");
