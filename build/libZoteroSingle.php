@@ -2900,9 +2900,9 @@ function libZoteroDebug($m){
  */
 class Zotero_Library
 {
-    const ZOTERO_URI = 'https://apidev.zotero.org';
+    const ZOTERO_URI = 'https://api.zotero.org';
     const ZOTERO_WWW_URI = 'http://www.zotero.org';
-    const ZOTERO_WWW_API_URI = 'http://test.zotero.net/api';
+    const ZOTERO_WWW_API_URI = 'http://www.zotero.org/api';
     public $_apiKey = '';
     protected $_ch = null;
     protected $_followRedirects = true;
@@ -4119,9 +4119,9 @@ class Zotero_Library
  */
 class Zotero_Lib_Utils
 {
-    const ZOTERO_URI = 'https://apidev.zotero.org';
+    const ZOTERO_URI = 'https://api.zotero.org';
     const ZOTERO_WWW_URI = 'http://www.zotero.org';
-    const ZOTERO_WWW_API_URI = 'http://test.zotero.net/api';
+    const ZOTERO_WWW_API_URI = 'http://www.zotero.org/api';
     
     public static function randomString($len=0, $chars=null) {
         if ($chars === null) {

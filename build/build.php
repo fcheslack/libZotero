@@ -40,6 +40,7 @@ file_put_contents('../build/libZoteroSingle.php', $fullText);
 $jsfiles = array(
 //'underscore-min.js',
 'jquery.ba-bbq.min.js',
+'promise-0.1.1.min.js',
 //'WebToolKit.MD5.js',
 'spark-md5.min.js',
 'IndexedDBShim.min.js',
