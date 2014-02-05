@@ -367,6 +367,18 @@ Zotero.ajaxRequest = function(url, type, options){
         cache:false,
         error: Zotero.ajax.errorCallback
     };
+    
+    var successCallback;
+    var failureCallback;
+    if(options && options.success){
+        successCallback = options.success;
+        delete options.success;
+    }
+    if(options && options.error){
+        failureCallback = options.error;
+        delete options.error;
+    }
+    
     var reqOptions = J.extend({}, defaultOptions, options);
     if(type){
         reqOptions.type = type;
@@ -401,6 +413,10 @@ Zotero.ajaxRequest = function(url, type, options){
             });
         });
     });
+    
+    if(successCallback || failureCallback){
+        ajaxpromise.then(successCallback, failureCallback);
+    }
     
     Zotero.ajax.activeRequests.push(ajaxpromise);
     return ajaxpromise;
@@ -968,8 +984,8 @@ Zotero.Library.prototype.ajaxRequest = function(url, type, options){
         cache:false,
     };
     
-    var successCallback = null;
-    var failureCallback = null;
+    var successCallback;
+    var failureCallback;
     if(options && options.success){
         successCallback = options.success;
         delete options.success;
