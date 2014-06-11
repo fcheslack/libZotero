@@ -38,10 +38,8 @@ file_put_contents('../build/libZoteroSingle.php', $fullText);
 
 //concatenate js files into a single file to include
 $jsfiles = array(
-//'underscore-min.js',
 'jquery.ba-bbq.min.js',
 'promise-0.1.1.min.js',
-//'WebToolKit.MD5.js',
 'spark-md5.min.js',
 'IndexedDBShim.min.js',
 'Base.js',
@@ -65,13 +63,11 @@ $jsfiles = array(
 'Utils.js',
 'Url.js',
 'File.js',
-//'Filestorage.js',
 'Idb.js',
 //sets of functions with similar purposes that should probably be combined and clarified
 'CollectionFunctions.js',
 'ItemFunctions.js',
 'TagFunctions.js',
-'OfflineLibrary.js',
 'LibraryCache.js',
 'Preferences.js',
 );
