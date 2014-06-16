@@ -4,24 +4,24 @@ chdir(dirname(__FILE__));
 echo "building libZotero\n";
 echo getcwd() . "\n";
 //concatenate php files into a single file to include
-$files = array(
-"Zotero_Exception.php",
-"Mappings.php",
-"Feed.php",
-"Entry.php",
-"Collection.php",
-"Collections.php",
-"Items.php",
-"Response.php",
-"Cite.php",
-"Item.php",
-"Group.php",
-"Tag.php",
-//"User.php",
-"Creator.php",
-"Library.php",
-"Utils.php"
-);
+$files = [
+    "Zotero_Exception.php",
+    "Apc.php",
+    "Mappings.php",
+    "ApiObject.php",
+    "Collection.php",
+    "Collections.php",
+    "Items.php",
+    "Response.php",
+    "Cite.php",
+    "Item.php",
+    "Group.php",
+    "Tag.php",
+    //"User.php",
+    "Creator.php",
+    "Library.php",
+    "Utils.php"
+];
 
 $fullText = "<?php\n";
 
@@ -33,6 +33,7 @@ foreach($files as $file){
 
 $fullText .= "?>";
 
+$fullText = str_replace('https://api.zotero.org', 'https://apidev.zotero.org', $fullText);
 file_put_contents('../build/libZoteroSingle.php', $fullText);
 
 
@@ -44,9 +45,11 @@ $jsfiles = array(
 'IndexedDBShim.min.js',
 'Base.js',
 'Ajax.js',
-'Feed.js',
+'ApiObject.js',
+'ApiResponse.js',
+'Net.js',
 'Library.js',
-'Entry.js',
+'Container.js',
 'Collections.js',
 'Items.js',
 'Tags.js',

@@ -4,72 +4,45 @@
   * 
   * @package libZotero
   */
-class Zotero_Tag extends Zotero_Entry
+class Zotero_Tag extends Zotero_ApiObject
 {
-    /**
-     * @var int
-     */
-/*    public $tagID;
-    
-    public $libraryID;
-    
-    public $key;
-    
-    public $name;
-    
-    public $dateAdded;
-    
-    public $dateModified;
-    
-    public $type;
-*/    
     public $numItems = 0;
     
-    public function __construct($entryNode)
+    public function __construct($tagArray)
     {
-        if(!$entryNode){
-            libZoteroDebug( "no entryNode in tag constructor\n" );
+        if(!$tagArray){
             return;
         }
-        elseif(is_string($entryNode)){
-            libZoteroDebug( "entryNode is string in tag constructor\n" );
-            $xml = $entryNode;
-            $doc = new DOMDocument();
-            libZoteroDebug( $xml );
-            $doc->loadXml($xml);
-            $entryNode = $doc->getElementsByTagName('entry')->item(0);
-        }
-        parent::__construct($entryNode);
-        
-        $this->name = $this->title;
-        
-        if(!$entryNode){
-            libZoteroDebug( "second no entryNode in tag constructor\n" );
-            return;
+        elseif(is_string($tagArray)){
+            $tagArray = json_decode($tagArray);
         }
         
-        $numItems = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', "numItems")->item(0);
-        if($numItems) {
-            $this->numItems = (int)$numItems->nodeValue;
-        }
-        
-        $tagElements = $entryNode->getElementsByTagName("tag");
-        $tagElement = $tagElements->item(0);
-        
-        $contentNode = $entryNode->getElementsByTagName('content')->item(0);
-        if($contentNode){
-            $contentType = $contentNode->getAttribute('type');
-            if($contentType == 'application/json'){
-                $this->pristine = json_decode($contentNode->nodeValue, true);
-                $this->apiObject = json_decode($contentNode->nodeValue, true);
-            }
-            elseif($contentType == 'xhtml'){
-                //$this->parseXhtmlContent($contentNode);
-            }
-        }
+        parent::__construct($tagArray);
     }
     
+    public function __get($key) {
+        if(array_key_exists($key, $this->apiObj['data'])){
+            return $this->apiObj['data'][$key];
+        }
+        if(array_key_exists($key, $this->apiObj['meta'])){
+            return $this->apiObj['meta'][$key];
+        }
+        return null;
+    }
+    
+    public function __set($key, $val) {
+        if(array_key_exists($key, $this->apiObj['data'])){
+            $this->apiObj['data'][$key] = $val;
+        }
+        if(array_key_exists($key, $this->apiObj['meta'])){
+            $this->apiObj['meta'][$key] = $val;
+        }
+        return $this;
+    }
+
     public function get($key) {
+        return $this->$key;
+        /*
         switch($key){
             case "tag":
             case "name":
@@ -85,19 +58,6 @@ class Zotero_Tag extends Zotero_Entry
             return $this->$key;
         }
         return null;
-    }
-    
-    public function dataObject() {
-        $jsonItem = new stdClass;
-        
-        //inherited from Entry
-        $jsonItem->title = $this->title;
-        $jsonItem->dateAdded = $this->dateAdded;
-        $jsonItem->dateUpdated = $this->dateUpdated;
-        $jsonItem->id = $this->id;
-        
-        $jsonItem->properties = $this->properties;
-        
-        return $jsonItem;
+        */
     }
 }

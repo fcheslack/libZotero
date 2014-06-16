@@ -74,30 +74,6 @@ class Zotero_Lib_Utils
         }
     }
     
-    public static function parseKey($keynode){
-        $key = array();
-        $keyPerms = array("library"=>"0", "notes"=>"0", "write"=>"0", 'groups'=>array());
-        
-        $accessEls = $keyNode->getElementsByTagName('access');
-        foreach($accessEls as $access){
-            if($libraryAccess = $access->getAttribute("library")){
-                $keyPerms['library'] = $libraryAccess;
-            }
-            if($notesAccess = $access->getAttribute("notes")){
-                $keyPerms['notes'] = $notesAccess;
-            }
-            if($groupAccess = $access->getAttribute("group")){
-                $groupPermission = $access->getAttribute("write") == '1' ? 'write' : 'read';
-                $keyPerms['groups'][$groupAccess] = $groupPermission;
-            }
-            elseif($writeAccess = $access->getAttribute("write")) {
-                $keyPerms['write'] = $writeAccess;
-            }
-            
-        }
-        return $keyPerms;
-    }
-    
     public static function libraryString($type, $libraryID){
         $lstring = '';
         if($type == 'user') $lstring = 'u';
@@ -135,29 +111,12 @@ class Zotero_Lib_Utils
         return "<a href=\"http://dx.doi.org/{$matches[0]}\" rel=\"nofollow\">{$safetxt}</a>";
     }
     
-    public static function getFirstEntryNode($body){
-        $doc = new DOMDocument();
-        $doc->loadXml($body);
-        $entryNodes = $doc->getElementsByTagName("entry");
-        if($entryNodes->length){
-            return $entryNodes->item(0);
-        }
-        else {
-            return null;
-        }
-    }
-    
-    public static function getEntryNodes($body){
-        $doc = new DOMDocument();
-        $doc->loadXml($body);
-        $entryNodes = $doc->getElementsByTagName("entry");
-        return $entryNodes;
-    }
-    
     public static function utilRequest($url, $method="GET", $body=NULL, $headers=array(), $basicauth=array() ) {
         libZoteroDebug( "url being requested: " . $url . "\n\n");
         $ch = curl_init();
-        $httpHeaders = array();
+        $httpHeaders = array(
+            'useragent' => 'libZotero php'
+        );
         
         //set api version - allowed to be overridden by passed in value
         if(!isset($headers['Zotero-API-Version'])){

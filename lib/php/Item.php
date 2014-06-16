@@ -3,66 +3,20 @@
   * Representation of a Zotero Item
   * 
   * @package libZotero
-  * @see        Zotero_Entry
   */
 
-class Zotero_Item extends Zotero_Entry
+class Zotero_Item extends Zotero_ApiObject
 {
-    /**
-     * @var int
-     */
-    public $itemVersion = 0;
-    
-    /**
-     * @var int
-     */
-    public $itemKey = '';
-    
     /**
      * @var Zotero_Library
      */
     public $owningLibrary = null;
     
     /**
-     * @var string
-     */
-    public $itemType = null;
-    
-    /**
-     * @var string
-     */
-    public $year = '';
-    
-    /**
-     * @var string
-     */
-    public $creatorSummary = '';
-    
-    /**
-     * @var string
-     */
-    public $numChildren = 0;
-
-    /**
-     * @var string
-     */
-    public $numTags = 0;
-    
-    /**
      * @var array
      */
     public $childKeys = array();
     
-    /**
-     * @var string
-     */
-    public $parentItemKey = '';
-    
-    /**
-     * @var array
-     */
-    public $creators = array(); 
-
     /**
      * @var string
      */
@@ -78,33 +32,9 @@ class Zotero_Item extends Zotero_Entry
      */
     public $notes = array();
     
-    /**
-     * @var int Represents the relationship of the child to the parent. 0:file, 1:file, 2:snapshot, 3:web-link
-     */
-    public $linkMode = null;
-    
-    /**
-     * @var string
-     */
-    public $mimeType = null;
-    
-    public $parsedJson = null;
-    public $etag = '';
-    
     public $writeFailure = null;
     
-    /**
-     * @var string content node of response useful if formatted bib request and we need to use the raw content
-     */
-    public $content = null;
-    
-    public $bibContent = null;
-    
-    public $subContents = array();
-    
-    public $apiObject = array('itemType'=>null, 'tags'=>array(), 'collections'=>array(), 'relations'=>array());
-    
-    public $pristine = null;
+    public $pristineData = null;
     
     /**
      * @var array
@@ -294,181 +224,68 @@ class Zotero_Item extends Zotero_Entry
     );
     
     
-    public function __construct($entryNode=null, $library=null)
+    public function __construct($itemArray=null, $library=null)
     {
-        if(!$entryNode){
+        if(!$itemArray){
             return;
         }
-        elseif(is_string($entryNode)){
-            $xml = $entryNode;
-            $doc = new DOMDocument();
-            $doc->loadXml($xml);
-            $entryNode = $doc->getElementsByTagName('entry')->item(0);
-        }
         
-        parent::__construct($entryNode);
-        
-        //check if we have multiple subcontent nodes
-        $subcontentNodes = $entryNode->getElementsByTagNameNS("http://zotero.org/ns/api", "subcontent");
-        
-        // Extract the zapi elements: object key, version, itemType, year, numChildren, numTags
-        $this->itemKey = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'key')->item(0)->nodeValue;
-        $this->itemVersion = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'version')->item(0)->nodeValue;
-        $this->itemType = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'itemType')->item(0)->nodeValue;
-        // Look for numTags node
-        // this may be always present in v2 api
-        $numTagsNode = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', "numTags")->item(0);
-        if($numTagsNode){
-            $this->numTags = $numTagsNode->nodeValue;
-        }
-        
-        // Look for year node
-        $yearNode = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', "year")->item(0);
-        if($yearNode){
-            $this->year = $yearNode->nodeValue;
-        }
-        
-        // Look for numChildren node
-        $numChildrenNode = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', "numChildren")->item(0);
-        if($numChildrenNode){
-            $this->numChildren = $numChildrenNode->nodeValue;
-        }
-        
-        // Look for creatorSummary node - only present if there are non-empty creators
-        $creatorSummaryNode = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', "creatorSummary")->item(0);
-        if($creatorSummaryNode){
-            $this->creatorSummary = $creatorSummaryNode->nodeValue;
-        }
-        
-        // pull out and parse various subcontent nodes, or parse the single content node
-        if($subcontentNodes->length > 0){
-            for($i = 0; $i < $subcontentNodes->length; $i++){
-                $scnode = $subcontentNodes->item($i);
-                $this->parseContentNode($scnode);
-            }
-        }
-        else{
-            $contentNode = $entryNode->getElementsByTagName('content')->item(0);
-            $this->parseContentNode($contentNode);
-        }
-        
+        parent::__construct($itemArray);
         if($library !== null){
             $this->associateWithLibrary($library);
         }
     }
     
-    public function parseContentNode($node){
-        $type = $node->getAttributeNS('http://zotero.org/ns/api', 'type');
-        if($type == 'application/json' || $type == 'json'){
-            $this->pristine = json_decode($node->nodeValue, true);
-            $this->apiObject = json_decode($node->nodeValue, true);
-            $this->apiObj = &$this->apiObject;
-            if(isset($this->apiObject['creators'])){
-                $this->creators = $this->apiObject['creators'];
-            }
-            else{
-                $this->creators = array();
-            }
-            $this->itemVersion = isset($this->apiObject['itemVersion']) ? $this->apiObject['itemVersion'] : 0;
-            $this->parentItemKey = isset($this->apiObject['parentItem']) ? $this->apiObject['parentItem'] : false;
-            
-            if($this->itemType == 'attachment'){
-                $this->mimeType = $this->apiObject['contentType'];
-                $this->translatedMimeType = Zotero_Lib_Utils::translateMimeType($this->mimeType);
-            }
-            if(array_key_exists('linkMode', $this->apiObject)){
-                $this->linkMode = $this->apiObject['linkMode'];
-            }
-            $this->synced = true;
+    public function __get($key) {
+        if(array_key_exists($key, $this->apiObj['data'])){
+            return $this->apiObj['data'][$key];
         }
-        elseif($type == 'bib'){
-            $bibNode = $node->getElementsByTagName('div')->item(0);
-            $this->bibContent = $bibNode->ownerDocument->saveXML($bibNode);
+        if(array_key_exists($key, $this->apiObj['meta'])){
+            return $this->apiObj['meta'][$key];
         }
         
-        $contentString = '';
-        $childNodes = $node->childNodes;
-        foreach($childNodes as $childNode){
-            $contentString .= $childNode->ownerDocument->saveXML($childNode);
+        switch($key){
+            case 'key':
+            case 'itemKey':
+                return $this->apiObj['key'];
+            case 'version':
+            case 'itemVersion':
+                return $this->apiObj['version'];
+            case 'year':
+                throw new \Exception('Not implemented');
+            case 'parentItem':
+            case 'parentItemKey':
+                return $this->apiObj['data']['parentItem'];
         }
-        $this->subContents[$type] = $contentString;
+        
+        return null;
+    }
+    
+    public function __set($key, $val) {
+        if(array_key_exists($key, $this->apiObj['data'])){
+            $this->apiObj['data'][$key] = $val;
+        }
+        if(array_key_exists($key, $this->apiObj['meta'])){
+            $this->apiObj['meta'][$key] = $val;
+        }
+        return $this;
     }
     
     public function initItemFromTemplate($template){
-        $this->itemVersion = 0;
+        $this->version = 0;
         
         $this->itemType = $template['itemType'];
-        $this->itemKey = '';
+        $this->key = '';
         $this->pristine = $template;
         $this->apiObject = $template;
     }
     
     public function get($key){
-        switch($key){
-            case 'key':
-            case 'itemKey':
-                return $this->itemKey;
-            case 'itemVersion':
-            case 'version':
-                return $this->itemVersion;
-            case 'title':
-                return $this->title;
-            case 'creatorSummary':
-                return $this->creatorSummary;
-            case 'year':
-                return $this->year;
-            case 'parentItem':
-            case 'parentItemKey':
-                return $this->parentItemKey;
-        }
-        
-        if(array_key_exists($key, $this->apiObject)){
-            return $this->apiObject[$key];
-        }
-        
-        if(property_exists($this, $key)){
-            return $this->$key;
-        }
-        return null;
+        return $this->$key;
     }
     
     public function set($key, $val){
-        if(array_key_exists($key, $this->apiObject)){
-            $this->apiObject[$key] = $val;
-        }
-        
-        switch($key){
-            case "itemKey":
-            case "key":
-                $this->itemKey = $val;
-                $this->apiObject['itemKey'] = $val;
-                break;
-            case "itemVersion":
-            case "version":
-                $this->itemVersion = $val;
-                $this->apiObject["itemVersion"] = $val;
-                break;
-            case "title":
-                $this->title = $val;
-                break;
-            case "itemType":
-                $this->itemType = $val;
-                //TODO: translate api object to new item type
-                break;
-            case "linkMode":
-                //TODO: something here?
-                break;
-            case "deleted":
-                $this->apiObject["deleted"] = $val;
-                break;
-            case "parentItem":
-            case "parentKey":
-            case "parentItemKey":
-                if( $val === '' ){ $val = false; }
-                $this->parentItemKey = $val;
-                $this->apiObject["parentItem"] = $val;
-                break;
-        }
+        $this->$key = $val;
     }
     
     public function addCreator($creatorArray){
@@ -565,12 +382,7 @@ class Zotero_Item extends Zotero_Entry
     }
     
     public function addToCollection($collection){
-        if(is_string($collection)){
-            $collectionKey = $collection;
-        }
-        else {
-            $collectionKey = $collection->get('collectionKey');
-        }
+        $collectionKey = $this->extractKey($collection);
         
         $memberCollectionKeys = $this->get('collections');
         if(!is_array($memberCollectionKeys)){
@@ -586,12 +398,7 @@ class Zotero_Item extends Zotero_Entry
     }
     
     public function removeFromCollection($collection){
-        if(is_string($collection)){
-            $collectionKey = $collection;
-        }
-        else {
-            $collectionKey = $collection->get('collectionKey');
-        }
+        $collectionKey = $this->extractKey($collection);
         
         $memberCollectionKeys = $this->get('collections');
         if(!is_array($memberCollectionKeys)){
@@ -693,20 +500,14 @@ class Zotero_Item extends Zotero_Entry
             return array();
         }
         
-        $config = array('target'=>'children', 'libraryType'=>$this->owningLibrary->libraryType, 'libraryID'=>$this->owningLibrary->libraryID, 'itemKey'=>$this->itemKey, 'content'=>'json');
+        $config = array('target'=>'children', 'libraryType'=>$this->owningLibrary->libraryType, 'libraryID'=>$this->owningLibrary->libraryID, 'itemKey'=>$this->key);
         $requestUrl = $this->owningLibrary->apiRequestString($config);
         
         $response = $this->owningLibrary->_request($requestUrl, 'GET');
         
         //load response into item objects
-        $fetchedItems = array();
-        if($response->isError()){
-            return false;
-            throw new Exception("Error fetching items");
-        }
-        
-        $feed = new Zotero_Feed($response->getRawBody());
-        $fetchedItems = $this->owningLibrary->items->addItemsFromFeed($feed);
+        $respArray = $response->parseResponseBody();
+        $fetchedItems = $this->owningLibrary->items->addItemsFromJson($respArray);
         return $fetchedItems;
     }
     

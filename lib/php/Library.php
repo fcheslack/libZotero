@@ -1,6 +1,6 @@
 <?php
 define('LIBZOTERO_DEBUG', 0);
-define('ZOTERO_API_VERSION', 2);
+define('ZOTERO_API_VERSION', 3);
 function libZoteroDebug($m){
     if(LIBZOTERO_DEBUG){
         echo $m;
@@ -15,7 +15,7 @@ function libZoteroDebug($m){
  */
 class Zotero_Library
 {
-    const ZOTERO_URI = 'https://api.zotero.org';
+    const ZOTERO_URI = 'https://apidev.zotero.org';
     const ZOTERO_WWW_URI = 'http://www.zotero.org';
     const ZOTERO_WWW_API_URI = 'http://www.zotero.org/api';
     public $_apiKey = '';
@@ -31,8 +31,8 @@ class Zotero_Library
     public $dirty = null;
     public $useLibraryAsContainer = true;
     public $libraryVersion = 0;
+    public $cache;
     protected $_lastResponse = null;
-    protected $_lastFeed = null;
     protected $_cacheResponses = false;
     protected $_cachettl = 0;
     protected $_cachePrefix = 'libZotero';
@@ -74,6 +74,7 @@ class Zotero_Library
         
         $this->dirty = false;
         if($cachettl > 0){
+            $this->cache = new Zotero_Apc_Cache();
             $this->_cachettl = $cachettl;
             $this->_cacheResponses = true;
         }
@@ -93,7 +94,7 @@ class Zotero_Library
     public function setFollow($follow){
         $this->_followRedirects = $follow;
     }
-
+    
     /**
      * set the cache time to live after initialization
      *
@@ -178,7 +179,7 @@ class Zotero_Library
         
         $gotCached = false;
         if($this->_cacheResponses && $umethod == 'GET'){
-            $cachedResponse = apc_fetch($url, $success);
+            $cachedResponse = $this->cache->fetch($url, $success);
             if($success){
                 $responseBody = $cachedResponse['responseBody'];
                 $responseInfo = $cachedResponse['responseInfo'];
@@ -208,7 +209,7 @@ class Zotero_Library
                 'responseInfo'=>$responseInfo,
             );
             if($this->_cacheResponses && !($zresponse->isError()) ){
-                apc_store($url, $saveCached, $this->_cachettl);
+                $this->cache->store($url, $saveCached, $this->_cachettl);
             }
         }
         $this->_lastResponse = $zresponse;
@@ -233,7 +234,6 @@ class Zotero_Library
         
         return $response;
     }
-    
     
     public function _cacheSave(){
         
@@ -260,15 +260,6 @@ class Zotero_Library
      */
     public function getLastStatus(){
         return $this->_lastResponse->getStatus();
-    }
-    
-    /**
-     * Get the last Zotero_Feed parsed
-     *
-     * @return Zotero_Feed
-     */
-    public function getLastFeed(){
-        return $this->_lastFeed;
     }
     
     /**
@@ -547,19 +538,14 @@ class Zotero_Library
      */
     public function fetchTrashedItems($params=array()){
         $fetchedItems = array();
-        $aparams = array_merge(array('content'=>'json'), array('key'=>$this->_apiKey), $params, array('collectionKey'=>'trash'));
+        $aparams = array_merge(array('key'=>$this->_apiKey), $params, array('collectionKey'=>'trash'));
         $reqUrl = $this->apiRequestString($aparams);
         libZoteroDebug( "\n");
         libZoteroDebug( $reqUrl . "\n" );
         //die;
         $response = $this->_request($reqUrl);
-        if($response->isError()){
-            throw new Exception("Error fetching items");
-        }
-        
-        $feed = new Zotero_Feed($response->getRawBody());
-        $this->_lastFeed = $feed;
-        $fetchedItems = $this->items->addItemsFromFeed($feed);
+        $responseArray = $response->parseResponseBody();
+        $fetchedItems = $this->items->addItemsFromJson($responseArray);
         
         return $fetchedItems;
     }
@@ -572,18 +558,13 @@ class Zotero_Library
      */
     public function fetchItems($params = array()){
         $fetchedItems = array();
-        $aparams = array_merge(array('target'=>'items', 'content'=>'json'), array('key'=>$this->_apiKey), $params);
+        $aparams = array_merge(array('target'=>'items'), array('key'=>$this->_apiKey), $params);
         $reqUrl = $this->apiRequestString($aparams);
         libZoteroDebug( $reqUrl . "\n" );
         
         $response = $this->_request($reqUrl);
-        if($response->isError()){
-            throw new Exception("Error fetching items");
-        }
-        
-        $feed = new Zotero_Feed($response->getRawBody());
-        $this->_lastFeed = $feed;
-        $fetchedItems = $this->items->addItemsFromFeed($feed);
+        $respArray = $response->parseResponseBody();
+        $fetchedItems = $this->items->addItemsFromJson($respArray);
         
         return $fetchedItems;
     }
@@ -631,18 +612,12 @@ class Zotero_Library
      * @return Zotero_Item
      */
     public function fetchItem($itemKey, $params=array()){
-        $aparams = array_merge(array('target'=>'item', 'content'=>'json', 'itemKey'=>$itemKey), $params);
+        $aparams = array_merge(array('target'=>'item', 'itemKey'=>$itemKey), $params);
         $reqUrl = $this->apiRequestString($aparams);
         
         $response = $this->_request($reqUrl, 'GET');
-        if($response->isError()){
-            return false;
-            throw new Exception("Error fetching items");
-        }
-        
-        $entry = Zotero_Lib_Utils::getFirstEntryNode($response->getRawBody());
-        if($entry == null) return false;
-        $item = new Zotero_Item($entry, $this);
+        $respArray = $response->parseResponseBody();
+        $item = new Zotero_Item($respArray, $this);
         $this->items->addItem($item);
         return $item;
     }
@@ -655,21 +630,15 @@ class Zotero_Library
      */
     public function fetchItemBib($itemKey, $style){
         //TODO:parse correctly and return just bib
-        $aparams = array('target'=>'item', 'content'=>'bib', 'itemKey'=>$itemKey);
+        $aparams = array('target'=>'item', 'include'=>'bib', 'itemKey'=>$itemKey);
         if($style){
             $aparams['style'] = $style;
         }
         $reqUrl = $this->apiRequestString($aparams);
-        
         $response = $this->_request($reqUrl, 'GET');
-        if($response->isError()){
-            return false;
-            throw new Exception("Error fetching items");
-        }
+        $respArray = $response->parseResponseBody();
         
-        $entry = Zotero_Lib_Utils::getFirstEntryNode($response->getRawBody());
-        if($entry == null) return false;
-        $item = new Zotero_Item($entry, $this);
+        $item = new Zotero_Item($respArray, $this);
         $this->items->addItem($item);
         return $item;
     }
@@ -700,7 +669,7 @@ class Zotero_Library
     
     public function uploadNewAttachedFile($item, $fileContents, $fileinfo=array()){
         //get upload authorization
-        $aparams = array('target'=>'item', 'targetModifier'=>'file', 'itemKey'=>$item->itemKey);
+        $aparams = array('target'=>'item', 'targetModifier'=>'file', 'itemKey'=>$item->key);
         $reqUrl = $this->apiRequestString($aparams);
         $postData = "md5={$fileinfo['md5']}&filename={$fileinfo['filename']}&filesize={$fileinfo['filesize']}&mtime={$fileinfo['mtime']}";
         //$postData = $fileinfo;
@@ -726,7 +695,7 @@ class Zotero_Library
                 if($uploadResponse->getStatus() == 201){
                     libZoteroDebug("got upload response 201 ");
                     //register upload
-                    $ruparams = array('target'=>'item', 'targetModifier'=>'file', 'itemKey'=>$item->itemKey);
+                    $ruparams = array('target'=>'item', 'targetModifier'=>'file', 'itemKey'=>$item->key);
                     $registerReqUrl = $this->apiRequestUrl($ruparams) . $this->apiQueryString($ruparams);
                     //$registerUploadData = array('upload'=>$resObject['uploadKey']);
                     $registerUploadData = "upload=" . $resObject['uploadKey'];
@@ -755,7 +724,7 @@ class Zotero_Library
     public function createAttachmentItem($parentItem, $attachmentInfo){
         //get attachment template
         $templateItem = $this->getTemplateItem('attachment', 'imported_file');
-        $templateItem->parentKey = $parentItem->itemKey;
+        $templateItem->parentKey = $parentItem->key;
         
         //create child item
         return $this->createItem($templateItem);
@@ -822,7 +791,7 @@ class Zotero_Library
         }
         
         //set parentItem for all notes
-        $parentItemKey = $parentItem->get("itemKey");
+        $parentItemKey = $parentItem->key;
         foreach($noteWriteItems as $nitem){
             $nitem->set("parentItem", $parentItemKey);
         }
@@ -939,13 +908,9 @@ class Zotero_Library
      * @return array $fetchedItems
      */
     public function fetchItemChildren($item){
-        if(is_string($item)){
-            $itemKey = $item;
-        }
-        else {
-            $itemKey = $item->itemKey;
-        }
-        $aparams = array('target'=>'children', 'itemKey'=>$itemKey, 'content'=>'json');
+        $itemKey = Zotero_ApiObject::extractKey($item);
+        
+        $aparams = array('target'=>'children', 'itemKey'=>$itemKey);
         $reqUrl = $this->apiRequestString($aparams);
         $response = $this->_request($reqUrl, 'GET');
         
@@ -956,11 +921,8 @@ class Zotero_Library
             throw new Exception("Error fetching items");
         }
         
-        $feed = new Zotero_Feed($response->getRawBody());
-        
-        $this->_lastFeed = $feed;
-        $fetchedItems = $this->items->addItemsFromFeed($feed);
-        return $fetchedItems;
+        $respArray = $response->parseResponseBody();
+        return $this->items->addItemsFromJson($respArray);
     }
     
     /**
@@ -1031,29 +993,20 @@ class Zotero_Library
      * @return array $tags
      */
     public function fetchAllTags($params){
-        $aparams = array_merge(array('target'=>'tags', 'content'=>'json', 'limit'=>50), $params);
+        $aparams = array_merge(array('target'=>'tags', 'limit'=>50), $params);
         $reqUrl = $this->apiRequestString($aparams);
         do{
             $response = $this->_request($reqUrl, 'GET');
-            if($response->isError()){
-                return false;
-            }
-            $doc = new DOMDocument();
-            $doc->loadXml($response->getBody());
-            $feed = new Zotero_Feed($doc);
-            $entries = $doc->getElementsByTagName('entry');
-            $tags = array();
-            foreach($entries as $entry){
-                $tag = new Zotero_Tag($entry);
+            $respArray = $response->parseResponseBody();
+            foreach($respArray as $tagArray){
+                $tag = new Zotero_Tag($tagArray);
                 $tags[] = $tag;
             }
-            if(isset($feed->links['next'])){
-                $nextUrl = $feed->links['next']['href'];
-                $parsedNextUrl = parse_url($nextUrl);
-                $parsedNextUrl['query'] = $this->apiQueryString(array_merge(array('key'=>$this->_apiKey), $this->parseQueryString($parsedNextUrl['query']) ) );
-                $reqUrl = $parsedNextUrl['scheme'] . '://' . $parsedNextUrl['host'] . $parsedNextUrl['path'] . $parsedNextUrl['query'];
-            }
-            else{
+            
+            $responseLinks = $response->linkHeaders();
+            if(isset($responseLinks['next'])){
+                $reqUrl = $responseLinks['next'];
+            } else {
                 $reqUrl = false;
             }
         } while($reqUrl);
@@ -1068,20 +1021,14 @@ class Zotero_Library
      * @return array $tags
      */
     public function fetchTags($params = array()){
-        $aparams = array_merge(array('target'=>'tags', 'content'=>'json', 'limit'=>50), $params);
+        $aparams = array_merge(array('target'=>'tags', 'limit'=>50), $params);
         $reqUrl = $this->apiRequestString($aparams);
         
+        $tags = [];
         $response = $this->_request($reqUrl, 'GET');
-        if($response->isError()){
-            libZoteroDebug( $response->getMessage() . "\n" );
-            libZoteroDebug( $response->getBody() );
-            return false;
-        }
-        
-        $entries = Zotero_Lib_Utils::getEntryNodes($response->getRawBody());
-        $tags = array();
-        foreach($entries as $entry){
-            $tag = new Zotero_Tag($entry);
+        $respArray = $response->parseResponseBody();
+        foreach($respArray as $tagArray){
+            $tag = new Zotero_Tag($tagArray);
             $tags[] = $tag;
         }
         
@@ -1109,27 +1056,9 @@ class Zotero_Library
         
         $reqUrl = $this->apiRequestUrl(array('target'=>'key', 'apiKey'=>$key, 'userID'=>$userID));
         $response = $this->_request($reqUrl, 'GET');
-        if($response->isError()){
-            return false;
-        }
-        $body = $response->getBody();
-        $doc = new DOMDocument();
-        $doc->loadXml($body);
-        $keyNode = $doc->getElementsByTagName('key')->item(0);
-        $keyPerms = $this->parseKey($keyNode);
-        return $keyPerms;
+        $keyArray = $response->parseResponseBody();
+        return $keyArray;
     }
-    
-    /**
-     * Parse a key response into an array
-     *
-     * @param $keyNode DOMNode from key response
-     * @return array $keyPermissions
-     */
-    public function parseKey($keyNode){
-        return Zotero_Lib_Utils::parseKey($keyNode);
-    }
-    
     
     /**
      * Get groups a user belongs to
@@ -1141,20 +1070,14 @@ class Zotero_Library
         if($userID == ''){
             $userID = $this->libraryID;
         }
-        $aparams = array('target'=>'userGroups', 'userID'=>$userID, 'content'=>'json', 'order'=>'title');
+        $aparams = array('target'=>'userGroups', 'userID'=>$userID, 'order'=>'title');
         $reqUrl = $this->apiRequestString($aparams);
         
         $response = $this->_request($reqUrl, 'GET');
-        if($response->isError()){
-            libZoteroDebug( $response->getStatus() );
-            libZoteroDebug( $response->getBody() );
-            return false;
-        }
-        
-        $entries = Zotero_Lib_Utils::getEntryNodes($response->getRawBody());
+        $respArray = $response->parseResponseBody();
         $groups = array();
-        foreach($entries as $entry){
-            $group = new Zotero_Group($entry);
+        foreach($respArray as $groupArray){
+            $group = new Zotero_Group($groupArray);
             $groups[] = $group;
         }
         return $groups;
@@ -1167,17 +1090,13 @@ class Zotero_Library
      */
     public function fetchRecentGroups(){
         return array();
-        $aparams = array('target'=>'groups', 'limit'=>'10', 'content'=>'json', 'order'=>'dateAdded', 'sort'=>'desc', 'fq'=>'-GroupType:Private');
+        $aparams = array('target'=>'groups', 'limit'=>'10', 'order'=>'dateAdded', 'sort'=>'desc', 'fq'=>'-GroupType:Private');
         $reqUrl = $this->apiRequestString($aparams);
         $response = $this->_request($reqUrl, 'GET');
-        if($response->isError()){
-            return false;
-        }
-        
-        $entries = Zotero_Lib_Utils::getEntryNodes($response->getRawBody());
+        $respArray = $response->parseResponseBody();
         $groups = array();
-        foreach($entries as $entry){
-            $group = new Zotero_Group($entry);
+        foreach($respArray as $groupArray){
+            $group = new Zotero_Group($groupArray);
             $groups[] = $group;
         }
         return $groups;

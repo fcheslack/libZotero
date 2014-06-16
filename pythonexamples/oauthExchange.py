@@ -11,8 +11,8 @@ from libZotero import zotero
 # Get a real consumer key & secret from https://www.zotero.org/oauth/apps
 zotauth = OAuth1Service(
     name='zotero',
-    consumer_key='<App Consumer Key>',
-    consumer_secret='<App Consumer Secret>',
+    consumer_key='2eaf8a75642f76421e09',
+    consumer_secret='1ccda0aae4d5a885ddc6',
     request_token_url='https://www.zotero.org/oauth/request',
     access_token_url='https://www.zotero.org/oauth/access',
     authorize_url='https://www.zotero.org/oauth/authorize',
@@ -36,4 +36,7 @@ apiKey = accessVars['oauth_token'][0]
 userID = accessVars['userID'][0]
 username = accessVars['username'][0]
 
+print 'Api Key: ' + apiKey
+print 'UserID: ' + userID
+print 'Username: ' + username
 zlib = zotero.Library('user', userID, username, apiKey)

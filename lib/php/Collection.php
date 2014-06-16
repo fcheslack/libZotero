@@ -5,76 +5,63 @@
   * @package    libZotero
   * @see        Zotero_Entry
   */
-class Zotero_Collection extends Zotero_Entry
+class Zotero_Collection extends Zotero_ApiObject
 {
-    /**
-     * @var int
-     */
-    public $collectionVersion = 0;
-    
-    /**
-     * @var int
-     */
-    public $collectionKey = null;
-    
-    public $name = '';
-    /**
-     * @var int
-     */
-    public $numCollections = 0;
-    
-    /**
-     * @var int
-     */
-    public $numItems = 0;
-    
     public $topLevel;
-    /**
-     * @var string
-     */
-    public $parentCollectionKey = false;
-    
     public $apiObject = array();
-    
-    public $pristine = array();
-    
+    public $pristineData = array();
     public $childKeys = array();
     
-    public function __construct($entryNode, $library=null)
+    public function __construct($collectionArray, $library=null)
     {
-        if(!$entryNode){
+        if(!$collectionArray){
             return;
         }
-        parent::__construct($entryNode);
-        
-        $this->name = $this->title; //collection name is the Entry title
-        
-        //parse zapi tags
-        $this->collectionKey = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'key')->item(0)->nodeValue;
-        $this->collectionVersion = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'version')->item(0)->nodeValue;
-        $this->numCollections = $entryNode->getElementsByTagName('numCollections')->item(0)->nodeValue;
-        $this->numItems = $entryNode->getElementsByTagName('numItems')->item(0)->nodeValue;
-        
-        $contentNode = $entryNode->getElementsByTagName('content')->item(0);
-        if($contentNode){
-            $contentType = $contentNode->getAttribute('type');
-            if($contentType == 'application/json'){
-                $this->pristine = json_decode($contentNode->nodeValue);
-                $this->apiObject = json_decode($contentNode->nodeValue, true);
-                $this->parentCollectionKey = $this->apiObject['parentCollection'];
-                $this->name = $this->apiObject['name'];
-            }
-            elseif($contentType == 'xhtml'){
-                //$this->parseXhtmlContent($contentNode);
-            }
-        }
+        parent::__construct($collectionArray);
         
         if($library !== null){
             $this->associateWithLibrary($library);
         }
     }
     
+    public function __get($key) {
+        if(array_key_exists($key, $this->apiObj['data'])){
+            return $this->apiObj['data'][$key];
+        }
+        if(array_key_exists($key, $this->apiObj['meta'])){
+            return $this->apiObj['meta'][$key];
+        }
+        
+        switch($key){
+            case 'title':
+                return $this->name;
+            case 'key':
+            case 'collectionKey':
+                return $this->apiObj['key'];
+            case 'version':
+            case 'collectionVersion':
+                return $this->apiObj['version'];
+            case 'parentCollection':
+            case 'parentCollectionKey':
+                return $this->apiObj['data']['parentCollection'];
+        }
+        
+        return null;
+    }
+    
+    public function __set($key, $val) {
+        if(array_key_exists($key, $this->apiObj['data'])){
+            $this->apiObj['data'][$key] = $val;
+        }
+        if(array_key_exists($key, $this->apiObj['meta'])){
+            $this->apiObj['meta'][$key] = $val;
+        }
+        return $this;
+    }
+    
     public function get($key){
+        return $this->$key;
+        /*
         switch($key){
             case 'title':
             case 'name':
@@ -98,9 +85,12 @@ class Zotero_Collection extends Zotero_Entry
             return $this->$key;
         }
         return null;
+        */
     }
     
     public function set($key, $val){
+        return $this->$key = $val;
+        /*
         switch($key){
             case 'title':
             case 'name':
@@ -131,6 +121,7 @@ class Zotero_Collection extends Zotero_Entry
         if(property_exists($this, $key)){
             $this->$key = $val;
         }
+        */
     }
     
     public function collectionJson(){
@@ -140,21 +131,5 @@ class Zotero_Collection extends Zotero_Entry
     public function writeApiObject() {
         $updateItem = array_merge($this->pristine, $this->apiObject);
         return $updateItem;
-    }
-    
-    public function dataObject() {
-        $jsonItem = new stdClass;
-        
-        //inherited from Entry
-        $jsonItem->title = $this->title;
-        $jsonItem->dateAdded = $this->dateAdded;
-        $jsonItem->dateUpdated = $this->dateUpdated;
-        $jsonItem->id = $this->id;
-        $jsonItem->links = $this->links;
-        
-        $jsonItem->collectionKey = $this->collectionKey;
-        $jsonItem->childKeys = $this->childKeys;
-        $jsonItem->parentCollectionKey = $this->parentCollectionKey;
-        return $jsonItem;
     }
 }

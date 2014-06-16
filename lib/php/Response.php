@@ -675,4 +675,31 @@ class libZotero_Http_Response
 
         return new libZotero_Http_Response($code, $headers, $body, $version, $message);
     }
+    
+    public function linkHeaders()
+    {
+        $parsedLinks = [];
+        $linkHeader = $this->getHeader('Link');
+        $links = explode($linkHeader, ',');
+        $linkRegex = '/^<([^>]+)>; rel="([^\"]*)"$/';
+        foreach($links as $link){
+            $matches = [];
+            preg_match($linkRegex, $link, $matches);
+            $parsedLinks[$matches[2]] = $matches[1];
+        }
+        return $parsedLinks;
+    }
+    
+    public function parseResponseBody() {
+        $bodyString = $this->getBody();
+        if($this->isError()){
+            throw new Exception("Request was an error: {$bodyString}");
+        }
+        $parsedJson = json_decode($bodyString, true);
+        return $parsedJson;
+    }
+    
+    public function getTotalResults() {
+        return intval($this->getHeader('Total-Results'));
+    }
 }

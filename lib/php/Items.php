@@ -21,19 +21,17 @@ class Zotero_Items
     
     //add a Zotero_Item to this container of items
     public function addItem($item) {
-        $itemKey = $item->itemKey;
+        $itemKey = $item->key;
         $this->itemObjects[$itemKey] = $item;
         if($this->owningLibrary){
             $item->associateWithLibrary($this->owningLibrary);
         }
     }
     
-    //add items to this container from a Zotero_Feed object
-    public function addItemsFromFeed($feed) {
-        $entries = $feed->entryNodes;
-        $addedItems = array();
-        foreach($entries as $entry){
-            $item = new Zotero_Item($entry);
+    public function addItemsFromJson($jsonItemsArray) {
+        $addedItems = [];
+        foreach($jsonItemsArray as $itemArray){
+            $item = new Zotero_Item($itemArray);
             $this->addItem($item);
             $addedItems[] = $item;
         }
@@ -58,7 +56,7 @@ class Zotero_Items
             if($item->parentKey){
                 $pitem = $this->getItem($item->parentKey);
                 if($pitem){
-                    $pitem->childKeys[] = $item->itemKey;
+                    $pitem->childKeys[] = $item->key;
                 }
             }
         }
@@ -84,11 +82,11 @@ class Zotero_Items
         $writeItems = array();
         
         foreach($items as $item){
-            $itemKey = $item->get('itemKey');
+            $itemKey = $item->key;
             if($itemKey == ""){
                 $newItemKey = Zotero_Lib_Utils::getKey();
-                $item->set('itemKey', $newItemKey);
-                $item->set('itemVersion', 0);
+                $item->key = $newItemKey;
+                $item->version = 0;
             }
             $writeItems[] = $item;
             
@@ -96,15 +94,15 @@ class Zotero_Items
             $itemNotes = $item->get('notes');
             if($itemNotes && (count($itemNotes) > 0) ){
                 foreach($itemNotes as $note){
-                    $note->set('parentItem', $item->get('itemKey'));
-                    $note->set('itemKey', Zotero_Lib_Utils::getKey());
-                    $note->set('itemVersion', 0);
+                    $note->parentItem = $item->key;
+                    $note->key = Zotero_Lib_Utils::getKey();
+                    $note->version = 0;
                     $writeItems[] = $note;
                 }
             }
         }
         
-        $config = array('target'=>'items', 'libraryType'=>$this->owningLibrary->libraryType, 'libraryID'=>$this->owningLibrary->libraryID, 'content'=>'json');
+        $config = array('target'=>'items', 'libraryType'=>$this->owningLibrary->libraryType, 'libraryID'=>$this->owningLibrary->libraryID);
         $requestUrl = $this->owningLibrary->apiRequestString($config);
         $chunks = array_chunk($writeItems, 50);
         foreach($chunks as $chunk){
@@ -140,9 +138,9 @@ class Zotero_Items
     }
     
     public function deleteItem($item){
-        $aparams = array('target'=>'item', 'itemKey'=>$item->itemKey);
+        $aparams = array('target'=>'item', 'itemKey'=>$item->key);
         $reqUrl = $this->owningLibrary->apiRequestString($aparams);
-        $response = $this->owningLibrary->_request($reqUrl, 'DELETE', null, array('If-Unmodified-Since-Version'=>$item->itemVersion));
+        $response = $this->owningLibrary->_request($reqUrl, 'DELETE', null, array('If-Unmodified-Since-Version'=>$item->version));
         return $response;
     }
     
@@ -156,7 +154,7 @@ class Zotero_Items
         $itemKeys = array();
         $latestItemVersion = 0;
         foreach($items as $item){
-            array_push($itemKeys, $item->get('itemKey'));
+            array_push($itemKeys, $item->key);
             $v = $item->get('version');
             if($v > $latestItemVersion){
                 $latestItemVersion = $v;
