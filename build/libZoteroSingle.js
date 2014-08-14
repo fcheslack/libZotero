@@ -309,7 +309,7 @@ Zotero.Cache.prototype.load = function(params){
     try{
         var s = this.store[objectCacheString];
         if(!s){
-            Z.debug("No value found in cache store - " + objectCacheString, 3);
+            Z.error("No value found in cache store - " + objectCacheString, 3);
             return null;
         }
         else{
@@ -317,9 +317,7 @@ Zotero.Cache.prototype.load = function(params){
         }
     }
     catch(e){
-        Z.error('Error parsing retrieved cache data');
-        Z.debug(objectCacheString, 2);
-        Z.debug(this.store[objectCacheString], 2);
+        Z.error('Error parsing retrieved cache data: ' + objectCacheString + ' : ' + s);
         return null;
     }
 };
@@ -730,6 +728,11 @@ Zotero.ApiResponse = function(response) {
     this.links = {};
     
     if(response){
+        if(!response.isError){
+            this.isError = false;
+        } else {
+            this.isError = true;
+        }
         this.data = response.data;
         //this.jqxhr = response.jqxhr;
         this.parseResponse(response);
@@ -959,6 +962,7 @@ Zotero.Net.prototype.ajaxRequest = function(requestConfig){
             return response;
         },
         error: function(response){
+            Z.error("ajaxRequest rejected:" + response.jqxhr.statusCode() + " - " + response.jqxhr.responseText);
             return response;
         },
         //cache:false
@@ -983,6 +987,7 @@ Zotero.Net.prototype.ajaxRequest = function(requestConfig){
     delete config.error;
     
     ajaxpromise = new Promise(function(resolve, reject){
+        Z.debug(config);
         J.ajax(config)
         .then(function(data, textStatus, jqxhr){
             Z.debug("library.ajaxRequest jqxhr resolved. resolving Promise", 3);
@@ -997,12 +1002,21 @@ Zotero.Net.prototype.ajaxRequest = function(requestConfig){
             var r = new Zotero.ApiResponse({
                 jqxhr: jqxhr,
                 textStatus: textStatus,
-                errorThrown: errorThrown
+                errorThrown: errorThrown,
+                isError: true,
             });
             reject(r);
         });
     })
     .then(J.proxy(net.individualRequestDone, net))
+    .then(function(response){
+        //now that we're done handling, reject
+        if(response.isError){
+            Z.error("re-throwing ApiResponse that was a rejection");
+            throw response;
+        }
+        return response;
+    })
     .then(config.zsuccess, config.zerror);
     
     //Zotero.ajax.activeRequests.push(ajaxpromise);
@@ -1033,12 +1047,20 @@ Zotero.Library = function(type, libraryID, libraryUrlIdentifier, apiKey){
     };
     library._apiKey = apiKey || '';
     
-    library.libraryBaseWebsiteUrl = Zotero.config.libraryPathString;
-    if(type == 'group'){
-        library.libraryBaseWebsiteUrl += 'groups/';
+    if(Zotero.config.librarySettings){
+        library.libraryBaseWebsiteUrl = Zotero.config.librarySettings.libraryPathString;
     }
-    this.libraryBaseWebsiteUrl += libraryUrlIdentifier + '/items';
-    
+    else{
+        library.libraryBaseWebsiteUrl = Zotero.config.baseWebsiteUrl;
+        if(type == 'group'){
+            library.libraryBaseWebsiteUrl += 'groups/';
+        }
+        if(libraryUrlIdentifier){
+            this.libraryBaseWebsiteUrl += libraryUrlIdentifier + '/items';
+        } else {
+            Z.warn("no libraryUrlIdentifier specified");
+        }
+    }
     //object holders within this library, whether tied to a specific library or not
     library.items = new Zotero.Items();
     library.items.owningLibrary = library;
@@ -1578,21 +1600,25 @@ Zotero.Library.prototype.sendToLibrary = function(items, foreignLibrary){
     var foreignItems = [];
     for(var i = 0; i < items.length; i++){
         var item = items[i];
-        var newForeignItem = new Zotero.Item();
-        newForeignItem.apiObj = J.extend({}, items[i].apiObj);
+        var transferData = item.emptyJsonItem();
+        transferData.data = J.extend({}, items[i].apiObj.data);
         //clear data that shouldn't be transferred:itemKey, collections
-        delete newForeignItem.apiObj.key;
-        delete newForeignItem.apiObj.version;
-        newForeignItem.apiObj.collections = [];
+        transferData.data.key = '';
+        transferData.data.version = 0;
+        transferData.data.collections = [];
+        delete transferData.data.dateModified;
+        delete transferData.data.dateAdded;
+        
+        var newForeignItem = new Zotero.Item(transferData);
         
         newForeignItem.pristine = J.extend({}, newForeignItem.apiObj);
         newForeignItem.initSecondaryData();
         
         //set relationship to tie to old item
-        if(!newForeignItem.apiObj.relations){
-            newForeignItem.apiObj.relations = {};
+        if(!newForeignItem.apiObj.data.relations){
+            newForeignItem.apiObj.data.relations = {};
         }
-        newForeignItem.apiObj.relations['owl:sameAs'] = Zotero.url.relationUrl(item.owningLibrary.libraryType, item.owningLibrary.libraryID, item.key);
+        newForeignItem.apiObj.data.relations['owl:sameAs'] = Zotero.url.relationUrl(item.owningLibrary.libraryType, item.owningLibrary.libraryID, item.key);
         foreignItems.push(newForeignItem);
     }
     return foreignLibrary.items.writeItems(foreignItems);
@@ -2317,7 +2343,7 @@ Zotero.Items.prototype.addItem = function(item){
 };
 
 Zotero.Items.prototype.addItemsFromJson = function(jsonBody){
-    Z.debug("addItemsFromJson");
+    Z.debug("addItemsFromJson", 3);
     var items = this;
     var parsedItemJson = jsonBody;
     var itemsAdded = [];
@@ -2750,7 +2776,8 @@ Zotero.Groups.prototype.fetchUserGroups = function(userID, apikey){
     .then(function(response){
         Z.debug('fetchUserGroups proxied callback', 3);
         fetchedGroups = groups.addGroupsFromJson(response.data);
-        return fetchedGroups;
+        response.fetchedGroups = fetchedGroups;
+        return response;
     });
 };
 
@@ -3167,8 +3194,9 @@ Zotero.Item.prototype.initEmptyFromTemplate = function(template){
         version: 0,
         library: {},
         links: {},
+        data: template,
         meta: {},
-        data: template
+        _supplement: {},
     };
     
     item.initSecondaryData();
@@ -4271,13 +4299,13 @@ Zotero.Group.prototype.get = function(key) {
 Zotero.Group.prototype.isWritable = function(userID){
     var group = this;
     switch(true){
-        case group.apiObj.owner == userID:
+        case group.get('owner') == userID:
             return true;
-        case (group.apiObj.admins && (group.apiObj.admins.indexOf(userID) != -1) ):
+        case (group.apiObj.data.admins && (group.apiObj.data.admins.indexOf(userID) != -1) ):
             return true;
-        case ((group.apiObj.libraryEditing == 'members') &&
-              (group.apiObj.members) &&
-              (group.apiObj.members.indexOf(userID) != -1)):
+        case ((group.apiObj.data.libraryEditing == 'members') &&
+              (group.apiObj.data.members) &&
+              (group.apiObj.data.members.indexOf(userID) != -1)):
             return true;
         default:
             return false;
