@@ -118,7 +118,7 @@ class Zotero_Collections
             foreach($chunk as $collection){
                 $writeArray[] = $collection->writeApiObject();
             }
-            $requestData = json_encode(array('collections'=>$writeArray));
+            $requestData = json_encode($writeArray);
             
             $writeResponse = $this->owningLibrary->_request($requestUrl, 'POST', $requestData, array('Content-Type'=> 'application/json'));
             if($writeResponse->isError()){

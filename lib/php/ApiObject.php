@@ -16,6 +16,14 @@ class Zotero_ApiObject
             $jsonArray = json_decode($jsonArray, true);
         }
         
+        if(!isset($jsonArray)){
+            $jsonArray = [
+                'links' => [],
+                'meta' => [],
+                'data' => [],
+            ];
+        }
+        
         $this->apiObj = $jsonArray;
         if(isset($this->apiObj['data'])){
             $this->pristineData = $this->apiObj['data'];
@@ -41,5 +49,12 @@ class Zotero_ApiObject
             return $object->key;
         }
     }
-
+    
+    public function readXml($xml){
+        $doc = new DOMDocument();
+        $doc->loadXml($xml);
+        $entryNode = $doc->getElementsByTagName('entry')->item(0);
+        $this->apiObj['meta']['created'] = $entryNode->getElementsByTagName("published")->item(0)->nodeValue;
+        $this->apiObj['meta']['lastModified'] = $entryNode->getElementsByTagName("updated")->item(0)->nodeValue;
+    }
 }

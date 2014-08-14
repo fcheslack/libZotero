@@ -30,10 +30,6 @@ class Zotero_Group extends Zotero_ApiObject
     public function __construct($groupArray = null)
     {
         parent::__construct($groupArray);
-        //initially disallow library access
-        $this->userReadable = false;
-        $this->userEditable = false;
-        
         //TODO: parse out links from response?
     }
     
@@ -49,10 +45,9 @@ class Zotero_Group extends Zotero_ApiObject
             case 'memberIDs':
                 if(isset($this->apiObj['data']['members'])){
                     $a = $this->apiObj['data']['members'];
-                    array_push($a, $this->apiObj['data']['owner']);
                     return $a;
                 }
-                return [$this->apiObj['data']['owner']];
+                return [];
             case 'groupID':
                 if(isset($this->apiObj['id'])){
                     return $this->apiObj['id'];
@@ -80,6 +75,124 @@ class Zotero_Group extends Zotero_ApiObject
             $this->$key = $val;
         }
         return $this;
+    }
+    
+    public function readXml($xml){
+        parent::readXml($xml);
+        $doc = new DOMDocument();
+        $doc->loadXml($xml);
+        $entryNode = $doc->getElementsByTagName('entry')->item(0);
+        
+        if(!$entryNode){
+            return;
+        }
+        
+        $contentNode = $entryNode->getElementsByTagName('content')->item(0);
+        $this->apiObj['data'] = json_decode($contentNode->nodeValue, true);
+        $this->apiObj['id'] = $this->apiObj['data']['id'];
+        $this->apiObj['version'] = $this->apiObj['data']['version'];
+        /*
+        $this->name = $this->apiObject['name'];
+        $this->ownerID = $this->apiObject['owner'];
+        $this->owner = $this->ownerID;
+        $this->groupType = $this->apiObject['type'];
+        $this->description = $this->apiObject['description'];
+        $this->url = $this->apiObject['url'];
+        $this->libraryEditing = $this->apiObject['libraryEditing'];
+        $this->libraryReading = $this->apiObject['libraryReading'];
+        $this->fileEditing = $this->apiObject['fileEditing'];
+        
+        if(!empty($this->apiObject['admins'])){
+            $this->adminIDs = $this->apiObject['admins'];
+        }
+        else {
+            $this->adminIDs = array();
+        }
+        
+        if($this->ownerID){
+            $this->adminIDs[] = $this->ownerID;
+        }
+        
+        if(!empty($this->apiObject['members'])){
+            $this->memberIDs = $this->apiObject['members'];
+        }
+        else{
+            $this->memberIDs = array();
+        }
+        
+        $this->numItems = $entryNode->getElementsByTagNameNS('http://zotero.org/ns/api', 'numItems')->item(0)->nodeValue;
+        
+        $contentNodes = $entryNode->getElementsByTagName("content");
+        if($contentNodes->length > 0){
+            $cNode = $contentNodes->item(0);
+            if($cNode->getAttribute('type') == 'application/json'){
+                $jsonObject = json_decode($cNode->nodeValue, true);
+                //parse out relevant values from the json and put them on our object
+                $this->name = $jsonObject['name'];
+                $this->ownerID = $jsonObject['owner'];
+                $this->owner = $this->ownerID;
+                $this->type = $jsonObject['type'];
+                $this->groupType = $this->type;
+                $this->description = $jsonObject['description'];
+                $this->url = $jsonObject['url'];
+                $this->hasImage = isset($jsonObject['hasImage']) ? $jsonObject['hasImage'] : 0;
+                $this->libraryEditing = $jsonObject['libraryEditing'];
+                $this->memberIDs = isset($jsonObject['members']) ? $jsonObject['members'] : array();
+                $this->members = $this->memberIDs;
+                $this->adminIDs = isset($jsonObject['admins']) ? $jsonObject['admins'] : array();
+                $this->adminIDs[] = $jsonObject['owner'];
+                $this->admins = $this->adminIDs;
+            }
+            elseif($cNode->getAttribute('type') == 'application/xml'){
+                $groupElements = $entryNode->getElementsByTagName("group");
+                $groupElement = $groupElements->item(0);
+                if(!$groupElement) return;
+                
+                $groupAttributes = $groupElement->attributes;
+                $this->properties = array();
+                
+                foreach($groupAttributes as $attrName => $attrNode){
+                    $this->properties[$attrName] = urldecode($attrNode->value);
+                    if($attrName == 'name'){
+                        $this->$attrName = $attrNode->value;
+                    }
+                    else{
+                        $this->$attrName = urldecode($attrNode->value);
+                    }
+                }
+                $this->groupID = $this->properties['id'];
+                
+                $description = $entryNode->getElementsByTagName("description")->item(0);
+                if($description) {
+                    $this->properties['description'] = $description->nodeValue;
+                    $this->description = $description->nodeValue;
+                }
+                
+                $url = $entryNode->getElementsByTagName("url")->item(0);
+                if($url) {
+                    $this->properties['url'] = $url->nodeValue;
+                    $this->url = $url->nodeValue;
+                }
+                
+                $this->adminIDs = array();
+                $admins = $entryNode->getElementsByTagName("admins")->item(0);
+                if($admins){
+                    $this->adminIDs = $admins === null ? array() : explode(" ", $admins->nodeValue);
+                }
+                $this->adminIDs[] = $this->owner;
+                
+                $this->memberIDs = array();
+                $members = $entryNode->getElementsByTagName("members")->item(0);
+                if($members){
+                    $this->memberIDs = ($members === null ? array() : explode(" ", $members->nodeValue));
+                }
+                
+                //initially disallow library access
+                $this->userReadable = false;
+                $this->userEditable = false;
+            }
+        }
+        */
     }
     
     public function setProperty($key, $val)

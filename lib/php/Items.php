@@ -110,7 +110,7 @@ class Zotero_Items
             foreach($chunk as $item){
                 $writeArray[] = $item->writeApiObject();
             }
-            $requestData = json_encode(array('items'=>$writeArray));
+            $requestData = json_encode($writeArray);
             
             $writeResponse = $this->owningLibrary->_request($requestUrl, 'POST', $requestData, array('Content-Type'=> 'application/json'));
             if($writeResponse->isError()){
