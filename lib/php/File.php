@@ -1,4 +1,7 @@
-class Zotero_File
+<?php
+namespace Zotero;
+
+class File
 {
     
 }

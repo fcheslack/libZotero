@@ -1,11 +1,14 @@
 <?php
+namespace Zotero;
 /**
- * APC backed cache implementing interface required for Zotero_Library caching
+ * APC backed cache implementing interface required for Library caching
  * 
  * @package libZotero
  */
-class Zotero_Apc_Cache
+class ApcCache
 {
+    public $prefix = 'LibZotero';
+    
     public function __construct(){
         if(!extension_loaded('apc')){
             throw 'APC not loaded';

@@ -5,21 +5,23 @@ echo "building libZotero\n";
 echo getcwd() . "\n";
 //concatenate php files into a single file to include
 $files = [
-    "Zotero_Exception.php",
+    "Exception.php",
     "Apc.php",
-    "Mappings.php",
     "ApiObject.php",
+    "Cite.php",
     "Collection.php",
     "Collections.php",
-    "Items.php",
-    "Response.php",
-    "Cite.php",
-    "Item.php",
-    "Group.php",
-    "Tag.php",
-    //"User.php",
     "Creator.php",
+    "File.php",
+    "Group.php",
+    "Item.php",
+    "Items.php",
     "Library.php",
+    "Mappings.php",
+    "Net.php",
+    "Response.php",
+    "Tag.php",
+    "Url.php",
     "Utils.php"
 ];
 
@@ -33,7 +35,7 @@ foreach($files as $file){
 
 $fullText .= "?>";
 
-$fullText = str_replace('https://api.zotero.org', 'https://apidev.zotero.org', $fullText);
+//$fullText = str_replace('https://api.zotero.org', 'https://apidev.zotero.org', $fullText);
 file_put_contents('../build/libZoteroSingle.php', $fullText);
 
 

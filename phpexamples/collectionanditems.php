@@ -3,7 +3,7 @@
 require_once './config.php'; //library credentials
 
 require_once '../build/libZoteroSingle.php';
-$library = new Zotero_Library($libraryType, $libraryID, $librarySlug, $apiKey);
+$library = new \Zotero\Library($libraryType, $libraryID, $librarySlug, $apiKey);
 
 //fetch subcollections of a collection
 $collections = $library->fetchCollections(array('collectionKey'=>'', 'content'=>'json'));
@@ -32,7 +32,7 @@ $items = $library->fetchItemsTop(array('limit'=>10, 'collectionKey'=>$collection
     <h2>Items</h2>
     <ul>
         <?foreach($items as $item):?>
-        <li><?=$item->get('title');?></li>
+        <li><?=$item->title;?></li>
         <?endforeach;?>
     </ul>
 </body>

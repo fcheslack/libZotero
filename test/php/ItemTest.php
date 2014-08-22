@@ -11,7 +11,7 @@ class Zotero_ItemTest extends PHPUnit_Framework_TestCase
 EOD;
         
         $templateArray = json_decode($templateJsonString, true);
-        $item = new Zotero_Item();
+        $item = new \Zotero\Item();
         $item->initItemFromTemplate($templateArray);
         
         $item->set('title', 'Journal Article Title');
@@ -34,18 +34,13 @@ EOD;
         $this->assertEquals($item->get('notRealField'), null, "get fake field value should return null.");
         
         $this->assertEquals($item->title, 'Journal Article Title', 'title should be set on item object');
-        $this->assertEquals($item->apiObject['title'], 'Journal Article Title', 'title should be set on item apiObject');
         $this->assertEquals($item->pristine['title'], '', 'title should not be set on item pristine');
         
         $this->assertEquals($item->itemKey, 'ASDF1234', 'itemKey should be set on item object');
-        $this->assertEquals($item->apiObject['itemKey'], 'ASDF1234', 'itemKey should be set on item apiObject');
         $this->assertEquals(isset($item->pristine['itemKey']), false, 'isset(itemKey) should be false for pristine');
         
         $this->assertEquals($item->itemVersion, 74, 'itemVersion should be set on item object');
-        $this->assertEquals($item->apiObject['itemVersion'], 74, 'itemVersion should be set on item apiObject');
         $this->assertEquals(isset($item->pristine['itemVersion']), false, 'isset(itemVersion) should be false for item pristine');
-        
-        $this->assertEquals($item->apiObject['deleted'], 1, 'deleted should be set on item apiObject');
         
     }
     
@@ -56,7 +51,7 @@ EOD;
 EOD;
         
         $templateArray = json_decode($templateJsonString, true);
-        $item = new Zotero_Item();
+        $item = new \Zotero\Item();
         $item->initItemFromTemplate($templateArray);
         
         $item->addToCollection("ASDF1234");
@@ -73,10 +68,10 @@ EOD;
         
         $itemTags = $item->get('tags');
         $this->assertEquals(count($itemTags), 3);
-        $this->assertEquals($itemTags[0], "Green");
+        $this->assertEquals($itemTags[0]['tag'], "Green");
         $this->assertEquals($itemTags[1]['tag'], "purple");
         $this->assertEquals($itemTags[1]['type'], 1);
-        $this->assertEquals($itemTags[2], "Red");
+        $this->assertEquals($itemTags[2]['tag'], "Red");
         
         //test removal
         $item->removeFromCollection('OIUSDGAS');

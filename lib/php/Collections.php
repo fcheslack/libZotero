@@ -1,11 +1,12 @@
 <?php
+namespace Zotero;
 
 /**
  * Representation of the set of collections belonging to a particular Zotero library
  * 
  * @package libZotero
  */
-class Zotero_Collections
+class Collections
 {
     public $orderedArray;
     public $collectionObjects;
@@ -42,7 +43,7 @@ class Zotero_Collections
     public function addCollectionsFromJson($jsonCollectionsArray) {
         $addedCollections = [];
         foreach($jsonCollectionsArray as $collectionArray){
-            $collection = new Zotero_Collection($collectionArray);
+            $collection = new Collection($collectionArray);
             $this->addCollection($collection);
             $addedCollections[] = $collection;
         }
@@ -64,7 +65,7 @@ class Zotero_Collections
         foreach($this->collectionObjects as $key=>$collection){
             $orderedArray[] = $collection;
         }
-        usort($orderedArray, array('Zotero_Collections', 'sortByTitleCompare'));
+        usort($orderedArray, array('Collections', 'sortByTitleCompare'));
         $this->orderedArray = $orderedArray;
         return $this->orderedArray;
     }
@@ -102,16 +103,14 @@ class Zotero_Collections
         foreach($collections as $collection){
             $collectionKey = $collection->get('collectionKey');
             if($collectionKey == ""){
-                $newCollectionKey = Zotero_Lib_Utils::getKey();
+                $newCollectionKey = Utils::getKey();
                 $collection->set('collectionKey', $newCollectionKey);
                 $collection->set('collectionVersion', 0);
             }
             $writeCollections[] = $collection;
         }
         
-        $config = array('target'=>'collections', 'libraryType'=>$this->owningLibrary->libraryType, 'libraryID'=>$this->owningLibrary->libraryID);
-        $requestUrl = $this->owningLibrary->apiRequestString($config);
-        
+        $aparams = array('target'=>'collections');
         $chunks = array_chunk($writeCollections, 50);
         foreach($chunks as $chunk){
             $writeArray = array();
@@ -120,14 +119,14 @@ class Zotero_Collections
             }
             $requestData = json_encode($writeArray);
             
-            $writeResponse = $this->owningLibrary->_request($requestUrl, 'POST', $requestData, array('Content-Type'=> 'application/json'));
+            $writeResponse = $this->owningLibrary->request($aparams, 'POST', $requestData, array('Content-Type'=> 'application/json'));
             if($writeResponse->isError()){
                 foreach($chunk as $collection){
                     $collection->writeFailure = array('code'=>$writeResponse->getStatus(), 'message'=>$writeResponse->getBody());
                 }
             }
             else {
-                Zotero_Lib_Utils::UpdateObjectsFromWriteResponse($chunk, $writeResponse);
+                Utils::UpdateObjectsFromWriteResponse($chunk, $writeResponse);
             }
         }
         return $writeCollections;
@@ -146,10 +145,9 @@ class Zotero_Collections
      */
     public function fetchAllCollections($params = array()){
         $aparams = array_merge(array('target'=>'collections', 'limit'=>100), $params);
-        $reqUrl = $this->owningLibrary->apiRequestString($aparams);
         do{
-            $response = $this->owningLibrary->_request($reqUrl);
-            $respArray = $this->owningLibrary->parseResponseBody($response);
+            $response = $this->owningLibrary->request($aparams);
+            $respArray = $response->parseResponseBody();
             $this->addCollectionsFromJson($respArray);
             
             $linkHeaders = $response->linkHeaders();
@@ -172,9 +170,8 @@ class Zotero_Collections
      */
     public function fetchCollections($params = array()){
         $aparams = array_merge(array('target'=>'collections', 'limit'=>100), $params);
-        $reqUrl = $this->owningLibrary->apiRequestString($aparams);
-        $response = $this->owningLibrary->_request($reqUrl);
-        $respArray = $this->owningLibrary->parseResponseBody($response);
+        $response = $this->owningLibrary->request($aparams);
+        $respArray = $response->parseResponseBody();
         $addedCollections = $this->addCollectionsFromJson($respArray);
         
         return $addedCollections;
@@ -184,15 +181,13 @@ class Zotero_Collections
      * Load a single collection by collectionKey
      *
      * @param string $collectionKey
-     * @return Zotero_Collection
+     * @return Collection
      */
     public function fetchCollection($collectionKey){
         $aparams = array('target'=>'collection', 'collectionKey'=>$collectionKey);
-        $reqUrl = $this->owningLibrary->apiRequestString($aparams);
-        
-        $response = $this->owningLibrary->_request($reqUrl, 'GET');
+        $response = $this->owningLibrary->request($aparams);
         $respArray = $response->parseResponseBody();
-        $collection = new Zotero_Collection($respArray);
+        $collection = new Collection($respArray);
         $this->addCollection($collection);
         return $collection;
     }

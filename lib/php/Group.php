@@ -1,31 +1,18 @@
 <?php
+namespace Zotero;
  /**
   * Representation of a Zotero Group
   * 
   * @package libZotero
   * @see        Zotero_Entry
   */
-class Zotero_Group extends Zotero_ApiObject
+class Group extends ApiObject
 {
     public $wwwData = [
         'hasImage' => false,
         'disciplines' => [],
         'enableComments' => false,
     ];
-    /**
-     * @var bool
-     */
-    //public $hasImage;
-    
-    /**
-     * @var array
-     */
-    //public $disciplines;
-    
-    /**
-     * @var bool
-     */
-    //public $enableComments;
     
     public function __construct($groupArray = null)
     {
@@ -79,7 +66,7 @@ class Zotero_Group extends Zotero_ApiObject
     
     public function readXml($xml){
         parent::readXml($xml);
-        $doc = new DOMDocument();
+        $doc = new \DOMDocument();
         $doc->loadXml($xml);
         $entryNode = $doc->getElementsByTagName('entry')->item(0);
         
@@ -300,11 +287,11 @@ class Zotero_Group extends Zotero_ApiObject
     
     public function updateString()
     {
-        $doc = new DOMDocument();
-        $el = $doc->appendChild(new DOMElement('group'));
+        $doc = new \DOMDocument();
+        $el = $doc->appendChild(new \DOMElement('group'));
         $descriptionString = htmlspecialchars($this->description, ENT_COMPAT | ENT_HTML401, 'UTF-8', false);
-        $el->appendChild(new DOMElement('description', $descriptionString));
-        $el->appendChild(new DOMElement('url', $this->url));
+        $el->appendChild(new \DOMElement('description', $descriptionString));
+        $el->appendChild(new \DOMElement('url', $this->url));
         if($this->groupID){
             $el->setAttribute('id', $this->groupID);
         }

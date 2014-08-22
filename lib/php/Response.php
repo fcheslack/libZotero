@@ -1,4 +1,5 @@
 <?php
+namespace Zotero;
 
 /**
  * Zend Framework
@@ -32,7 +33,7 @@
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 //class Zend_Http_Response
-class libZotero_Http_Response
+class HttpResponse
 {
     /**
      * List of all known HTTP response codes - used by responseCodeAsText() to
@@ -673,7 +674,7 @@ class libZotero_Http_Response
         $version = self::extractVersion($response_str);
         $message = self::extractMessage($response_str);
 
-        return new libZotero_Http_Response($code, $headers, $body, $version, $message);
+        return new HttpResponse($code, $headers, $body, $version, $message);
     }
     
     public function linkHeaders()
@@ -694,6 +695,9 @@ class libZotero_Http_Response
         $bodyString = $this->getBody();
         if($this->isError()){
             throw new Exception("Request was an error: {$bodyString}");
+        }
+        if($this->getHeader('Content-Type') != 'application/json'){
+            throw new Exception("Unexpected content type not application/json");
         }
         $parsedJson = json_decode($bodyString, true);
         return $parsedJson;

@@ -3,7 +3,7 @@
 require_once './config.php'; //library credentials
 
 require_once '../build/libZoteroSingle.php';
-$library = new Zotero_Library($libraryType, $libraryID, $librarySlug, $apiKey);
+$library = new \Zotero\Library($libraryType, $libraryID, $librarySlug, $apiKey);
 
 //get permissions for the key
 $userID = '';
@@ -20,7 +20,7 @@ $permissions = $library->getKeyPermissions($userID, $key);
     <?if($key == ''):?>
         No key specified in library.
     <?else:?>
-        <?=nl2br(print_r($permissions, true));?>
+        <?=json_encode($permissions, JSON_PRETTY_PRINT);?>
     <?endif;?>
 </body>
 </html>

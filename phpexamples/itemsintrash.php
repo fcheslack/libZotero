@@ -3,7 +3,7 @@
 require_once './config.php'; //library credentials
 
 require_once '../build/libZoteroSingle.php';
-$library = new Zotero_Library($libraryType, $libraryID, $librarySlug, $apiKey);
+$library = new \Zotero\Library($libraryType, $libraryID, $librarySlug, $apiKey);
 
 //load the items currently in the trash
 $trashedItems = $library->fetchTrashedItems(array('limit'=>10));

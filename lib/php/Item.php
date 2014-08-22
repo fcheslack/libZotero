@@ -1,14 +1,15 @@
 <?php
+namespace Zotero;
  /**
   * Representation of a Zotero Item
   * 
   * @package libZotero
   */
 
-class Zotero_Item extends Zotero_ApiObject
+class Item extends ApiObject
 {
     /**
-     * @var Zotero_Library
+     * @var Library
      */
     public $owningLibrary = null;
     
@@ -34,7 +35,7 @@ class Zotero_Item extends Zotero_ApiObject
     
     public $writeFailure = null;
     
-    public $pristineData = null;
+    public $pristine = null;
     
     /**
      * @var array
@@ -147,6 +148,11 @@ class Zotero_Item extends Zotero_ApiObject
         "docketNumber"        => "Docket Number",
         "numPages"            => "# of Pages"
     );
+
+    public static $nonFieldData = array(
+        'deleted' => true,
+        'parentItem' => true,
+    );
     
     /**
      * @var array
@@ -237,36 +243,60 @@ class Zotero_Item extends Zotero_ApiObject
     }
     
     public function __get($key) {
-        if(array_key_exists($key, $this->apiObj['data'])){
+        if(isset($this->apiObj['data']) && array_key_exists($key, $this->apiObj['data'])){
             return $this->apiObj['data'][$key];
         }
-        if(array_key_exists($key, $this->apiObj['meta'])){
+        if(isset($this->apiObj['meta']) && array_key_exists($key, $this->apiObj['meta'])){
             return $this->apiObj['meta'][$key];
+        }
+        if(isset($this->apiObj[$key])){
+            return $this->apiObj[$key];
         }
         
         switch($key){
-            case 'key':
+            //case 'key':
             case 'itemKey':
-                return $this->apiObj['key'];
-            case 'version':
+                return $this->key;
+            //case 'version':
             case 'itemVersion':
-                return $this->apiObj['version'];
+                return $this->version;
             case 'year':
                 throw new \Exception('Not implemented');
-            case 'parentItem':
+            //case 'parentItem':
             case 'parentItemKey':
-                return $this->apiObj['data']['parentItem'];
+                return $this->parentItem;
+            case 'bibContent':
+                return $this->bib;
         }
         
         return null;
     }
     
     public function __set($key, $val) {
-        if(array_key_exists($key, $this->apiObj['data'])){
+        if(isset($this->apiObj['data']) && array_key_exists($key, $this->apiObj['data'])){
             $this->apiObj['data'][$key] = $val;
         }
-        if(array_key_exists($key, $this->apiObj['meta'])){
+        if(isset($this->apiObj['meta']) && array_key_exists($key, $this->apiObj['meta'])){
             $this->apiObj['meta'][$key] = $val;
+        }
+        
+        switch($key){
+            //case 'key':
+            case 'itemKey':
+                return $this->key = $val;
+            //case 'version':
+            case 'itemVersion':
+                return $this->version = $val;
+            case 'year':
+                throw new \Exception('Not implemented');
+            //case 'parentItem':
+            case 'parentItemKey':
+                return $this->parentItem = $val;
+        }
+        
+        //set on apiObj.data if key is a known item fieldname
+        if(isset(self::$fieldMap[$key]) || isset(self::$nonFieldData[$key])){
+            $this->apiObj['data'][$key] = $val;
         }
         return $this;
     }
@@ -277,7 +307,7 @@ class Zotero_Item extends Zotero_ApiObject
         $this->itemType = $template['itemType'];
         $this->key = '';
         $this->pristine = $template;
-        $this->apiObject = $template;
+        $this->apiObj['data'] = $template;
     }
     
     public function get($key){
@@ -290,7 +320,7 @@ class Zotero_Item extends Zotero_ApiObject
     
     public function addCreator($creatorArray){
         $this->creators[] = $creatorArray;
-        $this->apiObject['creators'][] = $creatorArray;
+        $this->apiObj['data']['creators'][] = $creatorArray;
     }
     
     public function updateItemObject(){
@@ -298,7 +328,7 @@ class Zotero_Item extends Zotero_ApiObject
     }
     
     public function newItemObject(){
-        $newItem = $this->apiObject;
+        $newItem = $this->apiObj;
         $newCreatorsArray = array();
         if(isset($newItem['creators'])) {
             foreach($newItem['creators'] as $creator){
@@ -328,7 +358,7 @@ class Zotero_Item extends Zotero_ApiObject
             return false;
         }
         $hasEnclosure = isset($this->links['enclosure']);
-        $linkMode = $this->apiObject['linkMode'];
+        $linkMode = $this->get('linkMode');
         if($hasEnclosure && ($linkMode == 0 || $linkMode == 1)){
             return true;
         }
@@ -343,7 +373,7 @@ class Zotero_Item extends Zotero_ApiObject
     }
     
     public function json(){
-        return json_encode($this->apiObject());
+        return json_encode($this->apiObj);
     }
     
     public function formatItemField($field){
@@ -367,8 +397,8 @@ class Zotero_Item extends Zotero_ApiObject
                 return htmlspecialchars($this->dateAdded);
                 break;
             default:
-                if(isset($this->apiObject[$field])){
-                    return htmlspecialchars($this->apiObject[$field]);
+                if(isset($this->apiObj['data'][$field])){
+                    return htmlspecialchars($this->apiObj['data'][$field]);
                 }
                 else{
                     return '';
@@ -377,7 +407,7 @@ class Zotero_Item extends Zotero_ApiObject
     }
     
     public function compareItem($otherItem){
-        $diff = array_diff_assoc($this->apiObject, $otherItem->apiObject);
+        $diff = array_diff_assoc($this->apiObj, $otherItem->apiObj);
         return $diff;
     }
     
@@ -460,7 +490,7 @@ class Zotero_Item extends Zotero_ApiObject
     }
     
     public function writeApiObject(){
-        $updateItem = array_merge($this->pristine, $this->apiObject);
+        $updateItem = array_merge($this->pristine, $this->apiObj['data']);
         if(empty($updateItem['creators'])){
             return $updateItem;
         }
@@ -512,6 +542,6 @@ class Zotero_Item extends Zotero_ApiObject
     }
     
     public function getCSLItem(){
-        return Zotero_Cite::convertItem($this);
+        return Cite::convertItem($this);
     }
 }

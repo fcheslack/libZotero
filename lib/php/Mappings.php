@@ -1,11 +1,12 @@
 <?php
+namespace Zotero;
 
  /**
   * Explicit mappings for Zotero
   *
   * @package    libZotero
   */
-class Zotero_Mappings
+class Mappings
 {
     public $itemTypes = array();
     public $itemFields = array();

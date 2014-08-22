@@ -2,7 +2,7 @@
 require_once './user_writing_config.php'; //library credentials
 
 require_once '../build/libZoteroSingle.php';
-$library = new Zotero_Library($libraryType, $libraryID, $userSlug, $apiKey);
+$library = new \Zotero\Library($libraryType, $libraryID, $userSlug, $apiKey);
 
 //create a new item of type book
 $newItem = $library->getTemplateItem('book');

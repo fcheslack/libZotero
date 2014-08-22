@@ -4,10 +4,10 @@ require_once './user_writing_config.php'; //library credentials
 require_once '../build/libZoteroSingle.php';
 
 //create the zotero library object which will be our interface for interacting with the Zotero API
-$zlib = new Zotero_Library($libraryType, $libraryID, $librarySlug, $apiKey);
+$zlib = new \Zotero\Library($libraryType, $libraryID, $librarySlug, $apiKey);
 
 $zItems = array();
-for($i= 0; $i < 70; $i++) {
+for($i= 0; $i < 5; $i++) {
     $item = $zlib->getTemplateItem('webpage');
     $item->set('title', 'zotero webpage item');
     $zItems[] = $item;

@@ -1,15 +1,16 @@
 <?php
+namespace Zotero;
  /**
   * Representation of a Zotero Collection
   *
   * @package    libZotero
   * @see        Zotero_Entry
   */
-class Zotero_Collection extends Zotero_ApiObject
+class Collection extends ApiObject
 {
     public $topLevel;
     public $apiObject = array();
-    public $pristineData = array();
+    public $pristine = array();
     public $childKeys = array();
     
     public function __construct($collectionArray, $library=null)

@@ -1,5 +1,6 @@
 <?php
-class Zotero_Cite {
+namespace Zotero;
+class Cite {
     private static $citePaperJournalArticleURL = false;
 
     //
@@ -110,7 +111,7 @@ class Zotero_Cite {
         
         // don't return URL or accessed information for journal articles if a
         // pages field exists
-        $itemType = $zoteroItem->get("itemType");//Zotero_ItemTypes::getName($zoteroItem->itemTypeID);
+        $itemType = $zoteroItem->get("itemType");//ItemTypes::getName($zoteroItem->itemTypeID);
         $cslType = isset(self::$zoteroTypeMap[$itemType]) ? self::$zoteroTypeMap[$itemType] : false;
         if (!$cslType) $cslType = "article";
         $ignoreURL = (($zoteroItem->get("accessDate") || $zoteroItem->get("url")) &&

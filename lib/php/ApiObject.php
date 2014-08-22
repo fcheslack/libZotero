@@ -1,11 +1,12 @@
 <?php
+namespace Zotero;
 
  /**
   * Zotero API Object
   * 
   * @package libZotero
   */
-class Zotero_ApiObject
+class ApiObject
 {
     public $key;
     public $version;
@@ -18,6 +19,8 @@ class Zotero_ApiObject
         
         if(!isset($jsonArray)){
             $jsonArray = [
+                'key' => '',
+                'version' => 0,
                 'links' => [],
                 'meta' => [],
                 'data' => [],
@@ -26,7 +29,7 @@ class Zotero_ApiObject
         
         $this->apiObj = $jsonArray;
         if(isset($this->apiObj['data'])){
-            $this->pristineData = $this->apiObj['data'];
+            $this->pristine = $this->apiObj['data'];
         }
     }
     
@@ -51,7 +54,7 @@ class Zotero_ApiObject
     }
     
     public function readXml($xml){
-        $doc = new DOMDocument();
+        $doc = new \DOMDocument();
         $doc->loadXml($xml);
         $entryNode = $doc->getElementsByTagName('entry')->item(0);
         $this->apiObj['meta']['created'] = $entryNode->getElementsByTagName("published")->item(0)->nodeValue;

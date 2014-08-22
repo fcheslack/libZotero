@@ -1,11 +1,12 @@
 <?php
+namespace Zotero;
 
 /**
  * Zotero specific exception class with no added functionality
  * 
  * @package libZotero
  */
-class Zotero_Exception extends Exception
+class Exception extends \Exception
 {
     
 }

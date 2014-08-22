@@ -1,4 +1,5 @@
 <?php
+namespace Zotero;
 
 
  /**
@@ -6,7 +7,7 @@
   *
   * @package    libZotero
   */
-class Zotero_Creator
+class Creator
 {
     public $creatorType = null;
     public $localized = null;

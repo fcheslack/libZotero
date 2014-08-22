@@ -1,10 +1,11 @@
 <?php
+namespace Zotero;
  /**
   * Representation of a Zotero Tag
   * 
   * @package libZotero
   */
-class Zotero_Tag extends Zotero_ApiObject
+class Tag extends ApiObject
 {
     public $numItems = 0;
     

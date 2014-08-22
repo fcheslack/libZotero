@@ -3,11 +3,11 @@
 require_once './config.php'; //library credentials
 
 require_once '../build/libZoteroSingle.php';
-$library = new Zotero_Library($libraryType, $libraryID, $librarySlug, $apiKey);
+$library = new \Zotero\Library($libraryType, $libraryID, $librarySlug, $apiKey);
 $library->setCacheTtl(90);
 
 //load a couple items with multiple content types
-$items = $library->fetchItemsTop(array('limit'=>10, 'content'=>'bib,citation,coins', 'linkwrap'=>1, 'style'=>'chicago-fullnote-bibliography'));
+$items = $library->fetchItemsTop(array('limit'=>10, 'include'=>'bib,citation,coins', 'linkwrap'=>1, 'style'=>'chicago-fullnote-bibliography'));
 
 ?>
 <html>
@@ -33,7 +33,7 @@ $items = $library->fetchItemsTop(array('limit'=>10, 'content'=>'bib,citation,coi
     
     <h2>Citation</h2>
     <?foreach($items as $item):?>
-    <p><?=$item->subContents['citation'];?></p>
+    <p><?=$item->citation;?></p>
     <?endforeach;?>
     
     <h2>COINS</h2>
