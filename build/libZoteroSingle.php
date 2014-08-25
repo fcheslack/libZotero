@@ -90,7 +90,7 @@ class Zotero_Feed
             $this->title        = $feed->getElementsByTagName("title")->item(0)->nodeValue;
             $this->id           = $feed->getElementsByTagName("id")->item(0)->nodeValue;
             $this->dateUpdated  = $feed->getElementsByTagName("updated")->item(0)->nodeValue;
-            //$this->apiVersion   = $feed->getElementsByTagName("apiVersion")->item(0)->nodeValue;//apiVersion being removed from zotero responses
+            $this->apiVersion   = $feed->getElementsByTagName("apiVersion")->item(0)->nodeValue;
             $this->totalResults = $feed->getElementsByTagName("totalResults")->item(0)->nodeValue;
             
             // Get all of the link elements
@@ -1783,7 +1783,6 @@ class Zotero_Group extends Zotero_Entry
      * @var int
      */
     public $owner;
-    public $ownerID;
     
     /**
      * @var string
@@ -1875,7 +1874,6 @@ class Zotero_Group extends Zotero_Entry
             //$this->etag = $contentNode->getAttribute('etag');
             $this->name = $this->apiObject['name'];
             $this->ownerID = $this->apiObject['owner'];
-            $this->owner = $this->ownerID;
             $this->groupType = $this->apiObject['type'];
             $this->description = $this->apiObject['description'];
             $this->url = $this->apiObject['url'];
@@ -1916,7 +1914,7 @@ class Zotero_Group extends Zotero_Entry
                 $this->owner = $this->ownerID;
                 $this->type = $jsonObject['type'];
                 $this->groupType = $this->type;
-                $this->description = $jsonObject['description'];
+                $this->description = urldecode($jsonObject['description']);
                 $this->url = $jsonObject['url'];
                 $this->hasImage = isset($jsonObject['hasImage']) ? $jsonObject['hasImage'] : 0;
                 $this->libraryEnabled = $jsonObject['libraryEnabled'];
@@ -1948,8 +1946,8 @@ class Zotero_Group extends Zotero_Entry
                 
                 $description = $entryNode->getElementsByTagName("description")->item(0);
                 if($description) {
-                    $this->properties['description'] = $description->nodeValue;
-                    $this->description = $description->nodeValue;
+                    $this->properties['description'] = urldecode($description->nodeValue);
+                    $this->description = urldecode($description->nodeValue);
                 }
                 
                 $url = $entryNode->getElementsByTagName("url")->item(0);
@@ -2016,7 +2014,7 @@ class Zotero_Group extends Zotero_Entry
     {
         $doc = new DOMDocument();
         $el = $doc->appendChild(new DOMElement('group'));
-        $el->appendChild(new DOMElement('description', $this->description));
+        $el->appendChild(new DOMElement('description', urlencode($this->description)));
         $el->appendChild(new DOMElement('url', $this->url));
         if($this->groupID){
             $el->setAttribute('id', $this->groupID);
@@ -2221,6 +2219,9 @@ class Zotero_Library
     const ZOTERO_URI = 'https://api.zotero.org';
     const ZOTERO_WWW_URI = 'http://www.zotero.org';
     const ZOTERO_WWW_API_URI = 'http://www.zotero.org/api';
+    const ZOTERO_API_VERSION = 1;
+    const LIBZOTERO_VERSION = "0.5.6";
+    
     protected $_apiKey = '';
     protected $_ch = null;
     protected $_followRedirects = true;
@@ -2331,6 +2332,13 @@ class Zotero_Library
         }
         //disable Expect header
         $httpHeaders[] = 'Expect:';
+        //set version and user-agent headers if not overridden by passed headers
+        if(!isset($headers['Zotero-API-Version'])){
+            $httpHeaders['Zotero-API-Version'] = ZOTERO_API_VERSION;
+        }
+        if(!isset($headers['User-Agent'])){
+            $httpHeaders['User-Agent'] = 'LibZotero-php-' . LIBZOTERO_VERSION;
+        }
         
         if(!empty($basicauth)){
             $passString = $basicauth['username'] . ':' . $basicauth['password'];
@@ -3586,6 +3594,8 @@ class Zotero_Lib_Utils
     const ZOTERO_URI = 'https://api.zotero.org';
     const ZOTERO_WWW_URI = 'http://www.zotero.org';
     const ZOTERO_WWW_API_URI = 'http://www.zotero.org/api';
+    const ZOTERO_API_VERSION = 1;
+    const LIBZOTERO_VERSION = "0.5.6";
     
     public static function wrapLinks($txt, $nofollow=false){
         //extremely ugly wrapping of urls in html
@@ -3609,11 +3619,7 @@ class Zotero_Lib_Utils
     }
     
     public static function wrapDOIs($txt){
-        $matches = array();
-        $doi = preg_match("(10\.[^\s\/]+\/[^\s]+)", $txt, $matches);
-        $m1 = htmlspecialchars($matches[0]);
-        $safetxt = htmlspecialchars($txt);
-        return "<a href=\"http://dx.doi.org/{$matches[0]}\" rel=\"nofollow\">{$safetxt}</a>";
+        
     }
     
     public static function utilRequest($url, $method="GET", $body=NULL, $headers=array(), $basicauth=array() ) {
@@ -3625,6 +3631,13 @@ class Zotero_Lib_Utils
         }
         //disable Expect header
         $httpHeaders[] = 'Expect:';
+        //set version and user-agent headers if not overridden by passed headers
+        if(!isset($headers['Zotero-API-Version'])){
+            $httpHeaders['Zotero-API-Version'] = ZOTERO_API_VERSION;
+        }
+        if(!isset($headers['User-Agent'])){
+            $httpHeaders['User-Agent'] = 'LibZotero-php-' . LIBZOTERO_VERSION;
+        }
         
         if(!empty($basicauth)){
             $passString = $basicauth['username'] . ':' . $basicauth['password'];

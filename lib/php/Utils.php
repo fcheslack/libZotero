@@ -9,6 +9,8 @@ class Zotero_Lib_Utils
     const ZOTERO_URI = 'https://api.zotero.org';
     const ZOTERO_WWW_URI = 'http://www.zotero.org';
     const ZOTERO_WWW_API_URI = 'http://www.zotero.org/api';
+    const ZOTERO_API_VERSION = 1;
+    const LIBZOTERO_VERSION = "0.5.6";
     
     public static function wrapLinks($txt, $nofollow=false){
         //extremely ugly wrapping of urls in html
@@ -44,6 +46,13 @@ class Zotero_Lib_Utils
         }
         //disable Expect header
         $httpHeaders[] = 'Expect:';
+        //set version and user-agent headers if not overridden by passed headers
+        if(!isset($headers['Zotero-API-Version'])){
+            $httpHeaders['Zotero-API-Version'] = ZOTERO_API_VERSION;
+        }
+        if(!isset($headers['User-Agent'])){
+            $httpHeaders['User-Agent'] = 'LibZotero-php-' . LIBZOTERO_VERSION;
+        }
         
         if(!empty($basicauth)){
             $passString = $basicauth['username'] . ':' . $basicauth['password'];

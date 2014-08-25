@@ -17,6 +17,9 @@ class Zotero_Library
     const ZOTERO_URI = 'https://api.zotero.org';
     const ZOTERO_WWW_URI = 'http://www.zotero.org';
     const ZOTERO_WWW_API_URI = 'http://www.zotero.org/api';
+    const ZOTERO_API_VERSION = 1;
+    const LIBZOTERO_VERSION = "0.5.6";
+    
     protected $_apiKey = '';
     protected $_ch = null;
     protected $_followRedirects = true;
@@ -127,6 +130,13 @@ class Zotero_Library
         }
         //disable Expect header
         $httpHeaders[] = 'Expect:';
+        //set version and user-agent headers if not overridden by passed headers
+        if(!isset($headers['Zotero-API-Version'])){
+            $httpHeaders['Zotero-API-Version'] = ZOTERO_API_VERSION;
+        }
+        if(!isset($headers['User-Agent'])){
+            $httpHeaders['User-Agent'] = 'LibZotero-php-' . LIBZOTERO_VERSION;
+        }
         
         if(!empty($basicauth)){
             $passString = $basicauth['username'] . ':' . $basicauth['password'];
