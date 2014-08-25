@@ -127,6 +127,8 @@ def zrequest(url, method='GET', body=None, headers={}):
     req = urllib2.Request(url, body)
     for key, val in headers.items():
         req.add_header(key, val)
+    req.add_header('Zotero-API-Version', zotero.ZOTERO_API_VERSION)
+    req.add_header('User-Agent', 'LibZotero-php-' + zotero.LIBZOTERO_VERSION)
     req.get_method = lambda: method
     r = None
     try:

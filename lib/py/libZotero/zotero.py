@@ -10,3 +10,6 @@ from cache import *
 from response import *
 
 ZOTERO_URI = 'https://api.zotero.org'
+ZOTERO_API_VERSION = 1;
+LIBZOTERO_VERSION = "0.5.6";
+    
