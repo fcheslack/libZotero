@@ -21,7 +21,13 @@ class Url
             $base = ZOTERO_WWW_API_URI;
         }
         
-        $url = $base . '/' . $params['libraryType'] . 's/' . $params['libraryID'];
+        $url = $base;
+        if(isset($params['libraryType'])){
+            $url .= '/' . $params['libraryType'] . 's/';
+            if(isset($params['libraryID'])){
+                $url .= $params['libraryID'];
+            }
+        }
         
         if(!empty($params['collectionKey'])){
             if($params['collectionKey'] == 'trash'){
