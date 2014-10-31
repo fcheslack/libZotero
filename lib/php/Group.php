@@ -305,4 +305,13 @@ class Group extends ApiObject
         
         return $doc->saveXML($el);
     }
+
+    public function libraryPropertiesArray() {
+        return [
+            'type' => $this->type,
+            'libraryEditing' => $this->libraryEditing,
+            'libraryReading' => $this->libraryReading,
+            'fileEditing' => $this->fileEditing
+        ];
+    }
 }
