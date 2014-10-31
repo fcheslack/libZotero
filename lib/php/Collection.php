@@ -65,6 +65,7 @@ class Collection extends ApiObject
     
     public function set($key, $val){
         return $this->$key = $val;
+    }
     
     public function collectionJson(){
         return json_encode($this->writeApiObject());
