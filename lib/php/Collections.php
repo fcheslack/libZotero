@@ -65,7 +65,7 @@ class Collections
         foreach($this->collectionObjects as $key=>$collection){
             $orderedArray[] = $collection;
         }
-        usort($orderedArray, array('Collections', 'sortByTitleCompare'));
+        usort($orderedArray, '\Zotero\Collections::sortByTitleCompare');
         $this->orderedArray = $orderedArray;
         return $this->orderedArray;
     }
