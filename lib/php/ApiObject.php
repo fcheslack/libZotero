@@ -8,8 +8,6 @@ namespace Zotero;
   */
 class ApiObject
 {
-    public $key;
-    public $version;
     public $apiObj = [];
     
     public function __construct($jsonArray) {
@@ -30,6 +28,18 @@ class ApiObject
         $this->apiObj = $jsonArray;
         if(isset($this->apiObj['data'])){
             $this->pristine = $this->apiObj['data'];
+        }
+    }
+    
+    /**
+     * Get a list of keys defined on the data property of this object
+     * @return array<string> array keys
+     */
+    public function getDataKeys(){
+        if(isset($this->apiObj['data'])){
+            return array_keys($this->apiObj['data']);
+        } else {
+            return [];
         }
     }
     
