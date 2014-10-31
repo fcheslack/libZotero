@@ -11,7 +11,9 @@ class ApcCache
     
     public function __construct(){
         if(!extension_loaded('apc')){
-            throw 'APC not loaded';
+            if(!extension_loaded('apcu')){
+                throw new \Zotero\Exception('APC not loaded');
+            }
         }
     }
     
