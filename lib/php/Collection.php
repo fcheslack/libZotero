@@ -9,7 +9,6 @@ namespace Zotero;
 class Collection extends ApiObject
 {
     public $topLevel;
-    public $apiObject = array();
     public $pristine = array();
     public $childKeys = array();
     
@@ -62,75 +61,17 @@ class Collection extends ApiObject
     
     public function get($key){
         return $this->$key;
-        /*
-        switch($key){
-            case 'title':
-            case 'name':
-                return $this->name;
-            case 'collectionKey':
-            case 'key':
-                return $this->collectionKey;
-            case 'parentCollection':
-            case 'parentCollectionKey':
-                return $this->parentCollectionKey;
-            case 'collectionVersion':
-            case 'version':
-                return $this->collectionVersion;
-        }
-        
-        if(array_key_exists($key, $this->apiObject)){
-            return $this->apiObject[$key];
-        }
-        
-        if(property_exists($this, $key)){
-            return $this->$key;
-        }
-        return null;
-        */
     }
     
     public function set($key, $val){
         return $this->$key = $val;
-        /*
-        switch($key){
-            case 'title':
-            case 'name':
-                $this->name = $val;
-                $this->apiObject['name'] = $val;
-                break;
-            case 'collectionKey':
-            case 'key':
-                $this->collectionKey = $val;
-                $this->apiObject['collectionKey'] = $val;
-                break;
-            case 'parentCollection':
-            case 'parentCollectionKey':
-                $this->parentCollectionKey = $val;
-                $this->apiObject['parentCollection'] = $val;
-                break;
-            case 'collectionVersion':
-            case 'version':
-                $this->collectionVersion = $val;
-                $this->apiObject['collectionVersion'] = $val;
-                break;
-        }
-        
-        if(array_key_exists($key, $this->apiObject)){
-            $this->apiObject[$key] = $val;
-        }
-        
-        if(property_exists($this, $key)){
-            $this->$key = $val;
-        }
-        */
-    }
     
     public function collectionJson(){
         return json_encode($this->writeApiObject());
     }
     
     public function writeApiObject() {
-        $updateItem = array_merge($this->pristine, $this->apiObject);
+        $updateItem = array_merge($this->pristine, $this->apiObj);
         return $updateItem;
     }
 }
