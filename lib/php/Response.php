@@ -681,12 +681,14 @@ class HttpResponse
     {
         $parsedLinks = [];
         $linkHeader = $this->getHeader('Link');
-        $links = explode($linkHeader, ',');
+        $links = explode(',', $linkHeader);
         $linkRegex = '/^<([^>]+)>; rel="([^\"]*)"$/';
         foreach($links as $link){
             $matches = [];
             preg_match($linkRegex, $link, $matches);
-            $parsedLinks[$matches[2]] = $matches[1];
+            if(count($matches)){
+                $parsedLinks[$matches[2]] = $matches[1];
+            }
         }
         return $parsedLinks;
     }
@@ -697,7 +699,8 @@ class HttpResponse
             throw new Exception("Request was an error: {$bodyString}");
         }
         if($this->getHeader('Content-Type') != 'application/json'){
-            throw new Exception("Unexpected content type not application/json");
+            $contentType = $this->getHeader('Content-Type');
+            throw new Exception("Unexpected content type not application/json. {$contentType}");
         }
         $parsedJson = json_decode($bodyString, true);
         return $parsedJson;
