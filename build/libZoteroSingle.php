@@ -24,7 +24,9 @@ class ApcCache
     
     public function __construct(){
         if(!extension_loaded('apc')){
-            throw 'APC not loaded';
+            if(!extension_loaded('apcu')){
+                throw new \Zotero\Exception('APC not loaded');
+            }
         }
     }
     
@@ -59,8 +61,6 @@ namespace Zotero;
   */
 class ApiObject
 {
-    public $key;
-    public $version;
     public $apiObj = [];
     
     public function __construct($jsonArray) {
@@ -81,6 +81,18 @@ class ApiObject
         $this->apiObj = $jsonArray;
         if(isset($this->apiObj['data'])){
             $this->pristine = $this->apiObj['data'];
+        }
+    }
+    
+    /**
+     * Get a list of keys defined on the data property of this object
+     * @return array<string> array keys
+     */
+    public function getDataKeys(){
+        if(isset($this->apiObj['data'])){
+            return array_keys($this->apiObj['data']);
+        } else {
+            return [];
         }
     }
     
@@ -298,7 +310,6 @@ namespace Zotero;
 class Collection extends ApiObject
 {
     public $topLevel;
-    public $apiObject = array();
     public $pristine = array();
     public $childKeys = array();
     
@@ -351,67 +362,10 @@ class Collection extends ApiObject
     
     public function get($key){
         return $this->$key;
-        /*
-        switch($key){
-            case 'title':
-            case 'name':
-                return $this->name;
-            case 'collectionKey':
-            case 'key':
-                return $this->collectionKey;
-            case 'parentCollection':
-            case 'parentCollectionKey':
-                return $this->parentCollectionKey;
-            case 'collectionVersion':
-            case 'version':
-                return $this->collectionVersion;
-        }
-        
-        if(array_key_exists($key, $this->apiObject)){
-            return $this->apiObject[$key];
-        }
-        
-        if(property_exists($this, $key)){
-            return $this->$key;
-        }
-        return null;
-        */
     }
     
     public function set($key, $val){
         return $this->$key = $val;
-        /*
-        switch($key){
-            case 'title':
-            case 'name':
-                $this->name = $val;
-                $this->apiObject['name'] = $val;
-                break;
-            case 'collectionKey':
-            case 'key':
-                $this->collectionKey = $val;
-                $this->apiObject['collectionKey'] = $val;
-                break;
-            case 'parentCollection':
-            case 'parentCollectionKey':
-                $this->parentCollectionKey = $val;
-                $this->apiObject['parentCollection'] = $val;
-                break;
-            case 'collectionVersion':
-            case 'version':
-                $this->collectionVersion = $val;
-                $this->apiObject['collectionVersion'] = $val;
-                break;
-        }
-        
-        if(array_key_exists($key, $this->apiObject)){
-            $this->apiObject[$key] = $val;
-        }
-        
-        if(property_exists($this, $key)){
-            $this->$key = $val;
-        }
-        */
     }
     
     public function collectionJson(){
@@ -419,7 +373,7 @@ class Collection extends ApiObject
     }
     
     public function writeApiObject() {
-        $updateItem = array_merge($this->pristine, $this->apiObject);
+        $updateItem = array_merge($this->pristine, $this->apiObj);
         return $updateItem;
     }
 }
@@ -490,7 +444,7 @@ class Collections
         foreach($this->collectionObjects as $key=>$collection){
             $orderedArray[] = $collection;
         }
-        usort($orderedArray, array('Collections', 'sortByTitleCompare'));
+        usort($orderedArray, '\Zotero\Collections::sortByTitleCompare');
         $this->orderedArray = $orderedArray;
         return $this->orderedArray;
     }
@@ -674,20 +628,6 @@ class Group extends ApiObject
         'disciplines' => [],
         'enableComments' => false,
     ];
-    /**
-     * @var bool
-     */
-    //public $hasImage;
-    
-    /**
-     * @var array
-     */
-    //public $disciplines;
-    
-    /**
-     * @var bool
-     */
-    //public $enableComments;
     
     public function __construct($groupArray = null)
     {
@@ -979,6 +919,15 @@ class Group extends ApiObject
         $el->setAttribute('hasImage', $this->hasImage);
         
         return $doc->saveXML($el);
+    }
+
+    public function libraryPropertiesArray() {
+        return [
+            'type' => $this->type,
+            'libraryEditing' => $this->libraryEditing,
+            'libraryReading' => $this->libraryReading,
+            'fileEditing' => $this->fileEditing
+        ];
     }
 }
 
@@ -1800,7 +1749,7 @@ class Library
      * @return HTTP_Response
      */
     public function getLastResponse(){
-        return $this->_lastResponse;
+        return $this->net->getLastResponse();
     }
     
     /**
@@ -1809,7 +1758,7 @@ class Library
      * @return HTTP_Response
      */
     public function getLastStatus(){
-        return $this->_lastResponse->getStatus();
+        return $this->net->getLastResponse()->getStatus();
     }
     
     public function libraryString(){
@@ -2046,7 +1995,20 @@ class Library
         return $this->items->writeItem($item);
     }
     
+    /**
+     * Upload the file for a previously created attachment item
+     * @param  \Zotero\Item $item         Existing item of type attachment
+     * @param  filedata $fileContents Contents of the file
+     * @param  array  $fileinfo     md5, filename, filesize, and mtime for the file
+     * @return bool               boolean success
+     */
     public function uploadNewAttachedFile($item, $fileContents, $fileinfo=array()){
+        //get attachment template
+        //create child attachment item / modify existing
+        //get upload authorization
+        //full upload
+        //register upload
+        //
         //get upload authorization
         $aparams = array('target'=>'item', 'targetModifier'=>'file', 'itemKey'=>$item->key);
         $postData = "md5={$fileinfo['md5']}&filename={$fileinfo['filename']}&filesize={$fileinfo['filesize']}&mtime={$fileinfo['mtime']}";
@@ -2096,9 +2058,9 @@ class Library
         }
     }
     
-    public function createAttachmentItem($parentItem, $attachmentInfo){
+    public function createAttachmentItem($parentItem, $linkMode='imported_file'){
         //get attachment template
-        $templateItem = $this->getTemplateItem('attachment', 'imported_file');
+        $templateItem = $this->getTemplateItem('attachment', $linkMode);
         $templateItem->parentKey = $parentItem->key;
         
         //create child item
@@ -2111,8 +2073,12 @@ class Library
      * @param Item $item the newly created Item to be added to the server
      * @return Zotero_Response
      */
-    public function createItem($item){
-        return $this->items->writeItems(array($item));
+    public function createItem($items){
+        if(is_array($items)){
+            return $this->items->writeItems($items);
+        } else {
+            return $this->items->writeItems([$item]);
+        }
     }
     
     /**
@@ -2810,6 +2776,10 @@ class Net
         
     }
 
+    public function getLastResponse() {
+        return $this->_lastResponse;
+    }
+
 }
 
 
@@ -3495,12 +3465,14 @@ class HttpResponse
     {
         $parsedLinks = [];
         $linkHeader = $this->getHeader('Link');
-        $links = explode($linkHeader, ',');
+        $links = explode(',', $linkHeader);
         $linkRegex = '/^<([^>]+)>; rel="([^\"]*)"$/';
         foreach($links as $link){
             $matches = [];
             preg_match($linkRegex, $link, $matches);
-            $parsedLinks[$matches[2]] = $matches[1];
+            if(count($matches)){
+                $parsedLinks[$matches[2]] = $matches[1];
+            }
         }
         return $parsedLinks;
     }
@@ -3511,7 +3483,8 @@ class HttpResponse
             throw new Exception("Request was an error: {$bodyString}");
         }
         if($this->getHeader('Content-Type') != 'application/json'){
-            throw new Exception("Unexpected content type not application/json");
+            $contentType = $this->getHeader('Content-Type');
+            throw new Exception("Unexpected content type not application/json. {$contentType}");
         }
         $parsedJson = json_decode($bodyString, true);
         return $parsedJson;
@@ -3530,8 +3503,6 @@ namespace Zotero;
   */
 class Tag extends ApiObject
 {
-    public $numItems = 0;
-    
     public function __construct($tagArray)
     {
         if(!$tagArray){
@@ -3545,11 +3516,17 @@ class Tag extends ApiObject
     }
     
     public function __get($key) {
-        if(array_key_exists($key, $this->apiObj['data'])){
-            return $this->apiObj['data'][$key];
+        switch($key){
+            case "tag":
+            case "name":
+            case "title":
+                return $this->apiObj['tag'];
         }
         if(array_key_exists($key, $this->apiObj['meta'])){
             return $this->apiObj['meta'][$key];
+        }
+        if(array_key_exists($key, $this->apiObj)) {
+            return $this->apiObj[$key];
         }
         return null;
     }
@@ -3566,23 +3543,6 @@ class Tag extends ApiObject
 
     public function get($key) {
         return $this->$key;
-        /*
-        switch($key){
-            case "tag":
-            case "name":
-            case "title":
-                return $this->name;
-        }
-        
-        if(array_key_exists($key, $this->apiObject)){
-            return $this->apiObject[$key];
-        }
-        
-        if(property_exists($this, $key)){
-            return $this->$key;
-        }
-        return null;
-        */
     }
 }
 
@@ -3608,7 +3568,13 @@ class Url
             $base = ZOTERO_WWW_API_URI;
         }
         
-        $url = $base . '/' . $params['libraryType'] . 's/' . $params['libraryID'];
+        $url = $base;
+        if(isset($params['libraryType'])){
+            $url .= '/' . $params['libraryType'] . 's/';
+            if(isset($params['libraryID'])){
+                $url .= $params['libraryID'];
+            }
+        }
         
         if(!empty($params['collectionKey'])){
             if($params['collectionKey'] == 'trash'){
@@ -3787,10 +3753,6 @@ namespace Zotero;
  */
 class Utils
 {
-    const ZOTERO_URI = 'https://api.zotero.org';
-    const ZOTERO_WWW_URI = 'http://www.zotero.org';
-    const ZOTERO_WWW_API_URI = 'http://www.zotero.org/api';
-    
     public static function randomString($len=0, $chars=null) {
         if ($chars === null) {
             $chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
