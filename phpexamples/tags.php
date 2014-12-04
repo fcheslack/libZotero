@@ -3,7 +3,7 @@
 require_once './config.php'; //library credentials
 
 require_once '../build/libZoteroSingle.php';
-$library = new Zotero_Library($libraryType, $libraryID, $librarySlug, $apiKey);
+$library = new \Zotero\Library($libraryType, $libraryID, $librarySlug, $apiKey);
 
 //get some tags
 $tags = $library->fetchTags(array('limit'=>20, 'order'=>'title', 'sort'=>'desc'));

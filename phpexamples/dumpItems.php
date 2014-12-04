@@ -5,7 +5,7 @@ require_once './config.php';
 require_once '../build/libZoteroSingle.php';
 
 //create a library object to interact with the zotero API
-$library = new Zotero_Library($libraryType, $libraryID, $userSlug, $apiKey);
+$library = new \Zotero\Library($libraryType, $libraryID, $userSlug, $apiKey);
 
 //use Alternative PHP Cache to save API responses for 30 minutes
 //this will cache unique api responses so we get faster responses
@@ -13,15 +13,15 @@ $library = new Zotero_Library($libraryType, $libraryID, $userSlug, $apiKey);
 $library->setCacheTtl(1800);
 
 //parameters we'll pass when retrieving items to order by item titles
-$feedParams = array('order'=>'title');
+$params = array('order'=>'title');
 
 //restrict the total items we'll fetch to 200
-$totalItemLimit = 200;
+$totalItemLimit = 100;
 //start at the beginning of our list by setting an offset of 0
 $offset = 0;
 //limit to 100 items per http request
 //this is the maximum number of items the API will return in a single request
-$perRequestLimit = 100;
+$perRequestLimit = 20;
 //keep count of the items we've gotten
 $fetchedItemsCount = 0;
 //keep track of whether there are more items to fetch
@@ -33,16 +33,17 @@ $items = array();
 while(($fetchedItemsCount < $totalItemLimit) && $moreItems){
     echo "fetching items starting at $offset with $perRequestLimit items per request <br />";
     //fetching items starting at $offset with $perRequestLimit items per request
-    $fetchedItems = $library->fetchItemsTop(array_merge($feedParams, array('limit'=>$perRequestLimit, 'start'=>$offset)));
+    $fetchedItems = $library->fetchItemsTop(array_merge($params, array('limit'=>$perRequestLimit, 'start'=>$offset)));
     //put the items from this last request into our array of items
     $items = array_merge($items, $fetchedItems);
     //update the count of items we've got and offset by that amount
     $fetchedItemsCount += count($fetchedItems);
     $offset = $fetchedItemsCount;
     
-    //Zotero_Library keeps track of the last feed it got so we can check if there is a 'next' link
+    //Zotero\Library keeps track of the last response it got so we can check if there is a 'next' link
     //indicating more results to be fetched
-    if(!isset($library->getLastFeed()->links['next'])){
+    $links = $library->getLastResponse()->linkHeaders();
+    if(!isset($links['next'])){
         $moreItems = false;
     }
 }

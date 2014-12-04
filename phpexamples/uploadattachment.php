@@ -4,6 +4,28 @@ require_once './user_writing_config.php'; //library credentials
 require_once '../build/libZoteroSingle.php';
 $library = new Zotero_Library($libraryType, $libraryID, $librarySlug, $apiKey);
 
+
+//create parent item that our attachments will live under
+$parentItem = $library->getTemplateItem('book');
+$parentItem->set('title', "Attachment Example Parent Book");
+
+//create attachment item and upload imported_file
+$importedFileItem = $library->getTemplateItem('attachment', 'imported_file');
+
+//create attachment item that is linked_file
+$linkedFileItem = $library->getTemplateItem('attachment', 'linked_file');
+
+//create attachment item that is imported_url
+$importedUrlItem = $library->getTemplateItem('attachment', 'imported_url');
+
+//create attachment item that is linked_url
+$linkedUrlItem = $library->getTemplateItem('attachment', 'linked_url');
+
+
+
+
+
+
 //add child attachment
 //get attachment template
 echo "adding attachment item\n";
