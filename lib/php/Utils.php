@@ -7,10 +7,6 @@ namespace Zotero;
  */
 class Utils
 {
-    const ZOTERO_URI = 'https://api.zotero.org';
-    const ZOTERO_WWW_URI = 'http://www.zotero.org';
-    const ZOTERO_WWW_API_URI = 'http://www.zotero.org/api';
-    
     public static function randomString($len=0, $chars=null) {
         if ($chars === null) {
             $chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
