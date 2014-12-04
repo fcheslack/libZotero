@@ -7,8 +7,6 @@ namespace Zotero;
   */
 class Tag extends ApiObject
 {
-    public $numItems = 0;
-    
     public function __construct($tagArray)
     {
         if(!$tagArray){
@@ -22,11 +20,17 @@ class Tag extends ApiObject
     }
     
     public function __get($key) {
-        if(array_key_exists($key, $this->apiObj['data'])){
-            return $this->apiObj['data'][$key];
+        switch($key){
+            case "tag":
+            case "name":
+            case "title":
+                return $this->apiObj['tag'];
         }
         if(array_key_exists($key, $this->apiObj['meta'])){
             return $this->apiObj['meta'][$key];
+        }
+        if(array_key_exists($key, $this->apiObj)) {
+            return $this->apiObj[$key];
         }
         return null;
     }
@@ -43,22 +47,5 @@ class Tag extends ApiObject
 
     public function get($key) {
         return $this->$key;
-        /*
-        switch($key){
-            case "tag":
-            case "name":
-            case "title":
-                return $this->name;
-        }
-        
-        if(array_key_exists($key, $this->apiObject)){
-            return $this->apiObject[$key];
-        }
-        
-        if(property_exists($this, $key)){
-            return $this->$key;
-        }
-        return null;
-        */
     }
 }
