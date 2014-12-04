@@ -343,6 +343,10 @@ class Net
         
     }
 
+    public function getLastResponse() {
+        return $this->_lastResponse;
+    }
+
 }
 
 ?>

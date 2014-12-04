@@ -95,7 +95,7 @@ class Library
      * @return HTTP_Response
      */
     public function getLastResponse(){
-        return $this->_lastResponse;
+        return $this->net->getLastResponse();
     }
     
     /**
@@ -104,7 +104,7 @@ class Library
      * @return HTTP_Response
      */
     public function getLastStatus(){
-        return $this->_lastResponse->getStatus();
+        return $this->net->getLastResponse()->getStatus();
     }
     
     public function libraryString(){
@@ -341,7 +341,20 @@ class Library
         return $this->items->writeItem($item);
     }
     
+    /**
+     * Upload the file for a previously created attachment item
+     * @param  \Zotero\Item $item         Existing item of type attachment
+     * @param  filedata $fileContents Contents of the file
+     * @param  array  $fileinfo     md5, filename, filesize, and mtime for the file
+     * @return bool               boolean success
+     */
     public function uploadNewAttachedFile($item, $fileContents, $fileinfo=array()){
+        //get attachment template
+        //create child attachment item / modify existing
+        //get upload authorization
+        //full upload
+        //register upload
+        //
         //get upload authorization
         $aparams = array('target'=>'item', 'targetModifier'=>'file', 'itemKey'=>$item->key);
         $postData = "md5={$fileinfo['md5']}&filename={$fileinfo['filename']}&filesize={$fileinfo['filesize']}&mtime={$fileinfo['mtime']}";
@@ -391,9 +404,9 @@ class Library
         }
     }
     
-    public function createAttachmentItem($parentItem, $attachmentInfo){
+    public function createAttachmentItem($parentItem, $linkMode='imported_file'){
         //get attachment template
-        $templateItem = $this->getTemplateItem('attachment', 'imported_file');
+        $templateItem = $this->getTemplateItem('attachment', $linkMode);
         $templateItem->parentKey = $parentItem->key;
         
         //create child item
@@ -406,8 +419,12 @@ class Library
      * @param Item $item the newly created Item to be added to the server
      * @return Zotero_Response
      */
-    public function createItem($item){
-        return $this->items->writeItems(array($item));
+    public function createItem($items){
+        if(is_array($items)){
+            return $this->items->writeItems($items);
+        } else {
+            return $this->items->writeItems([$item]);
+        }
     }
     
     /**
