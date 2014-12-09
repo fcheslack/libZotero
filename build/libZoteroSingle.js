@@ -332,7 +332,7 @@ Zotero.Cache.prototype.load = function(params){
     try{
         var s = this.store[objectCacheString];
         if(!s){
-            Z.error("No value found in cache store - " + objectCacheString, 3);
+            Z.warn("No value found in cache store - " + objectCacheString, 3);
             return null;
         }
         else{
@@ -834,7 +834,7 @@ Zotero.Net.prototype.queueRequest = function(requestObject){
             Z.debug("running sequential after queued deferred resolved", 4);
             return net.runSequential(requestObject);
         }).then(function(response){
-            Z.debug("runSequential done");
+            Z.debug("runSequential done", 3);
             net.queuedRequestDone();
             return response;
         });
@@ -865,6 +865,10 @@ Zotero.Net.prototype.runConcurrent = function(requestObject){
     });
 };
 
+//run the set of requests serially
+//chaining each request onto the .then of the previous one, after
+//adding the previous response to a responses array that will be
+//returned via promise to the caller when all requests are complete
 Zotero.Net.prototype.runSequential = function(requestObjects){
     Z.debug("Zotero.Net.runSequential", 3);
     var net = this;
@@ -1010,7 +1014,6 @@ Zotero.Net.prototype.ajaxRequest = function(requestConfig){
     delete config.error;
     
     ajaxpromise = new Promise(function(resolve, reject){
-        Z.debug(config);
         J.ajax(config)
         .then(function(data, textStatus, jqxhr){
             Z.debug("library.ajaxRequest jqxhr resolved. resolving Promise", 3);
@@ -1148,8 +1151,11 @@ Zotero.Library = function(type, libraryID, libraryUrlIdentifier, apiKey){
             }
         },
         function(){
-            Z.error("Error initialized indexedDB. Promise rejected.");
-            throw new Error("Error initialized indexedDB. Promise rejected.");
+            //can't use indexedDB. Set to false in config and trigger error to notify user
+            Zotero.config.useIndexedDB = false;
+            library.trigger("indexedDBError");
+            Z.error("Error initializing indexedDB. Promise rejected.");
+            throw new Error("Error initializing indexedDB. Promise rejected.");
         });
     }
     
@@ -1883,7 +1889,7 @@ Zotero.Container.prototype.initSecondaryData = function(){
 };
 
 Zotero.Container.prototype.addObject = function(object){
-    Zotero.debug("Zotero.Container.add", 4);
+    Zotero.debug("Zotero.Container.addObject", 4);
     var container = this;
     container.objectArray.push(object);
     container.objectMap[object.key] = object;
@@ -2072,8 +2078,7 @@ Zotero.Container.prototype.processDeletions = function(deletedKeys) {
 //  calling code should check for writeFailure after the written objects
 //  are returned
 Zotero.Container.prototype.updateObjectsFromWriteResponse = function(objectsArray, response){
-    Z.debug("Zotero.utils.updateObjectsFromWriteResponse", 3);
-    Z.debug(response);
+    Z.debug("Zotero.Container.updateObjectsFromWriteResponse", 3);
     Z.debug("statusCode: " + response.status, 3);
     var data = response.data;
     if(response.status == 200){
@@ -2100,7 +2105,7 @@ Zotero.Container.prototype.updateObjectsFromWriteResponse = function(objectsArra
         if(data.hasOwnProperty('failed')){
             Z.debug("updating objects with failed writes", 3);
             J.each(data.failed, function(ind, failure){
-                Z.debug("failed write " + ind + " - " + failure, 3);
+                Z.error("failed write " + ind + " - " + failure);
                 var i = parseInt(ind, 10);
                 var object = objectsArray[i];
                 object.writeFailure = failure;
@@ -2267,7 +2272,6 @@ Zotero.Collections.prototype.writeCollections = function(collectionsArray){
     Z.debug('Zotero.Collections.writeCollections', 3);
     var collections = this;
     var library = collections.owningLibrary;
-    var returnCollections = [];
     var writeCollections = [];
     var i;
     
@@ -2278,19 +2282,42 @@ Zotero.Collections.prototype.writeCollections = function(collectionsArray){
     };
     var requestUrl = Zotero.ajax.apiRequestString(config);
     
+    //add collectionKeys to collections if they don't exist yet
+    /*
+    for(var i = 0; i < collectionsArray.length; i++){
+        var collection = collectionsArray[i];
+        //generate a collectionKey if the collection does not already have one
+        var collectionKey = collection.get('key');
+        if(collectionKey === "" || collectionKey === null) {
+            var newCollectionKey = Zotero.utils.getKey();
+            collection.set("key", newCollectionKey);
+            collection.set("version", 0);
+        }
+    }
+    */
     var writeChunks = collections.chunkObjectsArray(collectionsArray);
     var rawChunkObjects = collections.rawChunks(writeChunks);
     //update collections with server response if successful
     var writeCollectionsSuccessCallback = function(response){
         Z.debug("writeCollections successCallback", 3);
-        Z.debug(response, 3);
-        collections.updateObjectsFromWriteResponse(this.writeChunk, response);
-        //save updated collections to IDB
-        if(Zotero.config.useIndexedDB){
-            this.library.idbLibrary.updateCollections(this.writeChunk);
+        //pull vars out of this context so they're accessible in the J.each
+        var library = this.library;
+        var writeChunk = this.writeChunk;
+        library.collections.updateObjectsFromWriteResponse(this.writeChunk, response);
+        //save updated collections to collections
+        for(var i = 0; i < writeChunk.length; i++){
+            var collection = writeChunk[i];
+            if(collection.synced && (!collection.writeFailure)) {
+                library.collections.addCollection(collection);
+                //save updated collections to IDB
+                if(Zotero.config.useIndexedDB){
+                    Z.debug("updating indexedDB collections");
+                    library.idbLibrary.updateCollections(writeChunk);
+                }
+            }
         }
         
-        returnCollections = returnCollections.concat(this.writeChunk);
+        return response;
     };
     
     Z.debug("collections.version: " + collections.version, 3);
@@ -2300,7 +2327,6 @@ Zotero.Collections.prototype.writeCollections = function(collectionsArray){
     for(i = 0; i < writeChunks.length; i++){
         var successContext = {
             writeChunk: writeChunks[i],
-            //returnCollections: returnCollections,
             library: library,
         };
         
@@ -2317,18 +2343,23 @@ Zotero.Collections.prototype.writeCollections = function(collectionsArray){
             success: J.proxy(writeCollectionsSuccessCallback, successContext),
         });
     }
-    
+
     return library.sequentialRequests(requestObjects)
     .then(function(responses){
         Z.debug("Done with writeCollections sequentialRequests promise", 3);
-        J.each(returnCollections, function(ind, collection){
-            collections.addCollection(collection);
-        });
         collections.initSecondaryData();
-        return returnCollections;
+        
+        J.each(responses, function(ind, response){
+            if(response.isError || (response.data.hasOwnProperty('failed') && Object.keys(response.data.failed).length > 0) ){
+                throw new Error("failure when writing collections");
+            }
+        });
+        return responses;
     })
     .catch(function(err){
         Z.error(err);
+        //rethrow so widget doesn't report success
+        throw(err);
     });
 };
 Zotero.Items = function(jsonBody){
@@ -2506,7 +2537,7 @@ Zotero.Items.prototype.atomizeItems = function(itemsArray){
     //new items
     var writeItems = [];
     var item;
-    for(i = 0; i < itemsArray.length; i++){
+    for(var i = 0; i < itemsArray.length; i++){
         item = itemsArray[i];
         //generate an itemKey if the item does not already have one
         var itemKey = item.get('key');
@@ -2562,6 +2593,7 @@ Zotero.Items.prototype.writeItems = function(itemsArray){
         
         this.returnItems = this.returnItems.concat(this.writeChunk);
         Zotero.trigger("itemsChanged", {library:this.library});
+        return response;
     };
     
     Z.debug("items.itemsVersion: " + items.itemsVersion, 3);
@@ -2852,6 +2884,7 @@ Zotero.Collection = function(collectionObj){
         },
     };
     this.children = [];
+    this.topLevel = true;
     if(collectionObj){
         this.parseJsonCollection(collectionObj);
     }
@@ -2891,6 +2924,8 @@ Zotero.Collection.prototype.initSecondaryData = function() {
     
     if(collection.apiObj.data['parentCollection']){
         collection.topLevel = false;
+    } else {
+        collection.topLevel = true;
     }
     
     if(Zotero.config.libraryPathString){
@@ -5057,7 +5092,7 @@ Zotero.Idb.Library.prototype.init = function(){
             var db = event.target.result;
             idbLibrary.db = db;
             
-            if(oldVersion < 3){
+            if(oldVersion < 4){
                 //delete old versions of object stores
                 Z.debug("Existing object store names:", 3);
                 Z.debug(JSON.stringify(db.objectStoreNames), 3);
@@ -5462,6 +5497,20 @@ Zotero.Idb.Library.prototype.addCollections = function(collections){
 Zotero.Idb.Library.prototype.updateCollections = function(collections){
     Z.debug("Zotero.Idb.Library.updateCollections", 3);
     return this.updateObjects(collections, 'collection');
+};
+
+/**
+* Get collection from indexedDB that has given collectionKey
+* @param {string} collectionKey
+*/
+Zotero.Idb.Library.prototype.getCollection = function(collectionKey){
+    var idbLibrary = this;
+    return new Promise(function(resolve, reject){
+        var success = function(event){
+            resolve(event.target.result);
+        };
+        idbLibrary.db.transaction("collections").objectStore(["collections"], "readonly").get(collectionKey).onsuccess = success;
+    });
 };
 
 Zotero.Idb.Library.prototype.removeCollections = function(collections){
@@ -5970,7 +6019,6 @@ Zotero.Library.prototype.loadAllTags = function(config){
                 tags.plainList = plainList;
                 
                 var nextLink = tags.nextLink;
-                Z.debug("nextLink:" + nextLink);
                 var nextLinkConfig = J.deparam(J.param.querystring(nextLink));
                 var newConfig = J.extend({}, config);
                 newConfig.start = nextLinkConfig.start;
