@@ -2283,7 +2283,6 @@ Zotero.Collections.prototype.writeCollections = function(collectionsArray){
     var requestUrl = Zotero.ajax.apiRequestString(config);
     
     //add collectionKeys to collections if they don't exist yet
-    /*
     for(var i = 0; i < collectionsArray.length; i++){
         var collection = collectionsArray[i];
         //generate a collectionKey if the collection does not already have one
@@ -2294,13 +2293,13 @@ Zotero.Collections.prototype.writeCollections = function(collectionsArray){
             collection.set("version", 0);
         }
     }
-    */
+
     var writeChunks = collections.chunkObjectsArray(collectionsArray);
     var rawChunkObjects = collections.rawChunks(writeChunks);
     //update collections with server response if successful
     var writeCollectionsSuccessCallback = function(response){
         Z.debug("writeCollections successCallback", 3);
-        //pull vars out of this context so they're accessible in the J.each
+        //pull vars out of this context so they're accessible in J.each context
         var library = this.library;
         var writeChunk = this.writeChunk;
         library.collections.updateObjectsFromWriteResponse(this.writeChunk, response);
@@ -2316,7 +2315,7 @@ Zotero.Collections.prototype.writeCollections = function(collectionsArray){
                 }
             }
         }
-        
+        response.returnCollections = writeChunk;
         return response;
     };
     
