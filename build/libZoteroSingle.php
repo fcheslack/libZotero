@@ -2411,6 +2411,28 @@ class Library
     public static function loadLibrary($dump){
         return unserialize($dump);
     }
+
+    //load aliases for fetch functions
+    public function loadAllCollections($params = []){
+        return $this->fetchAllCollections($params);
+    }
+    
+    public function loadCollections($params = []){
+        return $this->fetchCollections($params);
+    }
+    
+    public function loadItemsTop($params=[]){
+        $this->fetchItemsTop($params);
+    }
+
+    //alias for fetchItems
+    public function loadItems($params = []){
+        $this->fetchItems($params);
+    }
+    
+    public function loadItem($itemKey){
+        $this->fetchItem($itemKey);
+    }
 }
 
 
