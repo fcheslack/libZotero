@@ -380,7 +380,7 @@ Zotero.ajaxRequest = function(url, type, options){
         type: type,
     };
     requestObject = J.extend({}, requestObject, options);
-    Z.debug(requestObject);
+    Z.debug(requestObject, 3);
     return Zotero.net.queueRequest(requestObject);
 };
 
@@ -1259,7 +1259,7 @@ Zotero.Library.prototype.ajaxRequest = function(url, type, options){
         type: type,
     };
     requestObject = J.extend({}, requestObject, options);
-    Z.debug(requestObject);
+    Z.debug(requestObject, 3);
     return Zotero.net.queueRequest(requestObject);
 };
 
@@ -2471,12 +2471,13 @@ Zotero.Items.prototype.deleteItems = function(deleteItems, version){
     
     //split keys into chunks of 50 per request
     var deleteChunks = items.chunkObjectsArray(deleteKeys);
-    
+    /*
     var successCallback = function(response){
         var deleteProgress = index / deleteChunks.length;
         Zotero.trigger("deleteProgress", {'progress': deleteProgress});
+        return response;
     };
-    
+    */
     var requestObjects = [];
     for(var i = 0; i < deleteChunks.length; i++){
         var deleteKeysString = deleteChunks[i].join(',');
@@ -2567,7 +2568,6 @@ Zotero.Items.prototype.atomizeItems = function(itemsArray){
 Zotero.Items.prototype.writeItems = function(itemsArray){
     var items = this;
     var library = items.owningLibrary;
-    var returnItems = [];
     var i;
     var writeItems = items.atomizeItems(itemsArray);
     
@@ -2590,8 +2590,8 @@ Zotero.Items.prototype.writeItems = function(itemsArray){
             this.library.idbLibrary.updateItems(this.writeChunk);
         }
         
-        this.returnItems = this.returnItems.concat(this.writeChunk);
         Zotero.trigger("itemsChanged", {library:this.library});
+        response.returnItems = this.writeChunk;
         return response;
     };
     
@@ -2602,7 +2602,6 @@ Zotero.Items.prototype.writeItems = function(itemsArray){
     for(i = 0; i < writeChunks.length; i++){
         var successContext = {
             writeChunk: writeChunks[i],
-            returnItems: returnItems,
             library: library,
         };
         
@@ -2619,7 +2618,7 @@ Zotero.Items.prototype.writeItems = function(itemsArray){
     return library.sequentialRequests(requestObjects)
     .then(function(responses){
         Z.debug("Done with writeItems sequentialRequests promise", 3);
-        return returnItems;
+        return responses;
     });
 };
 
@@ -5679,6 +5678,7 @@ Zotero.Library.prototype.processLoadedCollections = function(response){
     library.collections.updateSyncState(response.lastModifiedVersion);
     
     Zotero.trigger("loadedCollectionsProcessed", {library:library, collectionsAdded:collectionsAdded});
+    return response;
 }
 
 //create+write a collection given a name and optional parentCollectionKey
@@ -5804,6 +5804,7 @@ Zotero.Library.prototype.processLoadedItems = function(response){
     library.items.updateSyncState(response.lastModifiedVersion);
     
     Zotero.trigger("itemsChanged", {library:library, loadedItems:loadedItemsArray});
+    return response;
 };
 
 Zotero.Library.prototype.loadItem = function(itemKey) {
