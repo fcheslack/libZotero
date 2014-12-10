@@ -245,7 +245,7 @@ class Library
         
         return $fetchedItems;
     }
-    
+
     /**
      * Make a single request loading a list of items
      *
@@ -768,16 +768,16 @@ class Library
     }
     
     public function loadItemsTop($params=[]){
-        $this->fetchItemsTop($params);
+        return $this->fetchItemsTop($params);
     }
 
     //alias for fetchItems
     public function loadItems($params = []){
-        $this->fetchItems($params);
+        return $this->fetchItems($params);
     }
     
     public function loadItem($itemKey){
-        $this->fetchItem($itemKey);
+        return $this->fetchItem($itemKey);
     }
 }
 
