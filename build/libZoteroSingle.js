@@ -49,7 +49,7 @@ var Zotero = {
              baseFeedUrl: 'https://api.zotero.org',
              baseZoteroWebsiteUrl: 'https://www.zotero.org',
              baseDownloadUrl: 'https://www.zotero.org',
-             debugLogEndpoint: 'https://test.zotero.net/user/submitdebug',
+             debugLogEndpoint: '',
              storeDebug: true,
              directDownloads: true,
              proxyPath: '/proxyrequest',
@@ -721,6 +721,10 @@ Zotero.ApiObject = function(){
 Zotero.ApiObject.prototype.associateWithLibrary = function(library){
     var apiObject = this;
     apiObject.owningLibrary = library;
+    if(typeof this.apiObj.library == "object"){
+        this.apiObj.library.type = library.type;
+        this.apiObj.library.id = library.libraryID;
+    }
     return apiObject;
 };
 
@@ -3742,16 +3746,22 @@ Zotero.Item.prototype.get = function(key){
         case 'title':
             var title = '';
             if(item.apiObj.data.itemType == 'note'){
-                title = item.noteTitle(item.apiObj.data.note);
+                return item.noteTitle(item.apiObj.data.note);
             } else {
-                title = item.apiObj.data.title;
+                return item.apiObj.data.title;
             }
             if(title == ''){
                 return '[Untitled]';
             }
             return title;
         case 'creatorSummary':
-            return item.apiObj.meta.creatorSummary;
+        case 'creator':
+            if(typeof item.apiObj.meta.creatorSummary !== "undefined"){
+                return item.apiObj.meta.creatorSummary;
+            }
+            else {
+                return '';
+            }
         case 'year':
             if(item.parsedDate) {
                 return item.parsedDate.getFullYear();
