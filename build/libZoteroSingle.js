@@ -1160,7 +1160,7 @@ Zotero.Library = function(type, libraryID, libraryUrlIdentifier, apiKey){
             library.trigger("indexedDBError");
             library.trigger('cachedDataLoaded');
             Z.error("Error initializing indexedDB. Promise rejected.");
-            throw new Error("Error initializing indexedDB. Promise rejected.");
+            //don't re-throw error, since we can still load data from the API
         });
     }
     
@@ -5562,11 +5562,11 @@ Zotero.Idb.Library.prototype.setVersion = function(type, version){
             reject();
         };
         
-        var fileStore = transaction.objectStore("versions");
+        var versionStore = transaction.objectStore("versions");
         var reqSuccess = function(event){
             Zotero.debug("Set Version" + event.target.result, 3);
         };
-        var request = fileStore.put(version, type);
+        var request = versionStore.put(version, type);
         request.onsuccess = reqSuccess;
     });
 };
@@ -5972,6 +5972,7 @@ Zotero.Library.prototype.loadTags = function(config){
     return library.fetchTags(config)
     .then(function(response){
         Z.debug('loadTags proxied callback', 3);
+        
         library.tags.updateSyncState(response.lastModifiedVersion);
         var addedTags = library.tags.addTagsFromJson(response.data);
         
