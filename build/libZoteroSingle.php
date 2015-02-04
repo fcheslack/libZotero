@@ -2747,6 +2747,80 @@ class Zotero_Group extends Zotero_Entry
         
         return $jsonItem;
     }
+    
+    public function role($userID) {
+        if($userID == $this->owner){
+            return 'owner';
+        }
+        if(in_array($userID, $this->adminIDs)){
+            return 'admin';
+        }
+        if(in_array($userID, $this->memberIDs)){
+            return 'member';
+        }
+        return false;
+    }
+    
+    public function isOwner($userID){
+        return $this->role($userID) == 'owner';
+    }
+    
+    public function isAdmin($userID){
+        $role = $this->role($userID);
+        if($role == 'admin' || $role == 'owner'){
+            return true;
+        }
+    }
+    
+    public function isMember($userID){
+        $role = $this->role($userID);
+        if($role === false){
+            return false;
+        }
+        return true;
+    }
+    
+    public function userIDs(){
+        //test
+        return array_merge($this->adminIDs, $this->memberIDs);
+    }
+    
+    public function groupIdentifier(){
+        if($this->type == 'Private'){
+            return $this->groupID;
+        }
+        $name = $this->name;
+        $slug = trim($name);
+        $slug = strtolower($slug);
+        $slug = preg_replace("/[^a-z0-9 ._-]/", "", $slug);
+        $slug = str_replace(" ", "_", $slug);
+        return $slug;
+    }
+    
+    public function userReadable($userID){
+        if($this->libraryReading == 'all'){
+            return true;
+        }
+        if($this->isMember($userID)){
+            return true;
+        }
+        return false;
+    }
+    
+    public function userWritable($userID){
+        if($this->libraryEditing == 'members'){
+            if($this->isMember($userID)){
+                return true;
+            }
+            return false;
+        }
+        if($this->libraryEditing == 'admins'){
+            if($this->isAdmin($userID)){
+                return true;
+            }
+            return false;
+        }
+    }
 }
 
  /**
