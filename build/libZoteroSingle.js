@@ -803,6 +803,16 @@ Zotero.Feed.prototype.parseXmlFeed = function(data){
     this.entries = fel.find('entry');
     return this;
 };
+/**
+ * A user or group Zotero library. This is generally the top level object
+ * through which interactions should happen. It houses containers for
+ * Zotero API objects (collections, items, etc) and handles making requests
+ * with particular API credentials, as well as storing data locally.
+ * @param {string} type                 type of library, 'user' or 'group'
+ * @param {int} libraryID            ID of the library
+ * @param {string} libraryUrlIdentifier identifier used in urls, could be library id or user/group slug
+ * @param {string} apiKey               key to use for API requests
+ */
 Zotero.Library = function(type, libraryID, libraryUrlIdentifier, apiKey){
     Z.debug("Zotero.Library constructor", 3);
     Z.debug("Library Constructor: " + type + " " + libraryID + " ", 3);
@@ -814,7 +824,7 @@ Zotero.Library = function(type, libraryID, libraryUrlIdentifier, apiKey){
         earliestVersion: null,
         latestVersion: null
     };
-    library._apiKey = apiKey || false;
+    library._apiKey = apiKey || '';
     
     library.libraryBaseWebsiteUrl = Zotero.config.libraryPathString;
     if(type == 'group'){
@@ -901,7 +911,10 @@ Zotero.Library = function(type, libraryID, libraryUrlIdentifier, apiKey){
     library.collectionsChanged = function(){};
     library.itemsChanged = function(){};
 };
-
+/**
+ * Items columns for which sorting is supported
+ * @type {Array}
+ */
 Zotero.Library.prototype.sortableColumns = ['title',
                                             'creator',
                                             'itemType',
@@ -920,7 +933,10 @@ Zotero.Library.prototype.sortableColumns = ['title',
                                             /*'numChildren',*/
                                             'addedBy'
                                             /*'modifiedBy'*/];
-
+/**
+ * Columns that can be displayed in an items table UI
+ * @type {Array}
+ */
 Zotero.Library.prototype.displayableColumns = ['title',
                                             'creator',
                                             'itemType',
@@ -939,11 +955,21 @@ Zotero.Library.prototype.displayableColumns = ['title',
                                             'numChildren',
                                             'addedBy'
                                             /*'modifiedBy'*/];
-
+/**
+ * Items columns that only apply to group libraries
+ * @type {Array}
+ */
 Zotero.Library.prototype.groupOnlyColumns = ['addedBy'
                                              /*'modifiedBy'*/];
 
-//this does not handle accented characters correctly
+
+/**
+ * Sort function that compares the title attributes of two objects.
+ * This function still does not handle accented characters correctly.
+ * @param  {[type]} a [description]
+ * @param  {[type]} b [description]
+ * @return {[type]}   [description]
+ */
 Zotero.Library.prototype.sortByTitleCompare = function(a, b){
     //Z.debug("compare by key: " + a + " < " + b + " ?", 4);
     if(a.title.toLocaleLowerCase() == b.title.toLocaleLowerCase()){
@@ -955,6 +981,15 @@ Zotero.Library.prototype.sortByTitleCompare = function(a, b){
     return 1;
 };
 
+/**
+ * Sort function that converts strings to locale lower case before comparing,
+ * however this is still not particularly effective at getting correct localized
+ * sorting in modern browsers due to browser implementations being poor. What we
+ * really want here is to strip diacritics first.
+ * @param  {string} a [description]
+ * @param  {string} b [description]
+ * @return {int}   [description]
+ */
 Zotero.Library.prototype.sortLower = function(a, b){
     if(a.toLocaleLowerCase() == b.toLocaleLowerCase()){
         return 0;
@@ -1041,6 +1076,14 @@ Zotero.Library.prototype.ajaxRequest = function(url, type, options){
 //or do we depend on specified callbacks to update versions if necessary?
 //fail on error?
 //request object must specify: url, method, body, headers, success callback, fail callback(?)
+
+/**
+ * Take an array of objects that specify Zotero API requests and perform them
+ * in sequence. Return a promise that gets resolved when all requests have
+ * gone through.
+ * @param  {[] Objects} requests Array of objects specifying requests to be made
+ * @return {Promise}          Promise that resolves/rejects along with requests
+ */
 Zotero.Library.prototype.sequentialRequests = function(requests){
     Z.debug("Zotero.Library.sequentialRequests", 3);
     var library = this;
@@ -1060,9 +1103,16 @@ Zotero.Library.prototype.sequentialRequests = function(requests){
     });
 }
 
+/**
+ * Generate a website url based on a dictionary of variables and the configured
+ * libraryBaseWebsiteUrl
+ * @param  {Object} urlvars Dictionary of key/value variables
+ * @return {string}         website url
+ */
 Zotero.Library.prototype.websiteUrl = function(urlvars){
     Z.debug("Zotero.library.websiteUrl", 3);
     Z.debug(urlvars, 4);
+    var library = this;
     
     var urlVarsArray = [];
     J.each(urlvars, function(index, value){
@@ -1073,7 +1123,7 @@ Zotero.Library.prototype.websiteUrl = function(urlvars){
     Z.debug(urlVarsArray, 4);
     var pathVarsString = urlVarsArray.join('/');
     
-    return this.libraryBaseWebsiteUrl + '/' + pathVarsString;
+    return library.libraryBaseWebsiteUrl + '/' + pathVarsString;
 };
 
 
@@ -1088,6 +1138,13 @@ Zotero.Library.prototype.synchronize = function(){
     //
 };
 
+/**
+ * Make and process API requests to update the local library items based on the
+ * versions we have locally. When the promise is resolved, we should have up to
+ * date items in this library's items container, as well as saved to indexedDB
+ * if configured to use it.
+ * @return {Promise} Promise
+ */
 Zotero.Library.prototype.loadUpdatedItems = function(){
     var library = this;
     //sync from the libraryVersion if it exists, otherwise use the itemsVersion, which is likely
@@ -1217,7 +1274,10 @@ Zotero.Library.prototype.getDeleted = function(version) {
                    newer:version
                };
     
-    if(library.deleted.deletedVersion == version){
+    //don't fetch again if version we'd be requesting is between
+    //deleted.newer and delete.deleted versions, just use that one
+    if(version > library.deleted.newerVersion &&
+        version < library.deleted.deletedVersion){
         Z.debug("deletedVersion matches requested: immediately resolving");
         return Promise.resolve(library.deleted.deletedData);
     }
@@ -2299,7 +2359,7 @@ Zotero.Items.prototype.deleteItems = function(deleteItems, version){
         
         var headers = {'Content-Type': 'application/json'};
         
-        headers['If-Unmodified-Since-Version'] = version;
+        //headers['If-Unmodified-Since-Version'] = version;
         
         deletePromise.then(function(){
             return items.owningLibrary.ajaxRequest(config, 'DELETE',
@@ -3744,10 +3804,11 @@ Zotero.Item.prototype.uploadChildAttachment = function(childItem, fileInfo, prog
         return childItem.uploadFile(fileInfo, progressCallback)
     }, function(response){
         //failure during attachmentItem write
-        return {
+        throw {
             "message":"Failure during attachmentItem write.",
             "code": response.jqxhr.status,
-            "serverMessage": response.jqxhr.responseText
+            "serverMessage": response.jqxhr.responseText,
+            "response": response
         };
     });
 };
@@ -4977,11 +5038,14 @@ Zotero.url.itemHref = function(item){
 
 Zotero.url.attachmentDownloadLink = function(item){
     var retString = '';
+    var downloadUrl = item.attachmentDownloadUrl;
+    var contentType = item.get('contentType');
+    
     if(item.links && item.links['enclosure']){
-        var tail = item.links['enclosure']['href'].substr(-4, 4);
-        if(tail == 'view'){
+        var ftype = item.links['enclosure'].type;
+        if(!item.links['enclosure']['length'] && ftype == 'text/html'){
             //snapshot: redirect to view
-            retString += '<a href="' + Zotero.config.baseZoteroWebsiteUrl + Zotero.config.nonparsedBaseUrl + '/' + item.itemKey + '/file/view' + '">' + 'View Snapshot</a>';
+            retString += '<a href="' + downloadUrl + '">' + 'View Snapshot</a>';
         }
         else{
             //file: offer download
@@ -5016,12 +5080,13 @@ Zotero.url.attachmentDownloadUrl = function(item){
     var retString = '';
     if(item.links && item.links['enclosure']){
         if(Zotero.config.directDownloads){
-            retString = Zotero.config.baseZoteroWebsiteUrl + Zotero.config.nonparsedBaseUrl + '/' + item.itemKey + '/file';
+            retString = item.links['enclosure']['href'];
+            /*retString = Zotero.config.baseZoteroWebsiteUrl + Zotero.config.nonparsedBaseUrl + '/' + item.itemKey + '/file';
             var tail = item.links['enclosure']['href'].substr(-4, 4);
             if(tail == 'view'){
                 //snapshot: redirect to view
                 retString += '/view';
-            }
+            }*/
         }
         else {
             //we have a proxy for downloads at baseDownloadUrl so just pass an itemkey to that
@@ -6413,167 +6478,6 @@ Zotero.Library.prototype.loadAllTags = function(config, checkCached){
         resolve( library.loadTags(urlconfig)
         .then(continueLoadingCallback))
     });
-};
-
-//download templates for every itemType
-Zotero.Library.prototype.loadItemTemplates = function(){
-    
-};
-
-//download possible creatorTypes for every itemType
-Zotero.Library.prototype.loadCreatorTypes = function(){
-    
-};
-
-//store a single binary file for offline use using Filestorage shim
-Zotero.Library.prototype.saveFileOffline = function(item){
-    try{
-    Z.debug("Zotero.Library.saveFileOffline", 3);
-    var library = this;
-    var deferred = new J.Deferred();
-    
-    if(library.filestorage === false){
-        return false;
-    }
-    var enclosureUrl;
-    var mimetype;
-    if(item.links && item.links['enclosure']){
-        enclosureUrl = item.links.enclosure.href;
-        mimetype = item.links.enclosure.type;
-    }
-    else{
-        return false;
-    }
-    
-    var reqUrl = enclosureUrl + Zotero.ajax.apiQueryString({});
-    
-    Z.debug("reqUrl:" + reqUrl, 3);
-    
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', Zotero.ajax.proxyWrapper(reqUrl, 'GET'), true);
-    xhr.responseType = 'blob';
-
-    xhr.onload = function(e) {
-        try{
-        if (this.status == 200) {
-            Z.debug("Success downloading");
-            var blob = this.response;
-            //Zotero.temp.fileDataUrl = Util.fileToObjectURL(blob);
-            //Zotero.temp.fileUrl = Util.fileToObjectURL(blob);
-            library.filestorage.filer.write('/' + item.itemKey, {data:blob, type: mimetype}, J.proxy(function(fileEntry, fileWriter){
-                try{
-                Z.debug("Success writing file");
-                Z.debug("Saved file for item " + item.itemKey + ' for offline use');
-                Z.debug("Saving file object somewhere in Zotero namespace:");
-                library.filestorage.filer.open(fileEntry, J.proxy(function(file){
-                    try{
-                    Z.debug("reading back filesystem stored file into object url");
-                    //we could return an objectUrl here, but I think that would keep it in memory when we don't necessarily need it
-                    //Zotero.temp.fileUrlAfter = Util.fileToObjectURL(file);
-                    deferred.resolve(true);
-                    }
-                    catch(e){
-                        Z.debug("Caught in filer.open");
-                        Z.debug(e);
-                    }
-                }, this) );
-                }
-                catch(e){
-                    Z.debug("Caught in filer.write");
-                    Z.debug(e);
-                }
-            }, this) );
-        }
-        }
-        catch(e){
-            Z.debug("Caught inside binary xhr onload");
-            Z.debug(e);
-        }
-    };
-    xhr.send();
-    
-    /*
-    var downloadDeferred = J.get(Zotero.ajax.proxyWrapper(reqUrl, 'GET'), J.proxy(function(data, textStatus, jqXHR){
-        //Z.debug(data);
-        Zotero.temp.fileDataUrl = Util.strToDataURL(data, mimetype);
-        library.filestorage.filer.write('/' + item.itemKey, {data:data, type: mimetype}, J.proxy(function(fileEntry, fileWriter){
-            Z.debug("Success");
-            Z.debug("Saved file for item " + item.itemKey + ' for offline use');
-            Z.debug("Saving file object somewhere in Zotero namespace:");
-            library.filestorage.filer.open(fileEntry, J.proxy(function(file){
-                Zotero.temp.fileUrl = Util.fileToObjectURL(file);
-            }, this) );
-        }, this) );
-    }, this) );
-     */
-        return deferred;
-    }
-    catch(e){
-        Z.debug("Caught in Z.Library.saveFileOffline");
-        Z.debug(e);
-    }
-};
-
-//save a set of files offline, identified by itemkeys
-Zotero.Library.prototype.saveFileSetOffline = function(itemKeys){
-    Z.debug("Zotero.Library.saveFileSetOffline", 3);
-    var library = this;
-    var ds = [];
-    var deferred = new J.Deferred();
-    var item;
-    var childItemKeys = [];
-    var checkedKeys = {};
-    
-    J.each(itemKeys, function(ind, itemKey){
-        if(checkedKeys.hasOwnProperty(itemKey)){
-            return;
-        }
-        else{
-            checkedKeys[itemKey] = 1;
-        }
-        item = library.items.getItem(itemKey);
-        if(item && item.links && item.links['enclosure']){
-            ds.push(library.saveFileOffline(item));
-        }
-        if(item.numChildren){
-            J.each(item.childItemKeys, function(ind, val){
-                childItemKeys.push(val);
-            });
-        }
-    });
-    
-    J.each(childItemKeys, function(ind, itemKey){
-        if(checkedKeys.hasOwnProperty(itemKey)){
-            return;
-        }
-        else{
-            checkedKeys[itemKey] = 1;
-        }
-        item = library.items.getItem(itemKey);
-        if(item && item.links && item.links['enclosure']){
-            ds.push(library.saveFileOffline(item));
-        }
-    });
-    
-    J.when.apply(null, ds).then(J.proxy(function(){
-        var d = library.filestorage.listOfflineFiles();
-        d.then(J.proxy(function(localItemKeys){
-            deferred.resolve();
-        }, this) );
-    }));
-    
-    return deferred;
-};
-
-//store all files from a collection for offline use
-//this probably doesn't do anything right now since child items are not part of a collection?
-Zotero.Library.prototype.saveCollectionFilesOffline = function(collectionKey){
-    Zotero.debug("Zotero.Library.saveCollectionFilesOffline " + collectionKey, 3);
-    var library = this;
-    var collection = library.collections.getCollection(collectionKey);
-    var itemKeys = collection.itemKeys;
-    var d = Zotero.Library.prototype.saveFileSetOffline(itemKeys);
-    return d;
 };
 
 //load objects from indexedDB
