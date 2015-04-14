@@ -397,9 +397,6 @@ Zotero.trigger = function(eventType, data, filter){
     }
     Zotero.debug("Triggering eventful " + eventType, 3);
     var e = J.Event(eventType, data);
-    Z.debug("created event object");
-    Z.debug(data);
-    Z.debug(e);
     try{
         J("#eventful").trigger(e);
     }
@@ -407,7 +404,6 @@ Zotero.trigger = function(eventType, data, filter){
         Z.error("failed triggering");
         Z.error(e);
     }
-    Z.debug("done triggering", 3);
 };
 
 Zotero.listen = function(events, handler, data, filter){
@@ -1154,11 +1150,12 @@ Zotero.Library = function(type, libraryID, libraryUrlIdentifier, apiKey){
                     Z.debug("Library Constructor: Library.items.itemsVersion: " + library.items.itemsVersion, 3);
                     Z.debug("Library Constructor: Library.collections.collectionsVersion: " + library.collections.collectionsVersion, 3);
                     Z.debug("Library Constructor: Library.tags.tagsVersion: " + library.tags.tagsVersion, 3);
+                    /*
                     J.each(library.tags.tagObjects, function(key, tag){
                         Z.debug("Library Constructor: tag.version:" + tag.version);
                         Z.debug("Library Constructor: tag.version:" + tag.apiObj.version);
                     });
-
+                    */
                     Z.debug("Library Constructor: Triggering cachedDataLoaded", 3);
                     library.trigger('cachedDataLoaded');
                 },
@@ -3670,18 +3667,18 @@ Zotero.Item.prototype.itemTypeImageClass = function(){
 Zotero.Item.prototype.itemTypeIconClass = function(){
     //linkModes: imported_file,imported_url,linked_file,linked_url
     var item = this;
-    var defaultIcon = 'fa-file-text-o';
+    var defaultIcon = 'fa fa-file-text-o';
     switch(item.apiObj.data.itemType){
         case 'attachment':
             switch(item.apiObj.data.linkMode){
                 case 'imported_file':
                     if(item.translatedMimeType == 'pdf'){
-                        return 'fa-file-pdf-o';
+                        return 'fa fa-file-pdf-o';
                     }
                     return 'glyphicons glyphicons-file'
                 case 'imported_url':
                     if(item.translatedMimeType == 'pdf'){
-                        return 'fa-file-pdf-o';
+                        return 'fa fa-file-pdf-o';
                     }
                     return 'glyphicons glyphicons-file';
                 case 'linked_file':
@@ -3725,13 +3722,13 @@ Zotero.Item.prototype.itemTypeIconClass = function(){
         case 'forumPost':
             return 'glyphicons glyphicons-bullhorn';
         case 'hearing':
-            return 'fa-gavel';
+            return 'fa fa-gavel';
         case 'instantMessage':
-            return 'fa-comment-o';
+            return 'fa fa-comment-o';
         case 'interview':
-            return 'fa-comments-o';
+            return 'fa fa-comments-o';
         case 'journalArticle':
-            return 'fa-file-text-o';
+            return 'fa fa-file-text-o';
         case 'letter':
             return 'glyphicons glyphicons-message-full';
         case 'magazineArticle':
@@ -3741,7 +3738,7 @@ Zotero.Item.prototype.itemTypeIconClass = function(){
         case 'map':
             return 'glyphicons glyphicons-google-maps';
         case 'newspaperArticle':
-            return 'fa-newspaper-o';
+            return 'fa fa-newspaper-o';
         case 'note':
             return 'glyphicons glyphicons-notes noteyellow';
         case 'patent':
@@ -3757,7 +3754,7 @@ Zotero.Item.prototype.itemTypeIconClass = function(){
         case 'statue':
             return 'glyphicons glyphicons-bank';
         case 'thesis':
-            return 'fa-graduation-cap';
+            return 'fa fa-graduation-cap';
         case 'tvBroadcast':
             return 'glyphicons glyphicons-display';
         case 'videoRecording':
@@ -6076,7 +6073,6 @@ Zotero.Library.prototype.loadTags = function(config){
     .then(function(response){
         Z.debug('loadTags proxied callback', 3);
         var updatedVersion = response.lastModifiedVersion;
-        Z.debug(updatedVersion);
         library.tags.updateSyncState(updatedVersion);
         var addedTags = library.tags.addTagsFromJson(response.data);
         library.tags.updateTagsVersion(updatedVersion);
