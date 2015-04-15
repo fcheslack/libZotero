@@ -3286,6 +3286,15 @@ Zotero.Item.prototype.initEmptyFromTemplate = function(template){
     return item;
 };
 
+Zotero.Item.prototype.isSupplementaryItem = function(){
+    var item = this;
+    var itemType = item.get('itemType');
+    if(itemType == "attachment" || itemType == "note"){
+        return true;
+    }
+    return false;
+};
+
 Zotero.Item.prototype.isSnapshot = function(){
     var item = this;
     if(item.apiObj.links['enclosure']){
