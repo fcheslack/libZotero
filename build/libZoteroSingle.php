@@ -524,14 +524,15 @@ class Collections
      */
     public function fetchAllCollections($params = array()){
         $aparams = array_merge(array('target'=>'collections', 'limit'=>100), $params);
+        $reqUrl = $this->owningLibrary->apiRequestString($aparams);
         do{
-            $response = $this->owningLibrary->request($aparams);
+            $response = $this->owningLibrary->net->request($reqUrl, 'GET');
             $respArray = $response->parseResponseBody();
             $this->addCollectionsFromJson($respArray);
             
-            $linkHeaders = $response->linkHeaders();
-            if(isset($linkHeaders['next'])){
-                $reqUrl = $linkHeaders['next'];
+            $responseLinks = $response->linkHeaders();
+            if(isset($responseLinks['next'])){
+                $reqUrl = $responseLinks['next'];
             } else {
                 $reqUrl = false;
             }
@@ -2458,7 +2459,6 @@ namespace Zotero;
 
 const ZOTERO_URI = 'https://api.zotero.org';
 const ZOTERO_WWW_URI = 'https://www.zotero.org';
-const ZOTERO_WWW_API_URI = 'https://www.zotero.org/api';
 const LIBZOTERO_DEBUG = 0;
 const ZOTERO_API_VERSION = 3;
 

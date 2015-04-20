@@ -3,7 +3,6 @@ namespace Zotero;
 
 const ZOTERO_URI = 'https://api.zotero.org';
 const ZOTERO_WWW_URI = 'https://www.zotero.org';
-const ZOTERO_WWW_API_URI = 'https://www.zotero.org/api';
 const LIBZOTERO_DEBUG = 0;
 const ZOTERO_API_VERSION = 3;
 
