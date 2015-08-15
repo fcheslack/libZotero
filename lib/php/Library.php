@@ -280,6 +280,16 @@ class Zotero_Library
     }
     
     /**
+     *  Sets the last Zotero_Feed
+     *
+     * @param Zotero_feed
+     */
+    public function setLastFeed($feed)
+    {
+        $this->_lastFeed = $feed;
+    }
+
+    /**
      * Construct a string that uniquely identifies a library
      * This is not related to the server GUIDs
      *
