@@ -193,7 +193,7 @@ class Zotero_Collections
         }
         
         $feed = new Zotero_Feed($response->getRawBody());
-        $this->owningLibrary->_lastFeed = $feed;
+        $this->owningLibrary->setLastFeed($feed);
         $addedCollections = $this->addCollectionsFromFeed($feed);
         
         if(isset($feed->links['next'])){
