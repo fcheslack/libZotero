@@ -54,6 +54,14 @@ class Zotero_Library
         if (!extension_loaded('curl')) {
             throw new Exception("You need cURL");
         }
+        //check if APC is loaded
+        if (!extension_loaded('apc') && !ini_get('apc.enabled')) {
+            throw new Exception("PHP extension APC is not loaded/or enabled in php.ini");
+        }
+        //check if DOMDocument object is loaded
+        if (!extension_loaded('xml')) {
+            throw new Exception("PHP extension XML is not loaded");
+        }
         
         $this->libraryType = $libraryType;
         $this->libraryID = $libraryID;
