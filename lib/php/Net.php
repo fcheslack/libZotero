@@ -1,9 +1,9 @@
 <?php
 namespace Zotero;
 
-const ZOTERO_URI = 'https://api.zotero.org';
+const ZOTERO_URI = 'https://apidev.zotero.org';
 const ZOTERO_WWW_URI = 'https://www.zotero.org';
-const LIBZOTERO_DEBUG = 0;
+const LIBZOTERO_DEBUG = 1;
 const ZOTERO_API_VERSION = 3;
 
  /**
@@ -196,8 +196,15 @@ class Net
      * @param string $userID
      * @return array $groups
      */
-    public function fetchGroups($userID=''){
+    public function fetchGroups($userID='', $apiKey='', $sessionAuth=false){
         $aparams = array('target'=>'userGroups', 'userID'=>$userID, 'order'=>'title');
+        if($apiKey != ''){
+            if($sessionAuth){
+                $aparams['session'] = $apiKey;
+            } else {
+                $aparams['key'] = $apiKey;
+            }
+        }
         $reqUrl = Url::apiRequestString($aparams);
         
         $response = $this->request($reqUrl, 'GET');

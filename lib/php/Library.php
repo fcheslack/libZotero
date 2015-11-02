@@ -25,6 +25,7 @@ class Library
     public $dirty = null;
     public $useLibraryAsContainer = true;
     public $libraryVersion = 0;
+    public $sessionAuth = false;
     public $net;
     protected $_lastResponse = null;
     
@@ -73,6 +74,10 @@ class Library
                 'key' => $this->apiKey
             ],
             $params);
+        if($this->sessionAuth){
+            $params['session'] = $this->apiKey;
+            unset($params['key']);
+        }
         if(isset($params['content'])) {
             $params['include'] = $params['content'];
             unset($params['content']);
@@ -724,7 +729,7 @@ class Library
             $userID = $this->libraryID;
         }
         
-        return $this->net->fetchGroups($userID);
+        return $this->net->fetchGroups($userID, $this->apiKey, $this->sessionAuth);
     }
     
     /**

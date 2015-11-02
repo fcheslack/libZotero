@@ -1728,6 +1728,10 @@ class Library
                 'key' => $this->apiKey
             ],
             $params);
+        if($this->sessionAuth){
+            unset($params['key']);
+            $params['session'] = $this->apiKey;
+        }
         if(isset($params['content'])) {
             $params['include'] = $params['content'];
             unset($params['content']);
@@ -2379,7 +2383,7 @@ class Library
             $userID = $this->libraryID;
         }
         
-        return $this->net->fetchGroups($userID);
+        return $this->net->fetchGroups($userID, $this->apiKey);
     }
     
     /**
@@ -2457,9 +2461,9 @@ class Mappings
 
 namespace Zotero;
 
-const ZOTERO_URI = 'https://api.zotero.org';
+const ZOTERO_URI = 'https://apidev.zotero.org';
 const ZOTERO_WWW_URI = 'https://www.zotero.org';
-const LIBZOTERO_DEBUG = 0;
+const LIBZOTERO_DEBUG = 1;
 const ZOTERO_API_VERSION = 3;
 
  /**
@@ -2652,8 +2656,11 @@ class Net
      * @param string $userID
      * @return array $groups
      */
-    public function fetchGroups($userID=''){
+    public function fetchGroups($userID='', $apiKey=''){
         $aparams = array('target'=>'userGroups', 'userID'=>$userID, 'order'=>'title');
+        if($apiKey != ''){
+            $aparams['key'] = $apiKey;
+        }
         $reqUrl = Url::apiRequestString($aparams);
         
         $response = $this->request($reqUrl, 'GET');
