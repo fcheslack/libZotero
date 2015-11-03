@@ -1680,6 +1680,7 @@ class Library
     public $dirty = null;
     public $useLibraryAsContainer = true;
     public $libraryVersion = 0;
+    public $sessionAuth = false;
     public $net;
     protected $_lastResponse = null;
     
@@ -1729,8 +1730,8 @@ class Library
             ],
             $params);
         if($this->sessionAuth){
-            unset($params['key']);
             $params['session'] = $this->apiKey;
+            unset($params['key']);
         }
         if(isset($params['content'])) {
             $params['include'] = $params['content'];
@@ -2383,7 +2384,7 @@ class Library
             $userID = $this->libraryID;
         }
         
-        return $this->net->fetchGroups($userID, $this->apiKey);
+        return $this->net->fetchGroups($userID, $this->apiKey, $this->sessionAuth);
     }
     
     /**
@@ -2656,10 +2657,14 @@ class Net
      * @param string $userID
      * @return array $groups
      */
-    public function fetchGroups($userID='', $apiKey=''){
+    public function fetchGroups($userID='', $apiKey='', $sessionAuth=false){
         $aparams = array('target'=>'userGroups', 'userID'=>$userID, 'order'=>'title');
         if($apiKey != ''){
-            $aparams['key'] = $apiKey;
+            if($sessionAuth){
+                $aparams['session'] = $apiKey;
+            } else {
+                $aparams['key'] = $apiKey;
+            }
         }
         $reqUrl = Url::apiRequestString($aparams);
         
