@@ -44,7 +44,7 @@ $jsfiles = array(
 'jquery.ba-bbq.min.js',
 'promise-0.1.1.min.js',
 'spark-md5.min.js',
-'IndexedDBShim.min.js',
+//'IndexedDBShim.min.js',
 'Base.js',
 'Ajax.js',
 'ApiObject.js',
