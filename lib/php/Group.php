@@ -64,6 +64,28 @@ class Group extends ApiObject
         return $this;
     }
     
+    public static function parseGroupIDFromXML($xml){
+        $doc = new \DOMDocument();
+        $doc->loadXml($xml);
+        $entryNode = $doc->getElementsByTagName('entry')->item(0);
+        
+        if(!$entryNode){
+            return;
+        }
+        
+        $apiObj = [];
+        $groupElements = $entryNode->getElementsByTagName("group");
+        $groupElement = $groupElements->item(0);
+        if(!$groupElement) return false;
+        
+        $groupAttributes = $groupElement->attributes;
+        if($groupAttributes['id']){
+            return urldecode($groupAttributes['id']->value);
+        } else {
+            return false;
+        }
+    }
+
     public function readXml($xml){
         parent::readXml($xml);
         $doc = new \DOMDocument();
