@@ -401,7 +401,7 @@ Zotero.trigger = function(eventType, data, filter){
         J("#eventful").trigger(e);
     }
     catch(e){
-        Z.error("failed triggering");
+        Z.error("failed triggering:" + eventType);
         Z.error(e);
     }
 };
@@ -3063,6 +3063,9 @@ Zotero.Collection.prototype.update = function(name, parentKey){
         'libraryID':collection.apiObj.library.id,
         'collectionKey':collection.key
     };
+    
+    collection.set('name', name);
+    collection.set('parentCollection', parentKey);
     
     var writeObject = collection.writeApiObj();
     var requestData = JSON.stringify(writeObject);
