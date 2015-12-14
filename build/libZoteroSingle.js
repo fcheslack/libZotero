@@ -5144,7 +5144,8 @@ Zotero.file = {};
 
 Zotero.file.getFileInfo = function(file){
     //fileInfo: md5, filename, filesize, mtime, zip, contentType, charset
-    if(typeof FileReader != 'function'){
+    //
+    if(typeof FileReader === 'undefined'){
         return Promise.reject(new Error("FileReader not supported"));
     }
     
