@@ -265,17 +265,26 @@ class Group extends ApiObject
     
     public function userReadable($user){
         $userID = $this->extractUserID($user);
-        if($this->libraryReading == 'all'){
-            return true;
-        }
-        if($this->isMember($userID)){
-            return true;
+        if($this->type == 'PublicOpen' || $this->type == 'PublicClosed'){
+            if($this->libraryReading == 'all'){
+                return true;
+            }
+            if($this->isMember($userID)){
+                return true;
+            }
+        } else {
+            if($this->isMember($userID)){
+                return true;
+            }
         }
         return false;
     }
     
     public function userWritable($user){
         $userID = $this->extractUserID($user);
+        if(!$this->isMember($userID)){
+            return false;
+        }
         if($this->libraryEditing == 'members'){
             if($this->isMember($userID)){
                 return true;
