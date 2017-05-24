@@ -2484,7 +2484,7 @@ class Mappings
 
 namespace Zotero;
 
-const ZOTERO_URI = 'https://apidev.zotero.org';
+const ZOTERO_URI = 'https://api.zotero.org';
 const ZOTERO_WWW_URI = 'https://www.zotero.org';
 const LIBZOTERO_DEBUG = 1;
 const ZOTERO_API_VERSION = 3;
