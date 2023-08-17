@@ -11,7 +11,7 @@ import argparse
 sys.path.append('../lib/py')
 from libZotero import zotero
 
-zotero.ZOTERO_URI = 'https://apidev.zotero.org'
+zotero.ZOTERO_URI = 'https://api.zotero.org'
 
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
