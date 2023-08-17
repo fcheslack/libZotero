@@ -179,7 +179,7 @@ class HttpResponse
         $this->body = $body;
 
         // Set the HTTP version
-        if (! preg_match('|^\d\.\d$|', $version)) {
+        if (! preg_match('|^\d\.?\d?$|', $version)) {
             
             throw new Exception("Invalid HTTP response version: $version");
         }
