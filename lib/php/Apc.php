@@ -8,33 +8,55 @@ namespace Zotero;
 class ApcCache
 {
     public $prefix = 'LibZotero';
-    
+    protected $ext;
+
     public function __construct(){
-        if(!extension_loaded('apc')){
-            if(!extension_loaded('apcu')){
-                throw new \Zotero\Exception('APC not loaded');
-            }
+        if(extension_loaded('apcu')){
+            $this->ext = 'apcu';
+        } else if(extension_loaded('apc')){
+            $this->ext = 'apc';
+        } else {
+            throw new \Zotero\Exception('No APC extension loaded');
         }
     }
     
     public function add($key, $val, $ttl=0){
-        return apc_add($key, $val, $ttl);
+        if($this->ext == 'apcu'){
+            return apcu_add($key, $val, $ttl);
+        } else {
+            return apc_add($key, $val, $ttl);
+        }
     }
     
     public function store($key, $val, $ttl=0){
-        return apc_store($key, $val, $ttl);
+        if($this->ext == 'apcu'){
+            return apcu_store($key, $val, $ttl);
+        } else {
+            return apc_store($key, $val, $ttl);
+        }
     }
     
     public function delete($key){
-        return apc_delete($key);
+        if($this->ext == 'apcu'){
+            return apcu_delete($key);
+        } else {
+            return apc_delete($key);
+        }
     }
     
     public function fetch($key, &$success){
-        return apc_fetch($key, $success);
+        if($this->ext == 'apcu'){
+            return apcu_fetch($key, $success);
+        } else {
+            return apc_fetch($key, $success);
+        }
     }
     
     public function exists($keys){
-        return apc_exists($keys);
+        if($this->ext == 'apcu'){
+            return apcu_exists($keys);
+        } else {
+            return apc_exists($keys);
+        }
     }
 }
-
