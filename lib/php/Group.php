@@ -263,6 +263,18 @@ class Group extends ApiObject
         return $slug;
     }
     
+    public function userViewable($user){
+        $userID = $this->extractUserID($user);
+        if($this->type == 'PublicOpen' || $this->type == 'PublicClosed'){
+            return true;
+        } else {
+            if($this->isMember($userID)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public function userReadable($user){
         $userID = $this->extractUserID($user);
         if($this->type == 'PublicOpen' || $this->type == 'PublicClosed'){
